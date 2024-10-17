@@ -8,8 +8,9 @@ class ProductMeta extends Model
 {
     protected $fillable = [
         'product_id',
-        'key',
-        'value',
+        'color',
+        'size',
+        "weight",
     ];
 
     public function product()
