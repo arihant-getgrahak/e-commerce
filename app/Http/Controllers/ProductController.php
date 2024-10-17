@@ -19,7 +19,7 @@ class ProductController extends Controller
 
     public function display()
     {
-        $product = Product::with(["gallery", "meta"])->paginate(10);
+        $product = Product::with(["gallery", "meta","brand","parent","children"])->paginate(10);
         if (!$product) {
             return response()->json([
                 "message" => "Product not found"
@@ -43,6 +43,7 @@ class ProductController extends Controller
                 "parent_category_id" => $request->parent_category_id,
                 "child_category_id" => $request->child_category_id,
                 "added_by" => $request->added_by,
+                "brand_id" => $request->brand_id,
             ];
             DB::beginTransaction();
             $product = Product::create($data);
@@ -74,7 +75,7 @@ class ProductController extends Controller
             ProductMeta::create($data);
             DB::commit();
 
-            $product = Product::where("id", $product->id)->with(["gallery", "meta"])->first();
+            $product = Product::where("id", $product->id)->with(["gallery", "meta","brand"])->first();
 
             return response()->json([
                 "product" => $product,
@@ -173,7 +174,7 @@ class ProductController extends Controller
     public function specific($id)
     {
 
-        $product = Product::where("id", $id)->with(["gallery","meta"])->get();
+        $product = Product::where("id", $id)->with(["gallery", "meta","brand","parent","children"])->get();
         if (!$product) {
             return response()->json([
                 "message" => "Product not found"
