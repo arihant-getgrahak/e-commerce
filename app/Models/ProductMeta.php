@@ -11,4 +11,9 @@ class ProductMeta extends Model
         'key',
         'value',
     ];
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
 }
