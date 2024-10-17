@@ -10,7 +10,7 @@ class ChildCategoryController extends Controller
 {
     public function display()
     {
-        $category = ChildCategory::with("category")->get();
+        $category = ChildCategory::with("parent")->get();
         return response()->json([
             "category" => $category
         ], 200);
