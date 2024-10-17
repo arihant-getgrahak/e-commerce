@@ -71,6 +71,21 @@ class BrandController extends Controller
         ], 200);
     }
 
+    public function destroy($id)
+    {
+        $brand = Brand::find($id);
+        if (!$brand) {
+            return response()->json([
+                "message" => "Brand not found"
+            ], 404);
+        }
+        Storage::delete($brand->image);
+        $brand->delete();
+        return response()->json([
+            "message" => "Brand deleted successfully"
+        ], 200);
+    }
+
     protected function uploadImage($file)
     {
         $uploadFolder = 'brand';
