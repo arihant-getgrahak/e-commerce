@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Gallery;
 use Storage;
+use App\Http\Requests\ProductAddRequest;
 
 class ProductController extends Controller
 {
@@ -13,24 +14,43 @@ class ProductController extends Controller
     //     return view("product");
     // }
 
-    public function display()
+    public function store(ProductAddRequest $request)
     {
-        $product = Product::with("gallery")->get();
-        // return view("product", compact("product"));
-        return response()->json([
-            "product" => $product,
-        ], 200);
-    }
 
-    public function store(Request $request)
-    {
-        $product = Product::create($request->all());
-        $gallery = Gallery::create($request->all());
+        $data = [
+            "name" => $request->name,
+            "description" => $request->description,
+            "price" => $request->price,
+            "stock" => $request->stock,
+            "parent_category_id" => $request->parent_category_id,
+            "child_category_id" => $request->child_category_id,
+            "added_by" => $request->added_by,
+        ];
+
+        $product = Product::create($data);
+
+
+        if ($request->hasFile('image')) {
+            $imageFiles = is_array($request->file('image')) ? $request->file('image') : [$request->file('image')];
+
+
+            foreach ($imageFiles as $file) {
+                $imagePath = $this->uploadImage($file);
+
+                Gallery::create([
+                    'product_id' => $product->id,
+                    'image' => $imagePath,
+                ]);
+            }
+        }
+
+        $product = Product::where("id", $product->id)->with("gallery")->first();
+
         return response()->json([
             "product" => $product,
-            "gallery" => $gallery
         ], 201);
     }
+
 
     public function update(Request $request, $id)
     {
@@ -78,7 +98,7 @@ class ProductController extends Controller
 
     protected function uploadImage($file)
     {
-        $uploadFolder = 'profile-image';
+        $uploadFolder = 'product';
         $image = $file;
         $image_uploaded_path = $image->store($uploadFolder, 'public');
         $uploadedImageUrl = Storage::disk('public')->url($image_uploaded_path);
