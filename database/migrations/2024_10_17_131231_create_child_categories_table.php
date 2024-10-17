@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('child_categories', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->foreignId("parent_category_id");
             $table->timestamps();
         });
     }
