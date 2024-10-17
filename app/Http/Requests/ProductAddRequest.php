@@ -26,8 +26,8 @@ class ProductAddRequest extends FormRequest
             "description" => "required",
             "price" => "required|decimal:2",
             "stock" => "required|integer|min:0",
-            "parent_category_id" => "required",
-            "child_category_id" => "required",
+            "parent_category_id" => "required|exists:parent_categories,id",
+            "child_category_id" => "required|exists:child_categories,id",
             "added_by" => "required",
         ];
     }
