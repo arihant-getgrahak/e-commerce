@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('product_metas', function (Blueprint $table) {
             $table->id();
+            $table->string('color');
+            $table->string('size');
+            $table->string('weight');
             $table->timestamps();
         });
     }
