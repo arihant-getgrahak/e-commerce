@@ -18,38 +18,48 @@ class ProductController extends Controller
     public function store(ProductAddRequest $request)
     {
 
-        $data = [
-            "name" => $request->name,
-            "description" => $request->description,
-            "price" => $request->price,
-            "stock" => $request->stock,
-            "parent_category_id" => $request->parent_category_id,
-            "child_category_id" => $request->child_category_id,
-            "added_by" => $request->added_by,
-        ];
-
-        $product = Product::create($data);
-
-
-        if ($request->hasFile('image')) {
-            $imageFiles = is_array($request->file('image')) ? $request->file('image') : [$request->file('image')];
+        try {
+            $data = [
+                "name" => $request->name,
+                "description" => $request->description,
+                "price" => $request->price,
+                "stock" => $request->stock,
+                "parent_category_id" => $request->parent_category_id,
+                "child_category_id" => $request->child_category_id,
+                "added_by" => $request->added_by,
+            ];
+            DB::beginTransaction();
+            $product = Product::create($data);
+            DB::commit();
 
 
-            foreach ($imageFiles as $file) {
-                $imagePath = $this->uploadImage($file);
+            if ($request->hasFile('image')) {
+                $imageFiles = is_array($request->file('image')) ? $request->file('image') : [$request->file('image')];
 
-                Gallery::create([
-                    'product_id' => $product->id,
-                    'image' => $imagePath,
-                ]);
+
+                foreach ($imageFiles as $file) {
+                    $imagePath = $this->uploadImage($file);
+                    DB::beginTransaction();
+                    Gallery::create([
+                        'product_id' => $product->id,
+                        'image' => $imagePath,
+                    ]);
+                    DB::commit();
+                }
             }
+
+            $product = Product::where("id", $product->id)->with("gallery")->first();
+
+            return response()->json([
+                "product" => $product,
+            ], 201);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                "status" => false,
+                "error" => $e->getMessage()
+            ], 500);
         }
-
-        $product = Product::where("id", $product->id)->with("gallery")->first();
-
-        return response()->json([
-            "product" => $product,
-        ], 201);
     }
 
 
