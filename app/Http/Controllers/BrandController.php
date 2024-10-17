@@ -46,6 +46,31 @@ class BrandController extends Controller
         ], 200);
     }
 
+
+    public function update(Request $request, $id)
+    {
+        $brand = Brand::find($id);
+        if (!$brand) {
+            return response()->json([
+                "message" => "Brand not found"
+            ], 404);
+        }
+
+        if ($request->hasFile("image")) {
+            Storage::delete($brand->image);
+        }
+
+        $brand->update([
+            "name" => $request->name,
+            "image" => $this->uploadImage($request->image),
+        ]);
+
+        return response()->json([
+            "message" => "Brand updated successfully",
+            "brand" => $brand
+        ], 200);
+    }
+
     protected function uploadImage($file)
     {
         $uploadFolder = 'brand';
