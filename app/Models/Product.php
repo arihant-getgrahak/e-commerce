@@ -23,4 +23,9 @@ class Product extends Model
             "updated_at" => "datetime:Y-m-d",
         ];
     }
+
+    public function gallery()
+    {
+        return $this->hasMany(Gallery::class, 'product_id');
+    }
 }
