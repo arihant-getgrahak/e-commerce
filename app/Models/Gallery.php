@@ -18,4 +18,9 @@ class Gallery extends Model
             "updated_at" => "datetime:Y-m-d",
         ];
     }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
 }
