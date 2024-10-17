@@ -37,4 +37,30 @@ class ParentCategoryController extends Controller
             "category" => $category
         ], 200);
     }
+    public function update(Request $request, $id)
+    {
+        $category = ParentCategory::find($id);
+        if (!$category) {
+            return response()->json([
+                "message" => "Category not found"
+            ], 404);
+        }
+        $validator = Validator::make($request->all(), [
+            'name' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                "message" => "Validation error",
+                "errors" => $validator->errors()
+            ], 400);
+        }
+        $category->update([
+            "name" => $request->name
+        ]);
+        return response()->json([
+            "message" => "Category updated successfully",
+            "category" => $category
+        ], 200);
+    }
+
 }
