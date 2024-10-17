@@ -18,8 +18,7 @@ class ProductController extends Controller
         // return view("product", compact("product"));
         return response()->json([
             "product" => $product,
-            // "gallery"=> $gallery
-        ]);
+        ], 200);
     }
 
     public function store(Request $request)
@@ -28,7 +27,24 @@ class ProductController extends Controller
         $gallery = Gallery::create($request->all());
         return response()->json([
             "product" => $product,
-            "gallery"=> $gallery
-        ]);
+            "gallery" => $gallery
+        ], 201);
     }
+
+    public function update(Request $request, $id)
+    {
+        $product = Product::find($id);
+        if (!$product) {
+            return response()->json([
+                "message" => "Product not found"
+            ], 404);
+        }
+        $product->update($request->all());
+
+        return response()->json([
+            "product" => $product
+        ], 200);
+    }
+
+    
 }
