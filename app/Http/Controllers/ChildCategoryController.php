@@ -45,4 +45,22 @@ class ChildCategoryController extends Controller
             "category" => $childCategory
         ], 200);
     }
+
+    public function update(Request $request, $id)
+    {
+        $category = ChildCategory::find($id);
+        if (!$category) {
+            return response()->json([
+                "message" => "Category not found"
+            ], 404);
+        }
+        $data = $request->only([
+            "name",
+        ]);
+        $category->update($data);
+        return response()->json([
+            "message" => "Category updated successfully",
+            "category" => $category
+        ], 200);
+    }
 }
