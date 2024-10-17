@@ -28,4 +28,13 @@ class Product extends Model
     {
         return $this->hasMany(Gallery::class, 'product_id');
     }
+
+    public function parent()
+    {
+        return $this->belongsTo(ParentCategory::class, "parent_category_id");
+    }
+    public function children()
+    {
+        return $this->belongsTo(ChildCategory::class, "child_category_id");
+    }
 }
