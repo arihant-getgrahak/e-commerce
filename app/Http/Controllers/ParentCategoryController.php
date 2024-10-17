@@ -62,5 +62,21 @@ class ParentCategoryController extends Controller
             "category" => $category
         ], 200);
     }
+    
+    public function delete($id)
+    {
+        $category = ParentCategory::find($id);
+        if (!$category) {
+            return response()->json([
+                "status" => false,
+                "message" => "Category not found"
+            ], 404);
+        }
 
+        $category->delete();
+        return response()->json([
+            "status" => true,
+            "message" => "Category deleted successfully"
+        ], status: 200);
+    }
 }
