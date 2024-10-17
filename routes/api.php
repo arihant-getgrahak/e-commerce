@@ -38,6 +38,6 @@ Route::group(["prefix" => "brand"], function () {
 });
 
 Route::group(["prefix" => "review"], function () {
-    Route::get("/", [ReviewController::class, "display"]);
+    Route::get("/{id}", [ReviewController::class, "display"]);
     Route::post("/store", [ReviewController::class, "store"]);
 });
