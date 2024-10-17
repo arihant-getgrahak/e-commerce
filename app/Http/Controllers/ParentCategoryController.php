@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ParentCategory;
 use Illuminate\Http\Request;
 use Validator;
+use App\Http\Requests\ParentCategoryStoreRequest;
 
 class ParentCategoryController extends Controller
 {
@@ -15,13 +16,9 @@ class ParentCategoryController extends Controller
             "category" => $category
         ], 200);
     }
-    public function store(Request $request)
+    public function store(ParentCategoryStoreRequest $request)
     {
-        if ($request->name == null) {
-            return response()->json([
-                "message" => "Category name is required"
-            ], 400);
-        }
+       
         $category = ParentCategory::create([
             'name' => $request->name
         ]);
