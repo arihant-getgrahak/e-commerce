@@ -63,7 +63,7 @@ class ProductController extends Controller
     public function specific($id)
     {
 
-        $product = Product::with("gallery")->get();
+        $product = Product::where("id", $id)->with("gallery")->get();
         if (!$product) {
             return response()->json([
                 "message" => "Product not found"
