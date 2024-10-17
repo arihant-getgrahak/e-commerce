@@ -29,8 +29,6 @@ class ProductAddRequest extends FormRequest
             "parent_category_id" => "required",
             "child_category_id" => "required",
             "added_by" => "required",
-            'product_id' => 'required',
-            'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
         ];
     }
 
@@ -44,11 +42,6 @@ class ProductAddRequest extends FormRequest
             "parent_category_id.required" => "Product parent category is required",
             "child_category_id.required" => "Product child category is required",
             "added_by.required" => "Product added by is required",
-            "product_id.required" => "Product is required",
-            "image.required" => "Product image is required",
-            "image.image" => "Product image must be an image",
-            "image.max" => "Product image size must be less than 2MB",
-            "image.mimes" => "Product image must be a jpg, jpeg or png file",
         ];
     }
 }
