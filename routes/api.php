@@ -5,6 +5,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ParentCategoryController;
 use App\Http\Controllers\ChildCategoryController;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\ReviewController;
 
 
 Route::group(["prefix" => "product"], function () {
@@ -34,4 +35,9 @@ Route::group(["prefix" => "brand"], function () {
     Route::post("/store", [BrandController::class, "store"]);
     Route::post("/update/{id}", [BrandController::class, "update"]);
     Route::delete("/delete/{id}", [BrandController::class, "delete"]);
+});
+
+Route::group(["prefix" => "review"], function () {
+    Route::get("/{id}", [ReviewController::class, "display"]);
+    Route::post("/store", [ReviewController::class, "store"]);
 });
