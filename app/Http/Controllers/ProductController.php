@@ -13,6 +13,9 @@ class ProductController extends Controller
 
     public function display(){
         $product = Product::all();
-        return view("product", compact("product"));
+        // return view("product", compact("product"));
+        return response()->json([
+            "product"=> $product
+        ]);
     }
 }
