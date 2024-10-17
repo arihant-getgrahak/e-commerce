@@ -17,8 +17,8 @@ return new class extends Migration {
             $table->decimal('price', 8, 2);
             $table->integer('stock');
             $table->foreignId("parent_category_id");
-            $table->foreign("child_category_id");
-            $table->foreign("added_by");
+            $table->foreignId("child_category_id");
+            $table->foreignId("added_by");
             $table->timestamps();
         });
     }
