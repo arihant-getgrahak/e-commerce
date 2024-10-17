@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ParentCategoryController;
+use App\Http\Controllers\ChildCategoryController;
 
 
 Route::group(["prefix" => "product"], function () {
@@ -18,4 +19,11 @@ Route::group(["prefix" => "category"], function () {
     Route::post("/store", [ParentCategoryController::class, "store"]);
     Route::post("/update/{id}", [ParentCategoryController::class, "update"]);
     Route::delete("/delete/{id}", [ParentCategoryController::class, "delete"]);
+});
+
+Route::group(["prefix" => "category/child"], function () {
+    Route::get("/", [ChildCategoryController::class, "display"]);
+    Route::post("/store", [ChildCategoryController::class, "store"]);
+    Route::post("/update/{id}", [ChildCategoryController::class, "update"]);
+    Route::delete("/delete/{id}", [ChildCategoryController::class, "delete"]);
 });
