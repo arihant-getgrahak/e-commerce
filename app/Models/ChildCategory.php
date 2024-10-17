@@ -10,4 +10,8 @@ class ChildCategory extends Model
         'parent_category_id',
         'name',
     ];
+
+    public function category(){
+        return $this->belongsTo(ParentCategory::class);
+    }
 }
