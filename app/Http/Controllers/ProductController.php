@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Gallery;
+use Storage;
 
 class ProductController extends Controller
 {
@@ -73,5 +74,15 @@ class ProductController extends Controller
         return response()->json([
             "product" => $product
         ], 200);
+    }
+
+    protected function uploadImage($file)
+    {
+        $uploadFolder = 'profile-image';
+        $image = $file;
+        $image_uploaded_path = $image->store($uploadFolder, 'public');
+        $uploadedImageUrl = Storage::disk('public')->url($image_uploaded_path);
+
+        return $uploadedImageUrl;
     }
 }
