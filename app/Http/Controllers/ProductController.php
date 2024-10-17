@@ -59,4 +59,19 @@ class ProductController extends Controller
             "message" => "Product deleted successfully"
         ], 200);
     }
+
+    public function specific($id)
+    {
+
+        $product = Product::with("gallery")->get();
+        if (!$product) {
+            return response()->json([
+                "message" => "Product not found"
+            ], 404);
+        }
+
+        return response()->json([
+            "product" => $product
+        ], 200);
+    }
 }
