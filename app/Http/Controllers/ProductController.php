@@ -6,8 +6,10 @@ use DB;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Gallery;
+use App\Models\ProductMeta;
 use Storage;
 use App\Http\Requests\ProductAddRequest;
+
 
 class ProductController extends Controller
 {
@@ -17,7 +19,7 @@ class ProductController extends Controller
 
     public function display()
     {
-        $product = Product::with("gallery")->paginate(10);
+        $product = Product::with(["gallery", "meta"])->paginate(10);
         if (!$product) {
             return response()->json([
                 "message" => "Product not found"
@@ -62,7 +64,17 @@ class ProductController extends Controller
                 }
             }
 
-            $product = Product::where("id", $product->id)->with("gallery")->first();
+            $data = [
+                "product_id" => $product->id,
+                "color" => $request->color,
+                "size" => $request->size,
+                "weight" => $request->weight,
+            ];
+            DB::beginTransaction();
+            ProductMeta::create($data);
+            DB::commit();
+
+            $product = Product::where("id", $product->id)->with(["gallery", "meta"])->first();
 
             return response()->json([
                 "product" => $product,
@@ -161,7 +173,7 @@ class ProductController extends Controller
     public function specific($id)
     {
 
-        $product = Product::where("id", $id)->with("gallery")->get();
+        $product = Product::where("id", $id)->with(["gallery","meta"])->get();
         if (!$product) {
             return response()->json([
                 "message" => "Product not found"
