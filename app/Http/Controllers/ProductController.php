@@ -15,6 +15,20 @@ class ProductController extends Controller
     //     return view("product");
     // }
 
+    public function display()
+    {
+        $product = Product::with("gallery")->paginate(10);
+        if (!$product) {
+            return response()->json([
+                "message" => "Product not found"
+            ], 404);
+        }
+
+        return response()->json([
+            "product" => $product
+        ], 200);
+    }
+
     public function store(ProductAddRequest $request)
     {
 
@@ -61,8 +75,6 @@ class ProductController extends Controller
             ], 500);
         }
     }
-
-
 
     public function update(Request $request, $id)
     {
