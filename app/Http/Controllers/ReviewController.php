@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Review;
 use Illuminate\Http\Request;
 use Validator;
+use App\Http\Requests\ReviewStoreRequest;
 
 class ReviewController extends Controller
 {
@@ -14,20 +15,8 @@ class ReviewController extends Controller
         return response()->json(["review" => $review], 200);
     }
 
-    public function store(Request $request)
+    public function store(ReviewStoreRequest $request)
     {
-        $validate = Validator::make($request->all(), [
-            "product_id" => "required|exists:products,id",
-            "comment" => "required",
-            "rating" => "required",
-            "name" => "required",
-            "email" => "required|email",
-        ]);
-
-        if ($validate->fails()) {
-            return response()->json(["error" => $validate->errors()], 400);
-        }
-
         $data = [
             "product_id" => $request->product_id,
             "comment" => $request->comment,

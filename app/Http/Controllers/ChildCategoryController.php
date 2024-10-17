@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ChildCategory;
 use Illuminate\Http\Request;
 use Validator;
+use App\Http\Requests\ChildCategoryStoreRequest;
 
 class ChildCategoryController extends Controller
 {
@@ -15,19 +16,8 @@ class ChildCategoryController extends Controller
             "category" => $category
         ], 200);
     }
-    public function store(Request $request)
+    public function store(ChildCategoryStoreRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            "parent_category_id" => 'required|exists:parent_categories,id',
-        ]);
-        if ($validator->fails()) {
-            return response()->json([
-                "message" => "Validation error",
-                "errors" => $validator->errors()
-            ], 400);
-        }
-
         $data = [
             "name" => $request->name,
             "parent_category_id" => $request->parent_category_id,

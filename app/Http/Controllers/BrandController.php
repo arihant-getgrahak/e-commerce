@@ -6,6 +6,7 @@ use App\Models\Brand;
 use Illuminate\Http\Request;
 use Storage;
 use Validator;
+use App\Http\Requests\BrandStoreRequest;
 
 class BrandController extends Controller
 {
@@ -18,7 +19,7 @@ class BrandController extends Controller
         ], 200);
     }
 
-    public function store(Request $request)
+    public function store(BrandStoreRequest $request)
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required',
