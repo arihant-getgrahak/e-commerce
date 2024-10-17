@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('color');
             $table->string('size');
             $table->string('weight');
+            $table->foreignId("product_id");
             $table->timestamps();
         });
     }
