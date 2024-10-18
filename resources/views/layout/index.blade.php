@@ -20,20 +20,20 @@
             <h1 class="text-2xl font-bold mb-6">Admin Panel</h1>
             <nav>
                 <ul>
-                    <li class="mb-3">
+                <li class="mb-3">
                         <a href="#" class="hover:text-gray-400">Dashboard</a>
                     </li>
                     <li class="mb-3">
-                        <a href="add" class="hover:text-gray-400">Add Product</a>
+                        <a href="arihant/e-commerce/public/product/add" class="hover:text-gray-400">Add Product</a>
                     </li>
                     <li class="mb-3">
-                        <a href="view" class="hover:text-gray-400">View Products</a>
+                        <a href="arihant/e-commerce/public/product/view" class="hover:text-gray-400">View Products</a>
                     </li>
                     <li class="mb-3">
-                        <a href="category" class="hover:text-gray-400">Add Category</a>
+                        <a href="arihant/e-commerce/public/product/category" class="hover:text-gray-400">Add Category</a>
                     </li>
                     <li class="mb-3">
-                        <a href="logout" class="hover:text-gray-400">Logout</a>
+                        <a href="arihant/e-commerce/public/logout" class="hover:text-gray-400">Logout</a>
                     </li>
                 </ul>
             </nav>
