@@ -4,13 +4,14 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ParentCategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::group(["middleware" => "auth.admin"], function () {
+Route::group(["middleware" => AdminMiddleware::class], function () {
 
     Route::get('admin', function () {
         return view('admin');
