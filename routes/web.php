@@ -10,19 +10,25 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('admin', function () {
-    return view('admin');
-});
+Route::group(["middleware" => "auth.admin"], function () {
 
-Route::get('product/category', function () {
-    return view('addcategroy');
-});
+    Route::get('admin', function () {
+        return view('admin');
+    });
 
-Route::get('product/add', function () {
-    return view('addproduct');
-});
+    Route::group(["prefix" => "product"], function () {
+        Route::get('category', function () {
+            return view('addcategroy');
+        });
 
-Route::get('product/view', [ProductController::class, "display"]);
+        Route::get('add', function () {
+            return view('addproduct');
+        });
+
+        Route::get('view', [ProductController::class, "display"]);
+    });
+
+});
 
 Route::get("login", function () {
     return view("login");
