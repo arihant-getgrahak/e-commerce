@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ParentCategoryController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
@@ -23,7 +24,11 @@ Route::get('product/add', function () {
 
 Route::get('product/view', [ProductController::class, "display"]);
 
+Route::get("login", function () {
+    return view("login");
+});
 
 
 Route::post("category/add", [ParentCategoryController::class, "store"])->name("category.add");
 Route::post("product/add", [ProductController::class, "store"])->name("product.add");
+Route::post("login", [AuthController::class, "login"])->name("login");
