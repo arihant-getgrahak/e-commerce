@@ -24,13 +24,13 @@
                         <a href="#" class="hover:text-gray-400">Dashboard</a>
                     </li>
                     <li class="mb-3">
-                        <a href="arihant/e-commerce/public/product/add" class="hover:text-gray-400">Add Product</a>
+                        <a href="add" class="hover:text-gray-400">Add Product</a>
                     </li>
                     <li class="mb-3">
-                        <a href="arihant/e-commerce/public/product/view" class="hover:text-gray-400">View Products</a>
+                        <a href="view" class="hover:text-gray-400">View Products</a>
                     </li>
                     <li class="mb-3">
-                        <a href="arihant/e-commerce/public/product/category" class="hover:text-gray-400">Add Category</a>
+                        <a href="category" class="hover:text-gray-400">Add Category</a>
                     </li>
                     <li class="mb-3">
                         <a href="arihant/e-commerce/public/logout" class="hover:text-gray-400">Logout</a>
