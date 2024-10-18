@@ -33,11 +33,11 @@ Route::group(["middleware" => AdminMiddleware::class], function () {
 
 Route::get("login", function () {
     return view("login");
-});
+})->name("login");
 
+Route::get("logout", [AuthController::class, "logout"])->name("logout");
 
 
 Route::post("category/add", [ParentCategoryController::class, "store"])->name("category.add");
 Route::post("product/add", [ProductController::class, "store"])->name("product.add");
 Route::post("login", [AuthController::class, "login"])->name("login");
-Route::post("logout", [ProductController::class, "logout"])->name("logout");
