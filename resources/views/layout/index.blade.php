@@ -32,6 +32,9 @@
                     <li class="mb-3">
                         <a href="category" class="hover:text-gray-400">Add Category</a>
                     </li>
+                    <li class="mb-3">
+                        <a href="logout" class="hover:text-gray-400">Logout</a>
+                    </li>
                 </ul>
             </nav>
         </aside>
