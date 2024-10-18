@@ -21,14 +21,8 @@ Route::get('product/add', function () {
     return view('addproduct');
 });
 
-Route::get('product/view', function () {
-    return view('productview');
-});
+Route::get('product/view', [ProductController::class, "display"]);
 
 
 Route::post("category/add", [ParentCategoryController::class, "store"])->name("category.add");
 Route::post("product/add", [ProductController::class, "store"])->name("product.add");
-
-
-
-

@@ -21,14 +21,14 @@ class ProductController extends Controller
     {
         $product = Product::with(["gallery", "meta", "brand", "parent", "children"])->paginate(10);
         if (!$product) {
-            return response()->json([
-                "message" => "Product not found"
-            ], 404);
+            return view('productview')->with('product', []);
         }
+        // dd($product);
+        return view('productview')->with('product', $product);
 
-        return response()->json([
-            "product" => $product
-        ], 200);
+        // return response()->json([
+        //     "product" => $product
+        // ], 200);
     }
 
     public function store(ProductAddRequest $request)
