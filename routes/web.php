@@ -15,7 +15,7 @@ Route::group(["middleware" => AdminMiddleware::class], function () {
 
     Route::get('admin', function () {
         return view('admin');
-    });
+    })->name("admin");
 
     Route::group(["prefix" => "product"], function () {
         Route::get('category', function () {
