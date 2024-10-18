@@ -29,10 +29,12 @@ class ParentCategoryController extends Controller
             ], 400);
         }
 
-        return response()->json([
-            "message" => "Category created successfully",
-            "category" => $category
-        ], 200);
+        // return response()->json([
+        //     "message" => "Category created successfully",
+        //     "category" => $category
+        // ], 200);
+
+        return back()->with("success", "Category created successfully");
     }
     public function update(Request $request, $id)
     {
