@@ -24,7 +24,7 @@
                         <a href="#" class="hover:text-gray-400">Dashboard</a>
                     </li>
                     <li class="mb-3">
-                        <a href="add" class="hover:text-gray-400">Add Product</a>
+                        <a href="product/add" class="hover:text-gray-400">Add Product</a>
                     </li>
                     <li class="mb-3">
                         <a href="view" class="hover:text-gray-400">View Products</a>
