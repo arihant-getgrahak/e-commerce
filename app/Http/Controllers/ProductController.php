@@ -19,7 +19,7 @@ class ProductController extends Controller
 
     public function display()
     {
-        $product = Product::with(["gallery", "meta","brand","parent","children"])->paginate(10);
+        $product = Product::with(["gallery", "meta", "brand", "parent", "children"])->paginate(10);
         if (!$product) {
             return response()->json([
                 "message" => "Product not found"
@@ -51,11 +51,19 @@ class ProductController extends Controller
 
 
             if ($request->hasFile('image')) {
-                $imageFiles = is_array($request->file('image')) ? $request->file('image') : [$request->file('image')];
-
-
-                foreach ($imageFiles as $file) {
-                    $imagePath = $this->uploadImage($file);
+                if (is_array($request->file('image'))) {
+                    $imageFiles = $request->file('image');
+                    foreach ($request->file('image') as $file) {
+                        $imagePath = $this->uploadImage($file);
+                        DB::beginTransaction();
+                        Gallery::create([
+                            'product_id' => $product->id,
+                            'image' => $imagePath,
+                        ]);
+                        DB::commit();
+                    }
+                } else {
+                    $imagePath = $this->uploadImage($request->file('image'));
                     DB::beginTransaction();
                     Gallery::create([
                         'product_id' => $product->id,
@@ -75,17 +83,16 @@ class ProductController extends Controller
             ProductMeta::create($data);
             DB::commit();
 
-            $product = Product::where("id", $product->id)->with(["gallery", "meta","brand"])->first();
+            $product = Product::where("id", $product->id)->with(["gallery", "meta", "brand"])->first();
 
-            return response()->json([
-                "product" => $product,
-            ], 201);
+            // return response()->json([
+            //     "product" => $product,
+            // ], 201);
+
+            return back()->with("success", "Product created successfully");
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json([
-                "status" => false,
-                "error" => $e->getMessage()
-            ], 500);
+            return back()->with("error", $e->getMessage());
         }
     }
 
@@ -174,7 +181,7 @@ class ProductController extends Controller
     public function specific($id)
     {
 
-        $product = Product::where("id", $id)->with(["gallery", "meta","brand","parent","children"])->get();
+        $product = Product::where("id", $id)->with(["gallery", "meta", "brand", "parent", "children"])->get();
         if (!$product) {
             return response()->json([
                 "message" => "Product not found"
