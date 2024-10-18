@@ -33,7 +33,7 @@
                         <a href="category" class="hover:text-gray-400">Add Category</a>
                     </li>
                     <li class="mb-3">
-                        <a href="arihant/e-commerce/public/logout" class="hover:text-gray-400">Logout</a>
+                        <a href="/arihant/e-commerce/public/logout" class="hover:text-gray-400">Logout</a>
                     </li>
                 </ul>
             </nav>
