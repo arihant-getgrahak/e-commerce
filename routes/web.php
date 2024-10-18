@@ -1,5 +1,7 @@
 <?php
 
+
+use App\Http\Controllers\ParentCategoryController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -21,6 +23,9 @@ Route::get('product/add', function () {
 Route::get('product/view', function () {
     return view('productview');
 });
+
+
+Route::post("category/add", [ParentCategoryController::class, "store"])->name("category.add");
 
 
 
