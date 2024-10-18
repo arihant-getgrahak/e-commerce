@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ParentCategoryController;
@@ -41,3 +42,5 @@ Route::group(["prefix" => "review"], function () {
     Route::get("/{id}", [ReviewController::class, "display"]);
     Route::post("/store", [ReviewController::class, "store"]);
 });
+
+Route::post("/register", [AuthController::class, "register"]);
