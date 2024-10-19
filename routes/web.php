@@ -28,7 +28,7 @@ Route::group(["middleware" => AdminMiddleware::class], function () {
     });
 });
 
-Route::get("/child-category/{id}", [ProductController::class,"child_category"])->name("child-category");
+Route::get("/child-category/{id}", [ProductController::class, "child_category"])->name("child-category");
 
 Route::get("login", function () {
     return view("login");
@@ -40,3 +40,5 @@ Route::get("logout", [AuthController::class, "logout"])->name("logout");
 Route::post("category/add", [ParentCategoryController::class, "store"])->name("category.add");
 Route::post("product/add", [ProductController::class, "store"])->name("product.add");
 Route::post("login", [AuthController::class, "login"])->name("login");
+
+Route::get("/product", [ProductController::class, "display"])->name("product");
