@@ -46,16 +46,6 @@
     @enderror
     </div>
 
-    <!-- added_by -->
-    <div class="mb-4">
-      <label for="added_by" class="block text-sm font-medium text-gray-700">added_by</label>
-      <input type="text" id="added_by" name="added_by" class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-        placeholder="Enter product added_by"></input>
-      @error('added_by')
-      <span class="text-red-500 text-sm">{{ $message }}</span>
-    @enderror
-    </div>
-
     <!-- image -->
     <div class="mb-4">
       <label for="image" class="block text-sm font-medium text-gray-700">Product Image</label>

@@ -35,6 +35,7 @@ class AuthController extends Controller
             "name" => "required",
             "email" => "required|email|unique:users,email",
             "password" => "required|min:6",
+            "role" => "required"
         ]);
 
         if ($validator->fails()) {
@@ -45,6 +46,7 @@ class AuthController extends Controller
             "name" => $request->name,
             "email" => $request->email,
             "password" => bcrypt($request->password),
+            "role"=> $request->role
         ]);
 
         if (!$user) {
