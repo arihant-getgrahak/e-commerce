@@ -22,14 +22,13 @@ Route::group(["middleware" => AdminMiddleware::class], function () {
             return view('addcategroy');
         });
 
-        Route::get('add', function () {
-            return view('addproduct');
-        });
+        Route::get('add', [ProductController::class, 'index'])->name('product.add');
 
         Route::get('view', [ProductController::class, "display"]);
     });
-
 });
+
+Route::get("/child-category/{id}", [ProductController::class,"child_category"])->name("child-category");
 
 Route::get("login", function () {
     return view("login");
