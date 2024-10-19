@@ -46,44 +46,12 @@
     @enderror
     </div>
 
-    <!-- parent_category_id -->
-    <div class="mb-4">
-      <label for="parent_category_id" class="block text-sm font-medium text-gray-700">parent_category_id</label>
-      <input type="text" id="parent_category_id" name="parent_category_id"
-        class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-        placeholder="Enter product parent_category_id"></input>
-      @error('parent_category_id')
-      <span class="text-red-500 text-sm">{{ $message }}</span>
-    @enderror
-    </div>
-
-    <!-- child_category_id -->
-    <div class="mb-4">
-      <label for="child_category_id" class="block text-sm font-medium text-gray-700">Child_category_id</label>
-      <input type="text" id="child_category_id" name="child_category_id"
-        class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-        placeholder="Enter product child_category_id"></input>
-      @error('child_category_id')
-      <span class="text-red-500 text-sm">{{ $message }}</span>
-    @enderror
-    </div>
-
     <!-- added_by -->
     <div class="mb-4">
       <label for="added_by" class="block text-sm font-medium text-gray-700">added_by</label>
       <input type="text" id="added_by" name="added_by" class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
         placeholder="Enter product added_by"></input>
       @error('added_by')
-      <span class="text-red-500 text-sm">{{ $message }}</span>
-    @enderror
-    </div>
-
-    <!-- brand_id -->
-    <div class="mb-4">
-      <label for="brand_id" class="block text-sm font-medium text-gray-700">brand_id</label>
-      <input type="text" id="brand_id" name="brand_id" class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-        placeholder="Enter product brand_id"></input>
-      @error('brand_id')
       <span class="text-red-500 text-sm">{{ $message }}</span>
     @enderror
     </div>
@@ -128,27 +96,78 @@
     @enderror
     </div>
 
-    <!-- <div class="mb-4">
-      <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
-      <select id="category" name="category" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
-        <option value="electronics">Electronics</option>
-        <option value="fashion">Fashion</option>
-        <option value="home">Home</option>
+
+    <!-- Parent Category -->
+    <div class="mb-4">
+      <label for="parent_category_id" class="block text-sm font-medium text-gray-700">Category</label>
+      <select id="parent_category_id" name="parent_category_id"
+        class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+        @foreach ($parent as $p)
+      <option value={{$p->id}}>{{$p->name}}</option>
+    @endforeach
       </select>
-    </div> -->
-    <!-- <div class="mb-4">
-      <label for="category" class="block text-sm font-medium text-gray-700">Child Category</label>
-      <select id="category" name="category" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
-        <option value="electronics">Electronics</option>
-        <option value="fashion">Fashion</option>
-        <option value="home">Home</option>
+    </div>
+
+    <!-- Child Category -->
+    <div class="mb-4">
+      <label for="child_category_id" class="block text-sm font-medium text-gray-700">Child Category</label>
+      <select id="child_category_id" name="child_category_id"
+        class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+        @foreach ($child as $p)
+      <option value={{$p->id}}>{{$p->name}}</option>
+    @endforeach
       </select>
-    </div> -->
+    </div>
+
+    <!-- brand -->
+    <div class="mb-4">
+      <label for="brand_id" class="block text-sm font-medium text-gray-700">Brand</label>
+      <select id="brand_id" name="brand_id"
+        class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+        @foreach ($brand as $p)
+      <option value={{$p->id}}>{{$p->name}}</option>
+    @endforeach
+      </select>
+    </div>
     <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md">Add Product</button>
   </form>
+
 </main>
 
 <script>
+  window.onload = function () {
+    document
+      .getElementById("parent_category_id")
+      .addEventListener("change", function () {
+
+        const parentId = this.value;
+        if (parentId) {
+          console.log("error")
+        }
+
+        const child = document.getElementById("child_category_id");
+
+        child.innerHTML = '<option value="">Select Child Category</option>';
+
+        const fetchCategory = async () => {
+          const res = await fetch(`{{route("child-category", ":id")}}`.replace(":id", parentId));
+
+          const data = await res.json();
+          if (data.status) {
+            child.innerHTML = data.data
+              .map(
+                (item) =>
+                  `<option value="${item.id}">${item.name}</option>`
+              )
+              .join("");
+          } else {
+            child.innerHTML = ""
+            child.innerHTML = '<option value="">Select Child Category</option>'
+          }
+        };
+        fetchCategory();
+      });
+  }
   if ("{{session('success')}}") {
     alert("{{session('success')}}")
   }
