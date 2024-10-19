@@ -24,7 +24,7 @@ Route::group(["middleware" => AdminMiddleware::class], function () {
 
         Route::get('add', [ProductController::class, 'index'])->name('product.add');
 
-        Route::get('view', [ProductController::class, "display"]);
+        Route::get('view', [ProductController::class, "admindisplay"]);
     });
 });
 
