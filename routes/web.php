@@ -42,3 +42,4 @@ Route::post("product/add", [ProductController::class, "store"])->name("product.a
 Route::post("login", [AuthController::class, "login"])->name("login");
 
 Route::get("/", [ProductController::class, "display"])->name("product");
+Route::get("product/{id}", [ProductController::class, "specific"])->name("product.specific");

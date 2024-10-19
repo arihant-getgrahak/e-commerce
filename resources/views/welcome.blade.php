@@ -24,10 +24,11 @@
                 <div class="flex flex-wrap">
                     @foreach ($product as $p)
                         <div class="grow max-w-[20%] inline-flex px-2 pb-4 min-w-[20%]">
-                            <a href="#" class="relative bg-white inline-flex items-stretch w-full h-full p-0 box-border">
+                            <a href={{route('product.specific', $p->id)}}
+                                class="relative bg-white inline-flex items-stretch w-full h-full p-0 box-border">
                                 <div class="relative shadow-md rounded-lg min-w-full flex flex-col">
                                     <div class="relative">
-                                        <div class="relative h-0 pb-[100%] w-full bg-white text-ellipsis	overflow-hidden">
+                                        <div class="relative h-0 pb-[100%] w-full bg-white text-ellipsis overflow-hidden">
                                             <div
                                                 class="bg-no-repeat bg-cover inline-block my-0 mx-auto text-center w-full h-full absolute">
                                                 @if($p->gallery && $p->gallery->isNotEmpty())
