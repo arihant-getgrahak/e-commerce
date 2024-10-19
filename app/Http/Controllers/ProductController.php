@@ -38,9 +38,9 @@ class ProductController extends Controller
         ], 200);
     }
 
-    public function display()
+    public function admindisplay()
     {
-        $product = Product::with(["gallery", "meta", "brand", "parent", "children"])->paginate(10);
+        $product = Product::where("added_by", auth()->user()->id)->with(["gallery", "meta", "brand", "parent", "children"])->paginate(10);
         if (!$product) {
             return view('productview')->with('product', []);
         }
