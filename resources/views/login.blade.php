@@ -13,8 +13,6 @@
         <h1 class="text-3xl font-bold">Laravel Auth::Login</h1>
         <form action="{{ route('login') }}" method="post" class="space-y-4 border border-black w-1/3 p-4 mt-4">
             @csrf
-
-
             <div class="flex flex-col gap-2">
                 <label for="email">Email</label>
                 <input type="email" name="email" id="email" class="border border-black p-1 rounded-md"

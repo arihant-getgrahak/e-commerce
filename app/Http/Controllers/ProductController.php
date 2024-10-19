@@ -213,14 +213,10 @@ class ProductController extends Controller
 
         $product = Product::where("id", $id)->with(["gallery", "meta", "brand", "parent", "children"])->get();
         if (!$product) {
-            return response()->json([
-                "message" => "Product not found"
-            ], 404);
+            return view("specificproduct")->with("error", "Incorrect product id");
         }
+        return view("specificproduct")->with("product", $product);
 
-        return response()->json([
-            "product" => $product
-        ], 200);
     }
 
     protected function uploadImage($file)
