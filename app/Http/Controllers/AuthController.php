@@ -20,7 +20,12 @@ class AuthController extends Controller
             return back()->with("error", "Invalid email or password");
         }
 
-        return redirect()->route("admin");
+        if (Auth::user()->role == "admin") {
+            return redirect()->route("admin");
+        }
+
+        return back()->with("success", "Login successfully");
+
     }
 
     public function register(Request $request)
