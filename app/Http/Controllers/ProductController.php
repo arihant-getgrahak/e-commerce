@@ -38,9 +38,9 @@ class ProductController extends Controller
         ], 200);
     }
 
-    public function display()
+    public function admindisplay()
     {
-        $product = Product::with(["gallery", "meta", "brand", "parent", "children"])->paginate(10);
+        $product = Product::where("added_by", auth()->user()->id)->with(["gallery", "meta", "brand", "parent", "children"])->paginate(10);
         if (!$product) {
             return view('productview')->with('product', []);
         }
@@ -50,6 +50,15 @@ class ProductController extends Controller
         // return response()->json([
         //     "product" => $product
         // ], 200);
+    }
+
+    public function display()
+    {
+        $product = Product::with(["gallery", "meta", "brand", "parent", "children"])->paginate(10);
+        if (!$product) {
+            return view('welcome')->with('product', []);
+        }
+        return view('welcome')->with('product', $product);
     }
 
     public function store(ProductAddRequest $request)
@@ -204,14 +213,10 @@ class ProductController extends Controller
 
         $product = Product::where("id", $id)->with(["gallery", "meta", "brand", "parent", "children"])->get();
         if (!$product) {
-            return response()->json([
-                "message" => "Product not found"
-            ], 404);
+            return view("specificproduct")->with("error", "Incorrect product id");
         }
+        return view("specificproduct")->with("product", $product);
 
-        return response()->json([
-            "product" => $product
-        ], 200);
     }
 
     protected function uploadImage($file)
