@@ -7,9 +7,9 @@ use App\Http\Controllers\ProductController;
 use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Route::group(["middleware" => AdminMiddleware::class], function () {
 
@@ -41,4 +41,4 @@ Route::post("category/add", [ParentCategoryController::class, "store"])->name("c
 Route::post("product/add", [ProductController::class, "store"])->name("product.add");
 Route::post("login", [AuthController::class, "login"])->name("login");
 
-Route::get("/product", [ProductController::class, "display"])->name("product");
+Route::get("/", [ProductController::class, "display"])->name("product");

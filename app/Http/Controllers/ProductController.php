@@ -56,9 +56,9 @@ class ProductController extends Controller
     {
         $product = Product::with(["gallery", "meta", "brand", "parent", "children"])->paginate(10);
         if (!$product) {
-            return view('productlist')->with('product', []);
+            return view('welcome')->with('product', []);
         }
-        return view('productlist')->with('product', $product);
+        return view('welcome')->with('product', $product);
     }
 
     public function store(ProductAddRequest $request)
