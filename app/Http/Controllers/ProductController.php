@@ -52,6 +52,15 @@ class ProductController extends Controller
         // ], 200);
     }
 
+    public function display()
+    {
+        $product = Product::with(["gallery", "meta", "brand", "parent", "children"])->paginate(10);
+        if (!$product) {
+            return view('productview')->with('product', []);
+        }
+        return view('productview')->with('product', $product);
+    }
+
     public function store(ProductAddRequest $request)
     {
 
