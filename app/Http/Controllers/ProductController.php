@@ -72,7 +72,7 @@ class ProductController extends Controller
                 "stock" => $request->stock,
                 "parent_category_id" => $request->parent_category_id,
                 "child_category_id" => $request->child_category_id,
-                "added_by" => $request->added_by,
+                "added_by" => auth()->user()->id,
                 "brand_id" => $request->brand_id,
             ];
             DB::beginTransaction();
