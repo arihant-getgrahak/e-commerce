@@ -29,15 +29,11 @@
     <script src="{{asset('dist/js/demo-theme.min.js')}}" defer></script>
     <div class="page page-center">
         <div class="container container-tight py-4">
-            <div class="text-center mb-4">
-                <a href="." class="navbar-brand navbar-brand-autodark">
-                    <img src="./static/logo.svg" width="110" height="32" alt="Tabler" class="navbar-brand-image">
-                </a>
-            </div>
             <div class="card card-md">
                 <div class="card-body">
-                    <h2 class="h2 text-center mb-4">Login to your account</h2>
-                    <form action="./" method="get" autocomplete="off" novalidate>
+                    <h2 class="h2 text-center mb-4">Login to your admin account</h2>
+                    <form action="{{ route('login') }}" method="post" autocomplete="off">
+                        @csrf
                         <div class="mb-3">
                             <label class="form-label">Email address</label>
                             <input type="email" class="form-control" placeholder="your@email.com" autocomplete="off"
