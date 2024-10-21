@@ -20,11 +20,11 @@ Route::group(["middleware" => AdminMiddleware::class], function () {
     Route::group(["prefix" => "/product"], function () {
         Route::get('category', function () {
             return view('addcategroy');
-        });
+        })->name('category');
 
         Route::get('add', [ProductController::class, 'index'])->name('product.add');
 
-        Route::get('view', [ProductController::class, "admindisplay"]);
+        Route::get('view', [ProductController::class, "admindisplay"])->name('product.view');
     });
 });
 
