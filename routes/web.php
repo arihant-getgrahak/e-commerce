@@ -2,7 +2,7 @@
 
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ParentCategoryController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Support\Facades\Route;
@@ -37,7 +37,7 @@ Route::get("login", function () {
 Route::get("logout", [AuthController::class, "logout"])->name("logout");
 
 
-Route::post("category/add", [ParentCategoryController::class, "store"])->name("category.add");
+Route::post("category/add", [CategoryController::class, "store"])->name("category.add");
 Route::post("product/add", [ProductController::class, "store"])->name("product.add");
 Route::post("login", [AuthController::class, "login"])->name("login");
 

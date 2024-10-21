@@ -9,6 +9,8 @@ use App\Http\Requests\CategoryStoreRequest;
 
 class CategoryController extends Controller
 {
+
+    // for parent
     public function display()
     {
         $category = Category::all();
@@ -77,5 +79,27 @@ class CategoryController extends Controller
             "status" => true,
             "message" => "Category deleted successfully"
         ], status: 200);
+    }
+
+    // for child
+    public function storechild(Request $request, int $id)
+    {
+        $validate = Validator::make($request->all(), [
+            'name' => 'required'
+        ]);
+
+        if ($validate->fails()) {
+            return back()->with('errors', $validate->errors());
+        }
+        $category = Category::create([
+            "parent_id" => $id,
+            "name" => "New Category"
+        ]);
+
+        if (!$category) {
+            return back()->with("errors", "Child Category not created");
+        }
+
+        return back()->with("success", "Child Category created successfully");
     }
 }
