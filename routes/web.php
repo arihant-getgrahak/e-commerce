@@ -18,9 +18,7 @@ Route::group(["middleware" => AdminMiddleware::class], function () {
     })->name("admin");
 
     Route::group(["prefix" => "/product"], function () {
-        Route::get('category', function () {
-            return view('addcategroy');
-        })->name('category');
+        Route::get('category', [CategoryController::class,'index'])->name('category');
 
         Route::get('add', [ProductController::class, 'index'])->name('product.add');
 
@@ -38,6 +36,7 @@ Route::get("logout", [AuthController::class, "logout"])->name("logout");
 
 
 Route::post("category/add", [CategoryController::class, "store"])->name("category.add");
+Route::post("category/child/add", [CategoryController::class, "storechild"])->name("category.child.add");
 Route::post("product/add", [ProductController::class, "store"])->name("product.add");
 Route::post("login", [AuthController::class, "login"])->name("login");
 

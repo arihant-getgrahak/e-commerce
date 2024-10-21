@@ -11,6 +11,11 @@ class CategoryController extends Controller
 {
 
     // for parent
+    public function index()
+    {
+        $category = Category::where("parent_id", null)->get();
+        return view("addcategroy", compact("category"));
+    }
     public function display()
     {
         $category = Category::all();
