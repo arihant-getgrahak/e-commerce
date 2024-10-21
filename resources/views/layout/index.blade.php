@@ -46,7 +46,7 @@
                         <a href="{{ route('product.add') }}" class="hover:text-gray-400">Add Product</a>
                     </li>
                     <li class="mb-3">
-                        <a href="{{ url('product/view') }}" class="hover:text-gray-400">View Products</a>
+                        <a href="{{ url('admindisplay') }}" class="hover:text-gray-400">View Products</a>
                     </li>
                     <li class="mb-3">
                         <a href="{{ url('product/category') }}" class="hover:text-gray-400">Add Category</a>
@@ -62,9 +62,11 @@
             <div class="collapse navbar-collapse" id="navbar-menu">
                 <div class="navbar">
                     <div class="container-xl">
+                    <!-- Route::currentRouteName() -->
+                    <!-- @class(['text-forest ', 'underline' => Route::currentRouteName() === 'about']) -->
                         <ul class="navbar-nav">
                             <!-- home -->
-                            <li class="nav-item">
+                            <li @class(["nav-item", 'active' => Route::currentRouteName() === 'admin'])>
                                 <a class="nav-link" href="{{ route('admin') }}">
                                     <span
                                         class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
@@ -80,9 +82,8 @@
                                     <span class="nav-link-title"> Home </span>
                                 </a>
                             </li>
-
                             <!-- add product -->
-                            <li class="nav-item active">
+                            <li @class(["nav-item", 'active' => Route::currentRouteName() === 'product.add'])>
                                 <a class="nav-link" href="{{ route('product.add') }}">
                                     <span
                                         class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
@@ -100,8 +101,8 @@
                             </li>
 
                             <!-- view product -->
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ url('product/view') }}">
+                            <li @class(["nav-item", 'active' => Route::currentRouteName() === 'product.view'])>
+                                <a class="nav-link" href="{{ route('product.view') }}">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -127,8 +128,8 @@
                             </li>
 
                             <!-- add category -->
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ url('product/category') }}">
+                            <li @class(["nav-item", 'active' => Route::currentRouteName() === 'category'])>
+                                <a class="nav-link" href="{{ route('category') }}">
                                     <span
                                         class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
