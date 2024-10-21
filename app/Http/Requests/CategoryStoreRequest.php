@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ParentCategoryStoreRequest extends FormRequest
+class CategoryStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,6 +23,7 @@ class ParentCategoryStoreRequest extends FormRequest
     {
         return [
             "name"=> "required",
+            "parent_id"=>"nullable|exists:categories,id",
         ];
     }
 
@@ -30,6 +31,7 @@ class ParentCategoryStoreRequest extends FormRequest
     {
         return [
             "name.required" => "Category name is required",
+            "parent_id.exists"=> "Parent category does not exist",
         ];
     }
 }

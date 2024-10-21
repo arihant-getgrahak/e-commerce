@@ -2,24 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ParentCategory;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Validator;
-use App\Http\Requests\ParentCategoryStoreRequest;
+use App\Http\Requests\CategoryStoreRequest;
 
-class ParentCategoryController extends Controller
+class CategoryController extends Controller
 {
     public function display()
     {
-        $category = ParentCategory::all();
+        $category = Category::all();
         return response()->json([
             "category" => $category
         ], 200);
     }
-    public function store(ParentCategoryStoreRequest $request)
+    public function store(CategoryStoreRequest $request)
     {
-       
-        $category = ParentCategory::create([
+
+        $category = Category::create([
             'name' => $request->name
         ]);
 
@@ -38,7 +38,7 @@ class ParentCategoryController extends Controller
     }
     public function update(Request $request, $id)
     {
-        $category = ParentCategory::find($id);
+        $category = Category::find($id);
         if (!$category) {
             return response()->json([
                 "message" => "Category not found"
@@ -61,10 +61,10 @@ class ParentCategoryController extends Controller
             "category" => $category
         ], 200);
     }
-    
+
     public function delete($id)
     {
-        $category = ParentCategory::find($id);
+        $category = Category::find($id);
         if (!$category) {
             return response()->json([
                 "status" => false,
