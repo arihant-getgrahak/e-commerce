@@ -37,7 +37,7 @@ Route::get("logout", [AuthController::class, "logout"])->name("logout");
 
 Route::post("category/add", [CategoryController::class, "store"])->name("category.add");
 Route::post("category/child/add", [CategoryController::class, "storechild"])->name("category.child.add");
-Route::post("product/add", [ProductController::class, "store"])->name("product.add");
+Route::post("/product/add", [ProductController::class, "store"])->name("product.add");
 Route::post("login", [AuthController::class, "login"])->name("login");
 
 Route::get("/", [ProductController::class, "display"])->name("product");

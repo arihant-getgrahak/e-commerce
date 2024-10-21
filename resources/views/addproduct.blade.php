@@ -1,168 +1,126 @@
 @extends('layout.index')
+
 @section('productadd')
-<main class="w-3/4 p-8">
+<main>
   <h2 class="text-3xl font-bold mb-4">Add Product</h2>
-  <form class="bg-white p-6 rounded-lg shadow-lg" action="{{ route('product.add') }}" method="POST"
+  <form id="productForm" class="bg-white p-6 rounded-lg shadow-lg" action="{{ route('product.add') }}" method="POST"
     enctype="multipart/form-data">
     @csrf
 
     <!-- Name -->
     <div class="mb-4">
-      <label for="name" class="block text-sm font-medium text-gray-700">Product Name</label>
+      <label for="name" class="col-form-label required">Product Name</label>
       <input type="text" id="name" name="name" class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-        placeholder="Enter product name">
+        placeholder="Enter product name" value="{{ old('name') }}">
       @error('name')
-      <span class="text-red-500 text-sm">{{ $message }}</span>
+      <p class="text-red-500">{{ $message }}</p>
     @enderror
     </div>
 
     <!-- Description -->
     <div class="mb-4">
-      <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+      <label for="description" class="col-form-label required">Description</label>
       <textarea id="description" name="description" class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-        placeholder="Enter product description"></textarea>
+        placeholder="Enter product description">{{ old('description') }}</textarea>
       @error('description')
-      <span class="text-red-500 text-sm">{{ $message }}</span>
+      <p class="text-red-500">{{ $message }}</p>
     @enderror
     </div>
 
     <!-- Price -->
     <div class="mb-4">
-      <label for="price" class="block text-sm font-medium text-gray-700">Price</label>
+      <label for="price" class="col-form-label required">Price</label>
       <input type="number" id="price" name="price" class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-        placeholder="Enter price">
+        placeholder="Enter price" value="{{ old('price') }}">
       @error('price')
-      <span class="text-red-500 text-sm">{{ $message }}</span>
+      <p class="text-red-500">{{ $message }}</p>
     @enderror
     </div>
 
     <!-- Stock -->
     <div class="mb-4">
-      <label for="stock" class="block text-sm font-medium text-gray-700">Stock</label>
+      <label for="stock" class="col-form-label required">Stock</label>
       <input type="number" id="stock" name="stock" class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-        placeholder="Enter price">
+        placeholder="Enter stock quantity" value="{{ old('stock') }}">
       @error('stock')
-      <span class="text-red-500 text-sm">{{ $message }}</span>
+      <p class="text-red-500">{{ $message }}</p>
     @enderror
     </div>
 
-    <!-- image -->
+    <!-- Images -->
     <div class="mb-4">
-      <label for="image" class="block text-sm font-medium text-gray-700">Product Image</label>
-      <input type="file" id="image" name="image[]" class="form-control"
-        multiple>
+      <label for="image" class="col-form-label required">Product Images</label>
+      <input type="file" id="image" name="image[]" class="form-control" multiple>
       @error('image')
-      <span class="text-red-500 text-sm">{{ $message }}</span>
+      <p class="text-red-500">{{ $message }}</p>
     @enderror
     </div>
 
-    <!-- size -->
+    <!-- Weight -->
     <div class="mb-4">
-      <label for="size" class="block text-sm font-medium text-gray-700">Size</label>
-      <input type="text" id="size" name="size" class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-        placeholder="Enter product size"></input>
-      @error('size')
-      <span class="text-red-500 text-sm">{{ $message }}</span>
+      <label for="sku" class="col-form-label required">sku</label>
+      <input type="text" id="sku" name="sku" class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+        placeholder="Enter product sku" value="{{ old('sku') }}">
+      @error('sku')
+      <p class="text-red-500">{{ $message }}</p>
     @enderror
     </div>
 
-    <!-- weight -->
+    <!-- Sku -->
     <div class="mb-4">
-      <label for="weight" class="block text-sm font-medium text-gray-700">Weight</label>
+      <label for="weight" class="col-form-label required">Weight</label>
       <input type="text" id="weight" name="weight" class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-        placeholder="Enter product weight"></input>
+        placeholder="Enter product weight" value="{{ old('weight') }}">
       @error('weight')
-      <span class="text-red-500 text-sm">{{ $message }}</span>
-    @enderror
-    </div>
-
-    <!-- Color -->
-    <div class="mb-4">
-      <label for="color" class="block text-sm font-medium text-gray-700">Color</label>
-      <input type="text" id="color" name="color" class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-        placeholder="Enter  color"></input>
-      @error('color')
-      <span class="text-red-500 text-sm">{{ $message }}</span>
+      <p class="text-red-500">{{ $message }}</p>
     @enderror
     </div>
 
 
-    <!-- Parent Category -->
+    <!-- Category -->
     <div class="mb-4">
-      <label for="parent_category_id" class="block text-sm font-medium text-gray-700">Category</label>
-      <select id="parent_category_id" name="parent_category_id"
-        class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
-        @foreach ($parent as $p)
-      <option value={{$p->id}}>{{$p->name}}</option>
+      <label for="category_id" class="col-form-label required">Category</label>
+      <select id="category_id" name="category_id" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+        @foreach($category as $cat)
+      <option value="{{ $cat['id'] }}" {{ old('category_id') == $cat['id'] ? 'selected' : '' }}>{{ $cat['name'] }}
+      </option>
     @endforeach
       </select>
+      @error('category_id')
+      <p class="text-red-500">{{ $message }}</p>
+    @enderror
     </div>
 
-    <!-- Child Category -->
+    <!-- Brand -->
     <div class="mb-4">
-      <label for="child_category_id" class="block text-sm font-medium text-gray-700">Child Category</label>
-      <select id="child_category_id" name="child_category_id"
-        class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
-        @foreach ($child as $p)
-      <option value={{$p->id}}>{{$p->name}}</option>
-    @endforeach
-      </select>
-    </div>
-
-    <!-- brand -->
-    <div class="mb-4">
-      <label for="brand_id" class="block text-sm font-medium text-gray-700">Brand</label>
+      <label for="brand_id" class="col-form-label required">Brand</label>
       <select id="brand_id" name="brand_id" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
         @foreach ($brand as $p)
-      <option value={{$p->id}}>{{$p->name}}</option>
+      <option value="{{ $p->id }}" {{ old('brand_id') == $p->id ? 'selected' : '' }}>{{ $p->name }}</option>
     @endforeach
       </select>
+      @error('brand_id')
+      <p class="text-red-500">{{ $message }}</p>
+    @enderror
     </div>
+
+    <!-- Submit Button -->
     <button type="submit" class="btn btn-primary ms-auto">Add Product</button>
   </form>
-
 </main>
 
 <script>
-  window.onload = function () {
-    document
-      .getElementById("parent_category_id")
-      .addEventListener("change", function () {
+  // document.getElementById('productForm').addEventListener('submit', function (e) {
+  //   e.preventDefault();
+  //   this.submit();
+  //   console.log('submitted');
+  // });
 
-        const parentId = this.value;
-        if (parentId) {
-          console.log("error")
-        }
+  if ("{{session('success')}}") alert("{{ session('success') }}");
 
-        const child = document.getElementById("child_category_id");
 
-        child.innerHTML = '<option value="">Select Child Category</option>';
+  if ("{{session('error')}}") alert("{{ session('error') }}");
 
-        const fetchCategory = async () => {
-          const res = await fetch(`{{route("child-category", ":id")}}`.replace(":id", parentId));
-
-          const data = await res.json();
-          if (data.status) {
-            child.innerHTML = data.data
-              .map(
-                (item) =>
-                  `<option value="${item.id}">${item.name}</option>`
-              )
-              .join("");
-          } else {
-            child.innerHTML = ""
-            child.innerHTML = '<option value="">Select Child Category</option>'
-          }
-        };
-        fetchCategory();
-      });
-  }
-  if ("{{session('success')}}") {
-    alert("{{session('success')}}")
-  }
-  if ("{{session('error')}}") {
-    alert("{{session('error')}}")
-  }
 </script>
 
 @endsection

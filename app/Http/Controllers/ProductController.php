@@ -17,9 +17,29 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $category = Category::all();
+        $categories = Category::with("parent")->get();
+        $data = [];
+
+        foreach ($categories as $category) {
+            if ($category->parent) {
+                // If parent exists, show in "parent-child" format
+                $data[] = [
+                    'id' => $category->id,
+                    'name' => $category->parent->name . ' - ' . $category->name,  // Parent-Child format
+                ];
+            } else {
+                // If no parent, just show the category name
+                $data[] = [
+                    'id' => $category->id,
+                    'name' => $category->name,  // Only category name
+                ];
+            }
+        }
+
+
+        // dd($data);
         $brand = Brand::all();
-        return view("addproduct")->with("category", $category)->with("brand", $brand);
+        return view("addproduct")->with("category", $data)->with("brand", $brand);
     }
 
     public function admindisplay()
@@ -48,6 +68,7 @@ class ProductController extends Controller
     public function store(ProductAddRequest $request)
     {
 
+        dd($request->all());
         try {
             $data = [
                 "name" => $request->name,
