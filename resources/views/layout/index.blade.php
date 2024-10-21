@@ -62,8 +62,8 @@
             <div class="collapse navbar-collapse" id="navbar-menu">
                 <div class="navbar">
                     <div class="container-xl">
-                    <!-- Route::currentRouteName() -->
-                    <!-- @class(['text-forest ', 'underline' => Route::currentRouteName() === 'about']) -->
+                        <!-- Route::currentRouteName() -->
+                        <!-- @class(['text-forest ', 'underline' => Route::currentRouteName() === 'about']) -->
                         <ul class="navbar-nav">
                             <!-- home -->
                             <li @class(["nav-item", 'active' => Route::currentRouteName() === 'admin'])>
@@ -185,7 +185,28 @@
             </main>
         </main>
     </div>
-    <footer>This is footer</footer>
+    <footer class="footer footer-transparent d-print-none">
+        <div class="container-xl">
+            <div class="row text-center align-items-center flex-row-reverse">
+                <div class="col-12 col-lg-auto mt-3 mt-lg-0">
+                    <ul class="list-inline list-inline-dots mb-0">
+                        <li class="list-inline-item">
+                            Copyright &copy; 2024
+                            <a href="#" class="link-secondary">Arihant</a>.
+                            All rights reserved.
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="#" class="link-secondary" rel="noopener">
+                                v1.0.0
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-lg-auto ms-lg-auto">
+                </div>
+            </div>
+        </div>
+    </footer>
     <script src="{{asset('dist/libs/nouislider/dist/nouislider.min.js')}}" defer></script>
     <script src="{{asset('dist/libs/litepicker/dist/litepicker.js')}}" defer></script>
     <script src="{{asset('dist/libs/tom-select/dist/js/tom-select.base.min.js')}}" defer></script>
