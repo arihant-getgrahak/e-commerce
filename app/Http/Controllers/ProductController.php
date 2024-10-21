@@ -9,8 +9,7 @@ use App\Models\Gallery;
 use App\Models\ProductMeta;
 use Storage;
 use App\Http\Requests\ProductAddRequest;
-use App\Models\ParentCategory;
-use App\Models\ChildCategory;
+use App\Models\Category;
 use App\Models\Brand;
 
 
@@ -18,29 +17,14 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $parent = ParentCategory::all();
-        $child = ChildCategory::where("parent_category_id", 1)->get();
+        $category = Category::all();
         $brand = Brand::all();
-        return view("addproduct")->with("parent", $parent)->with("child", $child)->with("brand", $brand);
-    }
-
-    public function child_category($id)
-    {
-        $child = ChildCategory::where("parent_category_id", $id)->get();
-        if (!count($child) > 0) {
-            return response()->json([
-                "status" => false,
-            ], 400);
-        }
-        return response()->json([
-            "status" => true,
-            "data" => $child
-        ], 200);
+        return view("addproduct")->with("category", $category)->with("brand", $brand);
     }
 
     public function admindisplay()
     {
-        $product = Product::where("added_by", auth()->user()->id)->with(["gallery", "meta", "brand", "parent", "children"])->paginate(10);
+        $product = Product::where("added_by", auth()->user()->id)->with(["gallery", "meta", "brand", "category"])->paginate(10);
         if (!$product) {
             return view('productview')->with('product', []);
         }
@@ -54,7 +38,7 @@ class ProductController extends Controller
 
     public function display()
     {
-        $product = Product::with(["gallery", "meta", "brand", "parent", "children"])->paginate(10);
+        $product = Product::with(["gallery", "meta", "brand", "category"])->paginate(10);
         if (!$product) {
             return view('welcome')->with('product', []);
         }
@@ -70,8 +54,7 @@ class ProductController extends Controller
                 "description" => $request->description,
                 "price" => $request->price,
                 "stock" => $request->stock,
-                "parent_category_id" => $request->parent_category_id,
-                "child_category_id" => $request->child_category_id,
+                "category_id" => $request->category_id,
                 "added_by" => auth()->user()->id,
                 "brand_id" => $request->brand_id,
             ];
@@ -105,15 +88,12 @@ class ProductController extends Controller
 
             $data = [
                 "product_id" => $product->id,
-                "color" => $request->color,
-                "size" => $request->size,
+                "sku" => $request->sku,
                 "weight" => $request->weight,
             ];
             DB::beginTransaction();
             ProductMeta::create($data);
             DB::commit();
-
-            $product = Product::where("id", $product->id)->with(["gallery", "meta", "brand"])->first();
 
             // return response()->json([
             //     "product" => $product,
@@ -145,8 +125,7 @@ class ProductController extends Controller
                 'description',
                 'price',
                 'stock',
-                'parent_category_id',
-                'child_category_id',
+                'category_id',
                 'added_by',
             ]);
 
@@ -211,7 +190,7 @@ class ProductController extends Controller
     public function specific($id)
     {
 
-        $product = Product::where("id", $id)->with(["gallery", "meta", "brand", "parent", "children"])->get();
+        $product = Product::where("id", $id)->with(["gallery", "meta", "brand", "category"])->get();
         if (!$product) {
             return view("specificproduct")->with("error", "Incorrect product id");
         }

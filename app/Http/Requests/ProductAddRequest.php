@@ -26,8 +26,7 @@ class ProductAddRequest extends FormRequest
             "description" => "required",
             "price" => "required|decimal:2",
             "stock" => "required|integer|min:0",
-            "parent_category_id" => "required|exists:parent_categories,id",
-            "child_category_id" => "required|exists:child_categories,id",
+            "category_id" => "required|exists:categories,id",
             "added_by" => "required",
             "brand_id" => "required|exists:brands,id",
         ];
@@ -43,8 +42,8 @@ class ProductAddRequest extends FormRequest
             "parent_category_id.required" => "Product parent category is required",
             "child_category_id.required" => "Product child category is required",
             "added_by.required" => "Product added by is required",
-            "brand_id.required"=> "Brand is required",
-            "brand_id.exists"=> "Brand does not exist",
+            "brand_id.required" => "Brand is required",
+            "brand_id.exists" => "Brand does not exist",
         ];
     }
 }
