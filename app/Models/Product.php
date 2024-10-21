@@ -11,8 +11,7 @@ class Product extends Model
         "description",
         "price",
         "stock",
-        "parent_category_id",
-        "child_category_id",
+        "category_id",
         "added_by",
         "brand_id"
     ];
@@ -30,20 +29,18 @@ class Product extends Model
         return $this->hasMany(Gallery::class, 'product_id');
     }
 
-    // public function parent()
-    // {
-    //     return $this->belongsTo(ParentCategory::class, "parent_category_id");
-    // }
-    // public function children()
-    // {
-    //     return $this->belongsTo(ChildCategory::class, "child_category_id");
-    // }
-
-    public function meta(){
-        return $this->hasMany(ProductMeta::class,"product_id");
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id');
     }
 
-    public function brand(){
-        return $this->belongsTo(Brand::class,"brand_id");
+    public function meta()
+    {
+        return $this->hasMany(ProductMeta::class, "product_id");
+    }
+
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class, "brand_id");
     }
 }
