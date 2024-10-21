@@ -35,22 +35,32 @@ class AuthController extends Controller
             "name" => "required",
             "email" => "required|email|unique:users,email",
             "password" => "required|min:6",
-            "role" => "required"
+            "role" => "required",
+            "country_code" => "required",
+            "phone_number" => "required|string|min:10|max:10",
         ]);
 
         if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
+            return response()->json([
+                "error" => $validator->errors(),
+            ]);
         }
 
         $user = User::create([
             "name" => $request->name,
             "email" => $request->email,
             "password" => bcrypt($request->password),
-            "role"=> $request->role
+            "role" => $request->role,
+            "country_code" => $request->country_code,
+            "phone_number" => $request->phone_number
         ]);
 
         if (!$user) {
-            return back()->with("error", "Something went wrong");
+
+            return response()->json([
+                "message" => "Something went wrong",
+
+            ]);
         }
 
         return response()->json([
