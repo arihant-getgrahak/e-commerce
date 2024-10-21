@@ -49,7 +49,7 @@
     <!-- image -->
     <div class="mb-4">
       <label for="image" class="block text-sm font-medium text-gray-700">Product Image</label>
-      <input type="file" id="image" name="image[]" class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+      <input type="file" id="image" name="image[]" class="form-control"
         multiple>
       @error('image')
       <span class="text-red-500 text-sm">{{ $message }}</span>
@@ -112,14 +112,13 @@
     <!-- brand -->
     <div class="mb-4">
       <label for="brand_id" class="block text-sm font-medium text-gray-700">Brand</label>
-      <select id="brand_id" name="brand_id"
-        class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+      <select id="brand_id" name="brand_id" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
         @foreach ($brand as $p)
       <option value={{$p->id}}>{{$p->name}}</option>
     @endforeach
       </select>
     </div>
-    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md">Add Product</button>
+    <button type="submit" class="btn btn-primary ms-auto">Add Product</button>
   </form>
 
 </main>
