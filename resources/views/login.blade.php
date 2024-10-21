@@ -7,11 +7,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Sign in</title>
 
-    <link rel="stylesheet" href="{{asset('public/dist/css/tabler.min.css')}}">
-    <link rel="stylesheet" href="{{asset('public/dist/css/tabler-flags.min.css')}}">
-    <link rel="stylesheet" href="{{asset('public/dist/css/tabler-payments.min.css')}}">
-    <link rel="stylesheet" href="{{asset('public/dist/css/demo.min.css')}}">
-   
+    <link rel="stylesheet" href={{asset('dist/css/tabler.min.css')}}>
+    <link rel="stylesheet" href="{{asset('dist/css/tabler-flags.min.css')}}">
+    <link rel="stylesheet" href="{{asset('dist/css/tabler-payments.min.css')}}">
+    <link rel="stylesheet" href="{{asset('dist/css/demo.min.css')}}">
+
     <style>
         @import url('https://rsms.me/inter/inter.css');
 
@@ -26,7 +26,7 @@
 </head>
 
 <body class="d-flex flex-column">
-    <script src="../dist/js/demo-theme.min.js"></script>
+    <script src="{{asset('dist/js/demo-theme.min.js')}}" defer></script>
     <div class="page page-center">
         <div class="container container-tight py-4">
             <div class="text-center mb-4">
@@ -78,8 +78,8 @@
             </div>
         </div>
     </div>
-    <script src="../dist/js/tabler.min.js" defer></script>
-    <script src="../dist/js/demo.min.js" defer></script>
+    <script src="{{asset('dist/js/tabler.min.js')}}" defer></script>
+    <script src="{{asset('dist/js/demo.min.js')}}" defer></script>
     <script>
         if ("{{ session('success') }}") {
             alert("{{ session('success') }}");
