@@ -18,6 +18,8 @@ return new class extends Migration {
             $table->string('password');
             $table->rememberToken();
             $table->enum('role', ['user', 'admin'])->default('user');
+            $table->string("country_code");
+            $table->string("phone_number");
             $table->timestamps();
         });
 
