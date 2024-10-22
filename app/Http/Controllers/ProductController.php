@@ -65,10 +65,10 @@ class ProductController extends Controller
         return view('welcome')->with('product', $product);
     }
 
-    public function store(Request $request)
+    public function store(ProductAddRequest $request)
     {
 
-        // dd($request->all());
+        dd($request->all());
         try {
             $data = [
                 "name" => $request->name,

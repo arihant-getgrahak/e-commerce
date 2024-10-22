@@ -24,26 +24,30 @@ class ProductAddRequest extends FormRequest
         return [
             "name" => "required",
             "description" => "required",
-            "price" => "required|decimal:2",
-            "stock" => "required|integer|min:0",
+            "price" => "required|numeric|regex:/^\d+(\.\d{1,2})?$/",  // Corrected the price rule
+            "stock" => "required|integer|min:1",
             "category_id" => "required|exists:categories,id",
-            "added_by" => "required",
             "brand_id" => "required|exists:brands,id",
+            "sku" => "required",
+            "weight" => "required",
         ];
     }
 
-    public function messages(): array
-    {
-        return [
-            "name.required" => "Product name is required",
-            "description.required" => "Product description is required",
-            "price.required" => "Product price is required",
-            "stock.required" => "Product stock is required",
-            "parent_category_id.required" => "Product parent category is required",
-            "child_category_id.required" => "Product child category is required",
-            "added_by.required" => "Product added by is required",
-            "brand_id.required" => "Brand is required",
-            "brand_id.exists" => "Brand does not exist",
-        ];
-    }
+    // Optional custom error messages
+    // public function messages(): array
+    // {
+    //     return [
+    //         "name.required" => "Product name is required",
+    //         "description.required" => "Product description is required",
+    //         "price.required" => "Product price is required",
+    //         "price.numeric" => "Product price must be a valid number",
+    //         "price.regex" => "Product price must have up to 2 decimal places",
+    //         "stock.required" => "Product stock is required",
+    //         "category_id.required" => "Product category is required",
+    //         "category_id.exists" => "The selected category does not exist",
+    //         "added_by.required" => "Product added by is required",
+    //         "brand_id.required" => "Brand is required",
+    //         "brand_id.exists" => "Brand does not exist",
+    //     ];
+    // }
 }
