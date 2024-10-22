@@ -182,18 +182,19 @@ class ProductController extends Controller
 
             $product->load('gallery');
 
-            return response()->json([
-                "product" => $product
-            ], 200);
+            return back()->with("success", "Product updated successfully");
+            // return response()->json([
+            //     "product" => $product
+            // ], 200);
 
         } catch (\Exception $e) {
 
             DB::rollBack();
-
-            return response()->json([
-                "message" => "An error occurred while updating the product.",
-                "error" => $e->getMessage(),
-            ], 500);
+            return back()->with("error", $e->getMessage());
+            // return response()->json([
+            //     "message" => "An error occurred while updating the product.",
+            //     "error" => $e->getMessage(),
+            // ], 500);
         }
     }
 
@@ -202,14 +203,18 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
         if (!$product) {
-            return response()->json([
-                "message" => "Product not found"
-            ], 404);
+
+            return back()->with("error", "Incorrect product id");
+            // return response()->json([
+            //     "message" => "Product not found"
+            // ], 404);
         }
         $product->delete();
-        return response()->json([
-            "message" => "Product deleted successfully"
-        ], 200);
+
+        return back()->with("success", "Product deleted successfully");
+        // return response()->json([
+        //     "message" => "Product deleted successfully"
+        // ], 200);
     }
 
     public function specific($id)
