@@ -37,7 +37,8 @@
                             </div>
                             <div class="flex gap-5 mt-3">
 
-                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-team">Update
+                                <button class="btn btn-primary btn-update" data-bs-toggle="modal" data-bs-target="#modal-team"
+                                    data-id="{{ $p->id }}">Update
                                     Product</button>
                                 <button class="btn btn-danger btn-delete" data-bs-toggle="modal" data-bs-target="#modal-danger"
                                     data-id="{{ $p->id }}">Delete Product</button>
@@ -87,8 +88,6 @@
                 </div>
 
                 <!-- update modal -->
-
-
                 <div class="modal modal-blur fade" id="modal-team" tabindex="-1" role="dialog" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
@@ -97,9 +96,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-
-
-                                <form id="productForm" class="bg-white p-6 rounded-lg shadow-lg" method="post" action={{ route('product.add') }} enctype="multipart/form-data">
+                                <form id="productForm" class="bg-white p-6 rounded-lg shadow-lg" method="post" action={{ route('product.update', $p->id) }} enctype="multipart/form-data">
                                     @csrf
 
                                     <!-- Name -->
@@ -107,7 +104,7 @@
                                         <label for="name" class="col-form-label required">Product Name</label>
                                         <input type="text" id="name" name="name"
                                             class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-                                            placeholder="Enter product name" value="{{ old('name') }}">
+                                            placeholder="Enter product name" value="{{ $p->name }}">
                                         @error('name')
                                             <p class="text-red-500">{{ $message }}</p>
                                         @enderror
@@ -118,7 +115,7 @@
                                         <label for="description" class="col-form-label required">Description</label>
                                         <textarea id="description" name="description"
                                             class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-                                            placeholder="Enter product description">{{ old('description') }}</textarea>
+                                            placeholder="Enter product description">{{ $p->description }}</textarea>
                                         @error('description')
                                             <p class="text-red-500">{{ $message }}</p>
                                         @enderror
@@ -129,7 +126,7 @@
                                         <label for="price" class="col-form-label required">Price</label>
                                         <input type="float" id="price" name="price"
                                             class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-                                            placeholder="Enter price" value="{{ old('price') }}">
+                                            placeholder="Enter price" value="{{ $p->price }}">
                                         @error('price')
                                             <p class="text-red-500">{{ $message }}</p>
                                         @enderror
@@ -140,7 +137,7 @@
                                         <label for="stock" class="col-form-label required">Stock</label>
                                         <input type="number" id="stock" name="stock"
                                             class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-                                            placeholder="Enter stock quantity" value="{{ old('stock') }}">
+                                            placeholder="Enter stock quantity" value="{{ $p->stock }}">
                                         @error('stock')
                                             <p class="text-red-500">{{ $message }}</p>
                                         @enderror
@@ -160,7 +157,7 @@
                                         <label for="sku" class="col-form-label required">sku</label>
                                         <input type="text" id="sku" name="sku"
                                             class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-                                            placeholder="Enter product sku" value="{{ old('sku') }}">
+                                            placeholder="Enter product sku" value="{{ $p->meta[0]->sku}}">
                                         @error('sku')
                                             <p class="text-red-500">{{ $message }}</p>
                                         @enderror
@@ -171,7 +168,7 @@
                                         <label for="weight" class="col-form-label required">Weight</label>
                                         <input type="text" id="weight" name="weight"
                                             class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-                                            placeholder="Enter product weight" value="{{ old('weight') }}">
+                                            placeholder="Enter product weight" value="{{ $p->meta[0]->weight }}">
                                         @error('weight')
                                             <p class="text-red-500">{{ $message }}</p>
                                         @enderror
@@ -194,13 +191,20 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const deleteButtons = document.querySelectorAll('.btn-delete');
+        const updateButtons = document.querySelectorAll('.btn-update');
         const deleteForm = document.getElementById('delete-form');
+        const updateForm = document.getElementById("productForm")
 
         deleteButtons.forEach(button => {
             button.addEventListener('click', function () {
                 const productId = this.getAttribute('data-id');
                 deleteForm.action = `/product/delete/${productId}`;
             });
+        });
+
+        updateButtons.addEventListener('click', function () {
+            const productId = this.getAttribute('data-id');
+            updateForm.action = `/product/update/${productId}`;
         });
     });
 
