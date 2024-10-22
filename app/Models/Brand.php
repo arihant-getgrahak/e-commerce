@@ -11,6 +11,14 @@ class Brand extends Model
         "image",
     ];
 
+    protected function casts(): array
+    {
+        return [
+            "created_at" => "datetime:Y-m-d",
+            "updated_at" => "datetime:Y-m-d",
+        ];
+    }
+
     public function products()
     {
         return $this->hasMany(Product::class);

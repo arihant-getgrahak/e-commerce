@@ -9,8 +9,7 @@ use App\Models\Gallery;
 use App\Models\ProductMeta;
 use Storage;
 use App\Http\Requests\ProductAddRequest;
-use App\Models\ParentCategory;
-use App\Models\ChildCategory;
+use App\Models\Category;
 use App\Models\Brand;
 
 
@@ -18,29 +17,34 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $parent = ParentCategory::all();
-        $child = ChildCategory::where("parent_category_id", 1)->get();
-        $brand = Brand::all();
-        return view("addproduct")->with("parent", $parent)->with("child", $child)->with("brand", $brand);
-    }
+        $categories = Category::with("parent")->get();
+        $data = [];
 
-    public function child_category($id)
-    {
-        $child = ChildCategory::where("parent_category_id", $id)->get();
-        if (!count($child) > 0) {
-            return response()->json([
-                "status" => false,
-            ], 400);
+        foreach ($categories as $category) {
+            if ($category->parent) {
+                // If parent exists, show in "parent-child" format
+                $data[] = [
+                    'id' => $category->id,
+                    'name' => $category->parent->name . ' - ' . $category->name,  // Parent-Child format
+                ];
+            } else {
+                // If no parent, just show the category name
+                $data[] = [
+                    'id' => $category->id,
+                    'name' => $category->name,  // Only category name
+                ];
+            }
         }
-        return response()->json([
-            "status" => true,
-            "data" => $child
-        ], 200);
+
+
+        // dd($data);
+        $brand = Brand::all();
+        return view("addproduct")->with("category", $data)->with("brand", $brand);
     }
 
     public function admindisplay()
     {
-        $product = Product::where("added_by", auth()->user()->id)->with(["gallery", "meta", "brand", "parent", "children"])->paginate(10);
+        $product = Product::where("added_by", auth()->user()->id)->with(["gallery", "meta", "brand", "category"])->paginate(10);
         if (!$product) {
             return view('productview')->with('product', []);
         }
@@ -54,7 +58,7 @@ class ProductController extends Controller
 
     public function display()
     {
-        $product = Product::with(["gallery", "meta", "brand", "parent", "children"])->paginate(10);
+        $product = Product::with(["gallery", "meta", "brand", "category"])->paginate(10);
         if (!$product) {
             return view('welcome')->with('product', []);
         }
@@ -70,8 +74,7 @@ class ProductController extends Controller
                 "description" => $request->description,
                 "price" => $request->price,
                 "stock" => $request->stock,
-                "parent_category_id" => $request->parent_category_id,
-                "child_category_id" => $request->child_category_id,
+                "category_id" => $request->category_id,
                 "added_by" => auth()->user()->id,
                 "brand_id" => $request->brand_id,
             ];
@@ -105,17 +108,15 @@ class ProductController extends Controller
 
             $data = [
                 "product_id" => $product->id,
-                "color" => $request->color,
-                "size" => $request->size,
+                "sku" => $request->sku,
                 "weight" => $request->weight,
             ];
             DB::beginTransaction();
             ProductMeta::create($data);
             DB::commit();
 
-            $product = Product::where("id", $product->id)->with(["gallery", "meta", "brand"])->first();
-
             // return response()->json([
+            //     "success" => "Product created successfully",
             //     "product" => $product,
             // ], 201);
 
@@ -123,6 +124,10 @@ class ProductController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->with("error", $e->getMessage());
+            // return response()->json([
+            //     "success" => false,
+            //     "error" => $e->getMessage(),
+            // ], 500);
         }
     }
 
@@ -145,8 +150,7 @@ class ProductController extends Controller
                 'description',
                 'price',
                 'stock',
-                'parent_category_id',
-                'child_category_id',
+                'category_id',
                 'added_by',
             ]);
 
@@ -178,18 +182,19 @@ class ProductController extends Controller
 
             $product->load('gallery');
 
-            return response()->json([
-                "product" => $product
-            ], 200);
+            return back()->with("success", "Product updated successfully");
+            // return response()->json([
+            //     "product" => $product
+            // ], 200);
 
         } catch (\Exception $e) {
 
             DB::rollBack();
-
-            return response()->json([
-                "message" => "An error occurred while updating the product.",
-                "error" => $e->getMessage(),
-            ], 500);
+            return back()->with("error", $e->getMessage());
+            // return response()->json([
+            //     "message" => "An error occurred while updating the product.",
+            //     "error" => $e->getMessage(),
+            // ], 500);
         }
     }
 
@@ -198,20 +203,24 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
         if (!$product) {
-            return response()->json([
-                "message" => "Product not found"
-            ], 404);
+
+            return back()->with("error", "Incorrect product id");
+            // return response()->json([
+            //     "message" => "Product not found"
+            // ], 404);
         }
         $product->delete();
-        return response()->json([
-            "message" => "Product deleted successfully"
-        ], 200);
+
+        return back()->with("success", "Product deleted successfully");
+        // return response()->json([
+        //     "message" => "Product deleted successfully"
+        // ], 200);
     }
 
     public function specific($id)
     {
 
-        $product = Product::where("id", $id)->with(["gallery", "meta", "brand", "parent", "children"])->get();
+        $product = Product::where("id", $id)->with(["gallery", "meta", "brand", "category"])->get();
         if (!$product) {
             return view("specificproduct")->with("error", "Incorrect product id");
         }

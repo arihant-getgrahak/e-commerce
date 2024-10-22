@@ -1,40 +1,81 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login::Auth</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Sign in</title>
+
+    <link rel="stylesheet" href={{asset('dist/css/tabler.min.css')}}>
+    <link rel="stylesheet" href="{{asset('dist/css/tabler-flags.min.css')}}">
+    <link rel="stylesheet" href="{{asset('dist/css/tabler-payments.min.css')}}">
+    <link rel="stylesheet" href="{{asset('dist/css/demo.min.css')}}">
+
+    <style>
+        @import url('https://rsms.me/inter/inter.css');
+
+        :root {
+            --tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
+        }
+
+        body {
+            font-feature-settings: "cv03", "cv04", "cv11";
+        }
+    </style>
 </head>
 
-<body>
-    <div class="flex flex-col items-center justify-center">
-        <h1 class="text-3xl font-bold">Laravel Auth::Login</h1>
-        <form action="{{ route('login') }}" method="post" class="space-y-4 border border-black w-1/3 p-4 mt-4">
-            @csrf
-            <div class="flex flex-col gap-2">
-                <label for="email">Email</label>
-                <input type="email" name="email" id="email" class="border border-black p-1 rounded-md"
-                    placeholder="Your email" value="{{ old('email') }}">
-                @error('email')
-                    <p class="text-red-500">{{ $message }}</p>
-                @enderror
+<body class="d-flex flex-column">
+    <script src="{{asset('dist/js/demo-theme.min.js')}}" defer></script>
+    <div class="page page-center">
+        <div class="container container-tight py-4">
+            <div class="card card-md">
+                <div class="card-body">
+                    <h2 class="h2 text-center mb-4">Login to your admin account</h2>
+                    <form action="{{ route('login') }}" method="post" autocomplete="off">
+                        @csrf
+                        <div class="mb-3">
+                            <label class="form-label">Email address</label>
+                            <input type="email" class="form-control" placeholder="your@email.com" autocomplete="off"
+                                name="email" id="email" value="{{ old('email') }}">
+                            @error('email')
+                                <p class="text-red-500">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label">
+                                Password
+                            </label>
+                            <div class="input-group input-group-flat">
+                                <input type="password" name="password" id="password" class="form-control"
+                                    placeholder="Your password" autocomplete="off">
+                                <span class="input-group-text">
+                                    <a href="#" class="link-secondary" title="Show password" data-bs-toggle="tooltip">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+                                            <path
+                                                d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
+                                        </svg>
+                                    </a>
+                                </span>
+                                @error('password')
+                                    <p class="text-red-500">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="form-footer">
+                            <button type="submit" class="btn btn-primary w-100">Sign in</button>
+                        </div>
+                    </form>
+                </div>
             </div>
-
-            <div class="flex flex-col gap-2">
-                <label for="password">Password</label>
-                <input type="password" name="password" id="password" class="border border-black p-1 rounded-md"
-                    placeholder="Your password">
-                @error('password')
-                    <p class="text-red-500">{{ $message }}</p>
-                @enderror
-            </div>
-            <button type="submit"
-                class="w-full border border-black p-1 rounded-md bg-blue-500 text-white">Submit</button>
-        </form>
+        </div>
     </div>
-
+    <script src="{{asset('dist/js/tabler.min.js')}}" defer></script>
+    <script src="{{asset('dist/js/demo.min.js')}}" defer></script>
     <script>
         if ("{{ session('success') }}") {
             alert("{{ session('success') }}");

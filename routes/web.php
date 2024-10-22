@@ -2,7 +2,7 @@
 
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ParentCategoryController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Support\Facades\Route;
@@ -18,13 +18,15 @@ Route::group(["middleware" => AdminMiddleware::class], function () {
     })->name("admin");
 
     Route::group(["prefix" => "/product"], function () {
-        Route::get('category', function () {
-            return view('addcategroy');
-        });
+        Route::get('category', [CategoryController::class, 'index'])->name('category');
 
         Route::get('add', [ProductController::class, 'index'])->name('product.add');
 
-        Route::get('view', [ProductController::class, "admindisplay"]);
+        Route::get('view', [ProductController::class, "admindisplay"])->name('product.view');
+
+        Route::post('update/{id}', [ProductController::class, "update"])->name('product.update');
+
+        Route::delete('delete/{id}', [ProductController::class, "delete"])->name('product.delete');
     });
 });
 
@@ -37,8 +39,9 @@ Route::get("login", function () {
 Route::get("logout", [AuthController::class, "logout"])->name("logout");
 
 
-Route::post("category/add", [ParentCategoryController::class, "store"])->name("category.add");
-Route::post("product/add", [ProductController::class, "store"])->name("product.add");
+Route::post("category/add", [CategoryController::class, "store"])->name("category.add");
+Route::post("category/child/add", [CategoryController::class, "storechild"])->name("category.child.add");
+Route::post("/product/add", [ProductController::class, "store"])->name("product.add");
 Route::post("login", [AuthController::class, "login"])->name("login");
 
 Route::get("/", [ProductController::class, "display"])->name("product");
