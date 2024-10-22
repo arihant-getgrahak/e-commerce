@@ -3,7 +3,7 @@
 @section('productadd')
 <main>
   <h2 class="text-3xl font-bold mb-4">Add Product</h2>
-  <form id="productForm" class="bg-white p-6 rounded-lg shadow-lg" action="{{ route('product.add') }}" method="POST"
+  <form id="productForm" class="bg-white p-6 rounded-lg shadow-lg" method="post" action={{ route('product.add') }}
     enctype="multipart/form-data">
     @csrf
 
@@ -110,16 +110,14 @@
 </main>
 
 <script>
-  // document.getElementById('productForm').addEventListener('submit', function (e) {
-  //   e.preventDefault();
-  //   this.submit();
-  //   console.log('submitted');
-  // });
 
-  if ("{{session('success')}}") alert("{{ session('success') }}");
+  if ("{{session('success')}}") {
+    alert("{{session('success')}}")
+  }
 
-
-  if ("{{session('error')}}") alert("{{ session('error') }}");
+  if ("{{session('error')}}") {
+    alert("{{session('error')}}")
+  }
 
 </script>
 

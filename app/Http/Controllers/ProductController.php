@@ -65,10 +65,10 @@ class ProductController extends Controller
         return view('welcome')->with('product', $product);
     }
 
-    public function store(ProductAddRequest $request)
+    public function store(Request $request)
     {
 
-        dd($request->all());
+        // dd($request->all());
         try {
             $data = [
                 "name" => $request->name,
@@ -117,6 +117,7 @@ class ProductController extends Controller
             DB::commit();
 
             // return response()->json([
+            //     "success" => "Product created successfully",
             //     "product" => $product,
             // ], 201);
 
@@ -124,6 +125,10 @@ class ProductController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->with("error", $e->getMessage());
+            // return response()->json([
+            //     "success" => false,
+            //     "error" => $e->getMessage(),
+            // ], 500);
         }
     }
 
