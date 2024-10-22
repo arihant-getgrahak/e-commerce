@@ -25,9 +25,9 @@
             <div class="mb-3">
                 <label class="form-label">Parent Category</label>
                 <div>
-                    <select class="form-select">
+                    <select class="form-select" id="parent_id" name="parent_id">
                         @foreach ($category as $c)
-                        <option value="{{$c->id}}">{{$c->name}}</option>
+                            <option value="{{$c->id}}">{{$c->name}}</option>
 
                         @endforeach
                     </select>
@@ -44,6 +44,9 @@
     </div>
 </main>
 <script>
+
+
+
     if ("{{session('success')}}") {
         alert("{{session('success')}}")
     }

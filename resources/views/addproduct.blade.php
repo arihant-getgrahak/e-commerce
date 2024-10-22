@@ -30,7 +30,7 @@
     <!-- Price -->
     <div class="mb-4">
       <label for="price" class="col-form-label required">Price</label>
-      <input type="number" id="price" name="price" class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+      <input type="float" id="price" name="price" class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
         placeholder="Enter price" value="{{ old('price') }}">
       @error('price')
       <p class="text-red-500">{{ $message }}</p>

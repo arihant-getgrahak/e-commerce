@@ -87,18 +87,19 @@ class CategoryController extends Controller
     }
 
     // for child
-    public function storechild(Request $request, int $id)
+    public function storechild(Request $request)
     {
         $validate = Validator::make($request->all(), [
-            'name' => 'required'
+            'name' => 'required',
+            "parent_id" => 'required|exists:categories,id'
         ]);
 
         if ($validate->fails()) {
             return back()->with('errors', $validate->errors());
         }
         $category = Category::create([
-            "parent_id" => $id,
-            "name" => "New Category"
+            "parent_id" => $request->parent_id,
+            "name" => $request->name
         ]);
 
         if (!$category) {
