@@ -18,11 +18,15 @@ Route::group(["middleware" => AdminMiddleware::class], function () {
     })->name("admin");
 
     Route::group(["prefix" => "/product"], function () {
-        Route::get('category', [CategoryController::class,'index'])->name('category');
+        Route::get('category', [CategoryController::class, 'index'])->name('category');
 
         Route::get('add', [ProductController::class, 'index'])->name('product.add');
 
         Route::get('view', [ProductController::class, "admindisplay"])->name('product.view');
+
+        Route::post('update/{id}', [ProductController::class, "update"])->name('product.update');
+
+        Route::delete('delete/{id}', [ProductController::class, "delete"])->name('product.delete');
     });
 });
 
