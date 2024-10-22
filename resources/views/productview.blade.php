@@ -202,17 +202,19 @@
             });
         });
 
-        updateButtons.addEventListener('click', function () {
-            const productId = this.getAttribute('data-id');
-            updateForm.action = `/product/update/${productId}`;
-        });
+        updateButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const productId = this.getAttribute('data-id');
+                updateForm.action = `/product/update/${productId}`;
+            });
+        })
     });
 
-    if ({{ session('success') }}) {
+    if ("{{ session('success') }}") {
         alert('{{ session('success') }}')
     }
 
-    if ({{ session('error') }}) {
+    if ("{{ session('error') }}") {
         alert('{{ session('error') }}')
     }
 </script>
