@@ -43,70 +43,61 @@
                 @if (count($product) == 0)
                     <h1>No Products</h1>
                 @else
-                                @php
-                                    echo $product[0]->gallery;
-                                @endphp
-                                <main class="my-8">
-                                    <div class="container mx-auto px-6">
-                                        <div class="md:flex md:items-center">
-                                            <div class="col-md-6">
-                                                <div class="card">
-                                                    <div class="card-header">
-                                                        <h3 class="card-title">Carousel with indicators</h3>
-                                                    </div>
-                                                    <div class="card-body">
-                                                        <div id="carousel-indicators" class="carousel slide" data-bs-ride="carousel">
-                                                            <div class="carousel-indicators">
-                                                                @foreach ($product[0]->gallery as $index => $image)
-                                                                    <button type="button" data-bs-target="#carousel-indicators"
-                                                                        data-bs-slide-to="{{ $index }}"
-                                                                        class="{{ $loop->first ? 'active' : '' }}"
-                                                                        aria-current="{{ $loop->first ? 'true' : 'false' }}"
-                                                                        aria-label="Slide {{ $index + 1 }}"></button>
-                                                                @endforeach
-                                                            </div>
-                                                            <div class="carousel-inner">
-                                                                @foreach ($product[0]->gallery as $index => $image)
-                                                                    <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
-                                                                        <img class="d-block w-100" src="{{ $image->image }}"
-                                                                            alt="Product Image {{ $index + 1 }}">
-                                                                    </div>
-                                                                @endforeach
-                                                            </div>
-                                                            <button class="carousel-control-prev" type="button"
-                                                                data-bs-target="#carousel-indicators" data-bs-slide="prev">
-                                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                                                <span class="visually-hidden">Previous</span>
-                                                            </button>
-                                                            <button class="carousel-control-next" type="button"
-                                                                data-bs-target="#carousel-indicators" data-bs-slide="next">
-                                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                                                <span class="visually-hidden">Next</span>
-                                                            </button>
+                    <main class="my-8">
+                        <div class="container mx-auto px-6">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title">Product Images</h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <div id="carousel-indicators" class="carousel slide" data-bs-ride="carousel">
+                                                <div class="carousel-indicators">
+                                                    @foreach ($product[0]->gallery as $index => $image)
+                                                        <button type="button" data-bs-target="#carousel-indicators"
+                                                            data-bs-slide-to="{{ $index }}"
+                                                            class="{{ $loop->first ? 'active' : '' }}"
+                                                            aria-current="{{ $loop->first ? 'true' : 'false' }}"
+                                                            aria-label="Slide {{ $index + 1 }}"></button>
+                                                    @endforeach
+                                                </div>
+                                                <div class="carousel-inner">
+                                                    @foreach ($product[0]->gallery as $index => $image)
+                                                        <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
+                                                            <img class="d-block w-100" src="{{ $image->image }}"
+                                                                alt="Product Image {{ $index + 1 }}">
                                                         </div>
-                                                    </div>
+                                                    @endforeach
                                                 </div>
-                                            </div>
-                                            <div class="w-full h-64 md:w-1/2 lg:h-96">
-                                                <img class="h-full w-full rounded-md object-cover max-w-lg mx-auto"
-                                                    src="https://images.unsplash.com/photo-1578262825743-a4e402caab76?ixlib=rb-1.2.1&auto=format&fit=crop&w=1051&q=80"
-                                                    alt="Nike Air">
-                                            </div>
-                                            <div class="w-full max-w-lg mx-auto mt-5 md:ml-8 md:mt-0 md:w-1/2">
-                                                <h3 class="text-gray-700 uppercase text-lg">{{$product[0]->name}}</h3>
-                                                <h3 class="text-gray-500 uppercase text-sm mt-3 mb-3">{{$product[0]->description}}</h3>
-                                                <span class="text-black mt-3">₹{{$product[0]->price}}</span>
-
-                                                <div class="flex items-center mt-6">
-                                                    <button
-                                                        class="px-8 py-2 bg-indigo-600 text-white text-sm font-medium rounded hover:bg-indigo-500 focus:outline-none focus:bg-indigo-500">Order
-                                                        Now</button>
-
-                                                </div>
+                                                <button class="carousel-control-prev" type="button"
+                                                    data-bs-target="#carousel-indicators" data-bs-slide="prev">
+                                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                    <span class="visually-hidden">Previous</span>
+                                                </button>
+                                                <button class="carousel-control-next" type="button"
+                                                    data-bs-target="#carousel-indicators" data-bs-slide="next">
+                                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                    <span class="visually-hidden">Next</span>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
-                                </main>
+                                </div>
+                                <div class="w-full max-w-lg mx-auto mt-5 md:ml-8 md:mt-0 md:w-1/2">
+                                    <h3 class="text-gray-700 uppercase text-lg">{{$product[0]->name}}</h3>
+                                    <h3 class="text-gray-500 uppercase text-sm mt-3 mb-3">{{$product[0]->description}}</h3>
+                                    <span class="text-black mt-3">₹{{$product[0]->price}}</span>
+
+                                    <div class="flex items-center mt-6">
+                                        <button class="btn btn-primary">Order
+                                            Now</button>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
                 @endif
 
                 <footer class="bg-gray-200">
