@@ -68,7 +68,6 @@ class ProductController extends Controller
     public function store(ProductAddRequest $request)
     {
 
-        dd($request->all());
         try {
             $data = [
                 "name" => $request->name,
