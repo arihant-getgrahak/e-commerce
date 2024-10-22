@@ -48,11 +48,17 @@
                                         </span>
                                         <div>
                                             <div class="block w-full text-sm font-bold text-amber-700">
-                                                {{ $p->price }}
+                                                ₹{{ $p->price }}
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <div class="flex align-items-center text-xs leading-6 mx-0 my-1 text-gray-600">
+                                                Category: {{ $p->category->name }}
                                             </div>
                                         </div>
                                         <div class="flex align-items-center text-xs leading-6 mx-0 my-1 text-gray-600">
-                                            {{ $p->brand->name }}
+                                            Brand: {{ $p->brand->name }}
                                         </div>
                                     </div>
                                 </div>
