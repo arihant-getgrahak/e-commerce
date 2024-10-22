@@ -1,8 +1,7 @@
 @extends('layout.index')
 @section('productview')
 
-
-<div class="container ">
+<div class="container">
     <h1 class="text-4xl font-extrabold text-center text-gray-800 mb-10">Products</h1>
 
     @if($product->isEmpty())
@@ -39,7 +38,8 @@
                             <div class="flex gap-5 mt-3">
                                 <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-team" href="#">Update
                                     Product</a>
-                                <a class="btn btn-danger" href="">Delete Product</a>
+                                <a class="btn btn-danger btn-delete" data-bs-toggle="modal" data-bs-target="#modal-danger"
+                                    data-id="{{ $p->id }}" href="#">Delete Product</a>
                             </div>
                         </div>
                     </div>
@@ -47,110 +47,58 @@
             @endforeach
         </div>
     @endif
-    <div class="modal modal-blur fade" id="modal-team" tabindex="-1" role="dialog" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Add a new team</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="row mb-3 align-items-end">
-              <div class="col-auto">
-                <a href="#" class="avatar avatar-upload rounded">
-                  <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                  <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
-                  <span class="avatar-upload-text">Add</span>
-                </a>
-              </div>
-              <div class="col">
-                <label class="form-label">Name</label>
-                <input type="text" class="form-control" />
-              </div>
+
+    <!-- delete modal -->
+    <div class="modal modal-blur fade" id="modal-danger" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-status bg-danger"></div>
+                <div class="modal-body text-center py-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg" width="24" height="24"
+                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path
+                            d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z" />
+                        <path d="M12 9v4" />
+                        <path d="M12 17h.01" />
+                    </svg>
+                    <h3>Are you sure?</h3>
+                    <div class="text-secondary">Do you really want to delete this product? This action cannot be undone.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="w-100">
+                        <div class="row">
+                            <div class="col"><a href="#" class="btn w-100" data-bs-dismiss="modal">Cancel</a></div>
+                            <div class="col">
+                                <form id="delete-form" action="#" method="POST" class="w-100">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger w-100">Delete product</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="mb-3">
-              <label class="form-label">Pick your team color</label>
-              <div class="row g-2">
-                <div class="col-auto">
-                  <label class="form-colorinput">
-                    <input name="color" type="radio" value="dark" class="form-colorinput-input" />
-                    <span class="form-colorinput-color bg-dark"></span>
-                  </label>
-                </div>
-                <div class="col-auto">
-                  <label class="form-colorinput form-colorinput-light">
-                    <input name="color" type="radio" value="white" class="form-colorinput-input"  checked/>
-                    <span class="form-colorinput-color bg-white"></span>
-                  </label>
-                </div>
-                <div class="col-auto">
-                  <label class="form-colorinput">
-                    <input name="color" type="radio" value="blue" class="form-colorinput-input" />
-                    <span class="form-colorinput-color bg-blue"></span>
-                  </label>
-                </div>
-                <div class="col-auto">
-                  <label class="form-colorinput">
-                    <input name="color" type="radio" value="azure" class="form-colorinput-input" />
-                    <span class="form-colorinput-color bg-azure"></span>
-                  </label>
-                </div>
-                <div class="col-auto">
-                  <label class="form-colorinput">
-                    <input name="color" type="radio" value="indigo" class="form-colorinput-input" />
-                    <span class="form-colorinput-color bg-indigo"></span>
-                  </label>
-                </div>
-                <div class="col-auto">
-                  <label class="form-colorinput">
-                    <input name="color" type="radio" value="purple" class="form-colorinput-input" />
-                    <span class="form-colorinput-color bg-purple"></span>
-                  </label>
-                </div>
-                <div class="col-auto">
-                  <label class="form-colorinput">
-                    <input name="color" type="radio" value="pink" class="form-colorinput-input" />
-                    <span class="form-colorinput-color bg-pink"></span>
-                  </label>
-                </div>
-                <div class="col-auto">
-                  <label class="form-colorinput">
-                    <input name="color" type="radio" value="red" class="form-colorinput-input" />
-                    <span class="form-colorinput-color bg-red"></span>
-                  </label>
-                </div>
-                <div class="col-auto">
-                  <label class="form-colorinput">
-                    <input name="color" type="radio" value="orange" class="form-colorinput-input" />
-                    <span class="form-colorinput-color bg-orange"></span>
-                  </label>
-                </div>
-                <div class="col-auto">
-                  <label class="form-colorinput">
-                    <input name="color" type="radio" value="yellow" class="form-colorinput-input" />
-                    <span class="form-colorinput-color bg-yellow"></span>
-                  </label>
-                </div>
-                <div class="col-auto">
-                  <label class="form-colorinput">
-                    <input name="color" type="radio" value="lime" class="form-colorinput-input" />
-                    <span class="form-colorinput-color bg-lime"></span>
-                  </label>
-                </div>
-              </div>
-            </div>
-            <div>
-              <label class="form-label">Additional info</label>
-              <textarea class="form-control"></textarea>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Add Team</button>
-          </div>
         </div>
-      </div>
     </div>
 </div>
 
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const deleteButtons = document.querySelectorAll('.btn-delete');
+        const deleteForm = document.getElementById('delete-form');
+
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const productId = this.getAttribute('data-id');
+                deleteForm.action = `/product/delete/${productId}`;
+            });
+        });
+    });
+</script>
 @endsection
