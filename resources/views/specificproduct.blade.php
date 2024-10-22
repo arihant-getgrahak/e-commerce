@@ -110,7 +110,7 @@
         </section>
     </main>
     <script>
-        if ({{ session('error') }}) {
+        if ("{{ session('error') }}") {
             alert('{{ session('error') }}');
         }
     </script>
