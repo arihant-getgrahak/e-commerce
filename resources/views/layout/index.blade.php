@@ -35,28 +35,6 @@
 <body class="bg-gray-100">
     <!-- <header>This is header</header> -->
     <div>
-        <!-- <aside class="w-1/4 bg-gray-800 text-white h-screen p-5">
-            <h1 class="text-2xl font-bold mb-6">Admin Panel</h1>
-            <nav>
-                <ul>
-                    <li class="mb-3">
-                        <a href="{{ route('admin') }}" class="hover:text-gray-400">Dashboard</a>
-                    </li>
-                    <li class="mb-3">
-                        <a href="{{ route('product.add') }}" class="hover:text-gray-400">Add Product</a>
-                    </li>
-                    <li class="mb-3">
-                        <a href="{{ url('admindisplay') }}" class="hover:text-gray-400">View Products</a>
-                    </li>
-                    <li class="mb-3">
-                        <a href="{{ url('product/category') }}" class="hover:text-gray-400">Add Category</a>
-                    </li>
-                    <li class="mb-3">
-                        <a href='/arihant/e-commerce/public/logout' class="hover:text-gray-400">Logout</a>
-                    </li>
-                </ul>
-            </nav>
-        </aside> -->
 
         <header class="navbar-expand-md">
             <div class="collapse navbar-collapse" id="navbar-menu">
@@ -170,7 +148,7 @@
             </div>
         </header>
 
-        <main class="w-3/4 p-8">
+        <main class="w-3/4 p-5">
             <main>
                 @yield('dashboard')
             </main>
