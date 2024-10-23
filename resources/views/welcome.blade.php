@@ -24,7 +24,7 @@
                 <div class="flex flex-wrap">
                     @foreach ($product as $p)
                         <div class="grow max-w-[20%] inline-flex px-2 pb-4 min-w-[20%]">
-                            <a href={{route('product.specific', $p->id)}}
+                            <a href={{route('product.specific', $p->slug)}}
                                 class="relative bg-white inline-flex items-stretch w-full h-full p-0 box-border">
                                 <div class="relative shadow-md rounded-lg min-w-full flex flex-col">
                                     <div class="relative">
