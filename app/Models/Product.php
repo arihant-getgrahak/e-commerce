@@ -7,20 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     protected $fillable = [
-        "name",
-        "description",
-        "price",
-        "stock",
-        "category_id",
-        "added_by",
-        "brand_id"
+        'name',
+        'description',
+        'price',
+        'stock',
+        'category_id',
+        'added_by',
+        'brand_id',
+        'slug',
     ];
 
     protected function casts(): array
     {
         return [
-            "created_at" => "datetime:Y-m-d",
-            "updated_at" => "datetime:Y-m-d",
+            'created_at' => 'datetime:Y-m-d',
+            'updated_at' => 'datetime:Y-m-d',
         ];
     }
 
@@ -36,11 +37,11 @@ class Product extends Model
 
     public function meta()
     {
-        return $this->hasMany(ProductMeta::class, "product_id");
+        return $this->hasMany(ProductMeta::class, 'product_id');
     }
 
     public function brand()
     {
-        return $this->belongsTo(Brand::class, "brand_id");
+        return $this->belongsTo(Brand::class, 'brand_id');
     }
 }
