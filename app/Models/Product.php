@@ -15,6 +15,7 @@ class Product extends Model
         'added_by',
         'brand_id',
         'slug',
+        'thumbnail',
     ];
 
     protected function casts(): array
