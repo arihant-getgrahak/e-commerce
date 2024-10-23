@@ -4,7 +4,7 @@
 @section("brand")
 
 <div>
-    <h2 class="text-3xl font-bold mb-4">Add Category</h2>
+    <h2 class="text-3xl font-bold mb-4">Add Brand</h2>
     <form class="bg-white p-6 rounded-lg shadow-lg" action="{{ route('brand.add') }}" method="POST"
         enctype="multipart/form-data">
         @csrf
