@@ -9,11 +9,11 @@
     @else
         <div class="row">
             @foreach ($product as $p)
-                <div class="col-md-6 col-lg-4">
+                <div class="col-md-5 col-lg-4 mb-3">
                     <div class="card">
                         <!-- Photo -->
                         <div class="img-responsive img-responsive-21x9 card-img-top"
-                            style='background-image: url({{ $p->gallery[0]->image }})'>
+                            style='background-image: url({{ $p->thumbnail }})'>
                         </div>
                         <div class="card-body">
                             <div>

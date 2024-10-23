@@ -31,8 +31,8 @@
                                         <div class="relative h-0 pb-[100%] w-full bg-white text-ellipsis overflow-hidden">
                                             <div
                                                 class="bg-no-repeat bg-cover inline-block my-0 mx-auto text-center w-full h-full absolute">
-                                                @if($p->gallery && $p->gallery->isNotEmpty())
-                                                    <img src="{{ $p->gallery[0]->image }}" alt="Product Image"
+                                                @if($p->thumbnail )
+                                                    <img src="{{ $p->thumbnail }}" alt="Product Image"
                                                         class="w-full h-48 object-cover transition-transform duration-500 transform group-hover:scale-105">
                                                 @else
                                                     <img src="https://via.placeholder.com/150" alt="Default Image"
