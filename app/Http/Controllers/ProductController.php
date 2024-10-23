@@ -2,22 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductAddRequest;
+use App\Models\Brand;
+use App\Models\Category;
+use App\Models\Gallery;
+use App\Models\Product;
+use App\Models\ProductMeta;
 use DB;
 use Illuminate\Http\Request;
-use App\Models\Product;
-use App\Models\Gallery;
-use App\Models\ProductMeta;
 use Storage;
-use App\Http\Requests\ProductAddRequest;
-use App\Models\Category;
-use App\Models\Brand;
-
 
 class ProductController extends Controller
 {
     public function index()
     {
-        $categories = Category::with("parent")->get();
+        $categories = Category::with('parent')->get();
         $data = [];
 
         foreach ($categories as $category) {
@@ -25,7 +24,7 @@ class ProductController extends Controller
                 // If parent exists, show in "parent-child" format
                 $data[] = [
                     'id' => $category->id,
-                    'name' => $category->parent->name . ' - ' . $category->name,  // Parent-Child format
+                    'name' => $category->parent->name.' - '.$category->name,  // Parent-Child format
                 ];
             } else {
                 // If no parent, just show the category name
@@ -36,18 +35,19 @@ class ProductController extends Controller
             }
         }
 
-
         // dd($data);
         $brand = Brand::all();
-        return view("addproduct")->with("category", $data)->with("brand", $brand);
+
+        return view('addproduct')->with('category', $data)->with('brand', $brand);
     }
 
     public function admindisplay()
     {
-        $product = Product::where("added_by", auth()->user()->id)->with(["gallery", "meta", "brand", "category"])->paginate(10);
-        if (!$product) {
+        $product = Product::where('added_by', auth()->user()->id)->with(['gallery', 'meta', 'brand', 'category'])->paginate(10);
+        if (! $product) {
             return view('productview')->with('product', []);
         }
+
         // dd($product);
         return view('productview')->with('product', $product);
 
@@ -58,10 +58,11 @@ class ProductController extends Controller
 
     public function display()
     {
-        $product = Product::with(["gallery", "meta", "brand", "category"])->paginate(10);
-        if (!$product) {
+        $product = Product::with(['gallery', 'meta', 'brand', 'category'])->paginate(10);
+        if (! $product) {
             return view('welcome')->with('product', []);
         }
+
         return view('welcome')->with('product', $product);
     }
 
@@ -70,18 +71,19 @@ class ProductController extends Controller
 
         try {
             $data = [
-                "name" => $request->name,
-                "description" => $request->description,
-                "price" => $request->price,
-                "stock" => $request->stock,
-                "category_id" => $request->category_id,
-                "added_by" => auth()->user()->id,
-                "brand_id" => $request->brand_id,
+                'name' => $request->name,
+                'description' => $request->description,
+                'price' => $request->price,
+                'stock' => $request->stock,
+                'category_id' => $request->category_id,
+                'added_by' => auth()->user()->id,
+                'brand_id' => $request->brand_id,
+                'slug' => $request->slug,
+                'thumbnail' => $this->uploadImage($request->file('thumbnail')),
             ];
             DB::beginTransaction();
             $product = Product::create($data);
             DB::commit();
-
 
             if ($request->hasFile('image')) {
                 if (is_array($request->file('image'))) {
@@ -107,9 +109,9 @@ class ProductController extends Controller
             }
 
             $data = [
-                "product_id" => $product->id,
-                "sku" => $request->sku,
-                "weight" => $request->weight,
+                'product_id' => $product->id,
+                'sku' => $request->sku,
+                'weight' => $request->weight,
             ];
             DB::beginTransaction();
             ProductMeta::create($data);
@@ -120,10 +122,11 @@ class ProductController extends Controller
             //     "product" => $product,
             // ], 201);
 
-            return back()->with("success", "Product created successfully");
+            return back()->with('success', 'Product created successfully');
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with("error", $e->getMessage());
+
+            return back()->with('error', $e->getMessage());
             // return response()->json([
             //     "success" => false,
             //     "error" => $e->getMessage(),
@@ -134,12 +137,11 @@ class ProductController extends Controller
     public function update(Request $request, $id)
     {
         $product = Product::with('gallery')->find($id);
-        if (!$product) {
+        if (! $product) {
             return response()->json([
-                "message" => "Product not found"
+                'message' => 'Product not found',
             ], 404);
         }
-
 
         DB::beginTransaction();
 
@@ -156,16 +158,13 @@ class ProductController extends Controller
 
             $product->update($updateData);
 
-
             if ($request->hasFile('image')) {
                 $imageFiles = is_array($request->file('image')) ? $request->file('image') : [$request->file('image')];
-
 
                 foreach ($product->gallery as $galleryImage) {
                     Storage::delete($galleryImage->image); // Delete from storage
                     $galleryImage->delete(); // Delete from DB
                 }
-
 
                 foreach ($imageFiles as $file) {
                     $imagePath = $this->uploadImage($file);
@@ -177,12 +176,11 @@ class ProductController extends Controller
                 }
             }
 
-
             DB::commit();
 
             $product->load('gallery');
 
-            return back()->with("success", "Product updated successfully");
+            return back()->with('success', 'Product updated successfully');
             // return response()->json([
             //     "product" => $product
             // ], 200);
@@ -190,7 +188,8 @@ class ProductController extends Controller
         } catch (\Exception $e) {
 
             DB::rollBack();
-            return back()->with("error", $e->getMessage());
+
+            return back()->with('error', $e->getMessage());
             // return response()->json([
             //     "message" => "An error occurred while updating the product.",
             //     "error" => $e->getMessage(),
@@ -198,20 +197,19 @@ class ProductController extends Controller
         }
     }
 
-
     public function delete($id)
     {
         $product = Product::find($id);
-        if (!$product) {
+        if (! $product) {
 
-            return back()->with("error", "Incorrect product id");
+            return back()->with('error', 'Incorrect product id');
             // return response()->json([
             //     "message" => "Product not found"
             // ], 404);
         }
         $product->delete();
 
-        return back()->with("success", "Product deleted successfully");
+        return back()->with('success', 'Product deleted successfully');
         // return response()->json([
         //     "message" => "Product deleted successfully"
         // ], 200);
@@ -220,11 +218,12 @@ class ProductController extends Controller
     public function specific($id)
     {
 
-        $product = Product::where("id", $id)->with(["gallery", "meta", "brand", "category"])->get();
-        if (!$product) {
-            return view("specificproduct")->with("error", "Incorrect product id");
+        $product = Product::where('slug', $id)->with(['gallery', 'meta', 'brand', 'category'])->get();
+        if (! $product) {
+            return view('specificproduct')->with('error', 'Incorrect product id');
         }
-        return view("specificproduct")->with("product", $product);
+
+        return view('specificproduct')->with('product', $product);
 
     }
 
