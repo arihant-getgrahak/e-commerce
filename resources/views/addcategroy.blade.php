@@ -49,17 +49,23 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th><button class="table-sort" data-sort="sort-name">Name</button></th>
-                            <th><button class="table-sort" data-sort="sort-city">City</button></th>
-                            <th><button class="table-sort" data-sort="sort-type">Type</button></th>
+                            <th><button class="table-sort" data-sort="sort-name">Id</button></th>
+                            <th><button class="table-sort" data-sort="sort-city">Name</button></th>
+                            <th><button class="table-sort" data-sort="sort-type">Buttons</button></th>
                         </tr>
                     </thead>
                     <tbody class="table-tbody">
-                        <tr>
-                            <td class="sort-name">Steel Vengeance</td>
-                            <td class="sort-city">Cedar Point, United States</td>
-                            <td class="sort-type">RMC Hybrid</td>
-                        </tr>
+                        @foreach ($data as $key => $c)
+                            <tr>
+                                <td class="sort-name">{{$c["id"]}}</td>
+                                <td class="sort-city">{{$c["name"]}}</td>
+                                <td class="sort-type">
+                                    <button class="btn btn-primary btn-sm">Edit</button>
+                                    <button class="btn btn-danger btn-sm">Delete</button>
+                                </td>
+                            </tr>
+                        @endforeach
+
                     </tbody>
                 </table>
             </div>
