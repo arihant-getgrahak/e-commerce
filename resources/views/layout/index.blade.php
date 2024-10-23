@@ -183,6 +183,9 @@
             <main>
                 @yield('productview')
             </main>
+            <main>
+                @yield("brand")
+            </main>
         </main>
     </div>
     <footer class="footer footer-transparent d-print-none">
