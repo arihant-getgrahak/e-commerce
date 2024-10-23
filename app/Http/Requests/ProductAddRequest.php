@@ -31,6 +31,7 @@ class ProductAddRequest extends FormRequest
             'sku' => 'required',
             'weight' => 'required',
             'slug' => 'required|unique:products,slug',
+            'thumbail' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
     }
 
