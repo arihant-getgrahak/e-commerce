@@ -57,6 +57,15 @@
     @enderror
     </div>
 
+    <!-- Thumbnail -->
+    <div class="mb-4">
+      <label for="thumbnail" class="col-form-label required">Product Thumbnail</label>
+      <input type="file" id="thumbnail" name="thumbnail" class="form-control">
+      @error('thumbnail')
+      <p class="text-red-500">{{ $message }}</p>
+    @enderror
+    </div>
+
     <!-- Images -->
     <div class="mb-4">
       <label for="image" class="col-form-label required">Product Images</label>
