@@ -79,6 +79,7 @@ class ProductController extends Controller
                 'added_by' => auth()->user()->id,
                 'brand_id' => $request->brand_id,
                 'slug' => $request->slug,
+                'thumbnail' => $this->uploadImage($request->file('thumbnail')),
             ];
             DB::beginTransaction();
             $product = Product::create($data);
