@@ -17,6 +17,16 @@
     @enderror
     </div>
 
+    <!-- slug -->
+    <div class="mb-4">
+      <label for="slug" class="col-form-label required">Product Slug</label>
+      <input type="text" id="slug" name="slug" class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+        placeholder="Enter product slug" value="{{ old('slug') }}">
+      @error('slug')
+      <p class="text-red-500">{{ $message }}</p>
+    @enderror
+    </div>
+
     <!-- Description -->
     <div class="mb-4">
       <label for="description" class="col-form-label required">Description</label>
@@ -110,6 +120,15 @@
 </main>
 
 <script>
+
+  document.getElementById('name').addEventListener('input', function (e) {
+    let name = e.target.value;
+    let slug = name.toLowerCase()
+      .replace(/[^\w\s-]/g, '')
+      .trim()
+      .replace(/\s+/g, '-');
+    document.getElementById('slug').value = slug;
+  });
 
   if ("{{session('success')}}") {
     alert("{{session('success')}}")
