@@ -215,6 +215,7 @@
     <script src="{{asset('dist/libs/tom-select/dist/js/tom-select.base.min.js')}}" defer></script>
     <script src="{{asset('dist/js/tabler.min.js')}}" defer></script>
     <script src="{{asset('dist/js/demo.min.js')}}" defer></script>
+    <script src="{{asset('dist/libs/list.js/dist/list.min.js')}}" defer></script>
 </body>
 
 </html>
