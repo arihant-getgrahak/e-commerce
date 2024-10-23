@@ -2,20 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BrandStoreRequest;
 use App\Models\Brand;
 use Illuminate\Http\Request;
 use Storage;
 use Validator;
-use App\Http\Requests\BrandStoreRequest;
 
 class BrandController extends Controller
 {
     public function display()
     {
-        $brand = Brand::with(["products","products.gallery","products.parent","products.children"])->paginate(10);
+        $brand = Brand::with(['products', 'products.gallery', 'products.parent', 'products.children'])->paginate(10);
+
         // $brand = Brand::paginate(10);
         return response()->json([
-            "brand" => $brand
+            'brand' => $brand,
         ], 200);
     }
 
@@ -23,68 +24,71 @@ class BrandController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            "image" => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
         if ($validator->fails()) {
             return response()->json([
-                "message" => "Validation error",
-                "errors" => $validator->errors()
+                'message' => 'Validation error',
+                'errors' => $validator->errors(),
             ], 400);
         }
 
         $brand = Brand::create([
-            "name" => $request->name,
-            "image" => $this->uploadImage($request->image),
+            'name' => $request->name,
+            'image' => $this->uploadImage($request->image),
         ]);
 
-        if (!$brand) {
-            return response()->json([
-                "message" => "Brand not created"
-            ], 400);
+        if (! $brand) {
+            return back()->with('errors', 'Brand not created');
+            // return response()->json([
+            //     "message" => "Brand not created"
+            // ], 400);
         }
-        return response()->json([
-            "message" => "Brand created successfully",
-            "brand" => $brand
-        ], 200);
-    }
 
+        return back()->with('success', 'Brand created successfully');
+        // return response()->json([
+        //     "message" => "Brand created successfully",
+        //     "brand" => $brand
+        // ], 200);
+    }
 
     public function update(Request $request, $id)
     {
         $brand = Brand::find($id);
-        if (!$brand) {
+        if (! $brand) {
             return response()->json([
-                "message" => "Brand not found"
+                'message' => 'Brand not found',
             ], 404);
         }
 
-        if ($request->hasFile("image")) {
+        if ($request->hasFile('image')) {
             Storage::delete($brand->image);
         }
 
         $brand->update([
-            "name" => $request->name,
-            "image" => $this->uploadImage($request->image),
+            'name' => $request->name,
+            'image' => $this->uploadImage($request->image),
         ]);
 
         return response()->json([
-            "message" => "Brand updated successfully",
-            "brand" => $brand
+            'message' => 'Brand updated successfully',
+            'brand' => $brand,
         ], 200);
     }
 
     public function destroy($id)
     {
         $brand = Brand::find($id);
-        if (!$brand) {
+        if (! $brand) {
             return response()->json([
-                "message" => "Brand not found"
+                'message' => 'Brand not found',
             ], 404);
         }
         Storage::delete($brand->image);
         $brand->delete();
+
         return response()->json([
-            "message" => "Brand deleted successfully"
+            'message' => 'Brand deleted successfully',
         ], 200);
     }
 
