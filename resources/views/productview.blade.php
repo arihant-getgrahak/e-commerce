@@ -198,7 +198,7 @@
                 const sku = this.getAttribute('data-sku');
                 const weight = this.getAttribute('data-weight');
 
-                updateForm.action = `/product/update/${productId}`;
+                updateForm.action = "{{ route('product.update', ':id') }}".replace(':id', productId);
                 updateForm.querySelector('#name').value = name;
                 updateForm.querySelector('#description').value = description;
                 updateForm.querySelector('#price').value = price;
