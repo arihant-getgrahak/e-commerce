@@ -1,13 +1,13 @@
 <?php
 
-// use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AuthController;
+
 // use Illuminate\Support\Facades\Route;
 // use App\Http\Controllers\ProductController;
 // use App\Http\Controllers\ParentCategoryController;
 // use App\Http\Controllers\ChildCategoryController;
 // use App\Http\Controllers\BrandController;
 // use App\Http\Controllers\ReviewController;
-
 
 // Route::group(["prefix" => "product"], function () {
 //     Route::get("/", [ProductController::class, "display"]);
@@ -43,4 +43,4 @@
 //     Route::post("/store", [ReviewController::class, "store"]);
 // });
 
-// Route::post("/register", [AuthController::class, "register"]);
+Route::post('/register', [AuthController::class, 'register']);
