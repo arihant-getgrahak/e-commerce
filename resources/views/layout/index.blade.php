@@ -28,6 +28,10 @@
         body {
             font-feature-settings: "cv03", "cv04", "cv11";
         }
+
+        .text-red-500 {
+            color: red;
+        }
     </style>
 
 </head>
