@@ -26,8 +26,8 @@
                 <label class="form-label">Parent Category</label>
                 <div>
                     <select class="form-select" id="parent_id" name="parent_id">
-                        @foreach ($category as $c)
-                            <option value="{{$c->id}}">{{$c->name}}</option>
+                        @foreach ($data as $key => $c)
+                            <option value="{{$c["id"]}}">{{$c["name"]}}</option>
 
                         @endforeach
                     </select>
@@ -42,11 +42,31 @@
             </button>
         </form>
     </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div id="table-default" class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th><button class="table-sort" data-sort="sort-name">Name</button></th>
+                            <th><button class="table-sort" data-sort="sort-city">City</button></th>
+                            <th><button class="table-sort" data-sort="sort-type">Type</button></th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-tbody">
+                        <tr>
+                            <td class="sort-name">Steel Vengeance</td>
+                            <td class="sort-city">Cedar Point, United States</td>
+                            <td class="sort-type">RMC Hybrid</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </main>
 <script>
-
-
-
     if ("{{session('success')}}") {
         alert("{{session('success')}}")
     }

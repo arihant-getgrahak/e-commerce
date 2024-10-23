@@ -21,16 +21,14 @@ class ProductController extends Controller
 
         foreach ($categories as $category) {
             if ($category->parent) {
-                // If parent exists, show in "parent-child" format
                 $data[] = [
                     'id' => $category->id,
-                    'name' => $category->parent->name.' - '.$category->name,  // Parent-Child format
+                    'name' => $category->parent->name.' - '.$category->name,
                 ];
             } else {
-                // If no parent, just show the category name
                 $data[] = [
                     'id' => $category->id,
-                    'name' => $category->name,  // Only category name
+                    'name' => $category->name,
                 ];
             }
         }
