@@ -38,8 +38,11 @@
                             <div class="flex gap-5 mt-3">
 
                                 <button class="btn btn-primary btn-update" data-bs-toggle="modal" data-bs-target="#modal-team"
-                                    data-id="{{ $p->id }}">Update
-                                    Product</button>
+                                    data-id="{{ $p->id }}" data-name="{{ $p->name }}" data-description="{{ $p->description }}"
+                                    data-price="{{ $p->price }}" data-stock="{{ $p->stock }}" data-sku="{{ $p->meta[0]->sku }}"
+                                    data-weight="{{ $p->meta[0]->weight }}">
+                                    Update Product
+                                </button>
                                 <button class="btn btn-danger btn-delete" data-bs-toggle="modal" data-bs-target="#modal-danger"
                                     data-id="{{ $p->id }}">Delete Product</button>
 
@@ -86,136 +89,124 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- update modal -->
-                <div class="modal modal-blur fade" id="modal-team" tabindex="-1" role="dialog" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Update form</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <form id="productForm" class="bg-white p-6 rounded-lg shadow-lg" method="post" action={{ route('product.update', $p->id) }} enctype="multipart/form-data">
-                                    @csrf
-
-                                    <!-- Name -->
-                                    <div class="mb-4">
-                                        <label for="name" class="col-form-label required">Product Name</label>
-                                        <input type="text" id="name" name="name"
-                                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-                                            placeholder="Enter product name" value="{{ $p->name }}">
-                                        @error('name')
-                                            <p class="text-red-500">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-
-                                    <!-- Description -->
-                                    <div class="mb-4">
-                                        <label for="description" class="col-form-label required">Description</label>
-                                        <textarea id="description" name="description"
-                                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-                                            placeholder="Enter product description">{{ $p->description }}</textarea>
-                                        @error('description')
-                                            <p class="text-red-500">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-
-                                    <!-- Price -->
-                                    <div class="mb-4">
-                                        <label for="price" class="col-form-label required">Price</label>
-                                        <input type="float" id="price" name="price"
-                                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-                                            placeholder="Enter price" value="{{ $p->price }}">
-                                        @error('price')
-                                            <p class="text-red-500">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-
-                                    <!-- Stock -->
-                                    <div class="mb-4">
-                                        <label for="stock" class="col-form-label required">Stock</label>
-                                        <input type="number" id="stock" name="stock"
-                                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-                                            placeholder="Enter stock quantity" value="{{ $p->stock }}">
-                                        @error('stock')
-                                            <p class="text-red-500">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-
-                                    <!-- Images -->
-                                    <div class="mb-4">
-                                        <label for="image" class="col-form-label required">Product Images</label>
-                                        <input type="file" id="image" name="image[]" class="form-control" multiple>
-                                        @error('image')
-                                            <p class="text-red-500">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-
-                                    <!-- Weight -->
-                                    <div class="mb-4">
-                                        <label for="sku" class="col-form-label required">sku</label>
-                                        <input type="text" id="sku" name="sku"
-                                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-                                            placeholder="Enter product sku" value="{{ $p->meta[0]->sku}}">
-                                        @error('sku')
-                                            <p class="text-red-500">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-
-                                    <!-- Sku -->
-                                    <div class="mb-4">
-                                        <label for="weight" class="col-form-label required">Weight</label>
-                                        <input type="text" id="weight" name="weight"
-                                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-                                            placeholder="Enter product weight" value="{{ $p->meta[0]->weight }}">
-                                        @error('weight')
-                                            <p class="text-red-500">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary ms-auto">Add Product</button>
-                            </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
             @endforeach
         </div>
     @endif
 </div>
 
+<!-- update modal -->
+<div class="modal modal-blur fade" id="modal-team" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Update form</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="productForm" class="bg-white p-6 rounded-lg shadow-lg" method="post" action=""
+                    enctype="multipart/form-data">
+                    @csrf
+
+                    <!-- Name -->
+                    <div class="mb-4">
+                        <label for="name" class="col-form-label required">Product Name</label>
+                        <input type="text" id="name" name="name"
+                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                            placeholder="Enter product name">
+                        @error('name')
+                            <p class="text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Description -->
+                    <div class="mb-4">
+                        <label for="description" class="col-form-label required">Description</label>
+                        <textarea id="description" name="description"
+                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                            placeholder="Enter product description"></textarea>
+                        @error('description')
+                            <p class="text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Price -->
+                    <div class="mb-4">
+                        <label for="price" class="col-form-label required">Price</label>
+                        <input type="text" id="price" name="price"
+                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="Enter price">
+                        @error('price')
+                            <p class="text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Stock -->
+                    <div class="mb-4">
+                        <label for="stock" class="col-form-label required">Stock</label>
+                        <input type="number" id="stock" name="stock"
+                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                            placeholder="Enter stock quantity">
+                        @error('stock')
+                            <p class="text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Sku -->
+                    <div class="mb-4">
+                        <label for="sku" class="col-form-label required">SKU</label>
+                        <input type="text" id="sku" name="sku"
+                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                            placeholder="Enter product SKU">
+                        @error('sku')
+                            <p class="text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Weight -->
+                    <div class="mb-4">
+                        <label for="weight" class="col-form-label required">Weight</label>
+                        <input type="text" id="weight" name="weight"
+                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                            placeholder="Enter product weight">
+                        @error('weight')
+                            <p class="text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary ms-auto">Update Product</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const deleteButtons = document.querySelectorAll('.btn-delete');
         const updateButtons = document.querySelectorAll('.btn-update');
-        const deleteForm = document.getElementById('delete-form');
-        const updateForm = document.getElementById("productForm")
-
-        deleteButtons.forEach(button => {
-            button.addEventListener('click', function () {
-                const productId = this.getAttribute('data-id');
-                deleteForm.action = `/product/delete/${productId}`;
-            });
-        });
+        const updateForm = document.getElementById("productForm");
 
         updateButtons.forEach(button => {
             button.addEventListener('click', function () {
                 const productId = this.getAttribute('data-id');
+                const name = this.getAttribute('data-name');
+                const description = this.getAttribute('data-description');
+                const price = this.getAttribute('data-price');
+                const stock = this.getAttribute('data-stock');
+                const sku = this.getAttribute('data-sku');
+                const weight = this.getAttribute('data-weight');
+
                 updateForm.action = `/product/update/${productId}`;
+                updateForm.querySelector('#name').value = name;
+                updateForm.querySelector('#description').value = description;
+                updateForm.querySelector('#price').value = price;
+                updateForm.querySelector('#stock').value = stock;
+                updateForm.querySelector('#sku').value = sku;
+                updateForm.querySelector('#weight').value = weight;
             });
-        })
+        });
     });
-
-    if ("{{ session('success') }}") {
-        alert('{{ session('success') }}')
-    }
-
-    if ("{{ session('error') }}") {
-        alert('{{ session('error') }}')
-    }
 </script>
 @endsection
