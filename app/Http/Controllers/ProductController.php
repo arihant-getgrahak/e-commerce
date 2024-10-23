@@ -217,7 +217,7 @@ class ProductController extends Controller
     public function specific($id)
     {
 
-        $product = Product::where('id', $id)->with(['gallery', 'meta', 'brand', 'category'])->get();
+        $product = Product::where('slug', $id)->with(['gallery', 'meta', 'brand', 'category'])->get();
         if (! $product) {
             return view('specificproduct')->with('error', 'Incorrect product id');
         }
