@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Middleware\AdminMiddleware;
@@ -44,7 +45,7 @@ Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::post('category/add', [CategoryController::class, 'store'])->name('category.add');
 Route::post('category/child/add', [CategoryController::class, 'storechild'])->name('category.child.add');
-Route::post('brand/add', [CategoryController::class, 'storechild'])->name('brand.add');
+Route::post('brand/add', [BrandController::class, 'store'])->name('brand.add');
 Route::post('/product/add', [ProductController::class, 'store'])->name('product.add');
 Route::post('login', [AuthController::class, 'login'])->name('login');
 
