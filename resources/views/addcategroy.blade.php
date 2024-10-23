@@ -45,13 +45,14 @@
 
     <div class="card">
         <div class="card-body">
+            <h1>All Category</h1>
             <div id="table-default" class="table-responsive">
                 <table class="table">
                     <thead>
                         <tr>
                             <th><button class="table-sort" data-sort="sort-name">Id</button></th>
                             <th><button class="table-sort" data-sort="sort-city">Name</button></th>
-                            <th><button class="table-sort" data-sort="sort-type">Buttons</button></th>
+                            <!-- <th><button class="table-sort" data-sort="sort-type">Buttons</button></th> -->
                         </tr>
                     </thead>
                     <tbody class="table-tbody">
@@ -59,10 +60,10 @@
                             <tr>
                                 <td class="sort-name">{{$c["id"]}}</td>
                                 <td class="sort-city">{{$c["name"]}}</td>
-                                <td class="sort-type">
+                                <!-- <td class="sort-type">
                                     <button class="btn btn-primary btn-sm">Edit</button>
                                     <button class="btn btn-danger btn-sm">Delete</button>
-                                </td>
+                                </td> -->
                             </tr>
                         @endforeach
 
