@@ -121,14 +121,11 @@
                                 class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
                                 placeholder="Enter product name">
                         </div>
-                        
+
                         <!-- Image -->
                         <div class="mb-4">
-                            <label for="thumbnail" class="col-form-label required">Product Thumbnail</label>
-                            <input type="file" id="thumbnail" name="thumbnail" class="form-control">
-                            @error('thumbnail')
-                                <p class="text-red-500">{{ $message }}</p>
-                            @enderror
+                            <label for="image" class="col-form-label required">Product Thumbnail</label>
+                            <input type="file" id="image" name="image" class="form-control">
                         </div>
 
                 </div>
@@ -162,7 +159,7 @@
                 const name = this.getAttribute('data-name');
 
 
-                updateForm.action = "{{ route('category.update', ':id') }}".replace(':id', productId);
+                updateForm.action = "{{ route('brand.update', ':id') }}".replace(':id', productId);
                 updateForm.querySelector('#name').value = name;
             });
         });

@@ -51,3 +51,6 @@ Route::get('product/{id}', [ProductController::class, 'specific'])->name('produc
 
 Route::delete('/category/delete/{id}', [CategoryController::class, 'delete'])->name('category.delete');
 Route::post('/category/update/{id}', [CategoryController::class, 'update'])->name('category.update');
+
+Route::post('/brand/update/{id}', [BrandController::class, 'update'])->name('brand.update');
+Route::delete('/brand/delete/{id}', [BrandController::class, 'delete'])->name('brand.delete');
