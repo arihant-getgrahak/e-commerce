@@ -39,9 +39,20 @@
 
     <!-- Price -->
     <div class="mb-4">
-      <label for="price" class="col-form-label required">Price</label>
+      <label for="price" class="col-form-label required">Selling Price</label>
       <input type="float" id="price" name="price" class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
         placeholder="Enter price" value="{{ old('price') }}">
+      @error('price')
+      <p class="text-red-500">{{ $message }}</p>
+    @enderror
+    </div>
+
+    <!-- Price -->
+    <div class="mb-4">
+      <label for="cost_price" class="col-form-label required">Cost Price</label>
+      <input type="float" id="cost_price" name="cost_price"
+        class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="Enter price"
+        value="{{ old('cost_price') }}">
       @error('price')
       <p class="text-red-500">{{ $message }}</p>
     @enderror
