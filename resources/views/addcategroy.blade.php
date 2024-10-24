@@ -165,24 +165,6 @@
         alert("{{session('success')}}")
     }
 
-    // document.addEventListener('DOMContentLoaded', function () {
-    //     const updateButtons = document.querySelectorAll('.btn-update');
-    //     const updateForm = document.getElementById("productForm");
-
-    //     updateButtons.forEach(button => {
-    //         button.addEventListener('click', function () {
-    //             const productId = this.getAttribute('data-id');
-    //             const name = this.getAttribute('data-name');
-    //             const parentId = document.getAttribute('data-parent-id');
-    //             const arihant = document.getElementsByClassName('arihant');
-
-
-    " {{--updateForm.action = "{ { route('category.update', ':id') } } ".replace(':id', productId); --}}"
-    //             updateForm.querySelector('#name').value = name;
-    //             arihant.value = parentId ? parentId : '';
-    //         });
-    //     });
-    // });
 
     document.addEventListener('DOMContentLoaded', function () {
         const updateButtons = document.querySelectorAll('.btn-update');

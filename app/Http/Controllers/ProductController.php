@@ -42,12 +42,30 @@ class ProductController extends Controller
     public function admindisplay()
     {
         $product = Product::where('added_by', auth()->user()->id)->with(['gallery', 'meta', 'brand', 'category'])->paginate(10);
+        $categories = Category::with('parent')->get();
+        $data = [];
+
+        foreach ($categories as $category) {
+            if ($category->parent) {
+                $data[] = [
+                    'id' => $category->id,
+                    'name' => $category->parent->name.' - '.$category->name,
+                    'parent_id' => $category->parent_id,
+                ];
+            } else {
+                $data[] = [
+                    'id' => $category->id,
+                    'name' => $category->name,
+                ];
+            }
+        }
+
         if (! $product) {
             return view('productview')->with('product', []);
         }
 
         // dd($product);
-        return view('productview')->with('product', $product);
+        return view('productview')->with('product', $product)->with('category', $data);
 
         // return response()->json([
         //     "product" => $product

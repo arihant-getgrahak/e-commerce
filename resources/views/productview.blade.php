@@ -29,11 +29,11 @@
 
                             <div>
                                 <div class="flex align-items-center text-xs leading-6 mx-0 my-1 text-gray-600">
-                                    Category: {{ $p->category->name }}
+                                    Category: {{ $p->category->name ?? 'Category is deleted. Please updae it.' }}
                                 </div>
                             </div>
                             <div class="flex align-items-center text-xs leading-6 mx-0 my-1 text-gray-600">
-                                Brand: {{ $p->brand->name }}
+                                Brand: {{ $p->brand->name ?? 'Brand is deleted. Please update it.' }}
                             </div>
                             <div class="flex gap-5 mt-3">
 
@@ -161,84 +161,86 @@
                         @enderror
                     </div>
 
-                    {{-- <div class="mb-4">
-                        <label for="category_id" class="col-form-label required">Category</label>
-                        <select id="category_id" name="category_id"
-                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
-                            <option value="{{ $cat['id'] }}" {{ old('category_id')==$cat['id'] ? 'selected' : '' }}>
-                                {{ $cat['name'] }}
-                            </option>
+                    <!-- category -->
+                    <div class="mb-3">
+                        <label class="form-label required">Category Name</label>
+                        <select class="form-select arihant" id="parent_id" name="parent_id">
+                            <option value="">Select Parent Category</option>
+                            @foreach ($category as $c)
+                                <option value="{{ $c['id'] }}">{{ $c['name'] }}</option>
+                                @if (isset($c['children']))
+                                    @foreach ($c['children'] as $child)
+                                        <option value="{{ $child['id'] }}">-- {{ $child['name'] }}</option>
+                                    @endforeach
+                                @endif
+                            @endforeach
                         </select>
-                        @error('category_id')
-                        <p class="text-red-500">{{ $message }}</p>
-                        @enderror
-                    </div>
-                    --}}
-                    <!-- Weight -->
-                    <div class="mb-4">
-                        <label for="weight" class="col-form-label required">Weight</label>
-                        <input type="text" id="weight" name="weight"
-                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-                            placeholder="Enter product weight">
-                        @error('weight')
-                            <p class="text-red-500">{{ $message }}</p>
-                        @enderror
-                    </div>
 
-                    <!-- Thumbnail -->
-                    <div class="mb-4">
-                        <label for="thumbnail" class="col-form-label required">Product Thumbnail</label>
-                        <input type="file" id="thumbnail" name="thumbnail" class="form-control">
-                        @error('thumbnail')
-                            <p class="text-red-500">{{ $message }}</p>
-                        @enderror
-                    </div>
+                        <!-- Weight -->
+                        <div class="mb-4">
+                            <label for="weight" class="col-form-label required">Weight</label>
+                            <input type="text" id="weight" name="weight"
+                                class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                                placeholder="Enter product weight">
+                            @error('weight')
+                                <p class="text-red-500">{{ $message }}</p>
+                            @enderror
+                        </div>
 
-                    <!-- Images -->
-                    <div class="mb-4">
-                        <label for="image" class="col-form-label required">Product Images</label>
-                        <input type="file" id="image" name="image[]" class="form-control" multiple>
-                        @error('image')
-                            <p class="text-red-500">{{ $message }}</p>
-                        @enderror
+                        <!-- Thumbnail -->
+                        <div class="mb-4">
+                            <label for="thumbnail" class="col-form-label required">Product Thumbnail</label>
+                            <input type="file" id="thumbnail" name="thumbnail" class="form-control">
+                            @error('thumbnail')
+                                <p class="text-red-500">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Images -->
+                        <div class="mb-4">
+                            <label for="image" class="col-form-label required">Product Images</label>
+                            <input type="file" id="image" name="image[]" class="form-control" multiple>
+                            @error('image')
+                                <p class="text-red-500">{{ $message }}</p>
+                            @enderror
+                        </div>
                     </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary ms-auto">Update Product</button>
+                    </div>
+                </form>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary ms-auto">Update Product</button>
-            </div>
-            </form>
         </div>
     </div>
-</div>
 
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const updateButtons = document.querySelectorAll('.btn-update');
-        const updateForm = document.getElementById("productForm");
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const updateButtons = document.querySelectorAll('.btn-update');
+            const updateForm = document.getElementById("productForm");
 
-        updateButtons.forEach(button => {
-            button.addEventListener('click', function () {
-                const productId = this.getAttribute('data-id');
-                const name = this.getAttribute('data-name');
-                const description = this.getAttribute('data-description');
-                const price = this.getAttribute('data-price');
-                const stock = this.getAttribute('data-stock');
-                const sku = this.getAttribute('data-sku');
-                const weight = this.getAttribute('data-weight');
-                const category_id = this.getAttribute('data-category');
+            updateButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const productId = this.getAttribute('data-id');
+                    const name = this.getAttribute('data-name');
+                    const description = this.getAttribute('data-description');
+                    const price = this.getAttribute('data-price');
+                    const stock = this.getAttribute('data-stock');
+                    const sku = this.getAttribute('data-sku');
+                    const weight = this.getAttribute('data-weight');
+                    const category_id = this.getAttribute('data-category');
 
-                updateForm.action = "{{ route('product.update', ':id') }}".replace(':id', productId);
-                updateForm.querySelector('#name').value = name;
-                updateForm.querySelector('#description').value = description;
-                updateForm.querySelector('#price').value = price;
-                updateForm.querySelector('#stock').value = stock;
-                updateForm.querySelector('#sku').value = sku;
-                updateForm.querySelector('#weight').value = weight;
-                updateForm.querySelector('#category_id').value = category_id;
+                    updateForm.action = "{{ route('product.update', ':id') }}".replace(':id', productId);
+                    updateForm.querySelector('#name').value = name;
+                    updateForm.querySelector('#description').value = description;
+                    updateForm.querySelector('#price').value = price;
+                    updateForm.querySelector('#stock').value = stock;
+                    updateForm.querySelector('#sku').value = sku;
+                    updateForm.querySelector('#weight').value = weight;
+                    updateForm.querySelector('#category_id').value = category_id;
+                });
             });
         });
-    });
-</script>
-@endsection
+    </script>
+    @endsection
