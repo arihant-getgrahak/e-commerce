@@ -40,7 +40,7 @@
                                 <button class="btn btn-primary btn-update" data-bs-toggle="modal" data-bs-target="#modal-team"
                                     data-id="{{ $p->id }}" data-name="{{ $p->name }}" data-description="{{ $p->description }}"
                                     data-price="{{ $p->price }}" data-stock="{{ $p->stock }}" data-sku="{{ $p->meta[0]->sku }}"
-                                    data-weight="{{ $p->meta[0]->weight }}">
+                                    data-weight="{{ $p->meta[0]->weight }}" data-category="{{ $p->category->id }}">
                                     Update Product
                                 </button>
                                 <button class="btn btn-danger btn-delete" data-bs-toggle="modal" data-bs-target="#modal-danger"
@@ -161,6 +161,19 @@
                         @enderror
                     </div>
 
+                    {{-- <div class="mb-4">
+                        <label for="category_id" class="col-form-label required">Category</label>
+                        <select id="category_id" name="category_id"
+                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                            <option value="{{ $cat['id'] }}" {{ old('category_id')==$cat['id'] ? 'selected' : '' }}>
+                                {{ $cat['name'] }}
+                            </option>
+                        </select>
+                        @error('category_id')
+                        <p class="text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    --}}
                     <!-- Weight -->
                     <div class="mb-4">
                         <label for="weight" class="col-form-label required">Weight</label>
@@ -172,6 +185,23 @@
                         @enderror
                     </div>
 
+                    <!-- Thumbnail -->
+                    <div class="mb-4">
+                        <label for="thumbnail" class="col-form-label required">Product Thumbnail</label>
+                        <input type="file" id="thumbnail" name="thumbnail" class="form-control">
+                        @error('thumbnail')
+                            <p class="text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Images -->
+                    <div class="mb-4">
+                        <label for="image" class="col-form-label required">Product Images</label>
+                        <input type="file" id="image" name="image[]" class="form-control" multiple>
+                        @error('image')
+                            <p class="text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
@@ -197,6 +227,7 @@
                 const stock = this.getAttribute('data-stock');
                 const sku = this.getAttribute('data-sku');
                 const weight = this.getAttribute('data-weight');
+                const category_id = this.getAttribute('data-category');
 
                 updateForm.action = "{{ route('product.update', ':id') }}".replace(':id', productId);
                 updateForm.querySelector('#name').value = name;
@@ -205,6 +236,7 @@
                 updateForm.querySelector('#stock').value = stock;
                 updateForm.querySelector('#sku').value = sku;
                 updateForm.querySelector('#weight').value = weight;
+                updateForm.querySelector('#category_id').value = category_id;
             });
         });
     });
