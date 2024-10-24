@@ -51,3 +51,5 @@ Route::post('login', [AuthController::class, 'login'])->name('login');
 
 Route::get('/', [ProductController::class, 'display'])->name('product');
 Route::get('product/{id}', [ProductController::class, 'specific'])->name('product.specific');
+
+Route::delete('/category/delete/{id}', [CategoryController::class, 'delete'])->name('category.delete');
