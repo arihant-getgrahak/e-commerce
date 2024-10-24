@@ -32,7 +32,7 @@ class ProductAddRequest extends FormRequest
             'weight' => 'required',
             'slug' => 'required|unique:products,slug',
             'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'cost-price' => "required|numeric|regex:/^\d+(\.\d{1,2})?$/",
+            'cost_price' => "required|numeric|regex:/^\d+(\.\d{1,2})?$/",
         ];
     }
 
