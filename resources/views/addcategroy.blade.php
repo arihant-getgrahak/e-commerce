@@ -127,7 +127,7 @@
 
                         <!-- Name -->
                         <div class="mb-4">
-                            <label for="name" class="col-form-label required">Product Name</label>
+                            <label for="name" class="col-form-label required">Category Name</label>
                             <input type="text" id="name" name="name"
                                 class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
                                 placeholder="Enter product name">
