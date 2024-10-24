@@ -25,7 +25,7 @@
 
     <div class="card">
         <div class="card-body">
-            <h1>All Category</h1>
+            <h1>All Brand</h1>
             <div id="table-default" class="table-responsive">
                 <table class="table">
                     <thead>
@@ -67,7 +67,7 @@
                                                 <path d="M12 17h.01" />
                                             </svg>
                                             <h3>Are you sure?</h3>
-                                            <div class="text-secondary">Do you really want to delete this product? This
+                                            <div class="text-secondary">Do you really want to delete this brand? This
                                                 action cannot be
                                                 undone.
                                             </div>
@@ -116,7 +116,7 @@
 
                         <!-- Name -->
                         <div class="mb-4">
-                            <label for="name" class="col-form-label required">Product Name</label>
+                            <label for="name" class="col-form-label required">Brand Name</label>
                             <input type="text" id="name" name="name"
                                 class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
                                 placeholder="Enter product name">
@@ -124,7 +124,7 @@
 
                         <!-- Image -->
                         <div class="mb-4">
-                            <label for="image" class="col-form-label required">Product Thumbnail</label>
+                            <label for="image" class="col-form-label required">Brand Image</label>
                             <input type="file" id="image" name="image" class="form-control">
                         </div>
 
