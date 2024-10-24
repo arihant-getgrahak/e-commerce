@@ -5,26 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Specific Product</title>
-    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
-
-    {{--
-    <link rel="stylesheet" href="{{asset('dist/css/tabler.min.css')}}">
-    <link rel="stylesheet" href="{{asset('dist/css/tabler-flags.min.css')}}">
-    <link rel="stylesheet" href="{{asset('dist/css/tabler-payments.min.css')}}">
-    <link rel="stylesheet" href="{{asset('dist/css/tabler-vendors.min.css')}}">
-    <link rel="stylesheet" href="{{asset('dist/css/demo.min.css')}}">
-
-    <style>
-        @import url('https://rsms.me/inter/inter.css');
-
-        :root {
-            --tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
-        }
-
-        body {
-            font-feature-settings: "cv03", "cv04", "cv11";
-        }
-    </style> --}}
 
     <link href="{{asset('assets/css/styles.css')}}" rel="stylesheet">
 </head>
