@@ -97,6 +97,8 @@ class ProductController extends Controller
                 'slug' => $request->slug,
                 'thumbnail' => $this->uploadImage($request->file('thumbnail')),
                 'cost_price' => $request->cost_price,
+                'sku' => $request->sku,
+                'weight' => $request->weight,
             ];
             DB::beginTransaction();
             $product = Product::create($data);
@@ -125,14 +127,14 @@ class ProductController extends Controller
                 }
             }
 
-            $data = [
-                'product_id' => $product->id,
-                'sku' => $request->sku,
-                'weight' => $request->weight,
-            ];
-            DB::beginTransaction();
-            ProductMeta::create($data);
-            DB::commit();
+            // $data = [
+            //     'product_id' => $product->id,
+            //     'sku' => $request->sku,
+            //     'weight' => $request->weight,
+            // ];
+            // DB::beginTransaction();
+            // ProductMeta::create($data);
+            // DB::commit();
 
             // return response()->json([
             //     "success" => "Product created successfully",
