@@ -97,6 +97,179 @@
                     </div>
                 </div>
             </section>
+            <section class="middle">
+                <div class="container">
+                    <div class="row align-items-center justify-content-center">
+                        <div class="col-xl-11 col-lg-12 col-md-12 col-sm-12">
+                            <ul class="nav nav-tabs b-0 d-flex align-items-center justify-content-center simple_tab_links mb-4"
+                                id="myTab" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link active" id="description-tab" href="#description" data-toggle="tab"
+                                        role="tab" aria-controls="description" aria-selected="true">Description</a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link" href="#information" id="information-tab" data-toggle="tab"
+                                        role="tab" aria-controls="information" aria-selected="false">Additional
+                                        information</a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link" href="#reviews" id="reviews-tab" data-toggle="tab" role="tab"
+                                        aria-controls="reviews" aria-selected="false">Reviews</a>
+                                </li>
+                            </ul>
+
+                            <div class="tab-content" id="myTabContent">
+
+                                <!-- Description Content -->
+                                <div class="tab-pane fade show active" id="description" role="tabpanel"
+                                    aria-labelledby="description-tab">
+                                    <div class="description_info">
+                                        <p class="p-0 mb-2">{{$product[0]->description}}</p>
+                                    </div>
+                                </div>
+
+                                <!-- Additional Content -->
+                                <div class="tab-pane fade" id="information" role="tabpanel"
+                                    aria-labelledby="information-tab">
+                                    <div class="additionals">
+                                        <table class="table">
+                                            <tbody>
+                                                <tr>
+                                                    <th class="ft-medium text-dark">ID</th>
+                                                    <td>{{$product[0]->id}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="ft-medium text-dark">SKU</th>
+                                                    <td>{{$product[0]->meta[0]->sku}}</td>
+                                                </tr>
+                                                
+                                            
+                                                <tr>
+                                                    <th class="ft-medium text-dark">Weight</th>
+                                                    <td>{{$product[0]->meta[0]->weight}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <!-- Reviews Content -->
+                                <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
+                                    <div class="reviews_info">
+                                        <div class="single_rev d-flex align-items-start br-bottom py-3">
+                                            <div class="single_rev_thumb"><img src="assets/img/team-1.jpg"
+                                                    class="img-fluid circle" width="90" alt="" /></div>
+                                            <div class="single_rev_caption d-flex align-items-start pl-3">
+                                                <div class="single_capt_left">
+                                                    <h5 class="mb-0 fs-md ft-medium lh-1">Daniel Rajdesh</h5>
+                                                    <span class="small">30 jul 2021</span>
+                                                    <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui
+                                                        blanditiis praesentium voluptatum deleniti atque corrupti quos
+                                                        dolores et quas molestias excepturi sint occaecati cupiditate non
+                                                        provident, similique sunt in culpa qui officia deserunt mollitia
+                                                        animi, id est laborum</p>
+                                                </div>
+                                                <div class="single_capt_right">
+                                                    <div
+                                                        class="star-rating align-items-center d-flex justify-content-left mb-1 p-0">
+                                                        <i class="fas fa-star filled"></i>
+                                                        <i class="fas fa-star filled"></i>
+                                                        <i class="fas fa-star filled"></i>
+                                                        <i class="fas fa-star filled"></i>
+                                                        <i class="fas fa-star filled"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Single Review -->
+                                        <div class="single_rev d-flex align-items-start br-bottom py-3">
+                                            <div class="single_rev_thumb"><img src="assets/img/team-2.jpg"
+                                                    class="img-fluid circle" width="90" alt="" /></div>
+                                            <div class="single_rev_caption d-flex align-items-start pl-3">
+                                                <div class="single_capt_left">
+                                                    <h5 class="mb-0 fs-md ft-medium lh-1">Seema Gupta</h5>
+                                                    <span class="small">30 Aug 2021</span>
+                                                    <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui
+                                                        blanditiis praesentium voluptatum deleniti atque corrupti quos
+                                                        dolores et quas molestias excepturi sint occaecati cupiditate non
+                                                        provident, similique sunt in culpa qui officia deserunt mollitia
+                                                        animi, id est laborum</p>
+                                                </div>
+                                                <div class="single_capt_right">
+                                                    <div
+                                                        class="star-rating align-items-center d-flex justify-content-left mb-1 p-0">
+                                                        <i class="fas fa-star filled"></i>
+                                                        <i class="fas fa-star filled"></i>
+                                                        <i class="fas fa-star filled"></i>
+                                                        <i class="fas fa-star filled"></i>
+                                                        <i class="fas fa-star filled"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Single Review -->
+                                        <div class="single_rev d-flex align-items-start br-bottom py-3">
+                                            <div class="single_rev_thumb"><img src="assets/img/team-3.jpg"
+                                                    class="img-fluid circle" width="90" alt="" /></div>
+                                            <div class="single_rev_caption d-flex align-items-start pl-3">
+                                                <div class="single_capt_left">
+                                                    <h5 class="mb-0 fs-md ft-medium lh-1">Mark Jugermi</h5>
+                                                    <span class="small">10 Oct 2021</span>
+                                                    <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui
+                                                        blanditiis praesentium voluptatum deleniti atque corrupti quos
+                                                        dolores et quas molestias excepturi sint occaecati cupiditate non
+                                                        provident, similique sunt in culpa qui officia deserunt mollitia
+                                                        animi, id est laborum</p>
+                                                </div>
+                                                <div class="single_capt_right">
+                                                    <div
+                                                        class="star-rating align-items-center d-flex justify-content-left mb-1 p-0">
+                                                        <i class="fas fa-star filled"></i>
+                                                        <i class="fas fa-star filled"></i>
+                                                        <i class="fas fa-star filled"></i>
+                                                        <i class="fas fa-star filled"></i>
+                                                        <i class="fas fa-star filled"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Single Review -->
+                                        <div class="single_rev d-flex align-items-start py-3">
+                                            <div class="single_rev_thumb"><img src="assets/img/team-4.jpg"
+                                                    class="img-fluid circle" width="90" alt="" /></div>
+                                            <div class="single_rev_caption d-flex align-items-start pl-3">
+                                                <div class="single_capt_left">
+                                                    <h5 class="mb-0 fs-md ft-medium lh-1">Meena Rajpoot</h5>
+                                                    <span class="small">17 Dec 2021</span>
+                                                    <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui
+                                                        blanditiis praesentium voluptatum deleniti atque corrupti quos
+                                                        dolores et quas molestias excepturi sint occaecati cupiditate non
+                                                        provident, similique sunt in culpa qui officia deserunt mollitia
+                                                        animi, id est laborum</p>
+                                                </div>
+                                                <div class="single_capt_right">
+                                                    <div
+                                                        class="star-rating align-items-center d-flex justify-content-left mb-1 p-0">
+                                                        <i class="fas fa-star filled"></i>
+                                                        <i class="fas fa-star filled"></i>
+                                                        <i class="fas fa-star filled"></i>
+                                                        <i class="fas fa-star filled"></i>
+                                                        <i class="fas fa-star filled"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
 
     @endif
