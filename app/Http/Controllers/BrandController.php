@@ -10,6 +10,13 @@ use Validator;
 
 class BrandController extends Controller
 {
+    public function index()
+    {
+        $brand = Brand::all();
+
+        return view('brand', compact('brand'));
+    }
+
     public function display()
     {
         $brand = Brand::with(['products', 'products.gallery', 'products.parent', 'products.children'])->paginate(10);
