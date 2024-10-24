@@ -79,7 +79,7 @@
                                                             data-bs-dismiss="modal">Cancel</a></div>
                                                     <div class="col">
                                                         <form id="delete-form"
-                                                            action="{{ route('category.delete', $c['id']) }}" method="POST"
+                                                            action="{{ route('brand.delete', $c['id']) }}" method="POST"
                                                             class="w-100">
                                                             @csrf
                                                             @method('DELETE')

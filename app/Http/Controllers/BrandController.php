@@ -83,16 +83,18 @@ class BrandController extends Controller
     {
         $brand = Brand::find($id);
         if (! $brand) {
-            return response()->json([
-                'message' => 'Brand not found',
-            ], 404);
+            return back()->with('errors', 'Brand not found');
+            // return response()->json([
+            //     'message' => 'Brand not found',
+            // ], 404);
         }
         Storage::delete($brand->image);
         $brand->delete();
 
-        return response()->json([
-            'message' => 'Brand deleted successfully',
-        ], 200);
+        return back()->with('success', 'Brand deleted successfully');
+        // return response()->json([
+        //     'message' => 'Brand deleted successfully',
+        // ], 200);
     }
 
     protected function uploadImage($file)
