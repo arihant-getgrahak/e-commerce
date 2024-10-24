@@ -180,9 +180,8 @@ class ProductController extends Controller
 
             $product->fill($updateData)->save();
 
-            $product->gallery()->delete();
-
             if ($request->hasFile('image')) {
+                $product->gallery()->delete();
                 $images = is_array($request->file('image')) ? $request->file('image') : [$request->file('image')];
 
                 $galleryImages = [];
