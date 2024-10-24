@@ -132,6 +132,84 @@ class ProductController extends Controller
         }
     }
 
+    // public function update(Request $request, $id)
+    // {
+    //     $product = Product::with('gallery')->find($id);
+    //     if (!$product) {
+    //         return response()->json([
+    //             'message' => 'Product not found',
+    //         ], 404);
+    //     }
+
+    //     DB::beginTransaction();
+
+    //     try {
+    //         $thumbnail = $this->uploadImage($request->file('thumbnail'));
+
+    //         $updateData = $request->only([
+    //             'name',
+    //             'description',
+    //             'price',
+    //             'stock',
+    //             'category_id',
+    //             'added_by',
+    //         ]);
+
+    //         $updateData['thumbnail'] = $thumbnail;
+
+    //         // dd($updateData);
+
+    //         $product->update($updateData);
+
+    //         foreach ($product->gallery as $galleryImage) {
+    //             Storage::delete($galleryImage->image);
+    //             $galleryImage->delete();
+    //         }
+    //         if ($request->hasFile('image')) {
+    //             if (is_array($request->file('image'))) {
+    //                 foreach ($request->file('image') as $file) {
+    //                     dd($file);
+    //                     $imagePath = $this->uploadImage($file);
+    //                     DB::beginTransaction();
+    //                     Gallery::create([
+    //                         'product_id' => $product->id,
+    //                         'image' => $imagePath,
+    //                     ]);
+    //                     DB::commit();
+    //                 }
+    //             } else {
+    //                 dd($request->file('image'));
+    //                 $imagePath = $this->uploadImage($request->file('image'));
+    //                 DB::beginTransaction();
+    //                 Gallery::create([
+    //                     'product_id' => $product->id,
+    //                     'image' => $imagePath,
+    //                 ]);
+    //                 DB::commit();
+    //             }
+    //         }
+
+    //         DB::commit();
+
+    //         $product->load('gallery');
+
+    //         return back()->with('success', 'Product updated successfully');
+    //         // return response()->json([
+    //         //     "product" => $product
+    //         // ], 200);
+
+    //     } catch (\Exception $e) {
+
+    //         DB::rollBack();
+
+    //         return back()->with('error', $e->getMessage());
+    //         // return response()->json([
+    //         //     "message" => "An error occurred while updating the product.",
+    //         //     "error" => $e->getMessage(),
+    //         // ], 500);
+    //     }
+    // }
+
     public function update(Request $request, $id)
     {
         $product = Product::with('gallery')->find($id);
@@ -144,6 +222,10 @@ class ProductController extends Controller
         DB::beginTransaction();
 
         try {
+            if ($request->hasFile('thumbnail')) {
+                $thumbnail = $this->uploadImage($request->file('thumbnail'));
+                $product->thumbnail = $thumbnail;
+            }
 
             $updateData = $request->only([
                 'name',
@@ -154,24 +236,22 @@ class ProductController extends Controller
                 'added_by',
             ]);
 
-            $product->update($updateData);
+            $product->fill($updateData)->save();
+
+            $product->gallery()->delete();
 
             if ($request->hasFile('image')) {
-                $imageFiles = is_array($request->file('image')) ? $request->file('image') : [$request->file('image')];
+                $images = is_array($request->file('image')) ? $request->file('image') : [$request->file('image')];
 
-                foreach ($product->gallery as $galleryImage) {
-                    Storage::delete($galleryImage->image); // Delete from storage
-                    $galleryImage->delete(); // Delete from DB
-                }
-
-                foreach ($imageFiles as $file) {
+                $galleryImages = [];
+                foreach ($images as $file) {
                     $imagePath = $this->uploadImage($file);
-
-                    Gallery::create([
+                    $galleryImages[] = [
                         'product_id' => $product->id,
                         'image' => $imagePath,
-                    ]);
+                    ];
                 }
+                Gallery::insert($galleryImages);
             }
 
             DB::commit();
@@ -179,19 +259,11 @@ class ProductController extends Controller
             $product->load('gallery');
 
             return back()->with('success', 'Product updated successfully');
-            // return response()->json([
-            //     "product" => $product
-            // ], 200);
 
         } catch (\Exception $e) {
-
             DB::rollBack();
 
-            return back()->with('error', $e->getMessage());
-            // return response()->json([
-            //     "message" => "An error occurred while updating the product.",
-            //     "error" => $e->getMessage(),
-            // ], 500);
+            return back()->with('error', 'An error occurred while updating the product: '.$e->getMessage());
         }
     }
 
@@ -227,6 +299,7 @@ class ProductController extends Controller
 
     protected function uploadImage($file)
     {
+        // dd($file);
         $uploadFolder = 'product';
         $image = $file;
         $image_uploaded_path = $image->store($uploadFolder, 'public');
