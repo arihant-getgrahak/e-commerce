@@ -28,10 +28,7 @@ Route::group(['middleware' => AdminMiddleware::class], function () {
 
         Route::delete('delete/{id}', [ProductController::class, 'delete'])->name('product.delete');
 
-        Route::get('brand', function () {
-
-            return view('brand');
-        })->name('brand');
+        Route::get('brand', [BrandController::class, 'index'])->name('brand');
     });
 });
 
@@ -51,3 +48,9 @@ Route::post('login', [AuthController::class, 'login'])->name('login');
 
 Route::get('/', [ProductController::class, 'display'])->name('product');
 Route::get('product/{id}', [ProductController::class, 'specific'])->name('product.specific');
+
+Route::delete('/category/delete/{id}', [CategoryController::class, 'delete'])->name('category.delete');
+Route::post('/category/update/{id}', [CategoryController::class, 'update'])->name('category.update');
+
+Route::post('/brand/update/{id}', [BrandController::class, 'update'])->name('brand.update');
+Route::delete('/brand/delete/{id}', [BrandController::class, 'destroy'])->name('brand.delete');

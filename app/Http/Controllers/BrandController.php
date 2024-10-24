@@ -10,6 +10,13 @@ use Validator;
 
 class BrandController extends Controller
 {
+    public function index()
+    {
+        $brand = Brand::all();
+
+        return view('brand', compact('brand'));
+    }
+
     public function display()
     {
         $brand = Brand::with(['products', 'products.gallery', 'products.parent', 'products.children'])->paginate(10);
@@ -55,41 +62,39 @@ class BrandController extends Controller
     public function update(Request $request, $id)
     {
         $brand = Brand::find($id);
+
         if (! $brand) {
-            return response()->json([
-                'message' => 'Brand not found',
-            ], 404);
+            return back()->with('errors', 'Brand not found');
         }
+
+        $updateData = $request->only(['name']);
 
         if ($request->hasFile('image')) {
-            Storage::delete($brand->image);
+            $image = $this->uploadImage($request->file('image'));
+            $updateData['image'] = $image;
         }
 
-        $brand->update([
-            'name' => $request->name,
-            'image' => $this->uploadImage($request->image),
-        ]);
+        $brand->update($updateData);
 
-        return response()->json([
-            'message' => 'Brand updated successfully',
-            'brand' => $brand,
-        ], 200);
+        return back()->with('success', 'Brand updated successfully');
     }
 
     public function destroy($id)
     {
         $brand = Brand::find($id);
         if (! $brand) {
-            return response()->json([
-                'message' => 'Brand not found',
-            ], 404);
+            return back()->with('errors', 'Brand not found');
+            // return response()->json([
+            //     'message' => 'Brand not found',
+            // ], 404);
         }
         Storage::delete($brand->image);
         $brand->delete();
 
-        return response()->json([
-            'message' => 'Brand deleted successfully',
-        ], 200);
+        return back()->with('success', 'Brand deleted successfully');
+        // return response()->json([
+        //     'message' => 'Brand deleted successfully',
+        // ], 200);
     }
 
     protected function uploadImage($file)

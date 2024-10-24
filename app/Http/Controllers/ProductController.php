@@ -42,12 +42,30 @@ class ProductController extends Controller
     public function admindisplay()
     {
         $product = Product::where('added_by', auth()->user()->id)->with(['gallery', 'meta', 'brand', 'category'])->paginate(10);
+        $categories = Category::with('parent')->get();
+        $data = [];
+
+        foreach ($categories as $category) {
+            if ($category->parent) {
+                $data[] = [
+                    'id' => $category->id,
+                    'name' => $category->parent->name.' - '.$category->name,
+                    'parent_id' => $category->parent_id,
+                ];
+            } else {
+                $data[] = [
+                    'id' => $category->id,
+                    'name' => $category->name,
+                ];
+            }
+        }
+
         if (! $product) {
             return view('productview')->with('product', []);
         }
 
         // dd($product);
-        return view('productview')->with('product', $product);
+        return view('productview')->with('product', $product)->with('category', $data);
 
         // return response()->json([
         //     "product" => $product
@@ -144,6 +162,10 @@ class ProductController extends Controller
         DB::beginTransaction();
 
         try {
+            if ($request->hasFile('thumbnail')) {
+                $thumbnail = $this->uploadImage($request->file('thumbnail'));
+                $product->thumbnail = $thumbnail;
+            }
 
             $updateData = $request->only([
                 'name',
@@ -154,24 +176,22 @@ class ProductController extends Controller
                 'added_by',
             ]);
 
-            $product->update($updateData);
+            $product->fill($updateData)->save();
+
+            $product->gallery()->delete();
 
             if ($request->hasFile('image')) {
-                $imageFiles = is_array($request->file('image')) ? $request->file('image') : [$request->file('image')];
+                $images = is_array($request->file('image')) ? $request->file('image') : [$request->file('image')];
 
-                foreach ($product->gallery as $galleryImage) {
-                    Storage::delete($galleryImage->image); // Delete from storage
-                    $galleryImage->delete(); // Delete from DB
-                }
-
-                foreach ($imageFiles as $file) {
+                $galleryImages = [];
+                foreach ($images as $file) {
                     $imagePath = $this->uploadImage($file);
-
-                    Gallery::create([
+                    $galleryImages[] = [
                         'product_id' => $product->id,
                         'image' => $imagePath,
-                    ]);
+                    ];
                 }
+                Gallery::insert($galleryImages);
             }
 
             DB::commit();
@@ -179,19 +199,11 @@ class ProductController extends Controller
             $product->load('gallery');
 
             return back()->with('success', 'Product updated successfully');
-            // return response()->json([
-            //     "product" => $product
-            // ], 200);
 
         } catch (\Exception $e) {
-
             DB::rollBack();
 
-            return back()->with('error', $e->getMessage());
-            // return response()->json([
-            //     "message" => "An error occurred while updating the product.",
-            //     "error" => $e->getMessage(),
-            // ], 500);
+            return back()->with('error', 'An error occurred while updating the product: '.$e->getMessage());
         }
     }
 
@@ -227,6 +239,7 @@ class ProductController extends Controller
 
     protected function uploadImage($file)
     {
+        // dd($file);
         $uploadFolder = 'product';
         $image = $file;
         $image_uploaded_path = $image->store($uploadFolder, 'public');
