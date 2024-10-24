@@ -19,7 +19,8 @@ class AdminMiddleware
             return $next($request);
 
         }
-        return back();
+
+        return redirect('login')->with('error', 'You are not authorized to access this page!');
 
     }
 }
