@@ -6,9 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="https://cdn.tailwindcss.com"></script>
+   {{-- <link href="{{asset('assets/css/styles.css')}}" rel="stylesheet"> --}}
 </head>
 
 <body class="bg-gray-300">
+<div class="preloader"></div>
     <header class="bg-white">
         <div class="container mx-auto px-6 py-3">
             <div class="flex items-center justify-between">
@@ -31,7 +33,7 @@
                                         <div class="relative h-0 pb-[100%] w-full bg-white text-ellipsis overflow-hidden">
                                             <div
                                                 class="bg-no-repeat bg-cover inline-block my-0 mx-auto text-center w-full h-full absolute">
-                                                @if($p->thumbnail )
+                                                @if($p->thumbnail)
                                                     <img src="{{ $p->thumbnail }}" alt="Product Image"
                                                         class="w-full h-48 object-cover transition-transform duration-500 transform group-hover:scale-105">
                                                 @else
