@@ -65,29 +65,24 @@ class CategoryController extends Controller
 
     public function update(Request $request, $id)
     {
-        $category = Category::find($id);
-        if (! $category) {
-            return response()->json([
-                'message' => 'Category not found',
-            ], 404);
-        }
         $validator = Validator::make($request->all(), [
             'name' => 'required',
+            'parent_id' => 'nullable|exists:categories,id',
         ]);
         if ($validator->fails()) {
-            return response()->json([
-                'message' => 'Validation error',
-                'errors' => $validator->errors(),
-            ], 400);
-        }
-        $category->update([
-            'name' => $request->name,
-        ]);
 
-        return response()->json([
-            'message' => 'Category updated successfully',
-            'category' => $category,
-        ], 200);
+            return back()->with('errors', $validator->errors());
+        }
+        $category = Category::find($id);
+
+        $data = $request->only(['name', 'parent_id']);
+        $category->update($data);
+
+        return back()->with('success', 'Category updated successfully');
+        // return response()->json([
+        //     'message' => 'Category updated successfully',
+        //     'category' => $category,
+        // ], 200);
     }
 
     public function delete($id)
