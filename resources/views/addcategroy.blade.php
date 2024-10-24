@@ -47,12 +47,14 @@
                     </thead>
                     <tbody class="table-tbody">
                         @foreach ($data as $key => $c)
+
                             <tr>
                                 <td class="sort-name">{{$c["id"]}}</td>
                                 <td class="sort-city">{{$c["name"]}}</td>
                                 <td class="sort-type">
                                     <button class="btn btn-primary btn-sm btn-update" data-bs-toggle="modal"
                                         data-bs-target="#modal-team" data-id="{{ $c["id"] }}"
+                                        data-parent-id="{{ $c["parent_id"] ?? null }}"
                                         data-name="{{ $c["name"] }}">Edit</button>
                                     <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
                                         data-bs-target="#modal-danger">Delete</button>
@@ -125,13 +127,28 @@
                         enctype="multipart/form-data">
                         @csrf
 
+                        <!-- category -->
+                        <div class="mb-3">
+                            <label class="form-label required">Category Name</label>
+                            <select class="form-select arihant" id="parent_id" name="parent_id">
+                                <option value="">Select Parent Category</option>
+                                @foreach ($data as $category)
+                                    <option value="{{ $category['id'] }}">{{ $category['name'] }}</option>
+                                    @if (isset($category['children']))
+                                        @foreach ($category['children'] as $child)
+                                            <option value="{{ $child['id'] }}">-- {{ $child['name'] }}</option>
+                                        @endforeach
+                                    @endif
+                                @endforeach
+                            </select>
+
+                        </div>
                         <!-- Name -->
                         <div class="mb-4">
                             <label for="name" class="col-form-label required">Category Name</label>
                             <input type="text" id="name" name="name"
                                 class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
                                 placeholder="Enter product name">
-                           
                         </div>
                 </div>
                 <div class="modal-footer">
@@ -148,20 +165,50 @@
         alert("{{session('success')}}")
     }
 
+    // document.addEventListener('DOMContentLoaded', function () {
+    //     const updateButtons = document.querySelectorAll('.btn-update');
+    //     const updateForm = document.getElementById("productForm");
+
+    //     updateButtons.forEach(button => {
+    //         button.addEventListener('click', function () {
+    //             const productId = this.getAttribute('data-id');
+    //             const name = this.getAttribute('data-name');
+    //             const parentId = document.getAttribute('data-parent-id');
+    //             const arihant = document.getElementsByClassName('arihant');
+
+
+    " {{--updateForm.action = "{ { route('category.update', ':id') } } ".replace(':id', productId); --}}"
+    //             updateForm.querySelector('#name').value = name;
+    //             arihant.value = parentId ? parentId : '';
+    //         });
+    //     });
+    // });
+
     document.addEventListener('DOMContentLoaded', function () {
         const updateButtons = document.querySelectorAll('.btn-update');
         const updateForm = document.getElementById("productForm");
+        const arihantSelect = updateForm.querySelector('.arihant');
 
         updateButtons.forEach(button => {
             button.addEventListener('click', function () {
                 const productId = this.getAttribute('data-id');
                 const name = this.getAttribute('data-name');
-
+                const parentId = this.getAttribute('data-parent-id');
 
                 updateForm.action = "{{ route('category.update', ':id') }}".replace(':id', productId);
+
                 updateForm.querySelector('#name').value = name;
+
+                for (const option of arihantSelect.options) {
+                    if (option.value === parentId) {
+                        option.selected = true;
+                    } else {
+                        option.selected = false;
+                    }
+                }
             });
         });
     });
+
 </script>
 @endsection

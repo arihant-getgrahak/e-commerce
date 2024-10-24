@@ -20,6 +20,7 @@ class CategoryController extends Controller
                 $data[] = [
                     'id' => $category->id,
                     'name' => $category->parent->name.' - '.$category->name,
+                    'parent_id' => $category->parent_id,
                 ];
             } else {
                 $data[] = [
