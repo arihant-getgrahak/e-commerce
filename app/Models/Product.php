@@ -16,7 +16,7 @@ class Product extends Model
         'brand_id',
         'slug',
         'thumbnail',
-        'cost-price',
+        'cost_price',
     ];
 
     protected function casts(): array

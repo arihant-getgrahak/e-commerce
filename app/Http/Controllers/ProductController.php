@@ -96,7 +96,7 @@ class ProductController extends Controller
                 'brand_id' => $request->brand_id,
                 'slug' => $request->slug,
                 'thumbnail' => $this->uploadImage($request->file('thumbnail')),
-                'cost-price' => $request->cost_price,
+                'cost_price' => $request->cost_price,
             ];
             DB::beginTransaction();
             $product = Product::create($data);
@@ -175,6 +175,7 @@ class ProductController extends Controller
                 'stock',
                 'category_id',
                 'added_by',
+                'cost_price',
             ]);
 
             $product->fill($updateData)->save();
