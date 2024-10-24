@@ -838,7 +838,8 @@
                                                             data-description="{{ $p->description }}"
                                                             data-gallery="{{ json_encode($p->gallery) }}"
                                                             data-category="{{ $p->category->name }}" data-reviews="412"
-                                                            data-old-price="$199" data-new-price="{{ $p->price }}">
+                                                            data-old-price="{{ $p->cost_price }}"
+                                                            data-new-price="{{ $p->price }}">
                                                             <i class="fas fa-eye mr-1"></i>Quick View
                                                         </a>
                                                     </div>
@@ -1174,8 +1175,8 @@
 
                     // Update modal content
                     document.querySelector('#quickviewmodal .ft-bold.mb-1').innerText = productName;
-                    document.querySelector('#quickviewmodal .ft-bold.theme-cl.fs-lg.mr-2').innerText = newPrice;
-                    document.querySelector('#quickviewmodal .ft-medium.text-muted.line-through.fs-md.mr-2').innerText = oldPrice;
+                    document.querySelector('#quickviewmodal .ft-bold.theme-cl.fs-lg.mr-2').innerText = `₹${newPrice}`;
+                    document.querySelector('#quickviewmodal .ft-medium.text-muted.line-through.fs-md.mr-2').innerText = `₹${oldPrice}`;
                     document.querySelector('#quickviewmodal .prt_03.mb-3 p').innerText = productDescription;
                     document.querySelector("#category").innerText = productCategory;
 
