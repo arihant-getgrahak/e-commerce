@@ -164,7 +164,7 @@
                     <!-- category -->
                     <div class="mb-3">
                         <label class="form-label required">Category Name</label>
-                        <select class="form-select arihant" id="parent_id" name="parent_id">
+                        <select class="form-select arihant" id="category_id" name="category_id">
                             <option value="">Select Parent Category</option>
                             @foreach ($category as $c)
                                 <option value="{{ $c['id'] }}">{{ $c['name'] }}</option>
