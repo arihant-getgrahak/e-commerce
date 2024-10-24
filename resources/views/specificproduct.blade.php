@@ -46,7 +46,7 @@
                                             <span class="small">(412 Reviews)</span>
                                         </div>
                                         <div class="elis_rty"><span
-                                                class="ft-medium text-muted line-through fs-md mr-2">₹1000</span><span
+                                                class="ft-medium text-muted line-through fs-md mr-2">₹{{$product[0]->cost_price}}</span><span
                                                 class="ft-bold theme-cl fs-lg mr-2">₹{{$product[0]->price}}</span><span
                                                 class="ft-regular text-light bg-success py-1 px-2 fs-sm">In Stock</span>
                                         </div>
