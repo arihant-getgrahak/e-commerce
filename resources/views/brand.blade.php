@@ -100,6 +100,46 @@
             </div>
         </div>
     </div>
+
+    <!-- update modal -->
+    <div class="modal modal-blur fade" id="modal-team" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Update form</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="productForm" class="bg-white p-6 rounded-lg shadow-lg" method="post" action=""
+                        enctype="multipart/form-data">
+                        @csrf
+
+                        <!-- Name -->
+                        <div class="mb-4">
+                            <label for="name" class="col-form-label required">Product Name</label>
+                            <input type="text" id="name" name="name"
+                                class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                                placeholder="Enter product name">
+                        </div>
+                        
+                        <!-- Image -->
+                        <div class="mb-4">
+                            <label for="thumbnail" class="col-form-label required">Product Thumbnail</label>
+                            <input type="file" id="thumbnail" name="thumbnail" class="form-control">
+                            @error('thumbnail')
+                                <p class="text-red-500">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary ms-auto">Update Product</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
 
@@ -111,5 +151,21 @@
     if ("{{session('error')}}") {
         alert("{{session('error')}}")
     }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const updateButtons = document.querySelectorAll('.btn-update');
+        const updateForm = document.getElementById("productForm");
+
+        updateButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const productId = this.getAttribute('data-id');
+                const name = this.getAttribute('data-name');
+
+
+                updateForm.action = "{{ route('category.update', ':id') }}".replace(':id', productId);
+                updateForm.querySelector('#name').value = name;
+            });
+        });
+    });
 </script>
 @endsection
