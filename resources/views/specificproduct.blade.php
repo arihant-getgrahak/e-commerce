@@ -19,7 +19,7 @@
                 <div class="container">
                     <nav id="navigation" class="navigation navigation-landscape">
                         <div class="nav-header">
-                            <a class="nav-brand" href="#">
+                            <a class="nav-brand" href="/ariahnt/e-commerce/public">
                                 <img src="{{asset('assets/img/logo.png')}}" class="logo" alt="" />
 
                             </a>
@@ -270,13 +270,13 @@
                                                 </tr>
                                                 <tr>
                                                     <th class="ft-medium text-dark">SKU</th>
-                                                    <td>{{$product[0]->meta[0]->sku}}</td>
+                                                    <td>{{$product[0]->sku}}</td>
                                                 </tr>
 
 
                                                 <tr>
                                                     <th class="ft-medium text-dark">Weight</th>
-                                                    <td>{{$product[0]->meta[0]->weight}}</td>
+                                                    <td>{{$product[0]->weight}}</td>
                                                 </tr>
                                             </tbody>
                                         </table>

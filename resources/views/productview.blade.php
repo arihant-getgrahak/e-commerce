@@ -39,8 +39,8 @@
 
                                 <button class="btn btn-primary btn-update" data-bs-toggle="modal" data-bs-target="#modal-team"
                                     data-id="{{ $p->id }}" data-name="{{ $p->name }}" data-description="{{ $p->description }}"
-                                    data-price="{{ $p->price }}" data-stock="{{ $p->stock }}" data-sku="{{ $p->meta[0]->sku }}"
-                                    data-weight="{{ $p->meta[0]->weight }}" data-category="{{ $p->category->id }}" data-old = "{{ $p->cost_price }}">
+                                    data-price="{{ $p->price }}" data-stock="{{ $p->stock }}" data-sku="{{ $p->sku }}"
+                                    data-weight="{{ $p->weight }}" data-category="{{ $p->category->id }}" data-old = "{{ $p->cost_price }}">
                                     Update Product
                                 </button>
                                 <button class="btn btn-danger btn-delete" data-bs-toggle="modal" data-bs-target="#modal-danger"
