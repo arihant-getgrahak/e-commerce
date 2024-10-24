@@ -40,7 +40,7 @@
                                 <button class="btn btn-primary btn-update" data-bs-toggle="modal" data-bs-target="#modal-team"
                                     data-id="{{ $p->id }}" data-name="{{ $p->name }}" data-description="{{ $p->description }}"
                                     data-price="{{ $p->price }}" data-stock="{{ $p->stock }}" data-sku="{{ $p->meta[0]->sku }}"
-                                    data-weight="{{ $p->meta[0]->weight }}" data-category="{{ $p->category->id }}">
+                                    data-weight="{{ $p->meta[0]->weight }}" data-category="{{ $p->category->id }}" data-old = "{{ $p->cost_price }}">
                                     Update Product
                                 </button>
                                 <button class="btn btn-danger btn-delete" data-bs-toggle="modal" data-bs-target="#modal-danger"
@@ -139,6 +139,17 @@
                         @enderror
                     </div>
 
+                    <!-- Price -->
+                    <div class="mb-4">
+                        <label for="cost_price" class="col-form-label required">Cost Price</label>
+                        <input type="float" id="cost_price" name="cost_price"
+                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="Enter price"
+                            value="{{ old('cost_price') }}">
+                        @error('price')
+                            <p class="text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div>
+
                     <!-- Stock -->
                     <div class="mb-4">
                         <label for="stock" class="col-form-label required">Stock</label>
@@ -230,6 +241,7 @@
                     const sku = this.getAttribute('data-sku');
                     const weight = this.getAttribute('data-weight');
                     const category_id = this.getAttribute('data-category');
+                    const oldPrice = this.getAttribute('data-old');
 
                     updateForm.action = "{{ route('product.update', ':id') }}".replace(':id', productId);
                     updateForm.querySelector('#name').value = name;
@@ -239,6 +251,7 @@
                     updateForm.querySelector('#sku').value = sku;
                     updateForm.querySelector('#weight').value = weight;
                     updateForm.querySelector('#category_id').value = category_id;
+                    updateForm.querySelector('#cost_price').value = oldPrice;
                 });
             });
         });
