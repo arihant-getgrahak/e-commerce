@@ -23,7 +23,7 @@
                                 IMAGES</div>
                             <div class="sp-wrap">
                                 @foreach ($product[0]->gallery as $image)
-                                    <a href="{{$image->image}}"><img src="{{$image->image}}" alt=""></a>
+                                    <a href="{{$image->image}}"><img src="{{$image->image}}" alt="{{$image->image}}"></a>
                                 @endforeach
                             </div>
                         </div>
@@ -107,7 +107,7 @@
     </script>
 
     <script src="{{asset('assets/js/jquery.min.js')}}"></script>
-    <script src="{{asset('assets/js/pooper.min.js')}}"></script>
+    <script src="{{asset('assets/js/popper.min.js')}}"></script>
     <script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
     <script src="{{asset('assets/js/ion.rangeslider.min.js')}}"></script>
     <script src="{{asset('assets/js/slick.js')}}"></script>

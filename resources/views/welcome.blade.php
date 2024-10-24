@@ -826,13 +826,22 @@
                                         <div class="card-body p-0">
                                             <div class="shop_thumb position-relative">
                                                 <a class="card-img-top d-block overflow-hidden"
-                                                    href="shop-single-v1.html"><img class="card-img-top"
+                                                    href={{route('product.specific', $p->slug)}}><img class="card-img-top"
                                                         src="{{$p->thumbnail}}" alt="{{$p->name}}"></a>
                                                 <div
                                                     class="product-hover-overlay bg-dark d-flex align-items-center justify-content-center">
-                                                    <div class="edlio"><a href="#" data-toggle="modal"
-                                                            data-target="#quickview" class="text-white fs-sm ft-medium"><i
-                                                                class="fas fa-eye mr-1"></i>Quick View</a></div>
+
+                                                    <div class="edlio">
+                                                        <a href="#" data-toggle="modal" data-target="#quickview"
+                                                            class="text-white fs-sm ft-medium quick-view-btn"
+                                                            data-name="{{ $p->name }}" data-price="{{ $p->price }}"
+                                                            data-description="{{ $p->description }}"
+                                                            data-gallery="{{ json_encode($p->gallery) }}"
+                                                            data-category="{{ $p->category->name }}" data-reviews="412"
+                                                            data-old-price="$199" data-new-price="{{ $p->price }}">
+                                                            <i class="fas fa-eye mr-1"></i>Quick View
+                                                        </a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -1044,25 +1053,16 @@
 
                     <div class="modal-body">
                         <div class="quick_view_wrap">
-
                             <div class="quick_view_thmb">
                                 <div class="quick_view_slide">
-                                    <div class="single_view_slide"><img src="assets/img/product/1.jpg" class="img-fluid"
-                                            alt="" /></div>
-                                    <div class="single_view_slide"><img src="assets/img/product/2.jpg" class="img-fluid"
-                                            alt="" /></div>
-                                    <div class="single_view_slide"><img src="assets/img/product/3.jpg" class="img-fluid"
-                                            alt="" /></div>
-                                    <div class="single_view_slide"><img src="assets/img/product/4.jpg" class="img-fluid"
-                                            alt="" /></div>
                                 </div>
                             </div>
 
                             <div class="quick_view_capt">
                                 <div class="prd_details">
 
-                                    <div class="prt_01 mb-1"><span
-                                            class="text-light bg-info rounded px-2 py-1">Dresses</span></div>
+                                    <div class="prt_01 mb-1"><span class="text-light bg-info rounded px-2 py-1"
+                                            id="category">Dresses</span></div>
                                     <div class="prt_02 mb-2">
                                         <h2 class="ft-bold mb-1">Women Striped Shirt Dress</h2>
                                         <div class="text-left">
@@ -1077,88 +1077,13 @@
                                             </div>
                                             <div class="elis_rty"><span
                                                     class="ft-medium text-muted line-through fs-md mr-2">$199</span><span
-                                                    class="ft-bold theme-cl fs-lg mr-2">$110</span><span
-                                                    class="ft-regular text-danger bg-light-danger py-1 px-2 fs-sm">Out
-                                                    of Stock</span></div>
+                                                    class="ft-bold theme-cl fs-lg mr-2">$110</span></div>
                                         </div>
                                     </div>
 
                                     <div class="prt_03 mb-3">
                                         <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis
                                             praesentium voluptatum deleniti atque corrupti quos dolores.</p>
-                                    </div>
-
-                                    <div class="prt_04 mb-2">
-                                        <p class="d-flex align-items-center mb-0 text-dark ft-medium">Color:</p>
-                                        <div class="text-left">
-                                            <div class="form-check form-option form-check-inline mb-1">
-                                                <input class="form-check-input" type="radio" name="acolor8"
-                                                    id="awhite8">
-                                                <label class="form-option-label rounded-circle" for="awhite8"><span
-                                                        class="form-option-color rounded-circle blc7"></span></label>
-                                            </div>
-                                            <div class="form-check form-option form-check-inline mb-1">
-                                                <input class="form-check-input" type="radio" name="acolor8" id="ablue8">
-                                                <label class="form-option-label rounded-circle" for="ablue8"><span
-                                                        class="form-option-color rounded-circle blc2"></span></label>
-                                            </div>
-                                            <div class="form-check form-option form-check-inline mb-1">
-                                                <input class="form-check-input" type="radio" name="acolor8"
-                                                    id="ayellow8">
-                                                <label class="form-option-label rounded-circle" for="ayellow8"><span
-                                                        class="form-option-color rounded-circle blc5"></span></label>
-                                            </div>
-                                            <div class="form-check form-option form-check-inline mb-1">
-                                                <input class="form-check-input" type="radio" name="acolor8" id="apink8">
-                                                <label class="form-option-label rounded-circle" for="apink8"><span
-                                                        class="form-option-color rounded-circle blc3"></span></label>
-                                            </div>
-                                            <div class="form-check form-option form-check-inline mb-1">
-                                                <input class="form-check-input" type="radio" name="acolor8" id="ared">
-                                                <label class="form-option-label rounded-circle" for="ared"><span
-                                                        class="form-option-color rounded-circle blc4"></span></label>
-                                            </div>
-                                            <div class="form-check form-option form-check-inline mb-1">
-                                                <input class="form-check-input" type="radio" name="acolor8" id="agreen">
-                                                <label class="form-option-label rounded-circle" for="agreen"><span
-                                                        class="form-option-color rounded-circle blc6"></span></label>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="prt_04 mb-4">
-                                        <p class="d-flex align-items-center mb-0 text-dark ft-medium">Size:</p>
-                                        <div class="text-left pb-0 pt-2">
-                                            <div class="form-check size-option form-option form-check-inline mb-2">
-                                                <input class="form-check-input" type="radio" name="size" id="28"
-                                                    checked="">
-                                                <label class="form-option-label" for="28">28</label>
-                                            </div>
-                                            <div class="form-check form-option size-option  form-check-inline mb-2">
-                                                <input class="form-check-input" type="radio" name="size" id="30">
-                                                <label class="form-option-label" for="30">30</label>
-                                            </div>
-                                            <div class="form-check form-option size-option  form-check-inline mb-2">
-                                                <input class="form-check-input" type="radio" name="size" id="32">
-                                                <label class="form-option-label" for="32">32</label>
-                                            </div>
-                                            <div class="form-check form-option size-option  form-check-inline mb-2">
-                                                <input class="form-check-input" type="radio" name="size" id="34">
-                                                <label class="form-option-label" for="34">34</label>
-                                            </div>
-                                            <div class="form-check form-option size-option  form-check-inline mb-2">
-                                                <input class="form-check-input" type="radio" name="size" id="36">
-                                                <label class="form-option-label" for="36">36</label>
-                                            </div>
-                                            <div class="form-check form-option size-option  form-check-inline mb-2">
-                                                <input class="form-check-input" type="radio" name="size" id="38">
-                                                <label class="form-option-label" for="38">38</label>
-                                            </div>
-                                            <div class="form-check form-option size-option  form-check-inline mb-2">
-                                                <input class="form-check-input" type="radio" name="size" id="40">
-                                                <label class="form-option-label" for="40">40</label>
-                                            </div>
-                                        </div>
                                     </div>
 
                                     <div class="prt_05 mb-4">
@@ -1221,17 +1146,52 @@
     </div>
 
 
-    <script src="{{asset('assets/js/jquery.min.js')}}"></script>
-    <script src="{{asset('assets/js/pooper.min.js')}}"></script>
-    <script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
-    <script src="{{asset('assets/js/ion.rangeslider.min.js')}}"></script>
-    <script src="{{asset('assets/js/slick.js')}}"></script>
-    <script src="{{asset('assets/js/slider-bg.js')}}"></script>
-    <script src="{{asset('assets/js/lightbox.js')}}"></script>
-    <script src="{{asset('assets/js/smoothproducts.js')}}"></script>
-    <script src="{{asset('assets/js/snackbar.min.js')}}"></script>
-    <script src="{{asset('assets/js/jQuery.style.switcher.js')}}"></script>
-    <script src="{{asset('assets/js/custom.js')}}"></script>
+    <script src="{{asset('assets/js/jquery.min.js')}}" defer></script>
+    <script src="{{asset('assets/js/popper.min.js')}}" defer></script>
+    <script src="{{asset('assets/js/bootstrap.min.js')}}" defer></script>
+    <script src="{{asset('assets/js/ion.rangeSlider.min.js')}}" defer></script>
+    <script src="{{asset('assets/js/slick.js')}}" defer></script>
+    <script src="{{asset('assets/js/slider-bg.js')}}" defer></script>
+    <script src="{{asset('assets/js/lightbox.js')}}" defer></script>
+    <script src="{{asset('assets/js/smoothproducts.js')}}" defer></script>
+    <script src="{{asset('assets/js/snackbar.min.js')}}" defer></script>
+    <script src="{{asset('assets/js/jQuery.style.switcher.js')}}" defer></script>
+    <script src="{{asset('assets/js/custom.js')}}" defer></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.quick-view-btn').forEach(function (button) {
+                button.addEventListener('click', function () {
+                    // Get product data from data attributes
+                    const productName = this.getAttribute('data-name');
+                    const productPrice = this.getAttribute('data-price');
+                    const productDescription = this.getAttribute('data-description');
+                    const productGallery = JSON.parse(this.getAttribute('data-gallery'));
+                    const productCategory = this.getAttribute('data-category');
+                    const productReviews = this.getAttribute('data-reviews');
+                    const oldPrice = this.getAttribute('data-old-price');
+                    const newPrice = this.getAttribute('data-new-price');
+
+                    // Update modal content
+                    document.querySelector('#quickviewmodal .ft-bold.mb-1').innerText = productName;
+                    document.querySelector('#quickviewmodal .ft-bold.theme-cl.fs-lg.mr-2').innerText = newPrice;
+                    document.querySelector('#quickviewmodal .ft-medium.text-muted.line-through.fs-md.mr-2').innerText = oldPrice;
+                    document.querySelector('#quickviewmodal .prt_03.mb-3 p').innerText = productDescription;
+                    document.querySelector("#category").innerText = productCategory;
+
+                    // Update gallery images
+                    let galleryHTML = '';
+
+                    productGallery.forEach(function (image) {
+                        galleryHTML += `<div class="single_view_slide"><img src="${image.image}" class="img-fluid" alt="" /></div>`;
+                    });
+                    document.querySelector('.quick_view_slide').innerHTML = galleryHTML;
+
+                });
+            });
+        });
+
+    </script>
 
 </body>
 
