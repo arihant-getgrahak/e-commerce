@@ -28,10 +28,7 @@ Route::group(['middleware' => AdminMiddleware::class], function () {
 
         Route::delete('delete/{id}', [ProductController::class, 'delete'])->name('product.delete');
 
-        Route::get('brand', function () {
-
-            return view('brand');
-        })->name('brand');
+        Route::get('brand', [BrandController::class, 'index'])->name('brand');
     });
 });
 
