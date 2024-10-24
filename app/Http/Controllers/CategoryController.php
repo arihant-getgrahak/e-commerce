@@ -94,18 +94,20 @@ class CategoryController extends Controller
     {
         $category = Category::find($id);
         if (! $category) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Category not found',
-            ], 404);
+            return back()->with('error', 'Incorrect category id');
+            // return response()->json([
+            //     'status' => false,
+            //     'message' => 'Category not found',
+            // ], 404);
         }
 
         $category->delete();
 
-        return response()->json([
-            'status' => true,
-            'message' => 'Category deleted successfully',
-        ], status: 200);
+        return back()->with('success', 'Category deleted successfully');
+        // return response()->json([
+        //     'status' => true,
+        //     'message' => 'Category deleted successfully',
+        // ], status: 200);
     }
 
     // for child
