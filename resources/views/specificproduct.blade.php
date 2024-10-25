@@ -19,7 +19,7 @@
                 <div class="container">
                     <nav id="navigation" class="navigation navigation-landscape">
                         <div class="nav-header">
-                            <a class="nav-brand" href="/ariahnt/e-commerce/public">
+                            <a class="nav-brand" href="/arihant/e-commerce/public">
                                 <img src="{{asset('assets/img/logo.png')}}" class="logo" alt="" />
 
                             </a>
