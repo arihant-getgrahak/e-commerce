@@ -397,8 +397,10 @@
                                 <!-- Single Option -->
                                 <div class="single_search_boxed">
                                     <div class="widget-boxed-header">
-                                        <h4><a href="#brands" data-toggle="collapse" aria-expanded="false"
-                                                role="button">Brands</a></h4>
+                                        <h4>
+                                            <a href="#brands" data-toggle="collapse" aria-expanded="false"
+                                                role="button">Brands</a>
+                                        </h4>
                                     </div>
                                     <div class="widget-boxed-body collapse show" id="brands" data-parent="#brands">
                                         <div class="side-list no-border">
@@ -409,14 +411,16 @@
                                                         <ul class="no-ul-list">
                                                             @foreach ($brand as $b)
                                                                 <li>
-                                                                    <input id="b1" class="checkbox-custom" name="b1"
-                                                                        type="checkbox">
-                                                                    <label for="b1"
-                                                                        class="checkbox-custom-label">{{$b->name}}<span>{{$b->products_count}}</span></label>
+                                                                    <input id="brand-{{ $b->id }}" class="checkbox-custom"
+                                                                        name="brands[]" type="checkbox"
+                                                                        value="{{ $b->id }}">
+                                                                    <label for="brand-{{ $b->id }}"
+                                                                        class="checkbox-custom-label">
+                                                                        {{ $b->name }}
+                                                                        <span>({{ $b->products_count }})</span>
+                                                                    </label>
                                                                 </li>
-
                                                             @endforeach
-
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -424,6 +428,7 @@
                                         </div>
                                     </div>
                                 </div>
+
 
                                 <!-- Single Option -->
                                 <div class="single_search_boxed">
