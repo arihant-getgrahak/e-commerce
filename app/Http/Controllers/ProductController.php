@@ -76,6 +76,7 @@ class ProductController extends Controller
     {
         $products = Product::with(['gallery', 'meta', 'brand', 'category']);
         $categories = Category::with(['parent'])->get();
+        $brand = Brand::all();
 
         $data = [];
         $addedParents = [];
@@ -94,7 +95,7 @@ class ProductController extends Controller
 
         // return response()->json($data);
 
-        return view('welcome')->with('product', $products)->with('categories', collect($data));
+        return view('welcome')->with('product', $products)->with('categories', collect($data))->with('brand', $brand);
     }
 
     public function store(ProductAddRequest $request)
