@@ -250,7 +250,10 @@ class ProductController extends Controller
             return view('specificproduct')->with('error', 'Incorrect product id');
         }
 
-        return view('specificproduct')->with('product', $product);
+        $random = Product::where('category_id', $product[0]->category_id)->inRandomOrder()->get(['name', 'slug', 'price', 'cost_price', 'stock', 'thumbnail']);
+        // return response()->json($random);
+
+        return view('specificproduct')->with('product', $product)->with('random', $random);
 
     }
 
