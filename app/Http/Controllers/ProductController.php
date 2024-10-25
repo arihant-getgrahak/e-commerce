@@ -93,7 +93,7 @@ class ProductController extends Controller
             }
         }
 
-        // return response()->json($product);
+        // return response()->json($data);
 
         return view('welcome')->with('product', $product)->with('categories', collect($data))->with('brand', $brand);
     }
@@ -267,9 +267,23 @@ class ProductController extends Controller
 
     public function getChild($id)
     {
-
-        $child = Category::where('parent_id', $id)->get();
+        // $child = Category::where('parent_id', $id)->get();
+        $child = Category::where('parent_id', $id)->withCount('products')->get();
 
         return $child;
+    }
+
+    public function getproductcategorycount($id)
+    {
+        $product = Product::where('category_id', $id)->count();
+
+        return $product;
+    }
+
+    public function getproductbrandcount($id)
+    {
+        $product = Product::where('brand_id', $id)->count();
+
+        return $product;
     }
 }
