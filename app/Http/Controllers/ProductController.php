@@ -44,6 +44,7 @@ class ProductController extends Controller
         $product = Product::where('added_by', auth()->user()->id)->with(['gallery', 'meta', 'brand', 'category'])->paginate(10);
         $categories = Category::with('parent')->get();
         $data = [];
+        $brand = Brand::all();
 
         foreach ($categories as $category) {
             if ($category->parent) {
@@ -65,7 +66,7 @@ class ProductController extends Controller
         }
 
         // dd($product);
-        return view('productview')->with('product', $product)->with('category', $data);
+        return view('productview')->with('product', $product)->with('category', $data)->with('brand', $brand);
 
         // return response()->json([
         //     "product" => $product
@@ -178,6 +179,7 @@ class ProductController extends Controller
                 'category_id',
                 'added_by',
                 'cost_price',
+                'brand_id',
             ]);
 
             $product->fill($updateData)->save();
