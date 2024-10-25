@@ -272,7 +272,6 @@
         <section class="middle">
             <div class="container">
                 <div class="row">
-
                     <div class="col-xl-3 col-lg-4 col-md-12 col-sm-12 p-xl-0">
                         <div class="search-sidebar sm-sidebar border">
                             <div class="search-sidebar-body">
@@ -408,36 +407,16 @@
                                                 <div class="card-body pt-0">
                                                     <div class="inner_widget_link">
                                                         <ul class="no-ul-list">
-                                                            <li>
-                                                                <input id="b1" class="checkbox-custom" name="b1"
-                                                                    type="checkbox">
-                                                                <label for="b1"
-                                                                    class="checkbox-custom-label">Sumsung<span>142</span></label>
-                                                            </li>
-                                                            <li>
-                                                                <input id="b2" class="checkbox-custom" name="b2"
-                                                                    type="checkbox">
-                                                                <label for="b2"
-                                                                    class="checkbox-custom-label">Apple<span>652</span></label>
-                                                            </li>
-                                                            <li>
-                                                                <input id="b3" class="checkbox-custom" name="b3"
-                                                                    type="checkbox">
-                                                                <label for="b3"
-                                                                    class="checkbox-custom-label">Nike<span>232</span></label>
-                                                            </li>
-                                                            <li>
-                                                                <input id="b4" class="checkbox-custom" name="b4"
-                                                                    type="checkbox">
-                                                                <label for="b4"
-                                                                    class="checkbox-custom-label">Reebok<span>192</span></label>
-                                                            </li>
-                                                            <li>
-                                                                <input id="b5" class="checkbox-custom" name="b5"
-                                                                    type="checkbox">
-                                                                <label for="b5"
-                                                                    class="checkbox-custom-label">Hawai<span>265</span></label>
-                                                            </li>
+                                                            @foreach ($brand as $b)
+                                                                <li>
+                                                                    <input id="b1" class="checkbox-custom" name="b1"
+                                                                        type="checkbox">
+                                                                    <label for="b1"
+                                                                        class="checkbox-custom-label">{{$b->name}}<span>142</span></label>
+                                                                </li>
+
+                                                            @endforeach
+
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -684,14 +663,13 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="col-xl-9 col-lg-8 col-md-12 col-sm-12">
-
                         <div class="row">
                             <div class="col-xl-12 col-lg-12 col-md-12">
                                 <div class="border mb-3 mfliud">
                                     <div class="row align-items-center py-2 m-0">
                                         <div class="col-xl-3 col-lg-4 col-md-5 col-sm-12">
+                                           
                                             <h6 class="mb-0">{{ $product->count() }} Items Found</h6>
                                         </div>
 
