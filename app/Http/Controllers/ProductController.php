@@ -74,7 +74,7 @@ class ProductController extends Controller
 
     public function display()
     {
-        $product = Product::with(['gallery', 'meta', 'brand', 'category'])->get();
+        $product = Product::with(['gallery', 'meta', 'brand', 'category'])->paginate(10);
         $categories = Category::with(['parent'])->get();
         $brand = Brand::withCount('products')->get();
 
