@@ -412,7 +412,7 @@
                                                                     <input id="b1" class="checkbox-custom" name="b1"
                                                                         type="checkbox">
                                                                     <label for="b1"
-                                                                        class="checkbox-custom-label">{{$b->name}}<span>142</span></label>
+                                                                        class="checkbox-custom-label">{{$b->name}}<span>{{$b->products_count}}</span></label>
                                                                 </li>
 
                                                             @endforeach
