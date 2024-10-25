@@ -74,12 +74,27 @@ class ProductController extends Controller
 
     public function display()
     {
-        $product = Product::with(['gallery', 'meta', 'brand', 'category'])->paginate(10);
-        if (! $product) {
-            return view('welcome')->with('product', []);
+        $products = Product::with(['gallery', 'meta', 'brand', 'category']);
+        $categories = Category::with(['parent'])->get();
+
+        $data = [];
+        $addedParents = [];
+
+        foreach ($categories as $category) {
+            if ($category->parent_id && ! isset($addedParents[$category->parent_id])) {
+                $addedParents[$category->parent_id] = true;
+
+                $data[] = [
+                    'id' => $category->parent->id,
+                    'name' => $category->parent->name,
+                    'child' => $this->getChild($category->parent_id),
+                ];
+            }
         }
 
-        return view('welcome')->with('product', $product);
+        // return response()->json($data);
+
+        return view('welcome')->with('product', $products)->with('categories', collect($data));
     }
 
     public function store(ProductAddRequest $request)
@@ -247,5 +262,13 @@ class ProductController extends Controller
         $uploadedImageUrl = Storage::disk('public')->url($image_uploaded_path);
 
         return $uploadedImageUrl;
+    }
+
+    public function getChild($id)
+    {
+
+        $child = Category::where('parent_id', $id)->get();
+
+        return $child;
     }
 }
