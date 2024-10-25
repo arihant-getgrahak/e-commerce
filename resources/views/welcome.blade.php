@@ -675,7 +675,7 @@
                                     <div class="row align-items-center py-2 m-0">
                                         <div class="col-xl-3 col-lg-4 col-md-5 col-sm-12">
 
-                                            <h6 class="mb-0">{{ $product->count() }} Items Found</h6>
+                                            <h6 class="mb-0" id="product_count">{{ $product->count() }} Items Found</h6>
                                         </div>
 
                                         <div class="col-xl-9 col-lg-8 col-md-7 col-sm-12">
@@ -704,7 +704,7 @@
                         </div>
 
                         <!-- row -->
-                        <div class="row align-items-center rows-products">
+                        <div class="row align-items-center rows-products" id="products">
                             @foreach ($product as $p)
                                 <!-- Single -->
                                 <div class="col-xl-4 col-lg-4 col-md-6 col-6">
@@ -746,10 +746,10 @@
                                                 </div>
                                             </div>
                                             <div class="text-left">
-                                                <h5 class="fw-bolder fs-md mb-0 lh-1 mb-1"><a
-                                                        href="shop-single-v1.html">{{$p->name}}</a></h5>
-                                                <div class="elis_rty"><span
-                                                        class="ft-bold text-dark fs-sm">₹{{$p->price}}</span></div>
+                                                <h5 class="fw-bolder fs-md mb-0 lh-1 mb-1"><a href="shop-single-v1.html"
+                                                        id="product_name">{{$p->name}}</a></h5>
+                                                <div class="elis_rty"><span class="ft-bold text-dark fs-sm"
+                                                        id="product_price">₹{{$p->price}}</span></div>
                                             </div>
                                         </div>
                                     </div>
@@ -1082,19 +1082,91 @@
         });
     </script>
 
-   
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Add click event listener to all category links
-        document.querySelectorAll('.inner_widget_link a').forEach(link => {
-            link.addEventListener('click', function (event) {
-                event.preventDefault(); // Prevent default link behavior
-                const categoryId = this.getAttribute('data-id');
-                console.log("Selected Category ID:", categoryId);
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const productsContainer = document.querySelector('#products');
+            const productsCount = document.querySelector('#product_count');
+
+            // Add click event listener to all category links
+            document.querySelectorAll('.inner_widget_link a').forEach(link => {
+                link.addEventListener('click', async function (event) {
+                    event.preventDefault(); // Prevent default link behavior
+                    const categoryId = this.getAttribute('data-id');
+
+                    try {
+                        const res = await fetch("{{ route('category.show', ':id') }}".replace(':id', categoryId));
+                        const data = await res.json();
+
+                        console.log(data.product);
+
+                        // Clear existing products
+                        productsContainer.innerHTML = '';
+                        productsCount.innerText = data.product.length  + " Items Found";
+
+                        // Render each product
+                        data.product.forEach(product => {
+                            const productHTML = `
+                        <div class="col-xl-4 col-lg-4 col-md-6 col-6">
+                            <div class="product_grid card b-0">
+                                <div class="badge bg-info text-white position-absolute ft-regular ab-left text-upper">
+                                    New
+                                </div>
+                                <div class="card-body p-0">
+                                    <div class="shop_thumb position-relative">
+                                        <a class="card-img-top d-block overflow-hidden"
+                                           href="{{ route('product.specific', '') }}/${product.slug}">
+                                           <img class="card-img-top" src="${product.thumbnail}" alt="${product.name}">
+                                        </a>
+                                        <div class="product-hover-overlay bg-dark d-flex align-items-center justify-content-center">
+                                            <div class="edlio">
+                                                <a href="#" data-toggle="modal" data-target="#quickview"
+                                                   class="text-white fs-sm ft-medium quick-view-btn"
+                                                   data-name="${product.name}" data-price="${product.price}"
+                                                   data-description="${product.description}"
+                                                   data-gallery='${JSON.stringify(product.gallery)}'
+                                                   data-category="${product.category.name}" data-reviews="412"
+                                                   data-old-price="${product.cost_price}"
+                                                   data-new-price="${product.price}">
+                                                   <i class="fas fa-eye mr-1"></i>Quick View
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer b-0 p-0 pt-2 bg-white">
+                                    <div class="d-flex align-items-start justify-content-between">
+                                        <div class="text-left"></div>
+                                        <div class="text-right">
+                                            <button class="btn auto btn_love snackbar-wishlist">
+                                                <i class="far fa-heart"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="text-left">
+                                        <h5 class="fw-bolder fs-md mb-0 lh-1 mb-1">
+                                            <a href="shop-single-v1.html">${product.name}</a>
+                                        </h5>
+                                        <div class="elis_rty">
+                                            <span class="ft-bold text-dark fs-sm">₹${product.price}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+
+                            // Append product HTML to container
+                            productsContainer.insertAdjacentHTML('beforeend', productHTML);
+                        });
+                    } catch (error) {
+                        console.error("Error fetching products:", error);
+                    }
+                });
             });
         });
-    });
-</script>
+
+    </script>
 
 </body>
 
