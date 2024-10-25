@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CategoryStoreRequest;
 use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Validator;
 
@@ -127,5 +128,23 @@ class CategoryController extends Controller
         }
 
         return back()->with('success', 'Child Category created successfully');
+    }
+
+    public function filter($id)
+    {
+        $category = Category::find($id);
+
+        if (! $category) {
+            return response()->json([
+                'message' => 'Category not found',
+            ], 404);
+        }
+        $product = Product::where('category_id', $id)->with(['gallery', 'meta', 'brand', 'category'])->get();
+
+        return response()->json([
+            'product' => $product,
+        ], 200);
+
+        // return view('category', compact('product'));
     }
 }
