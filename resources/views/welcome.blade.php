@@ -301,7 +301,7 @@
                                                                     <ul>
                                                                         @foreach ($category["child"] as $childCategory)
                                                                             <li><a
-                                                                                    href="#">{{ $childCategory->name }}<span>82</span></a>
+                                                                                    href="#">{{ $childCategory->name }}<span>{{ $childCategory->products_count }}</span></a>
                                                                             </li>
                                                                         @endforeach
                                                                     </ul>
