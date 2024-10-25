@@ -236,10 +236,10 @@
                         <div class="text-left py-5 mt-3 mb-3">
                             <h1 class="ft-medium mb-3">Shop</h1>
                             <ul class="shop_categories_list m-0 p-0">
-                                <li><a href="#">Men</a></li>
-                                <li><a href="#">Speakers</a></li>
-                                <li><a href="#">Women</a></li>
-                                <li><a href="#">Accessories</a></li>
+                                @foreach ($categories as $key => $category)
+                                    <li><a href="#">{{$category["name"]}}</a></li>
+                                @endforeach
+
                             </ul>
                         </div>
                     </div>
@@ -669,7 +669,7 @@
                                 <div class="border mb-3 mfliud">
                                     <div class="row align-items-center py-2 m-0">
                                         <div class="col-xl-3 col-lg-4 col-md-5 col-sm-12">
-                                           
+
                                             <h6 class="mb-0">{{ $product->count() }} Items Found</h6>
                                         </div>
 
