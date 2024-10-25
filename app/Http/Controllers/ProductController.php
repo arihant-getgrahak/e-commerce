@@ -76,7 +76,7 @@ class ProductController extends Controller
     {
         $product = Product::with(['gallery', 'meta', 'brand', 'category'])->get();
         $categories = Category::with(['parent'])->get();
-        $brand = Brand::all();
+        $brand = Brand::withCount('products')->get();
 
         $data = [];
         $addedParents = [];
@@ -271,19 +271,5 @@ class ProductController extends Controller
         $child = Category::where('parent_id', $id)->withCount('products')->get();
 
         return $child;
-    }
-
-    public function getproductcategorycount($id)
-    {
-        $product = Product::where('category_id', $id)->count();
-
-        return $product;
-    }
-
-    public function getproductbrandcount($id)
-    {
-        $product = Product::where('brand_id', $id)->count();
-
-        return $product;
     }
 }
