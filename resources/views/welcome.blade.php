@@ -300,8 +300,8 @@
                                                                 <div class="inner_widget_link">
                                                                     <ul>
                                                                         @foreach ($category["child"] as $childCategory)
-                                                                            <li><a
-                                                                                    href="#">{{ $childCategory->name }}<span>{{ $childCategory->products_count }}</span></a>
+                                                                            <li><a href="#"
+                                                                                    data-id="{{ $childCategory->id }}">{{ $childCategory->name }}<span>{{ $childCategory->products_count }}</span></a>
                                                                             </li>
                                                                         @endforeach
                                                                     </ul>
@@ -1080,8 +1080,21 @@
                 });
             });
         });
-
     </script>
+
+   
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Add click event listener to all category links
+        document.querySelectorAll('.inner_widget_link a').forEach(link => {
+            link.addEventListener('click', function (event) {
+                event.preventDefault(); // Prevent default link behavior
+                const categoryId = this.getAttribute('data-id');
+                console.log("Selected Category ID:", categoryId);
+            });
+        });
+    });
+</script>
 
 </body>
 
