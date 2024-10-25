@@ -74,7 +74,7 @@ class ProductController extends Controller
 
     public function display()
     {
-        $products = Product::with(['gallery', 'meta', 'brand', 'category']);
+        $product = Product::with(['gallery', 'meta', 'brand', 'category'])->get();
         $categories = Category::with(['parent'])->get();
         $brand = Brand::all();
 
@@ -93,9 +93,9 @@ class ProductController extends Controller
             }
         }
 
-        // return response()->json($data);
+        // return response()->json($product);
 
-        return view('welcome')->with('product', $products)->with('categories', collect($data))->with('brand', $brand);
+        return view('welcome')->with('product', $product)->with('categories', collect($data))->with('brand', $brand);
     }
 
     public function store(ProductAddRequest $request)
