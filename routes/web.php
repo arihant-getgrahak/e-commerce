@@ -56,3 +56,4 @@ Route::post('/brand/update/{id}', [BrandController::class, 'update'])->name('bra
 Route::delete('/brand/delete/{id}', [BrandController::class, 'destroy'])->name('brand.delete');
 
 Route::get('category/{id}', [CategoryController::class, 'filter'])->name('category.show');
+Route::post('brand/filter', [BrandController::class, 'filter'])->name('brand.filter.show');
