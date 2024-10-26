@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link href="{{asset('assets/css/styles.css')}}" rel="stylesheet">
+    <meta name="_token" content="{{ csrf_token() }}">
 </head>
 
 <body>
@@ -1081,8 +1082,6 @@
             });
         });
     </script>
-
-
     <script>
 
         document.addEventListener('DOMContentLoaded', function () {
@@ -1099,9 +1098,6 @@
                         const res = await fetch("{{ route('category.show', ':id') }}".replace(':id', categoryId));
                         const data = await res.json();
 
-                        console.log(data.product);
-
-                        // Clear existing products
                         productsContainer.innerHTML = '';
                         productsCount.innerText = data.product.length + " Items Found";
 
@@ -1167,107 +1163,97 @@
         });
 
     </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
 
-            const productsContainer = document.querySelector('#products');
-            const productHtml = productsContainer.innerHTML;
-            const productsCount = document.querySelector('#product_count');
-            const initialCount = productsCount.innerText;
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const productsContainer = document.querySelector('#products');
+        const productHtml = productsContainer.innerHTML;
+        const productsCount = document.querySelector('#product_count');
+        const initialCount = productsCount.innerText;
 
-            document.querySelectorAll('#brand-list input').forEach(link => {
-                link.addEventListener('change', async function (event) {
-                    const selectedBrandIds = Array.from(document.querySelectorAll('#brand-list input:checked'))
-                .map(checkbox => checkbox.getAttribute('data-brand-id'));
+        document.querySelectorAll('#brand-list input').forEach(checkbox => {
+            checkbox.addEventListener('change', async function () {
+                const selectedBrandIds = Array.from(document.querySelectorAll('#brand-list input:checked'))
+                    .map(cb => cb.getAttribute('data-brand-id'));
 
-                console.log("id" +selectedBrandIds.length === 0);
-                if(selectedBrandIds.length === 0){
-                    console.log("No brand selected");
+                if (selectedBrandIds.length === 0) {
                     productsContainer.innerHTML = productHtml;
-                    productsCount.innerHTML =initialCount
+                    productsCount.innerText = initialCount;
                     return;
                 }
 
                 productsContainer.innerHTML = '';
-                    const categoryId = this.getAttribute('data-brand-id');
+                productsCount.innerText = "100 Items Found";
 
-                    console.log(categoryId);
-                    productsCount.innerText = 100+ " Items Found";
+                try {
+                    const res = await fetch("{{ route('brand.filter.show') }}", {
+                        method: 'POST',
+                        headers: {
+                             "Content-Type": "application/json",  
+                            'X-CSRF-Token': "{{ csrf_token() }}",
+                            },
+                        body: JSON.stringify({ brandId: selectedBrandIds})
+                    });
+                    const data = await res.json();
 
-                    // try {
-                    //     const res = await fetch("{{ route('category.show', ':id') }}".replace(':id', categoryId));
-                    //     const data = await res.json();
+                    productsContainer.innerHTML = '';
 
-                    //     console.log(data.product);
-
-                    //     // Clear existing products
-                    //     productsContainer.innerHTML = '';
-                    //     productsCount.innerText = data.product.length + " Items Found";
-
-                    //     // Render each product
-                    //     data.product.forEach(product => {
-                    //         const productHTML = `
-                    //     <div class="col-xl-4 col-lg-4 col-md-6 col-6">
-                    //         <div class="product_grid card b-0">
-                    //             <div class="badge bg-info text-white position-absolute ft-regular ab-left text-upper">
-                    //                 New
-                    //             </div>
-                    //             <div class="card-body p-0">
-                    //                 <div class="shop_thumb position-relative">
-                    //                     <a class="card-img-top d-block overflow-hidden"
-                    //                        href="{{ route('product.specific', '') }}/${product.slug}">
-                    //                        <img class="card-img-top" src="${product.thumbnail}" alt="${product.name}">
-                    //                     </a>
-                    //                     <div class="product-hover-overlay bg-dark d-flex align-items-center justify-content-center">
-                    //                         <div class="edlio">
-                    //                             <a href="#" data-toggle="modal" data-target="#quickview"
-                    //                                class="text-white fs-sm ft-medium quick-view-btn"
-                    //                                data-name="${product.name}" data-price="${product.price}"
-                    //                                data-description="${product.description}"
-                    //                                data-gallery='${JSON.stringify(product.gallery)}'
-                    //                                data-category="${product.category.name}" data-reviews="412"
-                    //                                data-old-price="${product.cost_price}"
-                    //                                data-new-price="${product.price}">
-                    //                                <i class="fas fa-eye mr-1"></i>Quick View
-                    //                             </a>
-                    //                         </div>
-                    //                     </div>
-                    //                 </div>
-                    //             </div>
-                    //             <div class="card-footer b-0 p-0 pt-2 bg-white">
-                    //                 <div class="d-flex align-items-start justify-content-between">
-                    //                     <div class="text-left"></div>
-                    //                     <div class="text-right">
-                    //                         <button class="btn auto btn_love snackbar-wishlist">
-                    //                             <i class="far fa-heart"></i>
-                    //                         </button>
-                    //                     </div>
-                    //                 </div>
-                    //                 <div class="text-left">
-                    //                     <h5 class="fw-bolder fs-md mb-0 lh-1 mb-1">
-                    //                         <a href="shop-single-v1.html">${product.name}</a>
-                    //                     </h5>
-                    //                     <div class="elis_rty">
-                    //                         <span class="ft-bold text-dark fs-sm">₹${product.price}</span>
-                    //                     </div>
-                    //                 </div>
-                    //             </div>
-                    //         </div>
-                    //     </div>`;
-
-                    //         // Append product HTML to container
-                    //         productsContainer.insertAdjacentHTML('beforeend', productHTML);
-                    //     });
-                    // } catch (error) {
-                    //     console.error("Error fetching products:", error);
-                    // }
-                });
+                    data.product.data.forEach(product => {
+                        const productHTML = `
+                            <div class="col-xl-4 col-lg-4 col-md-6 col-6">
+                                <div class="product_grid card b-0">
+                                    <div class="badge bg-info text-white position-absolute ft-regular ab-left text-upper">New</div>
+                                    <div class="card-body p-0">
+                                        <div class="shop_thumb position-relative">
+                                            <a class="card-img-top d-block overflow-hidden" href="{{ route('product.specific', '') }}/${product.slug}">
+                                                <img class="card-img-top" src="${product.thumbnail}" alt="${product.name}">
+                                            </a>
+                                            <div class="product-hover-overlay bg-dark d-flex align-items-center justify-content-center">
+                                                <div class="edlio">
+                                                    <a href="#" data-toggle="modal" data-target="#quickview"
+                                                       class="text-white fs-sm ft-medium quick-view-btn"
+                                                       data-name="${product.name}" data-price="${product.price}"
+                                                       data-description="${product.description}"
+                                                       data-gallery='${JSON.stringify(product.gallery)}'
+                                                       data-category="${product.category.name}" data-reviews="412"
+                                                       data-old-price="${product.cost_price}"
+                                                       data-new-price="${product.price}">
+                                                       <i class="fas fa-eye mr-1"></i>Quick View
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer b-0 p-0 pt-2 bg-white">
+                                        <div class="d-flex align-items-start justify-content-between">
+                                            <div class="text-left"></div>
+                                            <div class="text-right">
+                                                <button class="btn auto btn_love snackbar-wishlist">
+                                                    <i class="far fa-heart"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="text-left">
+                                            <h5 class="fw-bolder fs-md mb-0 lh-1 mb-1">
+                                                <a href="shop-single-v1.html">${product.name}</a>
+                                            </h5>
+                                            <div class="elis_rty">
+                                                <span class="ft-bold text-dark fs-sm">₹${product.price}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`;
+                        productsContainer.insertAdjacentHTML('beforeend', productHTML);
+                    });
+                } catch (error) {
+                    console.error("Error fetching products:", error);
+                }
             });
         });
+    });
+</script>
 
-
-
-    </script>
 
 </body>
 
