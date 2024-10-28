@@ -49,6 +49,7 @@ Route::post('category/child/add', [CategoryController::class, 'storechild'])->na
 Route::post('brand/add', [BrandController::class, 'store'])->name('brand.add');
 Route::post('/product/add', [ProductController::class, 'store'])->name('product.add');
 Route::post('login', [AuthController::class, 'login'])->name('login');
+Route::post('register', [AuthController::class, 'register'])->name('register');
 
 Route::get('/', [ProductController::class, 'display'])->name('product');
 Route::get('product/{id}', [ProductController::class, 'specific'])->name('product.specific');
