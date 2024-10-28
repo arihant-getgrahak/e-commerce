@@ -32,9 +32,10 @@
                                             <div class="cart_single_caption pl-2">
                                                 <h4 class="product_title fs-md ft-medium mb-1 lh-1">{{$c->products[0]->name}}</h4>
                                                 <!-- <p class="mb-1 lh-1"><span class="text-dark">Size: 40</span></p>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <p class="mb-3 lh-1"><span class="text-dark">Color: Blue</span></p> -->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <p class="mb-3 lh-1"><span class="text-dark">Color: Blue</span></p> -->
                                                 <h4 class="fs-md ft-medium mb-3 lh-1">₹{{$c->products[0]->price}}</h4>
-                                                <select class="custom-select w-auto mb-2" id="quantity">
+                                                <select class="custom-select w-auto mb-2" id="quantity" data-id="{{$c->id}}"
+                                                    data-price="{{$c->products[0]->price}}">
                                                     @for ($i = 1; $i <= 5; $i++)
                                                         <option value="{{ $i }}" {{ $i == $c->quantity ? 'selected' : '' }}>{{ $i }}
                                                         </option>
@@ -106,39 +107,44 @@
 
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-                let quantity = document.getElementById('quantity');
-                const btn = document.getElementById('update-cart');
+                let quantity = document.querySelectorAll('#quantity');
+                const btn = document.querySelectorAll('#update-cart');
 
-                quantity.addEventListener('change', async function () {
-                    quantity = this.value
-                })
-                btn.addEventListener('click', async function () {
+                const updatedData = {}
 
-                    console.log(quantity)
 
-                    {
-                        {
-                            -- const res = await fetch("{{ route('cart.update', $cart[0]->id) }}", {
-                                method: "POST",
-                                headers: {
-                                    "Content-Type": "application/json",
-                                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                                },
-                                body: JSON.stringify({
-                                    quantity: quantity,
-                                    price: "{{$c->products[0]->price}}"
-                                }),
-                            })
-
-                            const data = await res.json();
-                            if (!data.status) {
-                                alert(data.message);
-                            }
-                            else {
-                                alert("Cart updated successfully");
-                            } --}
-                    }
+                quantity.forEach(q => {
+                    q.addEventListener('change', async function () {
+                        const productId = this.getAttribute('data-id');
+                        updatedData[productId] = { quantity: this.value };
+                    });
                 });
+
+                btn.forEach(btn => {
+                    btn.addEventListener('click', async function () {
+                        const res = await fetch("{{route('cart.update')}}", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                            },
+                            body: JSON.stringify(updatedData)
+                        });
+
+                        const data = await res.json();
+                        if (!data.status) {
+                            alert(data.message);
+                        }
+                        else {
+                            alert("product updated successfully");
+                            window.location.reload();
+                        }
+                    });
+                })
+
+                // btn.addEventListener('click', async function () {
+                //     console.log(updatedData);
+                // });
             });
         </script>
 
