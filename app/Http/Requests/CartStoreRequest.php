@@ -22,7 +22,19 @@ class CartStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'product_id' => 'required|exists:products,id',
+            'quantity' => 'required|integer',
+            'price' => "required|numeric|regex:/^\d+(\.\d{1,2})?$/",
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'product_id.required' => 'Product ID is required',
+            'quantity.required' => 'Quantity is required',
+            'price.required' => 'Price is required',
+            'price.regex' => 'Price must be a number',
         ];
     }
 }
