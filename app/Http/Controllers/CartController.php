@@ -11,9 +11,10 @@ class CartController extends Controller
 {
     public function index()
     {
-        $cart = Cart::where('user_id', auth()->user()->id)->get();
+        $isLoggedIn = auth()->check();
+        $cart = $isLoggedIn ? Cart::where('user_id', auth()->user()->id)->get() : null;
 
-        return view('cart')->with('cart', $cart);
+        return view('shopping-cart', compact('isLoggedIn', 'cart'));
     }
 
     public function store(CartStoreRequest $request)
