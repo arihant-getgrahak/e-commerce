@@ -13,8 +13,14 @@ class CartController extends Controller
     {
         $isLoggedIn = auth()->check();
         $cart = $isLoggedIn ? Cart::where('user_id', auth()->user()->id)->with('products')->get() : null;
+        $price = 0;
+        if ($cart) {
+            foreach ($cart as $c) {
+                $price += $c->price;
+            }
+        }
 
-        return view('shopping-cart', compact('isLoggedIn', 'cart'));
+        return view('shopping-cart', compact('isLoggedIn', 'cart', 'price'));
     }
 
     public function store(CartStoreRequest $request)
@@ -23,6 +29,7 @@ class CartController extends Controller
         if ($cart) {
             $cart->update([
                 'quantity' => $cart->quantity + $request->quantity,
+                'price' => $cart->price * $cart->quantity,
             ]);
 
             return response()->json([
@@ -34,7 +41,7 @@ class CartController extends Controller
             'user_id' => auth()->user()->id,
             'product_id' => $request->product_id,
             'quantity' => $request->quantity,
-            'price' => $request->price,
+            'price' => $request->price * $request->quantity,
         ];
 
         $cart = Cart::create($data);
@@ -68,6 +75,7 @@ class CartController extends Controller
             DB::beginTransaction();
             $cart->update([
                 'quantity' => $request->quantity,
+                'price' => $request->price * $request->quantity,
             ]);
 
             DB::commit();

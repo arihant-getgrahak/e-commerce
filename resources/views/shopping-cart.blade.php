@@ -32,8 +32,8 @@
                                             <div class="cart_single_caption pl-2">
                                                 <h4 class="product_title fs-md ft-medium mb-1 lh-1">{{$c->products[0]->name}}</h4>
                                                 <!-- <p class="mb-1 lh-1"><span class="text-dark">Size: 40</span></p>
-                                                                                                                                                                                                                                                                                                                                                                                                                                    <p class="mb-3 lh-1"><span class="text-dark">Color: Blue</span></p> -->
-                                                <h4 class="fs-md ft-medium mb-3 lh-1">₹{{$c->price}}</h4>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <p class="mb-3 lh-1"><span class="text-dark">Color: Blue</span></p> -->
+                                                <h4 class="fs-md ft-medium mb-3 lh-1">₹{{$c->products[0]->price}}</h4>
                                                 <select class="custom-select w-auto mb-2" id="quantity">
                                                     @for ($i = 1; $i <= 5; $i++)
                                                         <option value="{{ $i }}" {{ $i == $c->quantity ? 'selected' : '' }}>{{ $i }}
@@ -41,8 +41,8 @@
                                                     @endfor
                                                 </select>
                                             </div>
-                                            <div class="fls_last"><button class="close_slide gray" id="remove-cart"><i
-                                                        class="ti-close"></i></button>
+                                            <div class="fls_last"><button class="close_slide gray" id="remove-cart"
+                                                    data-id="{{$c->id}}"><i class="ti-close"></i></button>
                                             </div>
                                         </div>
                                     </div>
@@ -66,7 +66,8 @@
                                 </form>
                             </div>
                             <div class="col-12 col-md-auto mfliud">
-                                <button class="btn stretched-link borders" id="update-cart">Update Cart</button>
+                                <button class="btn stretched-link borders" id="update-cart">Update
+                                    Cart</button>
                             </div>
                         </div>
                     </div>
@@ -76,13 +77,13 @@
                             <div class="card-body">
                                 <ul class="list-group list-group-sm list-group-flush-y list-group-flush-x">
                                     <li class="list-group-item d-flex text-dark fs-sm ft-regular">
-                                        <span>Subtotal</span> <span class="ml-auto text-dark ft-medium">$98.12</span>
+                                        <span>Subtotal</span> <span class="ml-auto text-dark ft-medium">₹{{$price}}</span>
                                     </li>
                                     <li class="list-group-item d-flex text-dark fs-sm ft-regular">
-                                        <span>Tax</span> <span class="ml-auto text-dark ft-medium">$10.10</span>
+                                        <span>Tax</span> <span class="ml-auto text-dark ft-medium">₹0</span>
                                     </li>
                                     <li class="list-group-item d-flex text-dark fs-sm ft-regular">
-                                        <span>Total</span> <span class="ml-auto text-dark ft-medium">$108.22</span>
+                                        <span>Total</span> <span class="ml-auto text-dark ft-medium">₹{{$price}}</span>
                                     </li>
                                     <li class="list-group-item fs-sm text-center">
                                         Shipping cost calculated at Checkout *
@@ -113,23 +114,29 @@
                 })
                 btn.addEventListener('click', async function () {
 
-                    const res = await fetch("{{ route('cart.update', $cart[0]->id) }}", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                        },
-                        body: JSON.stringify({
-                            quantity: quantity
-                        }),
-                    })
+                    console.log(quantity)
 
-                    const data = await res.json();
-                    if (!data.status) {
-                        alert(data.message);
-                    }
-                    else {
-                        alert("Cart updated successfully");
+                    {
+                        {
+                            -- const res = await fetch("{{ route('cart.update', $cart[0]->id) }}", {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                                },
+                                body: JSON.stringify({
+                                    quantity: quantity,
+                                    price: "{{$c->products[0]->price}}"
+                                }),
+                            })
+
+                            const data = await res.json();
+                            if (!data.status) {
+                                alert(data.message);
+                            }
+                            else {
+                                alert("Cart updated successfully");
+                            } --}
                     }
                 });
             });
@@ -137,28 +144,32 @@
 
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-                const btn = document.getElementById("remove-cart");
-                btn.addEventListener('click', async function () {
-                    // console.log("hello");
-                    console.log("hello", "{{$cart[0]->id}}");
-                    const res = await fetch("{{ route('cart.delete', $cart[0]->id) }}", {
-                        method: "DELETE",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                        },
-                    })
-                    const data = await res.json();
-                    if (!data.status) {
-                        alert(data.message);
-                    }
-                    else {
-                        alert("Cart deleted successfully");
-                        window.location.reload();
-                    }
+                const btns = document.querySelectorAll("#remove-cart");
+
+                btns.forEach(button => {
+                    button.addEventListener('click', async function () {
+                        const id = this.getAttribute("data-id"); // Moved inside the event listener
+
+                        const res = await fetch("{{route('cart.delete', ':id')}}".replace(":id", id), {
+                            method: "DELETE",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                            },
+                        });
+
+                        const data = await res.json();
+                        if (!data.status) {
+                            alert(data.message);
+                        } else {
+                            alert("product deleted successfully");
+                            window.location.reload();
+                        }
+                    });
                 });
-            })
+            });
         </script>
+
     @endif
 @else
     <h1>Please login</h1>
