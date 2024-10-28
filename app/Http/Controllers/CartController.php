@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CartStoreRequest;
 use App\Models\Cart;
 use DB;
-use Request;
+use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
@@ -57,10 +57,13 @@ class CartController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $cart = Cart::find($id);
+            $cart = Cart::where('id', $id)->first();
 
             if (! $cart) {
-                return back()->with('error', 'Cart not found');
+                return response()->json([
+                    'message' => 'Cart not found',
+                    'status' => false,
+                ]);
             }
             DB::beginTransaction();
             $cart->update([
@@ -72,6 +75,7 @@ class CartController extends Controller
             return response()->json([
                 'message' => 'Cart updated successfully',
                 'status' => true,
+                'data' => $cart,
             ]);
 
         } catch (\Exception $e) {
