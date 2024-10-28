@@ -53,4 +53,16 @@ class CartController extends Controller
             return back()->with('error', $e->getMessage());
         }
     }
+
+    public function destroy($id)
+    {
+        $cart = Cart::find($id);
+        if ($cart) {
+            $cart->delete();
+
+            return back()->with('success', 'Cart deleted successfully');
+        }
+
+        return back()->with('error', 'Cart not found');
+    }
 }
