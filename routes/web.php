@@ -66,3 +66,5 @@ Route::post('brand/filter', [BrandController::class, 'filter'])->name('brand.fil
 
 Route::get('/cart', [CartController::class, 'index'])->name('cart');
 Route::post('cart/add', [CartController::class, 'store'])->name('cart.add');
+
+Route::post('cart/update/{id}', [CartController::class, 'update'])->name('cart.update');
