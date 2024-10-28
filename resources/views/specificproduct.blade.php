@@ -50,7 +50,7 @@
                             <div class="form-row mb-7">
                                 <div class="col-12 col-lg-auto">
                                     <!-- Quantity -->
-                                    <select class="mb-2 custom-select">
+                                    <select class="mb-2 custom-select" id="quantity">
                                         <option value="1" selected="">1</option>
                                         <option value="2">2</option>
                                         <option value="3">3</option>
@@ -60,7 +60,8 @@
                                 </div>
                                 <div class="col-12 col-lg">
                                     <!-- Submit -->
-                                    <button type="submit" class="btn btn-block custom-height bg-dark mb-2">
+                                    <button class="btn btn-block custom-height bg-dark mb-2"
+                                        onclick="addToCart({{$product}})" id="add-to-cart">
                                         <i class="lni lni-shopping-basket mr-2"></i>Add to Cart
                                     </button>
                                 </div>
@@ -288,12 +289,12 @@
                                         <div class="shop_thumb position-relative">
                                             <a class="card-img-top d-block overflow-hidden" href="shop-single-v1.html"><img
                                                     class="card-img-top" src="{{$r->thumbnail}}" alt="{{$r->name}}"></a>
-                                            <!-- <div
-                                                                                                                    class="product-hover-overlay bg-dark d-flex align-items-center justify-content-center">
-                                                                                                                    <div class="edlio"><a href="#" data-toggle="modal" data-target="#quickview"
-                                                                                                                            class="text-white fs-sm ft-medium"><i
-                                                                                                                                class="fas fa-eye mr-1"></i>Quick View</a></div>
-                                                                                                                </div> -->
+                                            <div
+                                                class="product-hover-overlay bg-dark d-flex align-items-center justify-content-center">
+                                                <div class="edlio"><a href="#" data-toggle="modal" data-target="#quickview"
+                                                        class="text-white fs-sm ft-medium"><i class="fas fa-eye mr-1"></i>Quick
+                                                        View</a></div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="card-footer b-0 p-3 pb-0 d-flex align-items-start justify-content-center">
@@ -321,6 +322,32 @@
 <script>
     if ("{{ session('error') }}") {
         alert('{{ session('error') }}');
+    }
+</script>
+
+<script>
+    async function addToCart(productId) {
+        const quantity = document.getElementById("quantity").value
+        const res = await fetch("{{route("cart.add")}}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+            },
+            body: JSON.stringify({
+                product_id: productId[0].id,
+                quantity: quantity,
+                price: productId[0].price
+            }),
+        })
+
+        const data = await res.json()
+        if (!data.status) {
+            alert(data.message)
+        }
+        else {
+            alert(data.message)
+        }
     }
 </script>
 @endsection
