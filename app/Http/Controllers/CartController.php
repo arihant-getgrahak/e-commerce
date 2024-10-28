@@ -69,10 +69,20 @@ class CartController extends Controller
 
             DB::commit();
 
+            return response()->json([
+                'message' => 'Cart updated successfully',
+                'status' => true,
+            ]);
+
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return back()->with('error', $e->getMessage());
+            // return back()->with('error', $e->getMessage());
+
+            return response()->json([
+                'message' => $e->getMessage(),
+                'status' => false,
+            ]);
         }
     }
 
