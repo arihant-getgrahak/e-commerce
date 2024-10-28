@@ -27,9 +27,10 @@ class CartController extends Controller
     {
         $cart = Cart::where('user_id', auth()->user()->id)->where('product_id', $request->product_id)->first();
         if ($cart) {
+            $newQuantity = $cart->quantity + $request->quantity;
             $cart->update([
-                'quantity' => $cart->quantity + $request->quantity,
-                'price' => $cart->price * $cart->quantity,
+                'quantity' => $newQuantity,
+                'price' => $request->price * $newQuantity,
             ]);
 
             return response()->json([
@@ -61,35 +62,47 @@ class CartController extends Controller
         ], 200);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        try {
-            $cart = Cart::where('id', $id)->first();
+        $cartData = $request->all();
 
-            if (! $cart) {
-                return response()->json([
-                    'message' => 'Cart not found',
-                    'status' => false,
+        $cartIds = array_keys($cartData);
+
+        $carts = Cart::whereIn('id', $cartIds)->get()->keyBy('id');
+
+        if ($carts->isEmpty()) {
+            return response()->json([
+                'message' => 'No cart items found',
+                'status' => false,
+            ]);
+        }
+
+        try {
+            DB::beginTransaction();
+
+            foreach ($cartData as $id => $data) {
+                if (! isset($carts[$id])) {
+                    continue;
+                }
+
+                $cart = $carts[$id];
+                $pricePerUnit = $cart->price / $cart->quantity;
+
+                $cart->update([
+                    'quantity' => $data['quantity'],
+                    'price' => $pricePerUnit * $data['quantity'],
                 ]);
             }
-            DB::beginTransaction();
-            $cart->update([
-                'quantity' => $request->quantity,
-                'price' => $request->price * $request->quantity,
-            ]);
 
             DB::commit();
 
             return response()->json([
                 'message' => 'Cart updated successfully',
                 'status' => true,
-                'data' => $cart,
+                'data' => $carts->values(),
             ]);
-
         } catch (\Exception $e) {
             DB::rollBack();
-
-            // return back()->with('error', $e->getMessage());
 
             return response()->json([
                 'message' => $e->getMessage(),
