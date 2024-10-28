@@ -65,3 +65,4 @@ Route::get('category/{id}', [CategoryController::class, 'filter'])->name('catego
 Route::post('brand/filter', [BrandController::class, 'filter'])->name('brand.filter.show');
 
 Route::get('/cart', [CartController::class, 'index'])->name('cart');
+Route::post('cart/add', [CartController::class, 'store'])->name('cart.add');
