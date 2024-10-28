@@ -71,15 +71,6 @@
             </div>
 
             <div class="form-group">
-                <div class="d-flex align-items-center justify-content-between">
-                    <div class="flex-1">
-                        <input id="ddd" class="checkbox-custom" name="ddd" type="checkbox">
-                        <label for="ddd" class="checkbox-custom-label">Sign me up for the Newsletter!</label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group">
                 <button type="submit" class="btn btn-md full-width bg-dark text-light fs-md ft-medium">Create An
                     Account</button>
             </div>
