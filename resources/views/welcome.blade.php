@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script src="https://cdn.tailwindcss.com"></script>
     <link href="{{asset('assets/css/styles.css')}}" rel="stylesheet">
+    <meta name="_token" content="{{ csrf_token() }}">
 </head>
 
 <body>
@@ -237,10 +237,10 @@
                         <div class="text-left py-5 mt-3 mb-3">
                             <h1 class="ft-medium mb-3">Shop</h1>
                             <ul class="shop_categories_list m-0 p-0">
-                                <li><a href="#">Men</a></li>
-                                <li><a href="#">Speakers</a></li>
-                                <li><a href="#">Women</a></li>
-                                <li><a href="#">Accessories</a></li>
+                                @foreach ($categories as $key => $category)
+                                    <li><a href="#">{{$category["name"]}}</a></li>
+                                @endforeach
+
                             </ul>
                         </div>
                     </div>
@@ -273,7 +273,6 @@
         <section class="middle">
             <div class="container">
                 <div class="row">
-
                     <div class="col-xl-3 col-lg-4 col-md-12 col-sm-12 p-xl-0">
                         <div class="search-sidebar sm-sidebar border">
                             <div class="search-sidebar-body">
@@ -286,125 +285,32 @@
                                     <div class="widget-boxed-body">
                                         <div class="side-list no-border">
                                             <div class="filter-card" id="shop-categories">
+                                                @foreach ($categories as $key => $category)
+                                                    <div class="single_filter_card">
+                                                        <h5>
+                                                            <a href="#category-{{ $key }}" data-toggle="collapse"
+                                                                class="collapsed" aria-expanded="false" role="button">
+                                                                {{ $category["name"] }}
+                                                                <i class="accordion-indicator ti-angle-down"></i>
+                                                            </a>
+                                                        </h5>
 
-                                                <!-- Single Filter Card -->
-                                                <div class="single_filter_card">
-                                                    <h5><a href="#shoes" data-toggle="collapse" class="collapsed"
-                                                            aria-expanded="false" role="button">Shoes<i
-                                                                class="accordion-indicator ti-angle-down"></i></a></h5>
-
-                                                    <div class="collapse" id="shoes" data-parent="#shop-categories">
-                                                        <div class="card-body">
-                                                            <div class="inner_widget_link">
-                                                                <ul>
-                                                                    <li><a href="#">Pumps & high
-                                                                            Heals<span>112</span></a></li>
-                                                                    <li><a href="#">Sandels<span>82</span></a></li>
-                                                                    <li><a href="#">Sneakers<span>56</span></a></li>
-                                                                    <li><a href="#">Boots<span>101</span></a></li>
-                                                                    <li><a href="#">Casual Shoes<span>212</span></a>
-                                                                    </li>
-                                                                    <li><a href="#">Flats Sandel<span>92</span></a></li>
-                                                                </ul>
+                                                        <div class="collapse" id="category-{{ $key }}"
+                                                            data-parent="#shop-categories">
+                                                            <div class="card-body">
+                                                                <div class="inner_widget_link">
+                                                                    <ul>
+                                                                        @foreach ($category["child"] as $childCategory)
+                                                                            <li><a href="#"
+                                                                                    data-id="{{ $childCategory->id }}">{{ $childCategory->name }}<span>{{ $childCategory->products_count }}</span></a>
+                                                                            </li>
+                                                                        @endforeach
+                                                                    </ul>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-
-                                                <!-- Single Filter Card -->
-                                                <div class="single_filter_card">
-                                                    <h5><a href="#clothing" data-toggle="collapse" class=""
-                                                            aria-expanded="false" role="button">Clothing<i
-                                                                class="accordion-indicator ti-angle-down"></i></a></h5>
-
-                                                    <div class="collapse show" id="clothing"
-                                                        data-parent="#shop-categories">
-                                                        <div class="card-body">
-                                                            <div class="inner_widget_link">
-                                                                <ul>
-                                                                    <li><a href="#">Blazers<span>82</span></a></li>
-                                                                    <li><a href="#">Men Suits<span>110</span></a></li>
-                                                                    <li><a href="#">Blouses<span>103</span></a></li>
-                                                                    <li><a href="#">Coat Pant<span>72</span></a></li>
-                                                                    <li><a href="#">T-Shirts<span>36</span></a></li>
-                                                                    <li><a href="#">Men Shirts<span>122</span></a></li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <!-- Single Filter Card -->
-                                                <div class="single_filter_card">
-                                                    <h5><a href="#watches" data-toggle="collapse" class="collapsed"
-                                                            aria-expanded="false" role="button">Watches<i
-                                                                class="accordion-indicator ti-angle-down"></i></a></h5>
-
-                                                    <div class="collapse" id="watches" data-parent="#shop-categories">
-                                                        <div class="card-body">
-                                                            <div class="inner_widget_link">
-                                                                <ul>
-                                                                    <li><a href="#">Sport Watches<span>112</span></a>
-                                                                    </li>
-                                                                    <li><a href="#">Casual Watches<span>112</span></a>
-                                                                    </li>
-                                                                    <li><a href="#">Fashion Watches<span>112</span></a>
-                                                                    </li>
-                                                                    <li><a href="#">Girls Watches<span>112</span></a>
-                                                                    </li>
-                                                                    <li><a href="#">Smart Watches<span>112</span></a>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <!-- Single Filter Card -->
-                                                <div class="single_filter_card">
-                                                    <h5><a href="#bags" data-toggle="collapse" class="collapsed"
-                                                            aria-expanded="false" role="button">Bags<i
-                                                                class="accordion-indicator ti-angle-down"></i></a></h5>
-
-                                                    <div class="collapse" id="bags" data-parent="#shop-categories">
-                                                        <div class="card-body">
-                                                            <div class="inner_widget_link">
-                                                                <ul>
-                                                                    <li><a href="#">Casual Bags<span>212</span></a></li>
-                                                                    <li><a href="#">Sport Bags<span>212</span></a></li>
-                                                                    <li><a href="#">Lugges bags<span>82</span></a></li>
-                                                                    <li><a href="#">Fashion Bags<span>212</span></a>
-                                                                    </li>
-                                                                    <li><a href="#">Small bags<span>113</span></a></li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <!-- Single Filter Card -->
-                                                <div class="single_filter_card">
-                                                    <h5><a href="#accessories" data-toggle="collapse" class="collapsed"
-                                                            aria-expanded="false" role="button">Accessories<i
-                                                                class="accordion-indicator ti-angle-down"></i></a></h5>
-
-                                                    <div class="collapse" id="accessories"
-                                                        data-parent="#shop-categories">
-                                                        <div class="card-body">
-                                                            <div class="inner_widget_link">
-                                                                <ul>
-                                                                    <li><a href="#">Men Wallet<span>432</span></a></li>
-                                                                    <li><a href="#">Men Belt<span>82</span></a></li>
-                                                                    <li><a href="#">Hats<span>541</span></a></li>
-                                                                    <li><a href="#">Jwelery<span>312</span></a></li>
-                                                                    <li><a href="#">Beauty<span>65</span></a></li>
-                                                                    <li><a href="#">Cosmetic<span>242</span></a></li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
+                                                @endforeach
                                             </div>
                                         </div>
                                     </div>
@@ -492,46 +398,30 @@
                                 <!-- Single Option -->
                                 <div class="single_search_boxed">
                                     <div class="widget-boxed-header">
-                                        <h4><a href="#brands" data-toggle="collapse" aria-expanded="false"
-                                                role="button">Brands</a></h4>
+                                        <h4>
+                                            <a href="#brands" data-toggle="collapse" aria-expanded="false"
+                                                role="button">Brands</a>
+                                        </h4>
                                     </div>
                                     <div class="widget-boxed-body collapse show" id="brands" data-parent="#brands">
                                         <div class="side-list no-border">
                                             <!-- Single Filter Card -->
                                             <div class="single_filter_card">
                                                 <div class="card-body pt-0">
-                                                    <div class="inner_widget_link">
+                                                    <div class="inner_widget_link" id="brand-list">
                                                         <ul class="no-ul-list">
-                                                            <li>
-                                                                <input id="b1" class="checkbox-custom" name="b1"
-                                                                    type="checkbox">
-                                                                <label for="b1"
-                                                                    class="checkbox-custom-label">Sumsung<span>142</span></label>
-                                                            </li>
-                                                            <li>
-                                                                <input id="b2" class="checkbox-custom" name="b2"
-                                                                    type="checkbox">
-                                                                <label for="b2"
-                                                                    class="checkbox-custom-label">Apple<span>652</span></label>
-                                                            </li>
-                                                            <li>
-                                                                <input id="b3" class="checkbox-custom" name="b3"
-                                                                    type="checkbox">
-                                                                <label for="b3"
-                                                                    class="checkbox-custom-label">Nike<span>232</span></label>
-                                                            </li>
-                                                            <li>
-                                                                <input id="b4" class="checkbox-custom" name="b4"
-                                                                    type="checkbox">
-                                                                <label for="b4"
-                                                                    class="checkbox-custom-label">Reebok<span>192</span></label>
-                                                            </li>
-                                                            <li>
-                                                                <input id="b5" class="checkbox-custom" name="b5"
-                                                                    type="checkbox">
-                                                                <label for="b5"
-                                                                    class="checkbox-custom-label">Hawai<span>265</span></label>
-                                                            </li>
+                                                            @foreach ($brand as $b)
+                                                                <li>
+                                                                    <input id="brand-{{ $b->id }}" class="checkbox-custom"
+                                                                        name="brands[]" type="checkbox"
+                                                                        value="{{ $b->id }}" data-brand-id="{{ $b->id }}">
+                                                                    <label for="brand-{{ $b->id }}"
+                                                                        class="checkbox-custom-label">
+                                                                        {{ $b->name }}
+                                                                        <span>({{ $b->products_count }})</span>
+                                                                    </label>
+                                                                </li>
+                                                            @endforeach
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -539,6 +429,7 @@
                                         </div>
                                     </div>
                                 </div>
+
 
                                 <!-- Single Option -->
                                 <div class="single_search_boxed">
@@ -778,15 +669,14 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="col-xl-9 col-lg-8 col-md-12 col-sm-12">
-
                         <div class="row">
                             <div class="col-xl-12 col-lg-12 col-md-12">
                                 <div class="border mb-3 mfliud">
                                     <div class="row align-items-center py-2 m-0">
                                         <div class="col-xl-3 col-lg-4 col-md-5 col-sm-12">
-                                            <h6 class="mb-0">{{ $product->count() }} Items Found</h6>
+
+                                            <h6 class="mb-0" id="product_count">{{ $product->count() }} Items Found</h6>
                                         </div>
 
                                         <div class="col-xl-9 col-lg-8 col-md-7 col-sm-12">
@@ -815,7 +705,7 @@
                         </div>
 
                         <!-- row -->
-                        <div class="row align-items-center rows-products">
+                        <div class="row align-items-center rows-products" id="products">
                             @foreach ($product as $p)
                                 <!-- Single -->
                                 <div class="col-xl-4 col-lg-4 col-md-6 col-6">
@@ -857,10 +747,10 @@
                                                 </div>
                                             </div>
                                             <div class="text-left">
-                                                <h5 class="fw-bolder fs-md mb-0 lh-1 mb-1"><a
-                                                        href="shop-single-v1.html">{{$p->name}}</a></h5>
-                                                <div class="elis_rty"><span
-                                                        class="ft-bold text-dark fs-sm">₹{{$p->price}}</span></div>
+                                                <h5 class="fw-bolder fs-md mb-0 lh-1 mb-1"><a href="shop-single-v1.html"
+                                                        id="product_name">{{$p->name}}</a></h5>
+                                                <div class="elis_rty"><span class="ft-bold text-dark fs-sm"
+                                                        id="product_price">₹{{$p->price}}</span></div>
                                             </div>
                                         </div>
                                     </div>
@@ -1147,17 +1037,17 @@
     </div>
 
 
-    <script src="{{asset('assets/js/jquery.min.js')}}" defer></script>
-    <script src="{{asset('assets/js/popper.min.js')}}" defer></script>
-    <script src="{{asset('assets/js/bootstrap.min.js')}}" defer></script>
-    <script src="{{asset('assets/js/ion.rangeSlider.min.js')}}" defer></script>
-    <script src="{{asset('assets/js/slick.js')}}" defer></script>
-    <script src="{{asset('assets/js/slider-bg.js')}}" defer></script>
-    <script src="{{asset('assets/js/lightbox.js')}}" defer></script>
-    <script src="{{asset('assets/js/smoothproducts.js')}}" defer></script>
-    <script src="{{asset('assets/js/snackbar.min.js')}}" defer></script>
-    <script src="{{asset('assets/js/jQuery.style.switcher.js')}}" defer></script>
-    <script src="{{asset('assets/js/custom.js')}}" defer></script>
+    <script src="{{asset('assets/js/jquery.min.js')}}"></script>
+    <script src="{{asset('assets/js/popper.min.js')}}"></script>
+    <script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
+    <script src="{{asset('assets/js/ion.rangeSlider.min.js')}}"></script>
+    <script src="{{asset('assets/js/slick.js')}}"></script>
+    <script src="{{asset('assets/js/slider-bg.js')}}"></script>
+    <script src="{{asset('assets/js/lightbox.js')}}"></script>
+    <script src="{{asset('assets/js/smoothproducts.js')}}"></script>
+    <script src="{{asset('assets/js/snackbar.min.js')}}"></script>
+    <script src="{{asset('assets/js/jQuery.style.switcher.js')}}"></script>
+    <script src="{{asset('assets/js/custom.js')}}"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -1191,8 +1081,179 @@
                 });
             });
         });
+    </script>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const productsContainer = document.querySelector('#products');
+            const productsCount = document.querySelector('#product_count');
+
+            // Add click event listener to all category links
+            document.querySelectorAll('.inner_widget_link a').forEach(link => {
+                link.addEventListener('click', async function (event) {
+                    event.preventDefault(); // Prevent default link behavior
+                    const categoryId = this.getAttribute('data-id');
+
+                    try {
+                        const res = await fetch("{{ route('category.show', ':id') }}".replace(':id', categoryId));
+                        const data = await res.json();
+
+                        productsContainer.innerHTML = '';
+                        productsCount.innerText = data.product.length + " Items Found";
+
+                        // Render each product
+                        data.product.forEach(product => {
+                            const productHTML = `
+                        <div class="col-xl-4 col-lg-4 col-md-6 col-6">
+                            <div class="product_grid card b-0">
+                                <div class="badge bg-info text-white position-absolute ft-regular ab-left text-upper">
+                                    New
+                                </div>
+                                <div class="card-body p-0">
+                                    <div class="shop_thumb position-relative">
+                                        <a class="card-img-top d-block overflow-hidden"
+                                           href="{{ route('product.specific', '') }}/${product.slug}">
+                                           <img class="card-img-top" src="${product.thumbnail}" alt="${product.name}">
+                                        </a>
+                                        <div class="product-hover-overlay bg-dark d-flex align-items-center justify-content-center">
+                                            <div class="edlio">
+                                                <a href="#" data-toggle="modal" data-target="#quickview"
+                                                   class="text-white fs-sm ft-medium quick-view-btn"
+                                                   data-name="${product.name}" data-price="${product.price}"
+                                                   data-description="${product.description}"
+                                                   data-gallery='${JSON.stringify(product.gallery)}'
+                                                   data-category="${product.category.name}" data-reviews="412"
+                                                   data-old-price="${product.cost_price}"
+                                                   data-new-price="${product.price}">
+                                                   <i class="fas fa-eye mr-1"></i>Quick View
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer b-0 p-0 pt-2 bg-white">
+                                    <div class="d-flex align-items-start justify-content-between">
+                                        <div class="text-left"></div>
+                                        <div class="text-right">
+                                            <button class="btn auto btn_love snackbar-wishlist">
+                                                <i class="far fa-heart"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="text-left">
+                                        <h5 class="fw-bolder fs-md mb-0 lh-1 mb-1">
+                                            <a href="shop-single-v1.html">${product.name}</a>
+                                        </h5>
+                                        <div class="elis_rty">
+                                            <span class="ft-bold text-dark fs-sm">₹${product.price}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+
+                            // Append product HTML to container
+                            productsContainer.insertAdjacentHTML('beforeend', productHTML);
+                        });
+                    } catch (error) {
+                        console.error("Error fetching products:", error);
+                    }
+                });
+            });
+        });
 
     </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const productsContainer = document.querySelector('#products');
+        const productHtml = productsContainer.innerHTML;
+        const productsCount = document.querySelector('#product_count');
+        const initialCount = productsCount.innerText;
+
+        document.querySelectorAll('#brand-list input').forEach(checkbox => {
+            checkbox.addEventListener('change', async function () {
+                const selectedBrandIds = Array.from(document.querySelectorAll('#brand-list input:checked'))
+                    .map(cb => cb.getAttribute('data-brand-id'));
+
+                if (selectedBrandIds.length === 0) {
+                    productsContainer.innerHTML = productHtml;
+                    productsCount.innerText = initialCount;
+                    return;
+                }
+
+                productsContainer.innerHTML = '';
+                productsCount.innerText = "100 Items Found";
+
+                try {
+                    const res = await fetch("{{ route('brand.filter.show') }}", {
+                        method: 'POST',
+                        headers: {
+                             "Content-Type": "application/json",  
+                            'X-CSRF-Token': "{{ csrf_token() }}",
+                            },
+                        body: JSON.stringify({ brandId: selectedBrandIds})
+                    });
+                    const data = await res.json();
+
+                    productsContainer.innerHTML = '';
+
+                    data.product.data.forEach(product => {
+                        const productHTML = `
+                            <div class="col-xl-4 col-lg-4 col-md-6 col-6">
+                                <div class="product_grid card b-0">
+                                    <div class="badge bg-info text-white position-absolute ft-regular ab-left text-upper">New</div>
+                                    <div class="card-body p-0">
+                                        <div class="shop_thumb position-relative">
+                                            <a class="card-img-top d-block overflow-hidden" href="{{ route('product.specific', '') }}/${product.slug}">
+                                                <img class="card-img-top" src="${product.thumbnail}" alt="${product.name}">
+                                            </a>
+                                            <div class="product-hover-overlay bg-dark d-flex align-items-center justify-content-center">
+                                                <div class="edlio">
+                                                    <a href="#" data-toggle="modal" data-target="#quickview"
+                                                       class="text-white fs-sm ft-medium quick-view-btn"
+                                                       data-name="${product.name}" data-price="${product.price}"
+                                                       data-description="${product.description}"
+                                                       data-gallery='${JSON.stringify(product.gallery)}'
+                                                       data-category="${product.category.name}" data-reviews="412"
+                                                       data-old-price="${product.cost_price}"
+                                                       data-new-price="${product.price}">
+                                                       <i class="fas fa-eye mr-1"></i>Quick View
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer b-0 p-0 pt-2 bg-white">
+                                        <div class="d-flex align-items-start justify-content-between">
+                                            <div class="text-left"></div>
+                                            <div class="text-right">
+                                                <button class="btn auto btn_love snackbar-wishlist">
+                                                    <i class="far fa-heart"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="text-left">
+                                            <h5 class="fw-bolder fs-md mb-0 lh-1 mb-1">
+                                                <a href="shop-single-v1.html">${product.name}</a>
+                                            </h5>
+                                            <div class="elis_rty">
+                                                <span class="ft-bold text-dark fs-sm">₹${product.price}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`;
+                        productsContainer.insertAdjacentHTML('beforeend', productHTML);
+                    });
+                } catch (error) {
+                    console.error("Error fetching products:", error);
+                }
+            });
+        });
+    });
+</script>
+
 
 </body>
 

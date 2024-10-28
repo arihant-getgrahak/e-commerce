@@ -76,11 +76,27 @@ class ProductController extends Controller
     public function display()
     {
         $product = Product::with(['gallery', 'meta', 'brand', 'category'])->paginate(10);
-        if (! $product) {
-            return view('welcome')->with('product', []);
+        $categories = Category::with(['parent'])->get();
+        $brand = Brand::withCount('products')->get();
+
+        $data = [];
+        $addedParents = [];
+
+        foreach ($categories as $category) {
+            if ($category->parent_id && ! isset($addedParents[$category->parent_id])) {
+                $addedParents[$category->parent_id] = true;
+
+                $data[] = [
+                    'id' => $category->parent->id,
+                    'name' => $category->parent->name,
+                    'child' => $this->getChild($category->parent_id),
+                ];
+            }
         }
 
-        return view('welcome')->with('product', $product);
+        // return response()->json($data);
+
+        return view('welcome')->with('product', $product)->with('categories', collect($data))->with('brand', $brand);
     }
 
     public function store(ProductAddRequest $request)
@@ -238,7 +254,10 @@ class ProductController extends Controller
             return view('specificproduct')->with('error', 'Incorrect product id');
         }
 
-        return view('specificproduct')->with('product', $product);
+        $random = Product::where('category_id', $product[0]->category_id)->inRandomOrder()->get(['name', 'slug', 'price', 'cost_price', 'stock', 'thumbnail']);
+        // return response()->json($random);
+
+        return view('specificproduct')->with('product', $product)->with('random', $random);
 
     }
 
@@ -251,5 +270,13 @@ class ProductController extends Controller
         $uploadedImageUrl = Storage::disk('public')->url($image_uploaded_path);
 
         return $uploadedImageUrl;
+    }
+
+    public function getChild($id)
+    {
+        // $child = Category::where('parent_id', $id)->get();
+        $child = Category::where('parent_id', $id)->withCount('products')->get();
+
+        return $child;
     }
 }

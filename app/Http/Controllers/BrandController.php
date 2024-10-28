@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\BrandStoreRequest;
 use App\Models\Brand;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Storage;
 use Validator;
@@ -95,6 +96,29 @@ class BrandController extends Controller
         // return response()->json([
         //     'message' => 'Brand deleted successfully',
         // ], 200);
+    }
+
+    public function filter(Request $request)
+    {
+
+        // dd($request->all());
+        $validate = Validator::make($request->all(), [
+            'brandId' => 'required|array',
+            'brandId.*' => 'exists:brands,id|integer',
+        ]);
+
+        if ($validate->fails()) {
+            return response()->json([
+                'message' => 'Validation error',
+                'errors' => $validate->errors(),
+            ], 400);
+        }
+
+        $product = Product::whereIn('brand_id', $request->brandId)->with(['gallery', 'meta', 'brand', 'category'])->paginate(10);
+
+        return response()->json([
+            'product' => $product,
+        ], 200);
     }
 
     protected function uploadImage($file)
