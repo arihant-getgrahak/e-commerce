@@ -11,7 +11,11 @@ class CartStoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        if (! auth()->check()) {
+            return false;
+        }
+
+        return true;
     }
 
     /**

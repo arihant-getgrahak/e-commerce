@@ -19,6 +19,17 @@ class CartController extends Controller
 
     public function store(CartStoreRequest $request)
     {
+        $cart = Cart::where('user_id', auth()->user()->id)->where('product_id', $request->product_id)->first();
+        if ($cart) {
+            $cart->update([
+                'quantity' => $cart->quantity + $request->quantity,
+            ]);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Cart created successfully',
+            ], 200);
+        }
         $data = [
             'user_id' => auth()->user()->id,
             'product_id' => $request->product_id,
@@ -29,10 +40,18 @@ class CartController extends Controller
         $cart = Cart::create($data);
 
         if (! $cart) {
-            return back()->with('error', 'Cart not created');
+            // return back()->with('error', 'Cart not created');
+            return response()->json([
+                'message' => 'Cart not created',
+                'status' => false,
+            ], 500);
         }
 
-        return back()->with('success', 'Cart created successfully');
+        // return back()->with('success', 'Cart created successfully');
+        return response()->json([
+            'status' => true,
+            'message' => 'Cart created successfully',
+        ], 200);
     }
 
     public function update(Request $request, $id)
