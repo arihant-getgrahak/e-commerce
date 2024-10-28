@@ -7,6 +7,11 @@
     <title>Document</title>
     <link href="{{asset('assets/css/styles.css')}}" rel="stylesheet">
     <meta name="_token" content="{{ csrf_token() }}">
+    <style>
+        .text-red-500 {
+            color: red;
+        }
+    </style>
 </head>
 
 <body>

@@ -26,7 +26,7 @@ class RegisterRequest extends FormRequest
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6',
             'country_code' => 'required',
-            'phone_number' => 'required|string|min:10|max:10',
+            'phone_number' => 'required|numeric|digits:10',
         ];
     }
 
