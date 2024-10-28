@@ -39,8 +39,9 @@
 
                                 <button class="btn btn-primary btn-update" data-bs-toggle="modal" data-bs-target="#modal-team"
                                     data-id="{{ $p->id }}" data-name="{{ $p->name }}" data-description="{{ $p->description }}"
-                                    data-price="{{ $p->price }}" data-stock="{{ $p->stock }}" data-sku="{{ $p->meta[0]->sku }}"
-                                    data-weight="{{ $p->meta[0]->weight }}" data-category="{{ $p->category->id }}" data-old = "{{ $p->cost_price }}">
+                                    data-price="{{ $p->price }}" data-stock="{{ $p->stock }}" data-sku="{{ $p->sku }}"
+                                    data-weight="{{ $p->weight }}" data-category="{{ $p->category->id }}"
+                                    data-old="{{ $p->cost_price }}" data-brand="{{ $p->brand->id }}">
                                     Update Product
                                 </button>
                                 <button class="btn btn-danger btn-delete" data-bs-toggle="modal" data-bs-target="#modal-danger"
@@ -129,7 +130,7 @@
                         @enderror
                     </div>
 
-                    <!-- Price -->
+                    <!-- Selling Price -->
                     <div class="mb-4">
                         <label for="price" class="col-form-label required">Price</label>
                         <input type="text" id="price" name="price"
@@ -175,47 +176,54 @@
                     <!-- category -->
                     <div class="mb-3">
                         <label class="form-label required">Category Name</label>
-                        <select class="form-select arihant" id="category_id" name="category_id">
-                            <option value="">Select Parent Category</option>
+                        <select class="form-select" id="category_id" name="category_id">
+                            <option value="">Select Category</option>
                             @foreach ($category as $c)
                                 <option value="{{ $c['id'] }}">{{ $c['name'] }}</option>
-                                @if (isset($c['children']))
-                                    @foreach ($c['children'] as $child)
-                                        <option value="{{ $child['id'] }}">-- {{ $child['name'] }}</option>
-                                    @endforeach
-                                @endif
                             @endforeach
                         </select>
-
-                        <!-- Weight -->
-                        <div class="mb-4">
-                            <label for="weight" class="col-form-label required">Weight</label>
-                            <input type="text" id="weight" name="weight"
-                                class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-                                placeholder="Enter product weight">
-                            @error('weight')
-                                <p class="text-red-500">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Thumbnail -->
-                        <div class="mb-4">
-                            <label for="thumbnail" class="col-form-label required">Product Thumbnail</label>
-                            <input type="file" id="thumbnail" name="thumbnail" class="form-control">
-                            @error('thumbnail')
-                                <p class="text-red-500">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <!-- Images -->
-                        <div class="mb-4">
-                            <label for="image" class="col-form-label required">Product Images</label>
-                            <input type="file" id="image" name="image[]" class="form-control" multiple>
-                            @error('image')
-                                <p class="text-red-500">{{ $message }}</p>
-                            @enderror
-                        </div>
                     </div>
+
+                    <!-- brand -->
+                    <div class="mb-3">
+                        <label class="form-label required">Brand Name</label>
+                        <select class="form-select" id="brand_id" name="brand_id">
+                            <option value="">Select Brand</option>
+                            @foreach ($brand as $b)
+                                <option value="{{ $b->id }}">{{ $b->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Weight -->
+                    <div class="mb-4">
+                        <label for="weight" class="col-form-label required">Weight</label>
+                        <input type="text" id="weight" name="weight"
+                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                            placeholder="Enter product weight">
+                        @error('weight')
+                            <p class="text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Thumbnail -->
+                    <div class="mb-4">
+                        <label for="thumbnail" class="col-form-label required">Product Thumbnail</label>
+                        <input type="file" id="thumbnail" name="thumbnail" class="form-control">
+                        @error('thumbnail')
+                            <p class="text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Images -->
+                    <div class="mb-4">
+                        <label for="image" class="col-form-label required">Product Images</label>
+                        <input type="file" id="image" name="image[]" class="form-control" multiple>
+                        @error('image')
+                            <p class="text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div>
+
                     <div class="modal-footer">
                         <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary ms-auto">Update Product</button>
@@ -224,36 +232,40 @@
             </div>
         </div>
     </div>
+</div>
 
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const updateButtons = document.querySelectorAll('.btn-update');
-            const updateForm = document.getElementById("productForm");
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const updateButtons = document.querySelectorAll('.btn-update');
+        const updateForm = document.getElementById("productForm");
 
-            updateButtons.forEach(button => {
-                button.addEventListener('click', function () {
-                    const productId = this.getAttribute('data-id');
-                    const name = this.getAttribute('data-name');
-                    const description = this.getAttribute('data-description');
-                    const price = this.getAttribute('data-price');
-                    const stock = this.getAttribute('data-stock');
-                    const sku = this.getAttribute('data-sku');
-                    const weight = this.getAttribute('data-weight');
-                    const category_id = this.getAttribute('data-category');
-                    const oldPrice = this.getAttribute('data-old');
+        updateButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const productId = this.getAttribute('data-id');
+                const name = this.getAttribute('data-name');
+                const description = this.getAttribute('data-description');
+                const price = this.getAttribute('data-price');
+                const stock = this.getAttribute('data-stock');
+                const sku = this.getAttribute('data-sku');
+                const weight = this.getAttribute('data-weight');
+                const category_id = this.getAttribute('data-category');
+                const oldPrice = this.getAttribute('data-old');
+                const brandId = this.getAttribute('data-brand');
 
-                    updateForm.action = "{{ route('product.update', ':id') }}".replace(':id', productId);
-                    updateForm.querySelector('#name').value = name;
-                    updateForm.querySelector('#description').value = description;
-                    updateForm.querySelector('#price').value = price;
-                    updateForm.querySelector('#stock').value = stock;
-                    updateForm.querySelector('#sku').value = sku;
-                    updateForm.querySelector('#weight').value = weight;
-                    updateForm.querySelector('#category_id').value = category_id;
-                    updateForm.querySelector('#cost_price').value = oldPrice;
-                });
+                updateForm.action = "{{ route('product.update', ':id') }}".replace(':id', productId);
+                updateForm.querySelector('#name').value = name;
+                updateForm.querySelector('#description').value = description;
+                updateForm.querySelector('#price').value = price;
+                updateForm.querySelector('#stock').value = stock;
+                updateForm.querySelector('#sku').value = sku;
+                updateForm.querySelector('#weight').value = weight;
+                updateForm.querySelector('#category_id').value = category_id;
+                updateForm.querySelector('#cost_price').value = oldPrice;
+                updateForm.querySelector('#brand_id').value = brandId;
+
             });
         });
-    </script>
-    @endsection
+    });
+</script>
+@endsection

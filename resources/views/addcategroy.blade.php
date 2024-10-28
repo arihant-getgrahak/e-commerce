@@ -47,7 +47,6 @@
                     </thead>
                     <tbody class="table-tbody">
                         @foreach ($data as $key => $c)
-
                             <tr>
                                 <td class="sort-name">{{$c["id"]}}</td>
                                 <td class="sort-city">{{$c["name"]}}</td>
@@ -134,15 +133,10 @@
                                 <option value="">Select Parent Category</option>
                                 @foreach ($data as $category)
                                     <option value="{{ $category['id'] }}">{{ $category['name'] }}</option>
-                                    @if (isset($category['children']))
-                                        @foreach ($category['children'] as $child)
-                                            <option value="{{ $child['id'] }}">-- {{ $child['name'] }}</option>
-                                        @endforeach
-                                    @endif
                                 @endforeach
                             </select>
-
                         </div>
+
                         <!-- Name -->
                         <div class="mb-4">
                             <label for="name" class="col-form-label required">Category Name</label>
@@ -177,17 +171,12 @@
                 const name = this.getAttribute('data-name');
                 const parentId = this.getAttribute('data-parent-id');
 
+                console.log(parentId);
+
                 updateForm.action = "{{ route('category.update', ':id') }}".replace(':id', productId);
 
                 updateForm.querySelector('#name').value = name;
-
-                for (const option of arihantSelect.options) {
-                    if (option.value === parentId) {
-                        option.selected = true;
-                    } else {
-                        option.selected = false;
-                    }
-                }
+                updateForm.querySelector('#parent_id').value = parentId;
             });
         });
     });

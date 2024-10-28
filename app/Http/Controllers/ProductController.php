@@ -44,6 +44,7 @@ class ProductController extends Controller
         $product = Product::where('added_by', auth()->user()->id)->with(['gallery', 'meta', 'brand', 'category'])->paginate(10);
         $categories = Category::with('parent')->get();
         $data = [];
+        $brand = Brand::all();
 
         foreach ($categories as $category) {
             if ($category->parent) {
@@ -65,7 +66,7 @@ class ProductController extends Controller
         }
 
         // dd($product);
-        return view('productview')->with('product', $product)->with('category', $data);
+        return view('productview')->with('product', $product)->with('category', $data)->with('brand', $brand);
 
         // return response()->json([
         //     "product" => $product
@@ -113,6 +114,8 @@ class ProductController extends Controller
                 'slug' => $request->slug,
                 'thumbnail' => $this->uploadImage($request->file('thumbnail')),
                 'cost_price' => $request->cost_price,
+                'sku' => $request->sku,
+                'weight' => $request->weight,
             ];
             DB::beginTransaction();
             $product = Product::create($data);
@@ -141,14 +144,14 @@ class ProductController extends Controller
                 }
             }
 
-            $data = [
-                'product_id' => $product->id,
-                'sku' => $request->sku,
-                'weight' => $request->weight,
-            ];
-            DB::beginTransaction();
-            ProductMeta::create($data);
-            DB::commit();
+            // $data = [
+            //     'product_id' => $product->id,
+            //     'sku' => $request->sku,
+            //     'weight' => $request->weight,
+            // ];
+            // DB::beginTransaction();
+            // ProductMeta::create($data);
+            // DB::commit();
 
             // return response()->json([
             //     "success" => "Product created successfully",
@@ -192,6 +195,7 @@ class ProductController extends Controller
                 'category_id',
                 'added_by',
                 'cost_price',
+                'brand_id',
             ]);
 
             $product->fill($updateData)->save();
