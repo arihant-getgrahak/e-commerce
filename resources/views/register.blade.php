@@ -59,7 +59,7 @@
                     <label for="confirm_password">Confirm Password *</label>
                     <input type="password" class="form-control" placeholder="Confirm Password*" required
                         id="confirm_password" name="confirm_password">
-                        @error('confirm_password')
+                    @error('confirm_password')
                         <p class="text-red-500">{{ $message }}</p>
                     @enderror
                 </div>
@@ -75,6 +75,9 @@
                     Account</button>
             </div>
         </form>
+        <div>
+            Already have an account? <a href="{{route('login')}}" class="text-dark">Login</a>
+        </div>
     </div>
 </section>
 <script>

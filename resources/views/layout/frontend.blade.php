@@ -360,7 +360,7 @@
                         </button>
                     </div>
 
-                    <div class="modal-body p-5">
+                    < class="modal-body p-5">
                         <div class="text-center mb-4">
                             <h2 class="m-0 ft-regular">Login</h2>
                         </div>
@@ -391,7 +391,7 @@
                             </div>
 
                             <div class="form-group text-center mb-0">
-                                <p class="extra">Not a member?<a href="#et-register-wrap" class="text-dark">
+                                <p class="extra">Not a member?<a href="{{route('register')}}" class="text-dark">
                                         Register</a></p>
                             </div>
                         </form>
