@@ -15,7 +15,6 @@
         <div class="py-2 bg-dark">
             <div class="container">
                 <div class="row">
-
                     <div class="col-xl-4 col-lg-4 col-md-5 col-sm-12 hide-ipad">
                         <div class="top_first"><a href="callto:(+84)0123456789" class="medium text-light">(+84) 0123 456
                                 789</a></div>
@@ -95,8 +94,8 @@
             <div class="container">
                 <nav id="navigation" class="navigation navigation-landscape">
                     <div class="nav-header">
-                        <a class="nav-brand" href="#">
-                            <img src="assets/img/logo.png" class="logo" alt="" />
+                        <a class="nav-brand" href="/">
+                            <img src="{{asset('assets/img/logo.png')}}" class="logo" alt="" />
                         </a>
                         <div class="nav-toggle"></div>
                         <div class="mobile_nav">
@@ -229,7 +228,9 @@
 
                         <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12">
                             <div class="footer_widget">
-                                <img src="assets/img/logo-light.png" class="img-footer small mb-2" alt="" />
+
+                                <img src="{{asset('assets/img/logo-light.png')}}" class="img-footer small mb-2"
+                                    alt="" />
 
                                 <div class="address mt-3">
                                     3298 Grant Street Longview, TX<br>United Kingdom 75601
