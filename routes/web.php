@@ -38,6 +38,10 @@ Route::get('login', function () {
     return view('login');
 })->name('login');
 
+Route::get('register', function () {
+    return view('register');
+})->name('register');
+
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::post('category/add', [CategoryController::class, 'store'])->name('category.add');
@@ -45,6 +49,7 @@ Route::post('category/child/add', [CategoryController::class, 'storechild'])->na
 Route::post('brand/add', [BrandController::class, 'store'])->name('brand.add');
 Route::post('/product/add', [ProductController::class, 'store'])->name('product.add');
 Route::post('login', [AuthController::class, 'login'])->name('login');
+Route::post('register', [AuthController::class, 'register'])->name('register');
 
 Route::get('/', [ProductController::class, 'display'])->name('product');
 Route::get('product/{id}', [ProductController::class, 'specific'])->name('product.specific');
