@@ -1,8 +1,6 @@
 @extends('layout.frontend')
 
 @section('section')
-<h1>This is the shopping cart</h1>
-
 @if ($isLoggedIn)
     @if ($cart->isEmpty())
         <p>Your cart is empty.</p>
@@ -20,63 +18,36 @@
 
                 <div class="row justify-content-between">
                     <div class="col-12 col-lg-7 col-md-12">
-                        <ul class="list-group list-group-sm list-group-flush-y list-group-flush-x mb-4">
-
-                            <li class="list-group-item">
-                                <div class="row align-items-center">
-                                    <div class="col-3">
-                                        <!-- Image -->
-                                        <a href="product.html"><img src="assets/img/product/7-a.jpg" alt="..."
-                                                class="img-fluid"></a>
-                                    </div>
-                                    <div class="col d-flex align-items-center justify-content-between">
-                                        <div class="cart_single_caption pl-2">
-                                            <h4 class="product_title fs-md ft-medium mb-1 lh-1">Women Striped Shirt Dress</h4>
-                                            <p class="mb-1 lh-1"><span class="text-dark">Size: 40</span></p>
-                                            <p class="mb-3 lh-1"><span class="text-dark">Color: Blue</span></p>
-                                            <h4 class="fs-md ft-medium mb-3 lh-1">$129</h4>
-                                            <select class="mb-2 custom-select w-auto">
-                                                <option value="1" selected="">1</option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="4">4</option>
-                                                <option value="5">5</option>
-                                            </select>
+                        @foreach ($cart as $c)
+                            <ul class="list-group list-group-sm list-group-flush-y list-group-flush-x mb-4">
+                                <li class="list-group-item">
+                                    <div class="row align-items-center">
+                                        <div class="col-3">
+                                            <!-- Image -->
+                                            <a href="{{route("product.specific", $c->products[0]->slug)}}"><img
+                                                    src="{{$c->products[0]->thumbnail}}" alt="{{$c->products[0]->name}}"
+                                                    class="img-fluid"></a>
                                         </div>
-                                        <div class="fls_last"><button class="close_slide gray"><i class="ti-close"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-
-                            <li class="list-group-item">
-                                <div class="row align-items-center">
-                                    <div class="col-3">
-                                        <!-- Image -->
-                                        <a href="product.html"><img src="assets/img/product/7.jpg" alt="..."
-                                                class="img-fluid"></a>
-                                    </div>
-                                    <div class="col d-flex align-items-center justify-content-between">
-                                        <div class="cart_single_caption pl-2">
-                                            <h4 class="product_title fs-md ft-medium mb-1 lh-1">Girls Solid A-Line Dress</h4>
-                                            <p class="mb-1 lh-1"><span class="text-dark">Size: 36</span></p>
-                                            <p class="mb-3 lh-1"><span class="text-dark">Color: Red</span></p>
-                                            <h4 class="fs-md ft-medium mb-3 lh-1">$129</h4>
-                                            <select class="mb-2 custom-select w-auto">
-                                                <option value="1" selected="">1</option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="4">4</option>
-                                                <option value="5">5</option>
-                                            </select>
-                                        </div>
-                                        <div class="fls_last"><button class="close_slide gray"><i class="ti-close"></i></button>
+                                        <div class="col d-flex align-items-center justify-content-between">
+                                            <div class="cart_single_caption pl-2">
+                                                <h4 class="product_title fs-md ft-medium mb-1 lh-1">{{$c->products[0]->name}}</h4>
+                                                <!-- <p class="mb-1 lh-1"><span class="text-dark">Size: 40</span></p>
+                                                                                                            <p class="mb-3 lh-1"><span class="text-dark">Color: Blue</span></p> -->
+                                                <h4 class="fs-md ft-medium mb-3 lh-1">₹{{$c->price}}</h4>
+                                                <select class="custom-select w-auto mb-2">
+                                                    @for ($i = 1; $i <= 5; $i++)
+                                                        <option value="{{ $i }}" {{ $i == $c->quantity ? 'selected' : '' }}>{{ $i }}
+                                                        </option>
+                                                    @endfor
+                                                </select>
+                                            </div>
+                                            <div class="fls_last"><button class="close_slide gray"><i class="ti-close"></i></button>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </li>
-
-                        </ul>
+                                </li>
+                            </ul>
+                        @endforeach
 
                         <div class="row align-items-end justify-content-between mb-10 mb-md-0">
                             <div class="col-12 col-md-7">
