@@ -32,7 +32,7 @@
                                             <div class="cart_single_caption pl-2">
                                                 <h4 class="product_title fs-md ft-medium mb-1 lh-1">{{$c->products[0]->name}}</h4>
                                                 <!-- <p class="mb-1 lh-1"><span class="text-dark">Size: 40</span></p>
-                                                                                                                                                                                                                                                                                                                        <p class="mb-3 lh-1"><span class="text-dark">Color: Blue</span></p> -->
+                                                                                                                                                                                                                                                                                                                                                                                                                                    <p class="mb-3 lh-1"><span class="text-dark">Color: Blue</span></p> -->
                                                 <h4 class="fs-md ft-medium mb-3 lh-1">₹{{$c->price}}</h4>
                                                 <select class="custom-select w-auto mb-2" id="quantity">
                                                     @for ($i = 1; $i <= 5; $i++)
@@ -41,7 +41,8 @@
                                                     @endfor
                                                 </select>
                                             </div>
-                                            <div class="fls_last"><button class="close_slide gray"><i class="ti-close"></i></button>
+                                            <div class="fls_last"><button class="close_slide gray" id="remove-cart"><i
+                                                        class="ti-close"></i></button>
                                             </div>
                                         </div>
                                     </div>
@@ -132,6 +133,31 @@
                     }
                 });
             });
+        </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const btn = document.getElementById("remove-cart");
+                btn.addEventListener('click', async function () {
+                    // console.log("hello");
+                    console.log("hello", "{{$cart[0]->id}}");
+                    const res = await fetch("{{ route('cart.delete', $cart[0]->id) }}", {
+                        method: "DELETE",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                        },
+                    })
+                    const data = await res.json();
+                    if (!data.status) {
+                        alert(data.message);
+                    }
+                    else {
+                        alert("Cart deleted successfully");
+                        window.location.reload();
+                    }
+                });
+            })
         </script>
     @endif
 @else

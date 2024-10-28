@@ -96,9 +96,17 @@ class CartController extends Controller
         if ($cart) {
             $cart->delete();
 
-            return back()->with('success', 'Cart deleted successfully');
+            // return back()->with('success', 'Cart deleted successfully');
+            return response()->json([
+                'message' => 'Cart deleted successfully',
+                'status' => true,
+            ], 200);
         }
 
-        return back()->with('error', 'Cart not found');
+        // return back()->with('error', 'Cart not found');
+        return response()->json([
+            'message' => 'Cart not found',
+            'status' => false,
+        ], 404);
     }
 }
