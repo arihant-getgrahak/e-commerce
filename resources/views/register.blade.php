@@ -4,7 +4,7 @@
 
 <section class="middle">
     <div class="container">
-        <form class="border p-3 rounded">
+        <form class="border p-3 rounded" action="{{ route('register') }}" method="post">
             @csrf
             <div class="row">
                 <div class="form-group col-md-6">
@@ -81,4 +81,12 @@
         </form>
     </div>
 </section>
+<script>
+    if ("{{session('success')}}") {
+        alert("{{session('success')}}");
+    }
+    if ("{{session('error')}}") {
+        alert("{{session('error')}}");
+    }
+</script>
 @endsection
