@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Middleware\AdminMiddleware;
@@ -62,3 +63,5 @@ Route::delete('/brand/delete/{id}', [BrandController::class, 'destroy'])->name('
 
 Route::get('category/{id}', [CategoryController::class, 'filter'])->name('category.show');
 Route::post('brand/filter', [BrandController::class, 'filter'])->name('brand.filter.show');
+
+Route::get('/cart', [CartController::class, 'index'])->name('cart');
