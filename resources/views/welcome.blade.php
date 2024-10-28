@@ -1183,20 +1183,20 @@
                 }
 
                 productsContainer.innerHTML = '';
-                productsCount.innerText = "100 Items Found";
-
+                
                 try {
                     const res = await fetch("{{ route('brand.filter.show') }}", {
                         method: 'POST',
                         headers: {
-                             "Content-Type": "application/json",  
+                            "Content-Type": "application/json",  
                             'X-CSRF-Token': "{{ csrf_token() }}",
-                            },
+                        },
                         body: JSON.stringify({ brandId: selectedBrandIds})
                     });
                     const data = await res.json();
-
+                    
                     productsContainer.innerHTML = '';
+                    productsCount.innerText = data.product.data.length + " Items Found";
 
                     data.product.data.forEach(product => {
                         const productHTML = `
