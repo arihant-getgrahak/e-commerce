@@ -25,41 +25,66 @@ class CartController extends Controller
 
     public function store(CartStoreRequest $request)
     {
-        $cart = Cart::where('user_id', auth()->user()->id)->where('product_id', $request->product_id)->first();
-        if ($cart) {
-            $newQuantity = $cart->quantity + $request->quantity;
-            $cart->update([
-                'quantity' => $newQuantity,
-                'price' => $request->price * $newQuantity,
-            ]);
+        if (auth()->check()) {
+            $cart = Cart::where('user_id', auth()->user()->id)->where('product_id', $request->product_id)->first();
+            if ($cart) {
+                $newQuantity = $cart->quantity + $request->quantity;
+                $cart->update([
+                    'quantity' => $newQuantity,
+                    'price' => $request->price * $newQuantity,
+                ]);
 
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Cart created successfully',
+                ], 200);
+            }
+            $data = [
+                'user_id' => auth()->user()->id,
+                'product_id' => $request->product_id,
+                'quantity' => $request->quantity,
+                'price' => $request->price * $request->quantity,
+            ];
+
+            $cart = Cart::create($data);
+
+            if (! $cart) {
+                // return back()->with('error', 'Cart not created');
+                return response()->json([
+                    'message' => 'Cart not created',
+                    'status' => false,
+                ], 500);
+            }
+
+            // return back()->with('success', 'Cart created successfully');
             return response()->json([
                 'status' => true,
                 'message' => 'Cart created successfully',
             ], 200);
         }
-        $data = [
-            'user_id' => auth()->user()->id,
-            'product_id' => $request->product_id,
-            'quantity' => $request->quantity,
-            'price' => $request->price * $request->quantity,
-        ];
 
-        $cart = Cart::create($data);
+        $cart = session()->get('cart', []);
+        $productId = $request->product_id;
 
-        if (! $cart) {
-            // return back()->with('error', 'Cart not created');
-            return response()->json([
-                'message' => 'Cart not created',
-                'status' => false,
-            ], 500);
+        if (isset($cart[$productId])) {
+            $cart[$productId]['quantity'] += $request->quantity;
+            $cart[$productId]['price'] = $request->price * $cart[$productId]['quantity'];
+        } else {
+            $cart[$productId] = [
+                'user_id' => null,
+                'product_id' => $request->product_id,
+                'quantity' => $request->quantity,
+                'price' => $request->price * $request->quantity,
+            ];
         }
 
-        // return back()->with('success', 'Cart created successfully');
+        session()->put('cart', $cart);
+
         return response()->json([
             'status' => true,
             'message' => 'Cart created successfully',
         ], 200);
+
     }
 
     public function update(Request $request)
