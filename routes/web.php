@@ -73,3 +73,5 @@ Route::delete('cart/delete/{id}', [CartController::class, 'destroy'])->name('car
 
 Route::get('checkout', [CheckoutController::class, 'index'])->name('checkout');
 Route::post('checkout/store', [CheckoutController::class, 'store'])->name('checkout.store');
+
+Route::get('cart/json', [CartController::class, 'cartcount'])->name('cartcount');
