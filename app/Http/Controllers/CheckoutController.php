@@ -13,7 +13,14 @@ class CheckoutController extends Controller
 {
     public function index()
     {
-        return view('checkout');
+        $isLoggedIn = auth()->check();
+        $cart = $isLoggedIn ? Cart::where('user_id', auth()->user()->id)->with('products')->get() : null;
+        $price = 0;
+        if ($cart) {
+            $price = $cart->sum('price');
+        }
+
+        return view('checkout', compact('isLoggedIn', 'cart', 'price'));
     }
 
     public function store(Request $request)
@@ -23,8 +30,8 @@ class CheckoutController extends Controller
             $isloggedIn = true;
 
             if ($isloggedIn) {
-                // $cart = Cart::where('user_id', auth()->user()->id)->with('products')->get();
-                $cart = Cart::where('user_id', 1)->with('products')->get();
+                $cart = Cart::where('user_id', auth()->user()->id)->with('products')->get();
+
                 if (! $cart) {
                     return response()->json([
                         'message' => 'Cart is empty',
@@ -43,7 +50,7 @@ class CheckoutController extends Controller
 
                 // create order address
                 $order = OrderAdress::create([
-                    'user_id' => 1,
+                    'user_id' => auth()->user()->id,
                     'name' => $name,
                     'email' => $request->email,
                     'address' => $address,
@@ -57,7 +64,7 @@ class CheckoutController extends Controller
 
                 // create order
                 $order = Order::create([
-                    'user_id' => 1,
+                    'user_id' => auth()->user()->id,
                     'address_id' => $order->id,
                     'total' => $price,
                     'payment_method' => $request->payment_method,
@@ -76,7 +83,7 @@ class CheckoutController extends Controller
 
                 $order = Order::with(['products.product', 'address'])->first();
 
-                Cart::where('user_id', 1)->delete();
+                Cart::where('user_id', auth()->user()->id)->delete();
 
                 return back()->with('success', 'Order placed successfully');
             } else {
