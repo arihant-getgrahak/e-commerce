@@ -203,7 +203,6 @@
     </div>
 </section>
 
-<h1>Please login</h1>
 <script>
     if ("{{ session('error') }}") {
         alert("{{ session('error') }}");

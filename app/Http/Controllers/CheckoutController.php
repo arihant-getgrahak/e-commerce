@@ -20,6 +20,10 @@ class CheckoutController extends Controller
             $price = $cart->sum('price');
         }
 
+        if ($cart->isEmpty()) {
+            return redirect('/');
+        }
+
         return view('checkout', compact('isLoggedIn', 'cart', 'price'));
     }
 
