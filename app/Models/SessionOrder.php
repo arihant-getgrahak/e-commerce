@@ -29,7 +29,7 @@ class SessionOrder extends Model
 
     public function products()
     {
-        return $this->hasMany(OrderProduct::class, 'order_id', 'id');
+        return $this->hasMany(GuestOrder::class, 'order_id', 'id');
     }
 
     public function address()
