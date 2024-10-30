@@ -171,8 +171,6 @@
                 const name = this.getAttribute('data-name');
                 const parentId = this.getAttribute('data-parent-id');
 
-                console.log(parentId);
-
                 updateForm.action = "{{ route('category.update', ':id') }}".replace(':id', productId);
 
                 updateForm.querySelector('#name').value = name;

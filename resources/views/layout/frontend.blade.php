@@ -471,8 +471,6 @@
                     })
                     const data = await res.json();
 
-                    console.log(data);
-
                     document.getElementById("cart-count").innerText = data.cart.length;
                     document.getElementById("subtotal").innerText = "₹" + data.price;
                     const cartcontainer = document.getElementById("cart");

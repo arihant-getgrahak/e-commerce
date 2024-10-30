@@ -141,10 +141,6 @@
                         }
                     });
                 })
-
-                // btn.addEventListener('click', async function () {
-                //     console.log(updatedData);
-                // });
             });
         </script>
 

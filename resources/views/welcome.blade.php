@@ -718,7 +718,6 @@
         });
 
         async function addToCart(params) {
-            console.log(params);
             const quantity = 1;
             const res = await fetch("{{route("cart.add")}}", {
                 method: "POST",
