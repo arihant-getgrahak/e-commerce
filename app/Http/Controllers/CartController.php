@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CartStoreRequest;
 use App\Models\Cart;
+use App\Models\SessionCart;
 use DB;
 use Illuminate\Http\Request;
 
@@ -12,11 +13,20 @@ class CartController extends Controller
     public function index()
     {
         $isLoggedIn = auth()->check();
-        $cart = $isLoggedIn ? Cart::where('user_id', auth()->user()->id)->with('products')->get() : null;
         $price = 0;
-        if ($cart) {
-            foreach ($cart as $c) {
-                $price += $c->price;
+        $cart = null;
+
+        if (! $isLoggedIn) {
+            $session_id = session()->getId();
+            $cart = SessionCart::where('session_id', $session_id)->with('products')->get();
+            if ($cart) {
+                $price = $cart->sum('price');
+            }
+        } else {
+            $cart = Cart::where('user_id', auth()->user()->id)->with('products')->get();
+            $price = 0;
+            if ($cart) {
+                $price = $cart->sum('price');
             }
         }
 
@@ -26,10 +36,21 @@ class CartController extends Controller
     public function cartcount()
     {
         $isLoggedIn = auth()->check();
-        $cart = $isLoggedIn ? Cart::where('user_id', auth()->user()->id)->with('products')->get() : null;
         $price = 0;
-        if ($cart) {
-            $price = $cart->sum('price');
+        $cart = null;
+
+        if (! $isLoggedIn) {
+            $session_id = session()->getId();
+            $cart = SessionCart::where('session_id', $session_id)->with('products')->get();
+            if ($cart) {
+                $price = $cart->sum('price');
+            }
+        } else {
+            $cart = Cart::where('user_id', auth()->user()->id)->with('products')->get();
+            $price = 0;
+            if ($cart) {
+                $price = $cart->sum('price');
+            }
         }
 
         return response()->json(['cart' => $cart, 'price' => $price]);
@@ -40,10 +61,10 @@ class CartController extends Controller
         if (auth()->check()) {
             $cart = Cart::where('user_id', auth()->user()->id)->where('product_id', $request->product_id)->first();
             if ($cart) {
-                $newQuantity = $cart->quantity + $request->quantity;
+
                 $cart->update([
-                    'quantity' => $newQuantity,
-                    'price' => $request->price * $newQuantity,
+                    'quantity' => $request->quantity,
+                    'price' => $request->price * $request->quantity,
                 ]);
 
                 return response()->json([
@@ -75,23 +96,39 @@ class CartController extends Controller
             ], 200);
         }
 
-        $cart = session()->get('cart', []);
-        $productId = $request->product_id;
+        $session_id = session()->getId();
 
-        if (isset($cart[$productId])) {
-            $cart[$productId]['quantity'] += $request->quantity;
-            $cart[$productId]['price'] = $request->price * $cart[$productId]['quantity'];
-        } else {
-            $cart[$productId] = [
-                'user_id' => null,
-                'product_id' => $request->product_id,
+        $cart = SessionCart::where('session_id', $session_id)->where('product_id', $request->product_id)->first();
+        if ($cart) {
+
+            $cart->update([
                 'quantity' => $request->quantity,
                 'price' => $request->price * $request->quantity,
-            ];
+            ]);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Cart created successfully',
+            ], 200);
+        }
+        $data = [
+            'session_id' => $session_id,
+            'product_id' => $request->product_id,
+            'quantity' => $request->quantity,
+            'price' => $request->price * $request->quantity,
+        ];
+
+        $cart = SessionCart::create($data);
+
+        if (! $cart) {
+            // return back()->with('error', 'Cart not created');
+            return response()->json([
+                'message' => 'Cart not created',
+                'status' => false,
+            ], 500);
         }
 
-        session()->put('cart', $cart);
-
+        // return back()->with('success', 'Cart created successfully');
         return response()->json([
             'status' => true,
             'message' => 'Cart created successfully',
@@ -101,70 +138,138 @@ class CartController extends Controller
 
     public function update(Request $request)
     {
-        $cartData = $request->all();
+        if (auth()->check()) {
+            $cartData = $request->all();
 
-        $cartIds = array_keys($cartData);
+            $cartIds = array_keys($cartData);
 
-        $carts = Cart::whereIn('id', $cartIds)->get()->keyBy('id');
+            $carts = Cart::whereIn('id', $cartIds)->get()->keyBy('id');
 
-        if ($carts->isEmpty()) {
-            return response()->json([
-                'message' => 'No cart items found',
-                'status' => false,
-            ]);
-        }
-
-        try {
-            DB::beginTransaction();
-
-            foreach ($cartData as $id => $data) {
-                if (! isset($carts[$id])) {
-                    continue;
-                }
-
-                $cart = $carts[$id];
-                $pricePerUnit = $cart->price / $cart->quantity;
-
-                $cart->update([
-                    'quantity' => $data['quantity'],
-                    'price' => $pricePerUnit * $data['quantity'],
+            if ($carts->isEmpty()) {
+                return response()->json([
+                    'message' => 'No cart items found',
+                    'status' => false,
                 ]);
             }
 
-            DB::commit();
+            try {
+                DB::beginTransaction();
 
-            return response()->json([
-                'message' => 'Cart updated successfully',
-                'status' => true,
-                'data' => $carts->values(),
-            ]);
-        } catch (\Exception $e) {
-            DB::rollBack();
+                foreach ($cartData as $id => $data) {
+                    if (! isset($carts[$id])) {
+                        continue;
+                    }
 
-            return response()->json([
-                'message' => $e->getMessage(),
-                'status' => false,
-            ]);
+                    $cart = $carts[$id];
+                    $pricePerUnit = $cart->price / $cart->quantity;
+
+                    $cart->update([
+                        'quantity' => $data['quantity'],
+                        'price' => $pricePerUnit * $data['quantity'],
+                    ]);
+                }
+
+                DB::commit();
+
+                return response()->json([
+                    'message' => 'Cart updated successfully',
+                    'status' => true,
+                    'data' => $carts->values(),
+                ]);
+            } catch (\Exception $e) {
+                DB::rollBack();
+
+                return response()->json([
+                    'message' => $e->getMessage(),
+                    'status' => false,
+                ]);
+            }
+        } else {
+            $cartData = $request->all();
+
+            $cartIds = array_keys($cartData);
+
+            $session_id = session()->getId();
+
+            $carts = SessionCart::whereIn('id', $cartIds)->get()->keyBy('id');
+
+            if ($carts->isEmpty()) {
+                return response()->json([
+                    'message' => 'No cart items found',
+                    'status' => false,
+                ], 404);
+            }
+            try {
+                DB::beginTransaction();
+
+                foreach ($cartData as $id => $data) {
+                    if (! isset($carts[$id])) {
+                        continue;
+                    }
+
+                    $cart = $carts[$id];
+                    $pricePerUnit = $cart->price / $cart->quantity;
+
+                    $cart->update([
+                        'quantity' => $data['quantity'],
+                        'price' => $pricePerUnit * $data['quantity'],
+                    ]);
+                }
+
+                DB::commit();
+
+                return response()->json([
+                    'message' => 'Cart updated successfully',
+                    'status' => true,
+                    'data' => $carts->values(),
+                ]);
+            } catch (\Exception $e) {
+                DB::rollBack();
+
+                return response()->json([
+                    'message' => $e->getMessage(),
+                    'status' => false,
+                ]);
+            }
         }
     }
 
     public function destroy($id)
     {
-        $cart = Cart::find($id);
-        if ($cart) {
-            $cart->delete();
+        if (auth()->check()) {
+            $cart = Cart::find($id);
+            if ($cart) {
+                $cart->delete();
 
-            // return back()->with('success', 'Cart deleted successfully');
+                // return back()->with('success', 'Cart deleted successfully');
+                return response()->json([
+                    'message' => 'Cart deleted successfully',
+                    'status' => true,
+                ], 200);
+            }
+
+            // return back()->with('error', 'Cart not found');
             return response()->json([
-                'message' => 'Cart deleted successfully',
-                'status' => true,
-            ], 200);
-        }
+                'message' => 'Cart not found',
+                'status' => false,
+            ], 404);
+        } else {
+            $cart = SessionCart::find($id);
+            if ($cart) {
+                $cart->delete();
 
-        // return back()->with('error', 'Cart not found');
-        return response()->json([
-            'message' => 'Cart not found',
-            'status' => false,
-        ], 404);
+                // return back()->with('success', 'Cart deleted successfully');
+                return response()->json([
+                    'message' => 'Cart deleted successfully',
+                    'status' => true,
+                ], 200);
+            }
+
+            // return back()->with('error', 'Cart not found');
+            return response()->json([
+                'message' => 'Cart not found',
+                'status' => false,
+            ], 404);
+        }
     }
 }
