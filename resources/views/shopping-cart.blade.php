@@ -150,7 +150,7 @@
 
             btns.forEach(button => {
                 button.addEventListener('click', async function () {
-                    const id = this.getAttribute("data-id"); // Moved inside the event listener
+                    const id = this.getAttribute("data-id"); 
 
                     const res = await fetch("{{route('cart.delete', ':id')}}".replace(":id", id), {
                         method: "DELETE",

@@ -677,7 +677,7 @@
     document.addEventListener('DOMContentLoaded', function () {
         document.querySelectorAll('.quick-view-btn').forEach(function (button) {
             button.addEventListener('click', function () {
-                // Get product data from data attributes
+               
                 const productName = this.getAttribute('data-name');
                 const productPrice = this.getAttribute('data-price');
                 const productDescription = this.getAttribute('data-description');
@@ -699,14 +699,13 @@
                     });
                 });
 
-                // Update modal content
                 document.querySelector('#quickviewmodal .ft-bold.mb-1').innerText = productName;
                 document.querySelector('#quickviewmodal .ft-bold.theme-cl.fs-lg.mr-2').innerText = `₹${newPrice}`;
                 document.querySelector('#quickviewmodal .ft-medium.text-muted.line-through.fs-md.mr-2').innerText = `₹${oldPrice}`;
                 document.querySelector('#quickviewmodal .prt_03.mb-3 p').innerText = productDescription;
                 document.querySelector("#category").innerText = productCategory;
 
-                // Update gallery images
+
                 let galleryHTML = '';
 
                 productGallery.forEach(function (image) {
@@ -748,10 +747,9 @@
         const productsContainer = document.querySelector('#products');
         const productsCount = document.querySelector('#product_count');
 
-        // Add click event listener to all category links
         document.querySelectorAll('.inner_widget_link a').forEach(link => {
             link.addEventListener('click', async function (event) {
-                event.preventDefault(); // Prevent default link behavior
+                event.preventDefault(); 
                 const categoryId = this.getAttribute('data-id');
 
                 try {
@@ -761,7 +759,6 @@
                     productsContainer.innerHTML = '';
                     productsCount.innerText = data.product.length + " Items Found";
 
-                    // Render each product
                     data.product.forEach(product => {
                         const productHTML = `
                         <div class="col-xl-4 col-lg-4 col-md-6 col-6">
@@ -812,7 +809,6 @@
                             </div>
                         </div>`;
 
-                        // Append product HTML to container
                         productsContainer.insertAdjacentHTML('beforeend', productHTML);
                     });
                 } catch (error) {
