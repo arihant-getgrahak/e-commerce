@@ -914,31 +914,5 @@
         });
     });
 </script>
-<script>
-    async function addToCart(this) {
-        console.log(this);
-        return
-        const quantity = 1;
-        const res = await fetch("{{route("cart.add")}}", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-TOKEN": "{{ csrf_token() }}"
-            },
-            body: JSON.stringify({
-                product_id: productId[0].id,
-                quantity: quantity,
-                price: productId[0].price
-            }),
-        })
 
-        const data = await res.json()
-        if (!data.status) {
-            alert(data.message)
-        }
-        else {
-            alert(data.message)
-        }
-    }
-</script>
 @endsection
