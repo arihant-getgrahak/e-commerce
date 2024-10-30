@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('transaction_id')->nullable()->unique();
             $table->string('currency')->default('inr');
             $table->string('razorpay_order_id')->nullable()->unique();
+            $table->string('razorpay_payment_id')->nullable()->unique();
             $table->datetime('delivery_date')->default(now()->addDays(14));
             $table->timestamps();
         });

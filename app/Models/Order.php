@@ -11,13 +11,14 @@ class Order extends Model
         'products',
         'address',
         'total',
-        'status',
-        'payment_status',
+        'status', //Pending
+        'payment_status', //Pending
         'payment_method',
-        'transaction_id',
+        'transaction_id', //nullable for cod
         'currency',
-        'razorpay_order_id',
-        'delivery_date',
+        'razorpay_order_id', //nullable for cod
+        'razorpay_payment_id', //nullable for cod
+        'delivery_date', //default 14 days
     ];
 
     protected $casts = [
