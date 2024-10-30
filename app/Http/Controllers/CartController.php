@@ -138,50 +138,99 @@ class CartController extends Controller
 
     public function update(Request $request)
     {
-        $cartData = $request->all();
+        if (auth()->check()) {
+            $cartData = $request->all();
 
-        $cartIds = array_keys($cartData);
+            $cartIds = array_keys($cartData);
 
-        $carts = Cart::whereIn('id', $cartIds)->get()->keyBy('id');
+            $carts = Cart::whereIn('id', $cartIds)->get()->keyBy('id');
 
-        if ($carts->isEmpty()) {
-            return response()->json([
-                'message' => 'No cart items found',
-                'status' => false,
-            ]);
-        }
-
-        try {
-            DB::beginTransaction();
-
-            foreach ($cartData as $id => $data) {
-                if (! isset($carts[$id])) {
-                    continue;
-                }
-
-                $cart = $carts[$id];
-                $pricePerUnit = $cart->price / $cart->quantity;
-
-                $cart->update([
-                    'quantity' => $data['quantity'],
-                    'price' => $pricePerUnit * $data['quantity'],
+            if ($carts->isEmpty()) {
+                return response()->json([
+                    'message' => 'No cart items found',
+                    'status' => false,
                 ]);
             }
 
-            DB::commit();
+            try {
+                DB::beginTransaction();
 
-            return response()->json([
-                'message' => 'Cart updated successfully',
-                'status' => true,
-                'data' => $carts->values(),
-            ]);
-        } catch (\Exception $e) {
-            DB::rollBack();
+                foreach ($cartData as $id => $data) {
+                    if (! isset($carts[$id])) {
+                        continue;
+                    }
 
-            return response()->json([
-                'message' => $e->getMessage(),
-                'status' => false,
-            ]);
+                    $cart = $carts[$id];
+                    $pricePerUnit = $cart->price / $cart->quantity;
+
+                    $cart->update([
+                        'quantity' => $data['quantity'],
+                        'price' => $pricePerUnit * $data['quantity'],
+                    ]);
+                }
+
+                DB::commit();
+
+                return response()->json([
+                    'message' => 'Cart updated successfully',
+                    'status' => true,
+                    'data' => $carts->values(),
+                ]);
+            } catch (\Exception $e) {
+                DB::rollBack();
+
+                return response()->json([
+                    'message' => $e->getMessage(),
+                    'status' => false,
+                ]);
+            }
+        } else {
+            $cartData = $request->all();
+
+            $cartIds = array_keys($cartData);
+
+            $session_id = session()->getId();
+
+            $carts = SessionCart::whereIn('id', $cartIds)->get()->keyBy('id');
+
+            if ($carts->isEmpty()) {
+                return response()->json([
+                    'message' => 'No cart items found',
+                    'status' => false,
+                ], 404);
+            }
+            try {
+                DB::beginTransaction();
+
+                foreach ($cartData as $id => $data) {
+                    if (! isset($carts[$id])) {
+                        continue;
+                    }
+
+                    $cart = $carts[$id];
+                    $pricePerUnit = $cart->price / $cart->quantity;
+
+                    $cart->update([
+                        'quantity' => $data['quantity'],
+                        'price' => $pricePerUnit * $data['quantity'],
+                    ]);
+                }
+
+                DB::commit();
+
+                return response()->json([
+                    'message' => 'Cart updated successfully',
+                    'status' => true,
+                    'data' => $carts->values(),
+                ]);
+            } catch (\Exception $e) {
+                DB::rollBack();
+
+                return response()->json([
+                    'message' => $e->getMessage(),
+                    'status' => false,
+                ]);
+            }
         }
     }
 
