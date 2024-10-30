@@ -15,7 +15,7 @@ class GuestOrder extends Model
 
     public function order()
     {
-        return $this->belongsTo(GuestOrder::class, 'order_id', 'id');
+        return $this->belongsTo(SessionOrder::class, 'order_id', 'id');
     }
 
     public function product()

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\GuestAddress;
+use App\Models\GuestOrder;
 use App\Models\Order;
 use App\Models\OrderAdress;
 use App\Models\OrderProduct;
@@ -126,7 +127,7 @@ class CheckoutController extends Controller
 
                 // create order address
                 $order = GuestAddress::create([
-                    'user_id' => $sessionIds,
+                    'session_id' => $sessionIds,
                     'name' => $name,
                     'email' => $request->email,
                     'address' => $address,
@@ -146,8 +147,9 @@ class CheckoutController extends Controller
                     'payment_method' => $request->payment_method,
                 ]);
 
+                DB::commit();
                 foreach ($cart as $c) {
-                    OrderProduct::create([
+                    GuestOrder::create([
                         'order_id' => $order->id,
                         'product_id' => $c->product_id,
                         'quantity' => $c->quantity,
@@ -155,9 +157,7 @@ class CheckoutController extends Controller
                     ]);
                 }
 
-                DB::commit();
-
-                SessionCart::where('user_id', $sessionIds)->delete();
+                SessionCart::where('session_id', $sessionIds)->delete();
 
                 return view('order-confirm')->with('orderId', $order->id);
             }

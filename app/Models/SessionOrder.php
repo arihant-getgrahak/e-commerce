@@ -34,6 +34,6 @@ class SessionOrder extends Model
 
     public function address()
     {
-        return $this->belongsTo(OrderAdress::class, 'address_id', 'id');
+        return $this->belongsTo(GuestAddress::class, 'address_id', 'id');
     }
 }
