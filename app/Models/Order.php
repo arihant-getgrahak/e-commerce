@@ -8,7 +8,6 @@ class Order extends Model
 {
     protected $fillable = [
         'user_id',
-        'products_id',
         'address_id',
         'total',
         'status', //Pending
@@ -35,7 +34,7 @@ class Order extends Model
 
     public function products()
     {
-        return $this->belongsTo(OrderProduct::class, 'products_id', 'id');
+        return $this->hasMany(OrderProduct::class, 'order_id', 'id');
     }
 
     public function address()
