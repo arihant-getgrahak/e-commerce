@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('session_carts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('session_id');
+            $table->string('session_id');
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
             $table->integer('quantity');
             $table->float('price');
