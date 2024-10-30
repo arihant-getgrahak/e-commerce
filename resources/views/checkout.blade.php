@@ -1,6 +1,7 @@
 @extends('layout.frontend')
 
 @section('section')
+
 <section class="middle">
     <div class="container">
 
@@ -120,8 +121,6 @@
 
 
                     <h5 class="mb-4 ft-medium">Payments</h5>
-
-
                     <div class="row mb-4">
                         <div class="col-12">
                             <div class="panel-group pay_opy980" id="payaccordion">
@@ -151,76 +150,60 @@
 
             <!-- Sidebar -->
             <div class="col-12 col-lg-4 col-md-12">
-                <div class="d-block mb-3">
-                    <h5 class="mb-4">Order Items (3)</h5>
-                    <ul class="list-group list-group-sm list-group-flush-y list-group-flush-x mb-4">
+                @if($cart->isEmpty())
+                    <h1>Cart is empty</h1>
+                @else
+                    <div class="d-block mb-3">
+                        <h5 class="mb-4">Order Items ({{$cart->count()}})</h5>
+                        @foreach ($cart as $c)
 
-                        <li class="list-group-item">
-                            <div class="row align-items-center">
-                                <div class="col-3">
-                                    <!-- Image -->
-                                    <a href="product.html"><img src="assets/img/product/7-a.jpg" alt="..."
-                                            class="img-fluid"></a>
-                                </div>
-                                <div class="col d-flex align-items-center">
-                                    <div class="cart_single_caption pl-2">
-                                        <h4 class="product_title fs-md ft-medium mb-1 lh-1">Women Striped Shirt Dress
-                                        </h4>
-                                        <p class="mb-1 lh-1"><span class="text-dark">Size: 40</span></p>
-                                        <p class="mb-3 lh-1"><span class="text-dark">Color: Blue</span></p>
-                                        <h4 class="fs-md ft-medium mb-3 lh-1">$129</h4>
+                            <ul class="list-group list-group-sm list-group-flush-y list-group-flush-x mb-4">
+
+                                <li class="list-group-item">
+                                    <div class="row align-items-center">
+                                        <div class="col-3">
+                                            <!-- Image -->
+                                            <a href="product.html"><img src="{{$c->products[0]->thumbnail}}" alt="{{$c->products[0]->name}}"
+                                                    class="img-fluid"></a>
+                                        </div>
+                                        <div class="col d-flex align-items-center">
+                                            <div class="cart_single_caption pl-2">
+                                                <h4 class="product_title fs-md ft-medium mb-1 lh-1">{{$c->products[0]->name}}
+                                                </h4>
+                                                <!-- <p class="mb-1 lh-1"><span class="text-dark">Size: 40</span></p>
+                                                    <p class="mb-3 lh-1"><span class="text-dark">Color: Blue</span></p> -->
+                                                <h4 class="fs-md ft-medium mb-3 lh-1">₹{{$c->price}}</h4>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        </li>
+                                </li>
 
-                        <li class="list-group-item">
-                            <div class="row align-items-center">
-                                <div class="col-3">
-                                    <!-- Image -->
-                                    <a href="product.html"><img src="assets/img/product/7.jpg" alt="..."
-                                            class="img-fluid"></a>
-                                </div>
-                                <div class="col d-flex align-items-center">
-                                    <div class="cart_single_caption pl-2">
-                                        <h4 class="product_title fs-md ft-medium mb-1 lh-1">Girls Solid A-Line Dress
-                                        </h4>
-                                        <p class="mb-1 lh-1"><span class="text-dark">Size: 36</span></p>
-                                        <p class="mb-3 lh-1"><span class="text-dark">Color: Red</span></p>
-                                        <h4 class="fs-md ft-medium mb-3 lh-1">$129</h4>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-
-                    </ul>
-                </div>
-
-                <div class="card mb-4 gray">
-                    <div class="card-body">
-                        <ul class="list-group list-group-sm list-group-flush-y list-group-flush-x">
-                            <li class="list-group-item d-flex text-dark fs-sm ft-regular">
-                                <span>Subtotal</span> <span class="ml-auto text-dark ft-medium">$98.12</span>
-                            </li>
-                            <li class="list-group-item d-flex text-dark fs-sm ft-regular">
-                                <span>Tax</span> <span class="ml-auto text-dark ft-medium">$10.10</span>
-                            </li>
-                            <li class="list-group-item d-flex text-dark fs-sm ft-regular">
-                                <span>Total</span> <span class="ml-auto text-dark ft-medium">$108.22</span>
-                            </li>
-                            <li class="list-group-item fs-sm text-center">
-                                Shipping cost calculated at Checkout *
-                            </li>
-                        </ul>
+                            </ul>
+                        @endforeach
                     </div>
-                </div>
+
+                    <div class="card mb-4 gray">
+                        <div class="card-body">
+                            <ul class="list-group list-group-sm list-group-flush-y list-group-flush-x">
+                                <li class="list-group-item d-flex text-dark fs-sm ft-regular">
+                                    <span>Subtotal</span> <span class="ml-auto text-dark ft-medium">₹{{$price}}</span>
+                                </li>
+                                <li class="list-group-item d-flex text-dark fs-sm ft-regular">
+                                    <span>Delivery</span> <span class="ml-auto text-dark ft-medium">₹0</span>
+                                </li>
+                                <li class="list-group-item d-flex text-dark fs-sm ft-regular">
+                                    <span>Total</span> <span class="ml-auto text-dark ft-medium">₹{{$price}}</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                @endif
             </div>
-
         </div>
-
     </div>
 </section>
 
+<h1>Please login</h1>
 <script>
     if ("{{ session('error') }}") {
         alert("{{ session('error') }}");
@@ -230,5 +213,6 @@
         alert("{{ session('success') }}");
     }
 </script>
+
 
 @endsection
