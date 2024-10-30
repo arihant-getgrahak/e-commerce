@@ -136,7 +136,7 @@
                         alert(data.message);
                     }
                     else {
-                        alert("product updated successfully");
+                        alert(data.message);
                         window.location.reload();
                     }
                 });
@@ -164,7 +164,7 @@
                     if (!data.status) {
                         alert(data.message);
                     } else {
-                        alert("product deleted successfully");
+                        alert(data.message);
                         window.location.reload();
                     }
                 });
