@@ -236,21 +236,40 @@ class CartController extends Controller
 
     public function destroy($id)
     {
-        $cart = Cart::find($id);
-        if ($cart) {
-            $cart->delete();
+        if (auth()->check()) {
+            $cart = Cart::find($id);
+            if ($cart) {
+                $cart->delete();
 
-            // return back()->with('success', 'Cart deleted successfully');
+                // return back()->with('success', 'Cart deleted successfully');
+                return response()->json([
+                    'message' => 'Cart deleted successfully',
+                    'status' => true,
+                ], 200);
+            }
+
+            // return back()->with('error', 'Cart not found');
             return response()->json([
-                'message' => 'Cart deleted successfully',
-                'status' => true,
-            ], 200);
-        }
+                'message' => 'Cart not found',
+                'status' => false,
+            ], 404);
+        } else {
+            $cart = SessionCart::find($id);
+            if ($cart) {
+                $cart->delete();
 
-        // return back()->with('error', 'Cart not found');
-        return response()->json([
-            'message' => 'Cart not found',
-            'status' => false,
-        ], 404);
+                // return back()->with('success', 'Cart deleted successfully');
+                return response()->json([
+                    'message' => 'Cart deleted successfully',
+                    'status' => true,
+                ], 200);
+            }
+
+            // return back()->with('error', 'Cart not found');
+            return response()->json([
+                'message' => 'Cart not found',
+                'status' => false,
+            ], 404);
+        }
     }
 }
