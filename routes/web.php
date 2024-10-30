@@ -72,3 +72,4 @@ Route::post('cart/update', [CartController::class, 'update'])->name('cart.update
 Route::delete('cart/delete/{id}', [CartController::class, 'destroy'])->name('cart.delete');
 
 Route::get('checkout', [CheckoutController::class, 'index'])->name('checkout');
+Route::post('checkout/store', [CheckoutController::class, 'store'])->name('checkout.store');
