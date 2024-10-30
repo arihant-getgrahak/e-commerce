@@ -27,6 +27,11 @@ class CheckoutController extends Controller
         return view('checkout', compact('isLoggedIn', 'cart', 'price'));
     }
 
+    public function display()
+    {
+        $orders = Order::where('user_id', auth()->user()->id)->get();
+    }
+
     public function store(Request $request)
     {
         try {
@@ -89,7 +94,7 @@ class CheckoutController extends Controller
 
                 Cart::where('user_id', auth()->user()->id)->delete();
 
-                return back()->with('success', 'Order placed successfully');
+                return view('order-confirm')->with('orderId', $order->id);
             } else {
                 return back()->with('error', 'Please login first');
             }

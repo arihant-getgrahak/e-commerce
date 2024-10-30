@@ -23,6 +23,18 @@ class CartController extends Controller
         return view('shopping-cart', compact('isLoggedIn', 'cart', 'price'));
     }
 
+    public function cartcount()
+    {
+        $isLoggedIn = auth()->check();
+        $cart = $isLoggedIn ? Cart::where('user_id', auth()->user()->id)->with('products')->get() : null;
+        $price = 0;
+        if ($cart) {
+            $price = $cart->sum('price');
+        }
+
+        return response()->json(['cart' => $cart, 'price' => $price]);
+    }
+
     public function store(CartStoreRequest $request)
     {
         if (auth()->check()) {
