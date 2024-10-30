@@ -36,10 +36,21 @@ class CartController extends Controller
     public function cartcount()
     {
         $isLoggedIn = auth()->check();
-        $cart = $isLoggedIn ? Cart::where('user_id', auth()->user()->id)->with('products')->get() : null;
         $price = 0;
-        if ($cart) {
-            $price = $cart->sum('price');
+        $cart = null;
+
+        if (! $isLoggedIn) {
+            $session_id = session()->getId();
+            $cart = SessionCart::where('session_id', $session_id)->with('products')->get();
+            if ($cart) {
+                $price = $cart->sum('price');
+            }
+        } else {
+            $cart = Cart::where('user_id', auth()->user()->id)->with('products')->get();
+            $price = 0;
+            if ($cart) {
+                $price = $cart->sum('price');
+            }
         }
 
         return response()->json(['cart' => $cart, 'price' => $price]);
