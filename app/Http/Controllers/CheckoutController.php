@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Models\GuestAddress;
 use App\Models\Order;
 use App\Models\OrderAdress;
 use App\Models\OrderProduct;
+use App\Models\SessionCart;
+use App\Models\SessionOrder;
 use DB;
 use Illuminate\Http\Request;
 
@@ -14,14 +17,21 @@ class CheckoutController extends Controller
     public function index()
     {
         $isLoggedIn = auth()->check();
-        $cart = $isLoggedIn ? Cart::where('user_id', auth()->user()->id)->with('products')->get() : null;
         $price = 0;
-        if ($cart) {
-            $price = $cart->sum('price');
-        }
+        $cart = null;
 
-        if ($cart->isEmpty()) {
-            return redirect('/');
+        if (! $isLoggedIn) {
+            $session_id = session()->getId();
+            $cart = SessionCart::where('session_id', $session_id)->with('products')->get();
+            if ($cart) {
+                $price = $cart->sum('price');
+            }
+        } else {
+            $cart = Cart::where('user_id', auth()->user()->id)->with('products')->get();
+            $price = 0;
+            if ($cart) {
+                $price = $cart->sum('price');
+            }
         }
 
         return view('checkout', compact('isLoggedIn', 'cart', 'price'));
@@ -35,8 +45,7 @@ class CheckoutController extends Controller
     public function store(Request $request)
     {
         try {
-            // $isloggedIn = auth()->check();
-            $isloggedIn = true;
+            $isloggedIn = auth()->check();
 
             if ($isloggedIn) {
                 $cart = Cart::where('user_id', auth()->user()->id)->with('products')->get();
@@ -96,7 +105,61 @@ class CheckoutController extends Controller
 
                 return view('order-confirm')->with('orderId', $order->id);
             } else {
-                return back()->with('error', 'Please login first');
+                $sessionIds = session()->getId();
+                $cart = SessionCart::where('session_id', $sessionIds)->with('products')->get();
+
+                if (! $cart) {
+                    return response()->json([
+                        'message' => 'Cart is empty',
+                        'status' => false,
+                    ], 404);
+                }
+
+                $price = $cart->sum('price');
+
+                DB::beginTransaction();
+                $name = $request->fname.' '.$request->lname;
+                $address = $request->address1;
+                if ($request->address2) {
+                    $address = $address.', '.$request->address2;
+                }
+
+                // create order address
+                $order = GuestAddress::create([
+                    'user_id' => $sessionIds,
+                    'name' => $name,
+                    'email' => $request->email,
+                    'address' => $address,
+                    'city' => $request->city,
+                    'state' => $request->state,
+                    'country' => $request->country,
+                    'pincode' => $request->pincode,
+                    'phone' => $request->phone,
+
+                ]);
+
+                // create order
+                $order = SessionOrder::create([
+                    'session_id' => $sessionIds,
+                    'address_id' => $order->id,
+                    'total' => $price,
+                    'payment_method' => $request->payment_method,
+                ]);
+
+                foreach ($cart as $c) {
+                    OrderProduct::create([
+                        'order_id' => $order->id,
+                        'product_id' => $c->product_id,
+                        'quantity' => $c->quantity,
+                        'price' => $c->price,
+                    ]);
+                }
+
+                DB::commit();
+
+                SessionCart::where('user_id', $sessionIds)->delete();
+
+                return view('order-confirm')->with('orderId', $order->id);
             }
         } catch (\Exception $e) {
             DB::rollBack();
