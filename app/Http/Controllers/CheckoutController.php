@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\Order;
+use App\Models\OrderAdress;
+use App\Models\OrderProduct;
 use DB;
-use Request;
+use Illuminate\Http\Request;
 
 class CheckoutController extends Controller
 {
@@ -39,38 +41,53 @@ class CheckoutController extends Controller
                         'status' => false,
                     ], 404);
                 }
-                $orderData = [];
-                $price = 0;
-                foreach ($cart as $c) {
-                    $price += $c->price;
-                }
-                DB::beginTransaction();
-                foreach ($cart as $c) {
-                    $order = Order::create([
-                        'user_id' => 1,
-                        'products' => json_encode($c->products),
-                        'address' => json_encode($request->address),
-                        'total' => $price,
-                        'payment_method' => $request->payment_method,
-                    ]);
 
-                    $orderData[] = $order;
+                $price = $cart->sum('price');
+
+                DB::beginTransaction();
+
+                // create order address
+                $order = OrderAdress::create([
+                    'user_id' => 1,
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'address' => $request->address,
+                    'city' => $request->city,
+                    'state' => $request->state,
+                    'country' => $request->country,
+                    'pincode' => $request->pincode,
+                    'phone' => $request->phone,
+
+                ]);
+
+                // create order
+                $order = Order::create([
+                    'user_id' => 1,
+                    'address_id' => $order->id,
+                    'total' => $price,
+                    'payment_method' => $request->payment_method,
+                ]);
+
+                foreach ($cart as $c) {
+                    OrderProduct::create([
+                        'order_id' => $order->id,
+                        'product_id' => $c->product_id,
+                        'quantity' => $c->quantity,
+                        'price' => $c->price,
+                    ]);
                 }
 
                 DB::commit();
 
+                $order = Order::with(['products.product', 'address'])->first();
+
+                Cart::where('user_id', 1)->delete();
+
                 return response()->json([
                     'message' => 'Order placed successfully',
                     'status' => true,
-                    'data' => $orderData,
+                    'data' => $order,
                 ]);
-
-                // Cart::where('user_id', auth()->user()->id)->delete();
-                // return response()->json([
-                //     'message' => 'Order placed successfully',
-                //     'status' => true,
-                //     'data' => $orderData,
-                // ]);
             } else {
                 return response()->json([
                     'message' => 'Please login...',
