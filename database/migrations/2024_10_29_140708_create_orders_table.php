@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->string('user_id');
-            $table->json('products');
-            $table->json('address');
+            $table->foreignId('products_id');
+            $table->foreignId('address_id');
             $table->string('total');
             $table->enum('status', ['pending', 'shipped', 'delivered', 'cancelled'])->default('pending');
             $table->enum('payment_status', ['pending', 'paid', 'failed'])->default('pending');
