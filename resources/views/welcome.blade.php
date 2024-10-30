@@ -717,31 +717,32 @@
             });
         });
 
-    });
-    async function addToCart(params) {
-        console.log(params);
-        const quantity = 1;
-        const res = await fetch("{{route("cart.add")}}", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-TOKEN": "{{ csrf_token() }}"
-            },
-            body: JSON.stringify({
-                product_id: params.id,
-                quantity: params.quantity,
-                price: params.price
-            }),
-        })
+        async function addToCart(params) {
+            console.log(params);
+            const quantity = 1;
+            const res = await fetch("{{route("cart.add")}}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                },
+                body: JSON.stringify({
+                    product_id: params.id,
+                    quantity: params.quantity,
+                    price: params.price
+                }),
+            })
 
-        const data = await res.json()
-        if (!data.status) {
-            alert(data.message)
+            const data = await res.json()
+            if (!data.status) {
+                alert(data.message)
+            }
+            else {
+                alert(data.message)
+            }
         }
-        else {
-            alert(data.message)
-        }
-    }
+    });
+
 </script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
