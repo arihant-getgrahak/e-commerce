@@ -13,9 +13,9 @@ class Order extends Model
         'total',
         'status', //Pending
         'payment_status', //Pending
-        'payment_method',
+        'payment_method', //default cod
         'transaction_id', //nullable for cod
-        'currency',
+        'currency', //default inr
         'razorpay_order_id', //nullable for cod
         'razorpay_payment_id', //nullable for cod
         'delivery_date', //default 14 days

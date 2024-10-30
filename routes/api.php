@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CheckoutController;
 
 // use Illuminate\Support\Facades\Route;
 // use App\Http\Controllers\ProductController;
@@ -43,4 +43,4 @@ use App\Http\Controllers\AuthController;
 //     Route::post("/store", [ReviewController::class, "store"]);
 // });
 
-Route::post('/register', [AuthController::class, 'register']);
+Route::post('/register', [CheckoutController::class, 'store']);
