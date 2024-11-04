@@ -215,7 +215,7 @@
                             <li>
                                 <a href="#" onclick="openWishlist()">
                                     <i class="lni lni-heart"></i><span class="dn-counter bg-danger"
-                                        id="wishlist-count">2</span>
+                                        id="wishlist-count">0</span>
                                 </a>
                             </li>
                             <li>
