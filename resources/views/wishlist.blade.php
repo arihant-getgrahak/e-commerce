@@ -16,7 +16,8 @@
                 <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
                     <div class="product_grid card b-0">
                         <div class="badge bg-success text-white position-absolute ft-regular ab-left text-upper">Sale</div>
-                        <button class="btn btn_love position-absolute ab-right theme-cl"><i class="fas fa-times"></i></button>
+                        <button class="btn btn_love position-absolute ab-right theme-cl" onclick="deleteWishlist({{$w->id}})"><i
+                                class="fas fa-times"></i></button>
                         <div class="card-body p-0">
                             <div class="shop_thumb position-relative">
                                 <a class="card-img-top d-block overflow-hidden" href="shop-single-v1.html"><img
@@ -43,5 +44,27 @@
             @endforeach
         </div>
     </div>
+
+    <script>
+        async function deleteWishlist(id) {
+            const res = await fetch("{{route("wishlist.delete", ":id")}}".replace(':id', id), {
+                method: 'DELETE',
+                headers: {
+                    "Content-Type": "application/json",
+                    'X-CSRF-Token': "{{ csrf_token() }}",
+                },
+            })
+
+            const data = await res.json();
+
+            if (!data.status) {
+                alert(data.message)
+            }
+            else {
+                alert(data.message)
+                window.location.reload();
+            }
+        }
+    </script>
 @endif
 @endsection
