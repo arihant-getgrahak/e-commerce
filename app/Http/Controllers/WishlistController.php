@@ -17,9 +17,16 @@ class WishlistController extends Controller
     public function display()
     {
         $wishlist = Wishlist::where('user_id', auth()->user()->id)->with('product')->get();
+        $price = 0;
+        if ($wishlist) {
+            foreach ($wishlist as $item) {
+                $price += $item->product->price;
+            }
+        }
 
         return response()->json([
             'wishlist' => $wishlist,
+            'price' => $price,
             'status' => true,
         ], 200);
     }
