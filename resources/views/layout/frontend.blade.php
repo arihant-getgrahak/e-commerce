@@ -561,13 +561,34 @@
                                     <h4 class="fs-md ft-medium mb-0 lh-1">₹${product.product.price}</h4>
                                 </div>
                             </div>
-                            <div class="fls_last"><button class="close_slide gray"><i class="ti-close"></i></button>
+                            <div class="fls_last"><button class="close_slide gray" onclick="removeWishlist(${product.id})"><i class="ti-close"></i></button>
                             </div>
                         </div> `;
                     wishlistcontainer.insertAdjacentHTML('beforeend', cartHtml);
                 });
-
             });
+        </script>
+        <script>
+            async function removeWishlist(id) {
+                console.log(id);
+                const res = await fetch("{{route("wishlist.delete", ":id")}}".replace(':id', id), {
+                    method: 'DELETE',
+                    headers: {
+                        "Content-Type": "application/json",
+                        'X-CSRF-Token': "{{ csrf_token() }}",
+                    },
+                })
+
+                const data = await res.json();
+
+                if (!data.status) {
+                    alert(data.message)
+                }
+                else {
+                    alert(data.message)
+                    window.location.reload();
+                }
+            }
         </script>
 </body>
 
