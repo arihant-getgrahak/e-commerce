@@ -40,7 +40,12 @@ class CheckoutController extends Controller
 
     public function display()
     {
-        $orders = Order::where('user_id', auth()->user()->id)->get();
+        if (! auth()->check()) {
+            return redirect()->route('login');
+        }
+        $orders = Order::where('user_id', auth()->user()->id)->with('products.product')->get();
+
+        return view('orderdisplay', compact('orders'));
     }
 
     public function store(Request $request)
@@ -100,7 +105,7 @@ class CheckoutController extends Controller
 
                 DB::commit();
 
-                $order = Order::with(['products.product', 'address'])->first();
+                $order = Order::with(['products.product', 'address'])->where('id', $order->id)->first();
 
                 Cart::where('user_id', auth()->user()->id)->delete();
 
