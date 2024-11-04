@@ -85,7 +85,7 @@
                         </div>
 
                         <div class="currency-selector dropdown js-dropdown float-right mr-3">
-                            <a href="javascript:void(0);" class="text-light medium">Wishlist</a>
+                            <a href="{{route('wishlist')}}" class="text-light medium">Wishlist</a>
                         </div>
 
                         <div class="currency-selector dropdown js-dropdown float-right mr-3">
@@ -419,7 +419,7 @@
                     </div>
                     <div class="d-flex align-items-center justify-content-between br-top br-bottom px-3 py-3">
                         <h6 class="mb-0">Subtotal</h6>
-                        <h3 class="mb-0 ft-medium" id="subtotal">$1023</h3>
+                        <h3 class="mb-0 ft-medium" id="subtotal">₹0</h3>
                     </div>
                     <div class="cart_action px-3 py-3">
                         <div class="form-group">
@@ -448,7 +448,7 @@
 
                     <div class="d-flex align-items-center justify-content-between br-top br-bottom px-3 py-3">
                         <h6 class="mb-0">Subtotal</h6>
-                        <h3 class="mb-0 ft-medium" id="wishlistsubtotal">$417</h3>
+                        <h3 class="mb-0 ft-medium" id="wishlistsubtotal">₹0</h3>
                     </div>
 
                     <div class="cart_action px-3 py-3">
