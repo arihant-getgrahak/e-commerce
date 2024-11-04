@@ -40,7 +40,10 @@ class CheckoutController extends Controller
 
     public function display()
     {
-        $orders = Order::where('user_id', auth()->user()->id)->get();
+        if (! auth()->check()) {
+            return redirect()->route('login');
+        }
+        $orders = Order::where('user_id', auth()->user()->id)->with('products.product')->get();
 
         return view('orderdisplay', compact('orders'));
     }
