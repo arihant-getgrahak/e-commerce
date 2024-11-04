@@ -9,7 +9,7 @@ class WishlistController extends Controller
 {
     public function index()
     {
-        $wishlist = Wishlist::where('user_id', auth()->user()->id)->get();
+        $wishlist = Wishlist::where('user_id', auth()->user()->id)->with('product')->get();
 
         return view('wishlist', compact('wishlist'));
     }
@@ -25,12 +25,21 @@ class WishlistController extends Controller
             ]);
 
             if ($wishlist) {
-                return redirect()->back()->with('success', 'Product added to wishlist');
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Product added to wishlist successfully',
+                ], 200);
             } else {
-                return redirect()->back()->with('error', 'Something went wrong');
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Product not added to wishlist',
+                ], 400);
             }
         }
 
-        return redirect()->back()->with('error', 'Please login first');
+        return response()->json([
+            'status' => false,
+            'message' => 'Please login first',
+        ], 401);
     }
 }
