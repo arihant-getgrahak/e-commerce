@@ -105,7 +105,7 @@ class CheckoutController extends Controller
 
                 DB::commit();
 
-                $order = Order::with(['products.product', 'address'])->first();
+                $order = Order::with(['products.product', 'address'])->where('id', $order->id)->first();
 
                 Cart::where('user_id', auth()->user()->id)->delete();
 

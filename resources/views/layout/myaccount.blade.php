@@ -11,8 +11,8 @@
                             <img src="assets/img/team-1.jpg" class="img-fluid circle" width="100" alt="" />
                         </div>
                         <div class="dash_caption">
-                            <h4 class="fs-md ft-medium mb-0 lh-1">Adam Wishnoi</h4>
-                            <span class="text-muted smalls">Australia</span>
+                            <h4 class="fs-md ft-medium mb-0 lh-1">{{Str::ucfirst(auth()->user()->name)}}</h4>
+                            <span class="text-muted smalls">India</span>
                         </div>
                     </div>
 
@@ -37,6 +37,6 @@
                 @yield("order-display")
                 @yield("wishlist")
             </div>
-    </div>
+        </div>
 </section>
 @endsection
