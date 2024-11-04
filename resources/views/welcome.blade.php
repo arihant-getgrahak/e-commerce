@@ -493,8 +493,10 @@
 
                                         </div>
                                         <div class="text-right">
-                                            <button class="btn auto btn_love snackbar-wishlist"><i
-                                                    class="far fa-heart"></i></button>
+                                            <button class="btn auto btn_love snackbar-wishlist" id="wishlist"
+                                                onclick="onbtnclick({{$p->id}})">
+                                                <i class="far fa-heart"></i>
+                                            </button>
                                         </div>
                                     </div>
                                     <div class="text-left">
@@ -637,7 +639,7 @@
                                     <div class="col-12 col-lg-auto">
                                         <!-- Wishlist -->
                                         <button class="btn custom-height btn-default btn-block mb-2 text-dark"
-                                            data-toggle="button">
+                                            data-toggle="button" id="wishlist">
                                             <i class="lni lni-heart mr-2"></i>Wishlist
                                         </button>
                                     </div>
@@ -677,7 +679,7 @@
     document.addEventListener('DOMContentLoaded', function () {
         document.querySelectorAll('.quick-view-btn').forEach(function (button) {
             button.addEventListener('click', function () {
-               
+
                 const productName = this.getAttribute('data-name');
                 const productPrice = this.getAttribute('data-price');
                 const productDescription = this.getAttribute('data-description');
@@ -749,7 +751,7 @@
 
         document.querySelectorAll('.inner_widget_link a').forEach(link => {
             link.addEventListener('click', async function (event) {
-                event.preventDefault(); 
+                event.preventDefault();
                 const categoryId = this.getAttribute('data-id');
 
                 try {
@@ -792,7 +794,7 @@
                                     <div class="d-flex align-items-start justify-content-between">
                                         <div class="text-left"></div>
                                         <div class="text-right">
-                                            <button class="btn auto btn_love snackbar-wishlist">
+                                            <button class="btn auto btn_love snackbar-wishlist" id="wishlist">
                                                 <i class="far fa-heart"></i>
                                             </button>
                                         </div>
@@ -884,7 +886,7 @@
                                         <div class="d-flex align-items-start justify-content-between">
                                             <div class="text-left"></div>
                                             <div class="text-right">
-                                                <button class="btn auto btn_love snackbar-wishlist">
+                                                <button class="btn auto btn_love snackbar-wishlist" id="wishlist">
                                                     <i class="far fa-heart"></i>
                                                 </button>
                                             </div>
@@ -908,6 +910,29 @@
             });
         });
     });
+</script>
+
+<script>
+    async function onbtnclick(id) {
+        const res = await fetch("{{route("wishlist.store")}}", {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+                'X-CSRF-Token': "{{ csrf_token() }}",
+            },
+            body: JSON.stringify({ product_id: id })
+        })
+
+        const data = await res.json();
+
+        if (!data.status) {
+            alert(data.message)
+        }
+        else {
+            alert(data.message)
+        }
+
+    }
 </script>
 
 @endsection

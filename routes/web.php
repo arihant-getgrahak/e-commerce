@@ -80,4 +80,4 @@ Route::get('cart/json', [CartController::class, 'cartcount'])->name('cartcount')
 Route::get('/my-orders', [CheckoutController::class, 'display'])->name('my-orders');
 
 Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
-Route::post('wishlist/store', [WishlistController::class, 'store'])->name('wishlist');
+Route::post('wishlist/store', [WishlistController::class, 'store'])->name('wishlist.store');
