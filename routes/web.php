@@ -6,6 +6,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\WishlistController;
 use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Support\Facades\Route;
 
@@ -77,3 +78,8 @@ Route::post('checkout/store', [CheckoutController::class, 'store'])->name('check
 Route::get('cart/json', [CartController::class, 'cartcount'])->name('cartcount');
 
 Route::get('/my-orders', [CheckoutController::class, 'display'])->name('my-orders');
+
+Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
+Route::post('wishlist/store', [WishlistController::class, 'store'])->name('wishlist.store');
+Route::delete('wishlist/delete/{id}', [WishlistController::class, 'destroy'])->name('wishlist.delete');
+Route::get('wishlist/count', [WishlistController::class, 'display'])->name('wishlist.count');

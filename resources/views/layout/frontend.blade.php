@@ -89,7 +89,7 @@
                         </div>
 
                         <div class="currency-selector dropdown js-dropdown float-right mr-3">
-                            <a href="javascript:void(0);" class="text-light medium">My Account</a>
+                            <a href="{{route('my-orders')}}" class="text-light medium">My Account</a>
                         </div>
 
                     </div>
@@ -121,7 +121,7 @@
                                 </li>
                                 <li>
                                     <a href="#" onclick="openWishlist()">
-                                        <i class="lni lni-heart"></i><span class="dn-counter">2</span>
+                                        <i class="lni lni-heart"></i><span class="dn-counter">0</span>
                                     </a>
                                 </li>
                                 <li>
@@ -214,7 +214,8 @@
                             </li>
                             <li>
                                 <a href="#" onclick="openWishlist()">
-                                    <i class="lni lni-heart"></i><span class="dn-counter bg-danger">2</span>
+                                    <i class="lni lni-heart"></i><span class="dn-counter bg-danger"
+                                        id="wishlist-count">2</span>
                                 </a>
                             </li>
                             <li>
@@ -406,6 +407,7 @@
         </div>
         <!-- End Modal -->
 
+        <!-- Cart Modal -->
         <div class="w3-ch-sideBar w3-bar-block w3-card-2 w3-animate-right" style="display:none;right:0;" id="Cart">
             <div class="rightMenu-scroll">
                 <div class="d-flex align-items-center justify-content-between slide-head py-3 px-3">
@@ -413,18 +415,12 @@
                     <button onclick="closeCart()" class="close_slide"><i class="ti-close"></i></button>
                 </div>
                 <div class="right-ch-sideBar">
-
-
                     <div class="cart_select_items py-2" id="cart">
-
-
                     </div>
-
                     <div class="d-flex align-items-center justify-content-between br-top br-bottom px-3 py-3">
                         <h6 class="mb-0">Subtotal</h6>
                         <h3 class="mb-0 ft-medium" id="subtotal">$1023</h3>
                     </div>
-
                     <div class="cart_action px-3 py-3">
                         <div class="form-group">
                             <button type="button" class="btn d-block full-width btn-dark">Checkout Now</button>
@@ -433,51 +429,90 @@
                             <button type="button" class="btn d-block full-width btn-dark-light">Edit or View</button>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Wishlist Modal -->
+        <div class="w3-ch-sideBar w3-bar-block w3-card-2 w3-animate-right" style="display:none;right:0;" id="Wishlist">
+            <div class="rightMenu-scroll">
+                <div class="d-flex align-items-center justify-content-between slide-head py-3 px-3">
+                    <h4 class="cart_heading fs-md ft-medium mb-0">Saved Products</h4>
+                    <button onclick="closeWishlist()" class="close_slide"><i class="ti-close"></i></button>
+                </div>
+                <div class="right-ch-sideBar">
+                    <div class="cart_select_items py-2" id="wishlistmodal">
+                        <!-- Single Item -->
+
+                    </div>
+
+                    <div class="d-flex align-items-center justify-content-between br-top br-bottom px-3 py-3">
+                        <h6 class="mb-0">Subtotal</h6>
+                        <h3 class="mb-0 ft-medium" id="wishlistsubtotal">$417</h3>
+                    </div>
+
+                    <div class="cart_action px-3 py-3">
+                        <div class="form-group">
+                            <button type="button" class="btn d-block full-width btn-dark">Move To Cart</button>
+                        </div>
+                        <div class="form-group">
+                            <button type="button" class="btn d-block full-width btn-dark-light">Edit or View</button>
+                        </div>
+                    </div>
 
                 </div>
-
             </div>
+        </div>
 
-            <script src="{{asset('assets/js/jquery.min.js')}}"></script>
-            <script src="{{asset('assets/js/popper.min.js')}}"></script>
-            <script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
-            <script src="{{asset('assets/js/ion.rangeSlider.min.js')}}"></script>
-            <script src="{{asset('assets/js/slick.js')}}"></script>
-            <script src="{{asset('assets/js/slider-bg.js')}}"></script>
-            <script src="{{asset('assets/js/lightbox.js')}}"></script>
-            <script src="{{asset('assets/js/smoothproducts.js')}}"></script>
-            <script src="{{asset('assets/js/snackbar.min.js')}}"></script>
-            <script src="{{asset('assets/js/jQuery.style.switcher.js')}}"></script>
-            <script src="{{asset('assets/js/custom.js')}}"></script>
+        <script src="{{asset('assets/js/jquery.min.js')}}"></script>
+        <script src="{{asset('assets/js/popper.min.js')}}"></script>
+        <script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
+        <script src="{{asset('assets/js/ion.rangeSlider.min.js')}}"></script>
+        <script src="{{asset('assets/js/slick.js')}}"></script>
+        <script src="{{asset('assets/js/slider-bg.js')}}"></script>
+        <script src="{{asset('assets/js/lightbox.js')}}"></script>
+        <script src="{{asset('assets/js/smoothproducts.js')}}"></script>
+        <script src="{{asset('assets/js/snackbar.min.js')}}"></script>
+        <script src="{{asset('assets/js/jQuery.style.switcher.js')}}"></script>
+        <script src="{{asset('assets/js/custom.js')}}"></script>
 
 
-            <script>
-                function openCart() {
-                    document.getElementById("Cart").style.display = "block";
-                }
-                function closeCart() {
-                    document.getElementById("Cart").style.display = "none";
-                }
-            </script>
+        <script>
+            function openCart() {
+                document.getElementById("Cart").style.display = "block";
+            }
+            function closeCart() {
+                document.getElementById("Cart").style.display = "none";
+            }
+        </script>
 
-            <script>
-                document.addEventListener('DOMContentLoaded', async function () {
-                    const res = await fetch("{{route("cartcount")}}", {
-                        method: "GET",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                        },
-                    })
-                    const data = await res.json();
+        <script>
+            function openWishlist() {
+                document.getElementById("Wishlist").style.display = "block";
+            }
+            function closeWishlist() {
+                document.getElementById("Wishlist").style.display = "none";
+            }
+        </script>
 
-                    document.getElementById("cart-count").innerText = data.cart.length;
-                    document.getElementById("subtotal").innerText = "₹" + data.price;
-                    const cartcontainer = document.getElementById("cart");
-                    cartcontainer.innerHTML = '';
+        <script>
+            document.addEventListener('DOMContentLoaded', async function () {
+                const res = await fetch("{{route("cartcount")}}", {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                    },
+                })
+                const data = await res.json();
 
-                    data.cart.forEach(function (product) {
-                        const cartHtml = `
+                document.getElementById("cart-count").innerText = data.cart.length;
+                document.getElementById("subtotal").innerText = "₹" + data.price;
+                const cartcontainer = document.getElementById("cart");
+                cartcontainer.innerHTML = '';
+
+                data.cart.forEach(function (product) {
+                    const cartHtml = `
                             <div class="d-flex align-items-center justify-content-between br-bottom px-3 py-3">
 								<div class="cart_single d-flex align-items-center">
 									<div class="cart_selected_single_thumb">
@@ -490,12 +525,71 @@
 								</div>
 								<div class="fls_last"><button class="close_slide gray"><i class="ti-close"></i></button></div>
 							</div>`;
-                        cartcontainer.insertAdjacentHTML('beforeend', cartHtml);
-                    });
-
+                    cartcontainer.insertAdjacentHTML('beforeend', cartHtml);
                 });
-            </script>
 
+            });
+        </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', async function () {
+                const res = await fetch("{{route("wishlist.count")}}", {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                    },
+                })
+                const data = await res.json();
+
+                document.getElementById("wishlist-count").innerText = data.wishlist.length;
+                document.getElementById("wishlistsubtotal").innerText = "₹" + data.price;
+                const wishlistcontainer = document.getElementById("wishlistmodal");
+                wishlistcontainer.innerHTML = '';
+
+                data.wishlist.forEach(function (product) {
+                    const cartHtml = `<div class="d-flex align-items-center justify-content-between br-bottom px-3 py-3">
+                            <div class="cart_single d-flex align-items-center">
+                                <div class="cart_selected_single_thumb">
+                                    <a href="#"><img src="${product.product.thumbnail}" width="60" class="img-fluid"
+                                            alt="${product.product.name}" /></a>
+                                </div>
+                                <div class="cart_single_caption pl-2">
+                                    <h4 class="product_title fs-sm ft-medium mb-0 lh-1">${product.product.name}</h4>
+                                    <p class="mb-2"><span class="text-dark ft-medium small">36</span>, <span
+                                            class="text-dark small">Red</span></p>
+                                    <h4 class="fs-md ft-medium mb-0 lh-1">₹${product.product.price}</h4>
+                                </div>
+                            </div>
+                            <div class="fls_last"><button class="close_slide gray" onclick="removeWishlist(${product.id})"><i class="ti-close"></i></button>
+                            </div>
+                        </div> `;
+                    wishlistcontainer.insertAdjacentHTML('beforeend', cartHtml);
+                });
+            });
+        </script>
+        <script>
+            async function removeWishlist(id) {
+                console.log(id);
+                const res = await fetch("{{route("wishlist.delete", ":id")}}".replace(':id', id), {
+                    method: 'DELETE',
+                    headers: {
+                        "Content-Type": "application/json",
+                        'X-CSRF-Token': "{{ csrf_token() }}",
+                    },
+                })
+
+                const data = await res.json();
+
+                if (!data.status) {
+                    alert(data.message)
+                }
+                else {
+                    alert(data.message)
+                    window.location.reload();
+                }
+            }
+        </script>
 </body>
 
 </html>
