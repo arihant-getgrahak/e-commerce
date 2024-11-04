@@ -16,7 +16,7 @@
                 <p class="ft-regular fs-md mb-5">Your order <span class="text-body text-dark">#{{$orderId}}</span> has been
                     completed. Your order details are shown for your personal accont.</p>
 
-                <a class="btn btn-dark" href="#!">Track Your Orders</a>
+                <a class="btn btn-dark" href="{{ route('my-orders') }}">Track Your Orders</a>
             </div>
         </div>
 
