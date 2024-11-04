@@ -89,7 +89,7 @@
                         </div>
 
                         <div class="currency-selector dropdown js-dropdown float-right mr-3">
-                            <a href="javascript:void(0);" class="text-light medium">My Account</a>
+                            <a href="{{route('my-orders')}}" class="text-light medium">My Account</a>
                         </div>
 
                     </div>
