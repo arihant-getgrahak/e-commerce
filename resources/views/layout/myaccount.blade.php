@@ -4,7 +4,6 @@
 <section class="middle">
     <div class="container">
         <div class="row align-items-start justify-content-between">
-
             <div class="col-12 col-md-12 col-lg-4 col-xl-4 text-center miliods">
                 <div class="d-block border rounded">
                     <div class="dashboard_author px-2 py-5">
@@ -35,9 +34,9 @@
             </div>
 
             <div class="col-12 col-md-12 col-lg-8 col-xl-8 text-center">
-                @yield("section")
+                @yield("order-display")
+                @yield("wishlist")
             </div>
-        </div>
     </div>
 </section>
 @endsection
