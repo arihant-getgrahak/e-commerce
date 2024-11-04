@@ -42,4 +42,22 @@ class WishlistController extends Controller
             'message' => 'Please login first',
         ], 401);
     }
+
+    public function destroy($id)
+    {
+        $wishlist = Wishlist::find($id);
+        if ($wishlist) {
+            $wishlist->delete();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Product removed from wishlist successfully',
+            ], 200);
+        }
+
+        return response()->json([
+            'status' => false,
+            'message' => 'Product not removed from wishlist',
+        ], 400);
+    }
 }
