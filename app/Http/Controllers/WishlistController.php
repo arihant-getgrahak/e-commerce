@@ -19,6 +19,14 @@ class WishlistController extends Controller
         $isLoggedIn = auth()->check();
 
         if ($isLoggedIn) {
+            $checkWishlist = Wishlist::where('user_id', auth()->user()->id)->where('product_id', $request->product_id)->first();
+            if ($checkWishlist) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Product already in wishlist',
+                ], 400);
+            }
+
             $wishlist = Wishlist::create([
                 'user_id' => auth()->user()->id,
                 'product_id' => $request->product_id,
