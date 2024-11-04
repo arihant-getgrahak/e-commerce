@@ -82,3 +82,4 @@ Route::get('/my-orders', [CheckoutController::class, 'display'])->name('my-order
 Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
 Route::post('wishlist/store', [WishlistController::class, 'store'])->name('wishlist.store');
 Route::delete('wishlist/delete/{id}', [WishlistController::class, 'destroy'])->name('wishlist.delete');
+Route::get('wishlist/count', [WishlistController::class, 'display'])->name('wishlist.count');
