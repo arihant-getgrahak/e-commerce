@@ -14,6 +14,16 @@ class WishlistController extends Controller
         return view('wishlist', compact('wishlist'));
     }
 
+    public function display()
+    {
+        $wishlist = Wishlist::where('user_id', auth()->user()->id)->with('product')->get();
+
+        return response()->json([
+            'wishlist' => $wishlist,
+            'status' => true,
+        ], 200);
+    }
+
     public function store(Request $request)
     {
         $isLoggedIn = auth()->check();
