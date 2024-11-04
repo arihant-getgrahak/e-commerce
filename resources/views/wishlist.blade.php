@@ -12,8 +12,8 @@
 @else
     <div class="col-12 col-md-12 col-lg-8 col-xl-8 text-center">
         <div class="row align-items-center">
-            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
-                @foreach ($wishlist as $w)
+            @foreach ($wishlist as $w)
+                <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
                     <div class="product_grid card b-0">
                         <div class="badge bg-success text-white position-absolute ft-regular ab-left text-upper">Sale</div>
                         <button class="btn btn_love position-absolute ab-right theme-cl"><i class="fas fa-times"></i></button>
@@ -39,8 +39,8 @@
                             </div>
                         </div>
                     </div>
-                @endforeach
-            </div>
+                </div>
+            @endforeach
         </div>
     </div>
 @endif
