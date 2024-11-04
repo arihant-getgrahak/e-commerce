@@ -41,6 +41,8 @@ class CheckoutController extends Controller
     public function display()
     {
         $orders = Order::where('user_id', auth()->user()->id)->get();
+
+        return view('orderdisplay', compact('orders'));
     }
 
     public function store(Request $request)
