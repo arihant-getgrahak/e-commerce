@@ -75,3 +75,5 @@ Route::get('checkout', [CheckoutController::class, 'index'])->name('checkout');
 Route::post('checkout/store', [CheckoutController::class, 'store'])->name('checkout.store');
 
 Route::get('cart/json', [CartController::class, 'cartcount'])->name('cartcount');
+
+Route::get('/my-orders', [CheckoutController::class, 'display'])->name('my-orders');
