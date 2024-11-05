@@ -95,7 +95,8 @@
                             <div class="widget-boxed-body collapse show" id="pricing" data-parent="#pricing">
                                 <div class="side-list no-border mb-4">
                                     <div class="rg-slider">
-                                        <input type="text" class="js-range-slider" name="my_range" value="" />
+                                        <input type="text" class="js-range-slider" name="my_range" value=""
+                                            id="my_range" onchange="updateTextInput(this.value)" />
                                     </div>
                                 </div>
                             </div>
@@ -500,8 +501,10 @@
                                         </div>
                                     </div>
                                     <div class="text-left">
-                                        <h5 class="fw-bolder fs-md mb-0 lh-1 mb-1"><a href="shop-single-v1.html"
-                                                id="product_name">{{$p->name}}</a></h5>
+                                        <h5 class="fw-bolder fs-md mb-0 lh-1 mb-1"><a
+                                                href="{{route('product.specific', $p->slug)}}"
+                                                id="product_name">{{$p->name}}</a>
+                                        </h5>
                                         <div class="elis_rty"><span class="ft-bold text-dark fs-sm"
                                                 id="product_price">₹{{$p->price}}</span></div>
                                     </div>
@@ -801,7 +804,7 @@
                                     </div>
                                     <div class="text-left">
                                         <h5 class="fw-bolder fs-md mb-0 lh-1 mb-1">
-                                            <a href="shop-single-v1.html">${product.name}</a>
+                                              <a href="${route('product.specific', '')}}/${product.slug}">${product.name}</a>
                                         </h5>
                                         <div class="elis_rty">
                                             <span class="ft-bold text-dark fs-sm">₹${product.price}</span>
@@ -893,7 +896,7 @@
                                         </div>
                                         <div class="text-left">
                                             <h5 class="fw-bolder fs-md mb-0 lh-1 mb-1">
-                                                <a href="shop-single-v1.html">${product.name}</a>
+                                                   <a href="{{route('product.specific', '')}}/${product.slug}}">${product.name}</a>
                                             </h5>
                                             <div class="elis_rty">
                                                 <span class="ft-bold text-dark fs-sm">₹${product.price}</span>
@@ -935,4 +938,98 @@
     }
 </script>
 
+<script>
+    let debounceTimeout;
+
+    async function updateTextInput(value) {
+        const productsCount = document.querySelector('#product_count');
+        const productsContainer = document.querySelector('#products');
+        clearTimeout(debounceTimeout);
+
+        debounceTimeout = setTimeout(async () => {
+            const parts = value.split(";");
+            if (parts.length !== 2) {
+                console.error("Invalid input format");
+                return;
+            }
+
+            const data = {
+                min: parts[0],
+                max: parts[1]
+            };
+
+            productsContainer.innerHTML = '';
+            try {
+                const res = await fetch("{{route('price.filter')}}", {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json",
+                        'X-CSRF-Token': "{{ csrf_token() }}",
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (!res.ok) {
+                    throw new Error(`Request failed with status ${res.status}`);
+                }
+
+                const response = await res.json();
+
+                productsContainer.innerHTML = '';
+                productsCount.innerText = response.product.data.length + " Items Found";
+
+                response.product.data.forEach(product => {
+                    const productHTML = `
+                            <div class="col-xl-4 col-lg-4 col-md-6 col-6">
+                                <div class="product_grid card b-0">
+                                    <div class="badge bg-info text-white position-absolute ft-regular ab-left text-upper">New</div>
+                                    <div class="card-body p-0">
+                                        <div class="shop_thumb position-relative">
+                                            <a class="card-img-top d-block overflow-hidden" href="{{ route('product.specific', '') }}/${product.slug}">
+                                                <img class="card-img-top" src="${product.thumbnail}" alt="${product.name}">
+                                            </a>
+                                            <div class="product-hover-overlay bg-dark d-flex align-items-center justify-content-center">
+                                                <div class="edlio">
+                                                    <a href="#" data-toggle="modal" data-target="#quickview"
+                                                       class="text-white fs-sm ft-medium quick-view-btn"
+                                                       data-name="${product.name}" data-price="${product.price}"
+                                                       data-description="${product.description}"
+                                                       data-gallery='${JSON.stringify(product.gallery)}'
+                                                       data-category="${product.category.name}" data-reviews="412"
+                                                       data-old-price="${product.cost_price}"
+                                                       data-new-price="${product.price}">
+                                                       <i class="fas fa-eye mr-1"></i>Quick View
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer b-0 p-0 pt-2 bg-white">
+                                        <div class="d-flex align-items-start justify-content-between">
+                                            <div class="text-left"></div>
+                                            <div class="text-right">
+                                                <button class="btn auto btn_love snackbar-wishlist" id="wishlist">
+                                                    <i class="far fa-heart"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="text-left">
+                                            <h5 class="fw-bolder fs-md mb-0 lh-1 mb-1">
+                                                <a href="{{route('product.specific', '')}}/${product.slug}}">${product.name}</a>
+                                            </h5>
+                                            <div class="elis_rty">
+                                                <span class="ft-bold text-dark fs-sm">₹${product.price}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`;
+                    productsContainer.insertAdjacentHTML('beforeend', productHTML);
+                });
+            } catch (error) {
+                console.error("Fetch error:", error);
+            }
+        }, 300);
+    }
+</script>
 @endsection

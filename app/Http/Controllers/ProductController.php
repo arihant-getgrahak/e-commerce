@@ -7,10 +7,10 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Gallery;
 use App\Models\Product;
-use App\Models\ProductMeta;
 use DB;
 use Illuminate\Http\Request;
 use Storage;
+use Validator;
 
 class ProductController extends Controller
 {
@@ -278,5 +278,21 @@ class ProductController extends Controller
         $child = Category::where('parent_id', $id)->withCount('products')->get();
 
         return $child;
+    }
+
+    public function priceFilter(Request $request)
+    {
+        $validation = Validator::make($request->all(), [
+            'min' => 'required|numeric',
+            'max' => 'required|numeric',
+        ]);
+
+        if ($validation->fails()) {
+            return response()->json($validation->errors(), 422);
+        }
+
+        $priceFilter = Product::whereBetween('price', [$request->min, $request->max])->with(['gallery', 'meta', 'brand', 'category'])->paginate(10);
+
+        return response()->json(['product' => $priceFilter], 200);
     }
 }

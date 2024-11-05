@@ -9,6 +9,9 @@ class WishlistController extends Controller
 {
     public function index()
     {
+        if (! auth()->check()) {
+            return redirect()->route('login');
+        }
         $wishlist = Wishlist::where('user_id', auth()->user()->id)->with('product')->get();
 
         return view('wishlist', compact('wishlist'));
@@ -16,6 +19,10 @@ class WishlistController extends Controller
 
     public function display()
     {
+        if (! auth()->check()) {
+            return redirect()->route('login');
+        }
+
         $wishlist = Wishlist::where('user_id', auth()->user()->id)->with('product')->get();
         $price = 0;
         if ($wishlist) {

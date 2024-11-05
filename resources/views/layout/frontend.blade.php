@@ -25,8 +25,9 @@
             <div class="container">
                 <div class="row">
                     <div class="col-xl-4 col-lg-4 col-md-5 col-sm-12 hide-ipad">
-                        <div class="top_first"><a href="callto:(+84)0123456789" class="medium text-light">(+84) 0123 456
-                                789</a></div>
+                        <div class="top_first">
+                            <a href="callto:+919672670732" class="medium text-light">(+91)9672670732</a>.
+                        </div>
                     </div>
 
                     <div class="col-xl-4 col-lg-4 col-md-5 col-sm-12 hide-ipad">
@@ -85,7 +86,7 @@
                         </div>
 
                         <div class="currency-selector dropdown js-dropdown float-right mr-3">
-                            <a href="javascript:void(0);" class="text-light medium">Wishlist</a>
+                            <a href="{{route('wishlist')}}" class="text-light medium">Wishlist</a>
                         </div>
 
                         <div class="currency-selector dropdown js-dropdown float-right mr-3">
@@ -419,14 +420,18 @@
                     </div>
                     <div class="d-flex align-items-center justify-content-between br-top br-bottom px-3 py-3">
                         <h6 class="mb-0">Subtotal</h6>
-                        <h3 class="mb-0 ft-medium" id="subtotal">$1023</h3>
+                        <h3 class="mb-0 ft-medium" id="subtotal">₹0</h3>
                     </div>
                     <div class="cart_action px-3 py-3">
                         <div class="form-group">
-                            <button type="button" class="btn d-block full-width btn-dark">Checkout Now</button>
+                            <a href="{{ route('checkout') }}" class="btn d-block full-width btn-dark">
+                                Checkout Now
+                            </a>
                         </div>
                         <div class="form-group">
-                            <button type="button" class="btn d-block full-width btn-dark-light">Edit or View</button>
+                            <a href="{{route('cart')}}" class="btn d-block full-width btn-dark-light">
+                                Edit or View
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -448,7 +453,7 @@
 
                     <div class="d-flex align-items-center justify-content-between br-top br-bottom px-3 py-3">
                         <h6 class="mb-0">Subtotal</h6>
-                        <h3 class="mb-0 ft-medium" id="wishlistsubtotal">$417</h3>
+                        <h3 class="mb-0 ft-medium" id="wishlistsubtotal">₹0</h3>
                     </div>
 
                     <div class="cart_action px-3 py-3">
@@ -523,7 +528,7 @@
 										<h4 class="fs-md ft-medium mb-0 lh-1">₹${product.price}</h4>
 									</div>
 								</div>
-								<div class="fls_last"><button class="close_slide gray"><i class="ti-close"></i></button></div>
+								<div class="fls_last"><button class="close_slide gray" onclick="removeCart(${product.id})"><i class="ti-close"></i></button></div>
 							</div>`;
                     cartcontainer.insertAdjacentHTML('beforeend', cartHtml);
                 });
@@ -586,6 +591,26 @@
                 }
                 else {
                     alert(data.message)
+                    window.location.reload();
+                }
+            }
+        </script>
+
+        <script>
+            async function removeCart(id) {
+                console.log(id);
+                const res = await fetch("{{route('cart.delete', ':id')}}".replace(":id", id), {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                    },
+                });
+                const data = await res.json();
+                if (!data.status) {
+                    alert(data.message);
+                } else {
+                    alert(data.message);
                     window.location.reload();
                 }
             }
