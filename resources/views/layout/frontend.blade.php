@@ -423,7 +423,9 @@
                     </div>
                     <div class="cart_action px-3 py-3">
                         <div class="form-group">
-                            <button type="button" class="btn d-block full-width btn-dark">Checkout Now</button>
+                            <button type="button" class="btn d-block full-width btn-dark">
+                                <a href="{{ route('checkout') }}" class="text-light">Checkout Now</a>
+                            </button>
                         </div>
                         <div class="form-group">
                             <button type="button" class="btn d-block full-width btn-dark-light">Edit or View</button>
