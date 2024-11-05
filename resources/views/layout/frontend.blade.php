@@ -527,7 +527,7 @@
 										<h4 class="fs-md ft-medium mb-0 lh-1">₹${product.price}</h4>
 									</div>
 								</div>
-								<div class="fls_last"><button class="close_slide gray"><i class="ti-close"></i></button></div>
+								<div class="fls_last"><button class="close_slide gray" onclick="removeCart(${product.id})"><i class="ti-close"></i></button></div>
 							</div>`;
                     cartcontainer.insertAdjacentHTML('beforeend', cartHtml);
                 });
@@ -590,6 +590,26 @@
                 }
                 else {
                     alert(data.message)
+                    window.location.reload();
+                }
+            }
+        </script>
+
+        <script>
+            async function removeCart(id) {
+                console.log(id);
+                const res = await fetch("{{route('cart.delete', ':id')}}".replace(":id", id), {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                    },
+                });
+                const data = await res.json();
+                if (!data.status) {
+                    alert(data.message);
+                } else {
+                    alert(data.message);
                     window.location.reload();
                 }
             }
