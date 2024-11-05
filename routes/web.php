@@ -85,3 +85,6 @@ Route::delete('wishlist/delete/{id}', [WishlistController::class, 'destroy'])->n
 Route::get('wishlist/count', [WishlistController::class, 'display'])->name('wishlist.count');
 
 Route::post('price/filter', [ProductController::class, 'pricefilter'])->name('price.filter');
+
+Route::get('/google/redirect', [App\Http\Controllers\AuthController::class, 'redirectToGoogle'])->name('google.redirect');
+Route::get('/google/callback', [App\Http\Controllers\AuthController::class, 'handleGoogleCallback'])->name('google.callback');
