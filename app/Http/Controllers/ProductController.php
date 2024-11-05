@@ -291,7 +291,7 @@ class ProductController extends Controller
             return response()->json($validation->errors(), 422);
         }
 
-        $priceFilter = Product::whereBetween('price', [$request->min, $request->max])->paginate(10);
+        $priceFilter = Product::whereBetween('price', [$request->min, $request->max])->with(['gallery', 'meta', 'brand', 'category'])->paginate(10);
 
         return response()->json(['product' => $priceFilter], 200);
     }
