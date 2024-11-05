@@ -32,7 +32,7 @@
                                     <p class="mb-2"><span class="text-dark medium">SKU: {{ $orderProduct->product->sku }}</span>,
                                         <span class="text-dark medium">Weight: {{ $orderProduct->product->weight }}g</span>
                                     </p>
-                                    <h4 class="fs-sm ft-bold mb-0 lh-1">${{ $orderProduct->price }}</h4>
+                                    <h4 class="fs-sm ft-bold mb-0 lh-1">₹{{ $orderProduct->price }}</h4>
                                 </div>
                             </div>
                         </div>
