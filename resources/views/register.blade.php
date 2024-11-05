@@ -74,7 +74,10 @@
                 <button type="submit" class="btn btn-md full-width bg-dark text-light fs-md ft-medium">Create An
                     Account</button>
             </div>
-            <a href="{{ route('google.redirect') }}" class="btn btn-primary"> Login with Google </a>
+            <div>
+            <a href="{{ route('google.redirect') }}" class="btn btn-primary"> Register with Google </a>
+            <a href="{{ route('google.redirect') }}" class="btn btn-primary"> Register with Facebook </a>
+            </div>
         </form>
         <div>
             Already have an account? <a href="{{route('login')}}" class="text-dark">Login</a>
