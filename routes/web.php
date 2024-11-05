@@ -86,5 +86,5 @@ Route::get('wishlist/count', [WishlistController::class, 'display'])->name('wish
 
 Route::post('price/filter', [ProductController::class, 'pricefilter'])->name('price.filter');
 
-Route::get('/google/redirect', [App\Http\Controllers\AuthController::class, 'redirectToGoogle'])->name('google.redirect');
-Route::get('/google/callback', [App\Http\Controllers\AuthController::class, 'handleGoogleCallback'])->name('google.callback');
+Route::get('/google/redirect', [AuthController::class, 'redirectToGoogle'])->name('google.redirect');
+Route::get('/google/callback', [AuthController::class, 'handleGoogleCallback'])->name('google.callback');
