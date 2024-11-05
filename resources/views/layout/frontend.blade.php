@@ -423,12 +423,14 @@
                     </div>
                     <div class="cart_action px-3 py-3">
                         <div class="form-group">
-                            <button type="button" class="btn d-block full-width btn-dark">
-                                <a href="{{ route('checkout') }}" class="text-light">Checkout Now</a>
-                            </button>
+                            <a href="{{ route('checkout') }}" class="btn d-block full-width btn-dark">
+                                Checkout Now
+                            </a>
                         </div>
                         <div class="form-group">
-                            <button type="button" class="btn d-block full-width btn-dark-light">Edit or View</button>
+                            <a href="{{route('cart')}}" class="btn d-block full-width btn-dark-light">
+                                Edit or View
+                            </a>
                         </div>
                     </div>
                 </div>
