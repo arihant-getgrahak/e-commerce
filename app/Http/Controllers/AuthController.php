@@ -81,7 +81,7 @@ class AuthController extends Controller
                 'email' => $googleUser->email,
                 'password' => \Hash::make(rand(100000, 999999)),
                 'country_code' => 'IN',
-                'phone_number' => \Str::random(10),
+                'phone_number' => rand(1000000000, 9999999999),
             ]);
         }
 
