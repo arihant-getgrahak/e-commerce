@@ -10,6 +10,7 @@ use App\Models\OrderAdress;
 use App\Models\OrderProduct;
 use App\Models\SessionCart;
 use App\Models\SessionOrder;
+use App\Models\User;
 use DB;
 use Illuminate\Http\Request;
 
@@ -51,6 +52,31 @@ class CheckoutController extends Controller
     public function store(Request $request)
     {
         try {
+            if ($request->password) {
+                $sessionIds = session()->getId();
+                $user = User::create([
+                    'name' => $request->fname.' '.$request->lname,
+                    'email' => $request->email,
+                    'password' => bcrypt($request->password),
+                    'role' => $request->role ?? 'user',
+                    'country_code' => $request->country,
+                    'phone_number' => $request->phone,
+                ]);
+
+                \Auth::login($user);
+                $sessioncart = SessionCart::where('session_id', $sessionIds)->get();
+                echo $sessioncart;
+                // dd();
+                foreach ($sessioncart as $sc) {
+                    Cart::create([
+                        'user_id' => $user->id,
+                        'product_id' => $sc->product_id,
+                        'quantity' => $sc->quantity,
+                        'price' => $sc->price,
+                    ]);
+                }
+                SessionCart::where('session_id', $sessionIds)->delete();
+            }
             $isloggedIn = auth()->check();
 
             if ($isloggedIn) {
