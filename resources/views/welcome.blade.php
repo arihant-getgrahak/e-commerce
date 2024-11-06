@@ -1,5 +1,8 @@
 @extends('layout.frontend')
 @section("section")
+<div id="alert">
+
+</div>
 <section class="bg-cover" style="background:url(assets/img/banner-2.png) no-repeat;">
     <div class="container">
         <div class="row align-items-center justify-content-center">
@@ -917,6 +920,7 @@
 </script>
 
 <script>
+    const arihant = document.querySelector('#alert');
     async function onbtnclick(id) {
         const res = await fetch("{{route("wishlist.store")}}", {
             method: 'POST',
@@ -930,10 +934,24 @@
         const data = await res.json();
 
         if (!data.status) {
-            alert(data.message)
+            arihant.innerHTML = `
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        ${data.message}
+                                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											  </button>
+											</div>
+                                            `
+                                            window.scrollTo(0, 0);
         }
         else {
-            alert(data.message)
+            arihant.innerHTML = `<div class="alert alert-success alert-dismissible fade show" role="alert">
+        ${data.message}
+											  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											  </button>
+                                              </div>`
+                                              window.scrollTo(0, 0);
         }
 
     }
@@ -1033,4 +1051,5 @@
         }, 300);
     }
 </script>
+
 @endsection
