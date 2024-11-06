@@ -65,8 +65,7 @@ class CheckoutController extends Controller
 
                 \Auth::login($user);
                 $sessioncart = SessionCart::where('session_id', $sessionIds)->get();
-                echo $sessioncart;
-                // dd();
+
                 foreach ($sessioncart as $sc) {
                     Cart::create([
                         'user_id' => $user->id,
