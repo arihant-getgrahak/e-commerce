@@ -93,4 +93,36 @@ class AuthController extends Controller
             return redirect('/register');
         }
     }
+
+    public function redirectToFacebook()
+    {
+        return Socialite::driver('facebook')->redirect();
+    }
+
+    public function handleFacebookCallback()
+    {
+        try {
+            $facebookUser = Socialite::driver('facebook')->stateless()->user();
+
+            $email = Http::post('https://graph.facebook.com/me?access_token='.$facebookUser->token.'&fields=id,name,email');
+
+            print_r($email->json());
+            dd();
+            $user = User::where('email', $facebookUser->email)->first();
+            if (! $user) {
+                $user = User::create([
+                    'name' => $facebookUser->name,
+                    'email' => $facebookUser->email,
+                    'password' => \Hash::make(rand(100000, 999999)),
+                    'country_code' => 'IN',
+                    'phone_number' => rand(1000000000, 9999999999),
+                ]);
+            }
+
+            Auth::login($user);
+
+        } catch (\Exception $e) {
+            return redirect('/register');
+        }
+    }
 }
