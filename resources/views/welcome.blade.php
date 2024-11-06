@@ -683,6 +683,7 @@
 <a id="back2Top" class="top-scroll" title="Back to top" href="#"><i class="ti-arrow-up"></i></a>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        const arihant = document.querySelector('#alert');
         document.querySelectorAll('.quick-view-btn').forEach(function (button) {
             button.addEventListener('click', function () {
 
@@ -741,10 +742,26 @@
 
             const data = await res.json()
             if (!data.status) {
-                alert(data.message)
+                arihant.innerHTML = `
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        ${data.message}
+                                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											  </button>
+											</div>
+                                            `
+                window.scrollTo(0, 0);
             }
             else {
-                alert(data.message)
+                arihant.innerHTML = `
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+        ${data.message}
+                                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											  </button>
+											</div>
+                                            `
+                window.scrollTo(0, 0);
                 window.location.reload();
             }
         }
@@ -942,7 +959,7 @@
 											  </button>
 											</div>
                                             `
-                                            window.scrollTo(0, 0);
+            window.scrollTo(0, 0);
         }
         else {
             arihant.innerHTML = `<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -951,7 +968,7 @@
 												<span aria-hidden="true">&times;</span>
 											  </button>
                                               </div>`
-                                              window.scrollTo(0, 0);
+            window.scrollTo(0, 0);
         }
 
     }
