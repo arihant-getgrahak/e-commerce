@@ -5,6 +5,9 @@
 @if ($cart->isEmpty())
     <p>Your cart is empty.</p>
 @else
+    <div id="alert">
+
+    </div>
     <section class="middle">
         <div class="container">
 
@@ -32,7 +35,7 @@
                                         <div class="cart_single_caption pl-2">
                                             <h4 class="product_title fs-md ft-medium mb-1 lh-1">{{$c->products[0]->name}}</h4>
                                             <!-- <p class="mb-1 lh-1"><span class="text-dark">Size: 40</span></p>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <p class="mb-3 lh-1"><span class="text-dark">Color: Blue</span></p> -->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <p class="mb-3 lh-1"><span class="text-dark">Color: Blue</span></p> -->
                                             <h4 class="fs-md ft-medium mb-3 lh-1">₹{{$c->products[0]->price}}</h4>
                                             <select class="custom-select w-auto mb-2" id="quantity" data-id="{{$c->id}}"
                                                 data-price="{{$c->products[0]->price}}">
@@ -109,6 +112,7 @@
         document.addEventListener('DOMContentLoaded', function () {
             let quantity = document.querySelectorAll('#quantity');
             const btn = document.querySelectorAll('#update-cart');
+            const arihant = document.querySelector('#alert');
 
             const updatedData = {}
 
@@ -133,10 +137,25 @@
 
                     const data = await res.json();
                     if (!data.status) {
-                        alert(data.message);
+                        arihant.innerHTML = `
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    ${data.message}
+                                                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                          </button>
+                                                        </div>
+                                                        `
+                        window.scrollTo(0, 0);
                     }
                     else {
-                        alert(data.message);
+                        arihant.innerHTML = `
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    ${data.message}
+                                                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                          </button>
+                                                        </div>
+                                                        `
                         window.location.reload();
                     }
                 });
@@ -147,10 +166,11 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const btns = document.querySelectorAll("#remove-cart");
+            const arihant = document.querySelector('#alert');
 
             btns.forEach(button => {
                 button.addEventListener('click', async function () {
-                    const id = this.getAttribute("data-id"); 
+                    const id = this.getAttribute("data-id");
 
                     const res = await fetch("{{route('cart.delete', ':id')}}".replace(":id", id), {
                         method: "DELETE",
@@ -162,9 +182,25 @@
 
                     const data = await res.json();
                     if (!data.status) {
-                        alert(data.message);
+                        arihant.innerHTML = `
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                ${data.message}
+                                                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                      </button>
+                                                    </div>
+                                                    `
+                        window.scrollTo(0, 0);
                     } else {
-                        alert(data.message);
+                        arihant.innerHTML = `
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                ${data.message}
+                                                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                      </button>
+                                                    </div>
+                                                    `
+                        window.scrollTo(0, 0);
                         window.location.reload();
                     }
                 });
