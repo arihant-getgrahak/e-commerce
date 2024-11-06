@@ -88,3 +88,6 @@ Route::post('price/filter', [ProductController::class, 'pricefilter'])->name('pr
 
 Route::get('/google/redirect', [AuthController::class, 'redirectToGoogle'])->name('google.redirect');
 Route::get('/google/callback', [AuthController::class, 'handleGoogleCallback'])->name('google.callback');
+
+Route::get('/facebook/redirect', [AuthController::class, 'redirectToFacebook'])->name('facebook.redirect');
+Route::get('/facebook/callback', [AuthController::class, 'handleFacebookCallback'])->name('facebook.callback');
