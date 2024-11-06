@@ -616,6 +616,7 @@
         </script>
 
         <script>
+              const arihant = document.querySelector('#alert');
             async function removeCart(id) {
                 const res = await fetch("{{route('cart.delete', ':id')}}".replace(":id", id), {
                     method: "DELETE",
@@ -626,9 +627,25 @@
                 });
                 const data = await res.json();
                 if (!data.status) {
-                    alert(data.message);
+                    arihant.innerHTML = `
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        ${data.message}
+                                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											  </button>
+											</div>
+                                            `
+                    window.scrollTo(0, 0);
                 } else {
-                    alert(data.message);
+                    arihant.innerHTML = `
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+        ${data.message}
+                                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											  </button>
+											</div>
+                                            `
+                    window.scrollTo(0, 0);
                     window.location.reload();
                 }
             }
