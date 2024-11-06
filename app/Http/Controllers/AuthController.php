@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use Auth;
+use Http;
 use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -76,15 +77,17 @@ class AuthController extends Controller
         try {
             $googleUser = Socialite::driver('google')->stateless()->user();
             $user = User::where('email', $googleUser->email)->first();
-            if (! $user) {
-                $user = User::create([
-                    'name' => $googleUser->name,
-                    'email' => $googleUser->email,
-                    'password' => \Hash::make(rand(100000, 999999)),
-                    'country_code' => 'IN',
-                    'phone_number' => rand(1000000000, 9999999999),
-                ]);
-            }
+            $user = User::updateOrCreate([
+                'provider_id' => $googleUser->id,
+            ], [
+                'name' => $googleUser->name,
+                'email' => $googleUser->email,
+                'password' => \Hash::make(rand(100000, 999999)),
+                'country_code' => 'IN',
+                'phone_number' => rand(1000000000, 9999999999),
+                'provider' => 'google',
+                'provider_id' => $googleUser->id,
+            ]);
 
             Auth::login($user);
 
@@ -96,7 +99,7 @@ class AuthController extends Controller
 
     public function redirectToFacebook()
     {
-        return Socialite::driver('facebook')->redirect();
+        return Socialite::driver('facebook')->with(['scope' => 'email'])->redirect();
     }
 
     public function handleFacebookCallback()
@@ -109,15 +112,18 @@ class AuthController extends Controller
             print_r($email->json());
             dd();
             $user = User::where('email', $facebookUser->email)->first();
-            if (! $user) {
-                $user = User::create([
-                    'name' => $facebookUser->name,
-                    'email' => $facebookUser->email,
-                    'password' => \Hash::make(rand(100000, 999999)),
-                    'country_code' => 'IN',
-                    'phone_number' => rand(1000000000, 9999999999),
-                ]);
-            }
+
+            $user = User::updateOrCreate([
+                'provider_id' => $facebookUser->id,
+            ], [
+                'name' => $facebookUser->name,
+                'email' => $facebookUser->email,
+                'password' => \Hash::make(rand(100000, 999999)),
+                'country_code' => 'IN',
+                'phone_number' => rand(1000000000, 9999999999),
+                'provider' => 'facebook',
+                'provider_id' => $facebookUser->id,
+            ]);
 
             Auth::login($user);
 
