@@ -73,20 +73,24 @@ class AuthController extends Controller
 
     public function handleGoogleCallback()
     {
-        $googleUser = Socialite::driver('google')->stateless()->user();
-        $user = User::where('email', $googleUser->email)->first();
-        if (! $user) {
-            $user = User::create([
-                'name' => $googleUser->name,
-                'email' => $googleUser->email,
-                'password' => \Hash::make(rand(100000, 999999)),
-                'country_code' => 'IN',
-                'phone_number' => rand(1000000000, 9999999999),
-            ]);
+        try {
+            $googleUser = Socialite::driver('google')->stateless()->user();
+            $user = User::where('email', $googleUser->email)->first();
+            if (! $user) {
+                $user = User::create([
+                    'name' => $googleUser->name,
+                    'email' => $googleUser->email,
+                    'password' => \Hash::make(rand(100000, 999999)),
+                    'country_code' => 'IN',
+                    'phone_number' => rand(1000000000, 9999999999),
+                ]);
+            }
+
+            Auth::login($user);
+
+            return redirect('/');
+        } catch (\Exception $e) {
+            return redirect('/register');
         }
-
-        Auth::login($user);
-
-        return redirect('/');
     }
 }
