@@ -71,7 +71,7 @@
                         </div>
                         <div class="mt-3 d-flex gap-2">
                             <a href="{{ route('google.redirect') }}" class="btn btn-primary"> Login with Google </a>
-                            <a href="{{ route('google.redirect') }}" class="btn btn-primary"> Login with Facebook </a>
+                            <a href="{{ route('facebook.redirect') }}" class="btn btn-primary"> Login with Facebook </a>
                         </div>
                     </form>
                 </div>
