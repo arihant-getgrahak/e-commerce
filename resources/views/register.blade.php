@@ -76,7 +76,7 @@
             </div>
             <div>
             <a href="{{ route('google.redirect') }}" class="btn btn-primary"> Register with Google </a>
-            <a href="{{ route('google.redirect') }}" class="btn btn-primary"> Register with Facebook </a>
+            <a href="{{ route('facebook.redirect') }}" class="btn btn-primary"> Register with Facebook </a>
             </div>
         </form>
         <div>
