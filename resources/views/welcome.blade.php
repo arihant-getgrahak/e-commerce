@@ -742,6 +742,7 @@
             }
             else {
                 alert(data.message)
+                window.location.reload();
             }
         }
     });

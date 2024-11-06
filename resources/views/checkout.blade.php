@@ -113,12 +113,21 @@
 
                     <div class="row mb-4">
                         <div class="col-12 d-block">
-                            <input id="createaccount" class="checkbox-custom" name="createaccount" type="checkbox">
-                            <label for="createaccount" class="checkbox-custom-label">Create An Account?</label>
+                            <input id="create_account_checkbox" class="checkbox-custom collapsed" name="createaccount"
+                                type="checkbox" data-toggle="collapse" data-target="#create_account_collapse"
+                                aria-expanded="false" role="button">
+                            <label for="create_account_checkbox" class="checkbox-custom-label">Create An
+                                Account?</label>
+
+                            <div id="create_account_collapse" class="collapse">
+                                <div class="form-group mt-3">
+                                    <label for="account_password" class="text-dark">Password *</label>
+                                    <input type="password" class="form-control" placeholder="Password *" name="password"
+                                        id="account_password" />
+                                </div>
+                            </div>
                         </div>
                     </div>
-
-
 
                     <h5 class="mb-4 ft-medium">Payments</h5>
                     <div class="row mb-4">
@@ -171,7 +180,7 @@
                                                 <h4 class="product_title fs-md ft-medium mb-1 lh-1">{{$c->products[0]->name}}
                                                 </h4>
                                                 <!-- <p class="mb-1 lh-1"><span class="text-dark">Size: 40</span></p>
-                                                            <p class="mb-3 lh-1"><span class="text-dark">Color: Blue</span></p> -->
+                                                                                            <p class="mb-3 lh-1"><span class="text-dark">Color: Blue</span></p> -->
                                                 <h4 class="fs-md ft-medium mb-3 lh-1">₹{{$c->price}}</h4>
                                             </div>
                                         </div>
