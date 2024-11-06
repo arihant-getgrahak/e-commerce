@@ -9,6 +9,8 @@
             </div>
         @else
             @foreach ($wishlist as $w)
+                <div id="alert">
+                </div>
                 <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
                     <div class="product_grid card b-0">
                         <div class="badge bg-success text-white position-absolute ft-regular ab-left text-upper">Sale</div>
@@ -48,6 +50,7 @@
 </div>
 
 <script>
+    const arihant = document.querySelector('#alert');
     async function deleteWishlist(id) {
         try {
             const response = await fetch(`{{ route("wishlist.delete", ":id") }}`.replace(':id', id), {
@@ -59,8 +62,25 @@
             });
 
             const data = await response.json();
-            alert(data.message);
+            arihant.innerHTML = `
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        ${data.message}
+                                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											  </button>
+											</div>
+                                            `
+            window.scrollTo(0, 0);
             if (data.status) {
+                arihant.innerHTML = `
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+        ${data.message}
+                                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											  </button>
+											</div>
+                                            `
+                window.scrollTo(0, 0);
                 window.location.reload();
             }
         } catch (error) {
