@@ -1,5 +1,8 @@
 @extends('layout.frontend')
 @section("section")
+<div id="alert">
+
+</div>
 <section class="bg-cover" style="background:url(assets/img/banner-2.png) no-repeat;">
     <div class="container">
         <div class="row align-items-center justify-content-center">
@@ -680,6 +683,7 @@
 <a id="back2Top" class="top-scroll" title="Back to top" href="#"><i class="ti-arrow-up"></i></a>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        const arihant = document.querySelector('#alert');
         document.querySelectorAll('.quick-view-btn').forEach(function (button) {
             button.addEventListener('click', function () {
 
@@ -738,10 +742,26 @@
 
             const data = await res.json()
             if (!data.status) {
-                alert(data.message)
+                arihant.innerHTML = `
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        ${data.message}
+                                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											  </button>
+											</div>
+                                            `
+                window.scrollTo(0, 0);
             }
             else {
-                alert(data.message)
+                arihant.innerHTML = `
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+        ${data.message}
+                                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											  </button>
+											</div>
+                                            `
+                window.scrollTo(0, 0);
                 window.location.reload();
             }
         }
@@ -917,6 +937,7 @@
 </script>
 
 <script>
+    const arihant = document.querySelector('#alert');
     async function onbtnclick(id) {
         const res = await fetch("{{route("wishlist.store")}}", {
             method: 'POST',
@@ -930,10 +951,24 @@
         const data = await res.json();
 
         if (!data.status) {
-            alert(data.message)
+            arihant.innerHTML = `
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        ${data.message}
+                                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											  </button>
+											</div>
+                                            `
+            window.scrollTo(0, 0);
         }
         else {
-            alert(data.message)
+            arihant.innerHTML = `<div class="alert alert-success alert-dismissible fade show" role="alert">
+        ${data.message}
+											  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											  </button>
+                                              </div>`
+            window.scrollTo(0, 0);
         }
 
     }
@@ -1033,4 +1068,5 @@
         }, 300);
     }
 </script>
+
 @endsection

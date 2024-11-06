@@ -3,6 +3,8 @@
 @if (count($product) == 0)
     <h1>No Products</h1>
 @else
+    <div id="alert">
+    </div>
     <section class="middle">
         <div class="container">
             <div class="row">
@@ -321,11 +323,22 @@
 
 <script>
     if ("{{ session('error') }}") {
-        alert('{{ session('error') }}');
+        const arihant = document.querySelector('#alert');
+        arihant.innerHTML = `
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        ${{{ session('error') }}}
+    
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+											</div >
+                                            `
+        window.scrollTo(0, 0);
     }
 </script>
 
 <script>
+    const arihant = document.querySelector('#alert');
     async function addToCart(productId) {
         const quantity = document.getElementById("quantity").value
         const res = await fetch("{{route("cart.add")}}", {
@@ -343,10 +356,26 @@
 
         const data = await res.json()
         if (!data.status) {
-            alert(data.message)
+            arihant.innerHTML = `
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        ${data.message}
+                                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											  </button>
+											</div>
+                                            `
+            window.scrollTo(0, 0);
         }
         else {
-            alert(data.message)
+            arihant.innerHTML = `
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+        ${data.message}
+                                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											  </button>
+											</div>
+                                            `
+            window.scrollTo(0, 0);
         }
     }
 </script>

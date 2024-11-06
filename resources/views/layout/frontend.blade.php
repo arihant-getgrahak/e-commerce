@@ -247,6 +247,9 @@
                 </div>
             </div>
         </div>
+        <div id="alert">
+
+        </div>
         @yield('section')
         <footer class="dark-footer skin-dark-footer style-2">
             <div class="footer-middle">
@@ -574,8 +577,8 @@
             });
         </script>
         <script>
+            const arihant = document.querySelector('#alert');
             async function removeWishlist(id) {
-                console.log(id);
                 const res = await fetch("{{route("wishlist.delete", ":id")}}".replace(':id', id), {
                     method: 'DELETE',
                     headers: {
@@ -587,18 +590,34 @@
                 const data = await res.json();
 
                 if (!data.status) {
-                    alert(data.message)
+                    arihant.innerHTML = `
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        ${data.message}
+                                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											  </button>
+											</div>
+                                            `
+                    window.scrollTo(0, 0);
                 }
                 else {
-                    alert(data.message)
+                    arihant.innerHTML = `
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        ${data.message}
+                                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											  </button>
+											</div>
+                                            `
+                    window.scrollTo(0, 0);
                     window.location.reload();
                 }
             }
         </script>
 
         <script>
+              const arihant = document.querySelector('#alert');
             async function removeCart(id) {
-                console.log(id);
                 const res = await fetch("{{route('cart.delete', ':id')}}".replace(":id", id), {
                     method: "DELETE",
                     headers: {
@@ -608,9 +627,25 @@
                 });
                 const data = await res.json();
                 if (!data.status) {
-                    alert(data.message);
+                    arihant.innerHTML = `
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        ${data.message}
+                                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											  </button>
+											</div>
+                                            `
+                    window.scrollTo(0, 0);
                 } else {
-                    alert(data.message);
+                    arihant.innerHTML = `
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+        ${data.message}
+                                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											  </button>
+											</div>
+                                            `
+                    window.scrollTo(0, 0);
                     window.location.reload();
                 }
             }
