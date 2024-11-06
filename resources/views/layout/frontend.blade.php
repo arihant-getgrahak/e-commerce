@@ -577,8 +577,8 @@
             });
         </script>
         <script>
-            const arihant = document.querySelector('#alert');
             async function removeWishlist(id) {
+                const arihant = document.querySelector('#alert');
                 const res = await fetch("{{route("wishlist.delete", ":id")}}".replace(':id', id), {
                     method: 'DELETE',
                     headers: {
@@ -616,8 +616,8 @@
         </script>
 
         <script>
-              const arihant = document.querySelector('#alert');
             async function removeCart(id) {
+                const arihant = document.querySelector('#alert');
                 const res = await fetch("{{route('cart.delete', ':id')}}".replace(":id", id), {
                     method: "DELETE",
                     headers: {
@@ -627,26 +627,27 @@
                 });
                 const data = await res.json();
                 if (!data.status) {
-                    arihant.innerHTML = `
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        ${data.message}
-                                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-												<span aria-hidden="true">&times;</span>
-											  </button>
-											</div>
-                                            `
-                    window.scrollTo(0, 0);
+                                arihant.innerHTML = `
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    ${data.message}
+                                                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    										<span aria-hidden="true">&times;</span>
+                    									  </button>
+                    									</div>
+                                                        `
+                                window.scrollTo(0, 0);
+
                 } else {
-                    arihant.innerHTML = `
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-        ${data.message}
-                                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-												<span aria-hidden="true">&times;</span>
-											  </button>
-											</div>
-                                            `
-                    window.scrollTo(0, 0);
-                    window.location.reload();
+                                arihant.innerHTML = `
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    ${data.message}
+                                                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    										<span aria-hidden="true">&times;</span>
+                    									  </button>
+                    									</div>
+                                                        `
+                                window.scrollTo(0, 0);
+                                window.location.reload();
                 }
             }
         </script>
