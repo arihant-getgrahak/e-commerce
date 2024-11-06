@@ -182,7 +182,7 @@
                                                 <h4 class="product_title fs-md ft-medium mb-1 lh-1">{{$c->products[0]->name}}
                                                 </h4>
                                                 <!-- <p class="mb-1 lh-1"><span class="text-dark">Size: 40</span></p>
-                                                                                                    <p class="mb-3 lh-1"><span class="text-dark">Color: Blue</span></p> -->
+                                                                                                            <p class="mb-3 lh-1"><span class="text-dark">Color: Blue</span></p> -->
                                                 <h4 class="fs-md ft-medium mb-3 lh-1">₹{{$c->price}}</h4>
                                             </div>
                                         </div>
@@ -215,12 +215,28 @@
 </section>
 
 <script>
-    if ("{{ session('error') }}") {
-        alert("{{ session('error') }}");
+    const arihant = document.querySelector('#alert');
+    if ("{{session('success')}}") {
+        arihant.innerHTML = `
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+        ${{{ session('success') }}}
+                                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											  </button>
+											</div>
+                                            `
+        window.scrollTo(0, 0);
     }
-
-    if ("{{ session('success') }}") {
-        alert("{{ session('success') }}");
+    if ("{{session('error')}}") {
+        arihant.innerHTML = `
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        ${{{ session('error') }}}
+                                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											  </button>
+											</div>
+                                            `
+        window.scrollTo(0, 0);
     }
 </script>
 @endsection
