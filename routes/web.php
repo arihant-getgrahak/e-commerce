@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CartController;
@@ -32,6 +33,19 @@ Route::group(['middleware' => AdminMiddleware::class], function () {
         Route::delete('delete/{id}', [ProductController::class, 'delete'])->name('product.delete');
 
         Route::get('brand', [BrandController::class, 'index'])->name('brand');
+    });
+
+    Route::group(['prefix' => '/attribute'], function () {
+        // attributes
+        Route::get('/', [AttributeController::class, 'index']);
+        Route::get('/add', [AttributeController::class, 'store']);
+        Route::get('/update/{id}', [AttributeController::class, 'update']);
+        Route::get('/delete/{id}', [AttributeController::class, 'destroy']);
+
+        // attributes values
+        Route::get('/value/add', [AttributeController::class, 'storeAttributeValues']);
+        Route::get('/value/update/{id}', [AttributeController::class, 'updateAttributeValues']);
+        Route::get('/value/delete/{id}', [AttributeController::class, 'destroyAttributeValues']);
     });
 });
 
