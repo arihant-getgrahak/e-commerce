@@ -1,7 +1,7 @@
 @extends('layout.index')
 
 
-@section("category")
+@section("attribute")
 <main class="space-y-6">
     <div>
         <div>
