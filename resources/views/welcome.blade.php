@@ -629,7 +629,7 @@
                                 <div class="form-row mb-7">
                                     <div class="col-12 col-lg-auto">
                                         <!-- Quantity -->
-                                        <select class="mb-2 custom-select">
+                                        <select class="mb-2 custom-select" id="quantity">
                                             <option value="1" selected="">1</option>
                                             <option value="2">2</option>
                                             <option value="3">3</option>
@@ -699,11 +699,19 @@
                 const newPrice = this.getAttribute('data-new-price');
                 const id = this.getAttribute('data-id');
 
+                let quantity;
+                document.querySelectorAll('#quantity').forEach(q => {
+                    q.addEventListener('change', function () {
+                        quantity = this.value;
+                        console.log(quantity);
+                    })
+                })
+
                 document.querySelectorAll('#btnadd').forEach(btn => {
                     btn.addEventListener('click', function () {
                         const data = {
                             id: id,
-                            quantity: 1,
+                            quantity,
                             price: productPrice
                         }
                         addToCart(data);
