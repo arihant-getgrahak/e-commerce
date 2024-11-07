@@ -48,11 +48,4 @@ class Product extends Model
     {
         return $this->belongsTo(Brand::class, 'brand_id');
     }
-
-    public function attributes()
-    {
-        return $this->belongsToMany(Attributes::class, 'product_attribute')
-            ->withPivot('attribute_value')
-            ->withTimestamps();
-    }
 }

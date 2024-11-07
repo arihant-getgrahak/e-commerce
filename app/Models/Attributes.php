@@ -14,11 +14,4 @@ class Attributes extends Model
     {
         return $this->hasMany(AttributeValue::class, 'attribute_id');
     }
-
-    public function products()
-    {
-        return $this->belongsToMany(Product::class, 'product_attribute')
-            ->withPivot('attribute_value')
-            ->withTimestamps();
-    }
 }
