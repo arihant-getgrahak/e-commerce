@@ -37,15 +37,15 @@ Route::group(['middleware' => AdminMiddleware::class], function () {
 
     Route::group(['prefix' => '/attribute'], function () {
         // attributes
-        Route::get('/', [AttributeController::class, 'index']);
-        Route::get('/add', [AttributeController::class, 'store']);
-        Route::get('/update/{id}', [AttributeController::class, 'update']);
-        Route::get('/delete/{id}', [AttributeController::class, 'destroy']);
+        Route::get('/', [AttributeController::class, 'index'])->name('attribute');
+        Route::get('/add', [AttributeController::class, 'store'])->name('attribute.add');
+        Route::get('/update/{id}', [AttributeController::class, 'update'])->name('attribute.update');
+        Route::get('/delete/{id}', [AttributeController::class, 'destroy'])->name('attribute.delete');
 
         // attributes values
-        Route::get('/value/add', [AttributeController::class, 'storeAttributeValues']);
-        Route::get('/value/update/{id}', [AttributeController::class, 'updateAttributeValues']);
-        Route::get('/value/delete/{id}', [AttributeController::class, 'destroyAttributeValues']);
+        Route::get('/value/add', [AttributeController::class, 'storeAttributeValues'])->name('attribute.value.add');
+        Route::get('/value/update/{id}', [AttributeController::class, 'updateAttributeValues'])->name('attribute.value.update');
+        Route::get('/value/delete/{id}', [AttributeController::class, 'destroyAttributeValues'])->name('attribute.value.delete');
     });
 });
 
