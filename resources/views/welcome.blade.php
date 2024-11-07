@@ -468,8 +468,10 @@
                         <!-- Single -->
                         <div class="col-xl-4 col-lg-4 col-md-6 col-6">
                             <div class="product_grid card b-0">
-                                <div class="badge bg-info text-white position-absolute ft-regular ab-left text-upper">
-                                    New</div>
+                                @if ($p->created_at->diffInDays() < 15)
+                                    <div class="badge bg-info text-white position-absolute ft-regular ab-left text-upper">
+                                        New</div>
+                                @endif
                                 <div class="card-body p-0">
                                     <div class="shop_thumb position-relative">
                                         <a class="card-img-top d-block overflow-hidden" href={{route('product.specific', $p->slug)}}><img class="card-img-top" src="{{$p->thumbnail}}"
@@ -772,11 +774,22 @@
     document.addEventListener('DOMContentLoaded', function () {
         const productsContainer = document.querySelector('#products');
         const productsCount = document.querySelector('#product_count');
-
         document.querySelectorAll('.inner_widget_link a').forEach(link => {
             link.addEventListener('click', async function (event) {
                 event.preventDefault();
                 const categoryId = this.getAttribute('data-id');
+
+                function datediff(created_at) {
+                    const createdAt = new Date(created_at);
+                    const currentDate = new Date()
+
+                    const diffTime = Math.abs(currentDate - createdAt);
+                    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                }
+
+                function generateBadge(date) {
+                    return date < 15 ? `<div class="badge bg-info text-white position-absolute ft-regular ab-left text-upper">New</div>` : '';
+                }
 
                 try {
                     const res = await fetch("{{ route('category.show', ':id') }}".replace(':id', categoryId));
@@ -786,12 +799,13 @@
                     productsCount.innerText = data.product.length + " Items Found";
 
                     data.product.forEach(product => {
+                        const date_diffrence = datediff(product.created_at);
+                        const badge = generateBadge(date_diffrence);
+
                         const productHTML = `
                         <div class="col-xl-4 col-lg-4 col-md-6 col-6">
                             <div class="product_grid card b-0">
-                                <div class="badge bg-info text-white position-absolute ft-regular ab-left text-upper">
-                                    New
-                                </div>
+                    ${badge}
                                 <div class="card-body p-0">
                                     <div class="shop_thumb position-relative">
                                         <a class="card-img-top d-block overflow-hidden"
@@ -825,15 +839,15 @@
                                     </div>
                                     <div class="text-left">
                                         <h5 class="fw-bolder fs-md mb-0 lh-1 mb-1">
-                                              <a href="${route('product.specific', '')}}/${product.slug}">${product.name}</a>
+                                              <a href="{{ route('product.specific', '') }}/${product.slug}">${product.name}</a>
                                         </h5>
                                         <div class="elis_rty">
                                             <span class="ft-bold text-dark fs-sm">₹${product.price}</span>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>`;
+                            </div >
+                        </div >`;
 
                         productsContainer.insertAdjacentHTML('beforeend', productHTML);
                     });
@@ -882,50 +896,50 @@
 
                     data.product.data.forEach(product => {
                         const productHTML = `
-                            <div class="col-xl-4 col-lg-4 col-md-6 col-6">
-                                <div class="product_grid card b-0">
-                                    <div class="badge bg-info text-white position-absolute ft-regular ab-left text-upper">New</div>
-                                    <div class="card-body p-0">
-                                        <div class="shop_thumb position-relative">
-                                            <a class="card-img-top d-block overflow-hidden" href="{{ route('product.specific', '') }}/${product.slug}">
-                                                <img class="card-img-top" src="${product.thumbnail}" alt="${product.name}">
+                        < div class= "col-xl-4 col-lg-4 col-md-6 col-6" >
+                        <div class="product_grid card b-0">
+                            <div class="badge bg-info text-white position-absolute ft-regular ab-left text-upper">New</div>
+                            <div class="card-body p-0">
+                                <div class="shop_thumb position-relative">
+                                    <a class="card-img-top d-block overflow-hidden" href="{{ route('product.specific', '') }}/${product.slug}">
+                                        <img class="card-img-top" src="${product.thumbnail}" alt="${product.name}">
+                                    </a>
+                                    <div class="product-hover-overlay bg-dark d-flex align-items-center justify-content-center">
+                                        <div class="edlio">
+                                            <a href="#" data-toggle="modal" data-target="#quickview"
+                                                class="text-white fs-sm ft-medium quick-view-btn"
+                                                data-name="${product.name}" data-price="${product.price}"
+                                                data-description="${product.description}"
+                                                data-gallery='${JSON.stringify(product.gallery)}'
+                                                data-category="${product.category.name}" data-reviews="412"
+                                                data-old-price="${product.cost_price}"
+                                                data-new-price="${product.price}">
+                                                <i class="fas fa-eye mr-1"></i>Quick View
                                             </a>
-                                            <div class="product-hover-overlay bg-dark d-flex align-items-center justify-content-center">
-                                                <div class="edlio">
-                                                    <a href="#" data-toggle="modal" data-target="#quickview"
-                                                       class="text-white fs-sm ft-medium quick-view-btn"
-                                                       data-name="${product.name}" data-price="${product.price}"
-                                                       data-description="${product.description}"
-                                                       data-gallery='${JSON.stringify(product.gallery)}'
-                                                       data-category="${product.category.name}" data-reviews="412"
-                                                       data-old-price="${product.cost_price}"
-                                                       data-new-price="${product.price}">
-                                                       <i class="fas fa-eye mr-1"></i>Quick View
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-footer b-0 p-0 pt-2 bg-white">
-                                        <div class="d-flex align-items-start justify-content-between">
-                                            <div class="text-left"></div>
-                                            <div class="text-right">
-                                                <button class="btn auto btn_love snackbar-wishlist" id="wishlist">
-                                                    <i class="far fa-heart"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="text-left">
-                                            <h5 class="fw-bolder fs-md mb-0 lh-1 mb-1">
-                                                   <a href="{{route('product.specific', '')}}/${product.slug}}">${product.name}</a>
-                                            </h5>
-                                            <div class="elis_rty">
-                                                <span class="ft-bold text-dark fs-sm">₹${product.price}</span>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>`;
+                            </div>
+                            <div class="card-footer b-0 p-0 pt-2 bg-white">
+                                <div class="d-flex align-items-start justify-content-between">
+                                    <div class="text-left"></div>
+                                    <div class="text-right">
+                                        <button class="btn auto btn_love snackbar-wishlist" id="wishlist">
+                                            <i class="far fa-heart"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="text-left">
+                                    <h5 class="fw-bolder fs-md mb-0 lh-1 mb-1">
+                                        <a href="{{route('product.specific', '')}}/${product.slug}}">${product.name}</a>
+                                    </h5>
+                                    <div class="elis_rty">
+                                        <span class="ft-bold text-dark fs-sm">₹${product.price}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                            </div >`;
                         productsContainer.insertAdjacentHTML('beforeend', productHTML);
                     });
                 } catch (error) {
@@ -952,22 +966,22 @@
 
         if (!data.status) {
             arihant.innerHTML = `
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        ${data.message}
-                                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-												<span aria-hidden="true">&times;</span>
-											  </button>
-											</div>
-                                            `
+                        < div class= "alert alert-danger alert-dismissible fade show" role = "alert" >
+                        ${data.message}
+                    < button type = "button" class= "close" data - dismiss="alert" aria - label="Close" >
+                    <span aria-hidden="true">&times;</span>
+											  </button >
+											</div >
+                        `
             window.scrollTo(0, 0);
         }
         else {
-            arihant.innerHTML = `<div class="alert alert-success alert-dismissible fade show" role="alert">
-        ${data.message}
-											  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-												<span aria-hidden="true">&times;</span>
-											  </button>
-                                              </div>`
+            arihant.innerHTML = `< div class= "alert alert-success alert-dismissible fade show" role = "alert" >
+                    ${data.message}
+                    < button type = "button" class= "close" data - dismiss="alert" aria - label="Close" >
+                    <span aria-hidden="true">&times;</span>
+											  </button >
+                                              </div >`
             window.scrollTo(0, 0);
         }
 
@@ -1006,7 +1020,7 @@
                 });
 
                 if (!res.ok) {
-                    throw new Error(`Request failed with status ${res.status}`);
+                    throw new Error(`Request failed with status ${res.status} `);
                 }
 
                 const response = await res.json();
@@ -1016,50 +1030,50 @@
 
                 response.product.data.forEach(product => {
                     const productHTML = `
-                            <div class="col-xl-4 col-lg-4 col-md-6 col-6">
-                                <div class="product_grid card b-0">
-                                    <div class="badge bg-info text-white position-absolute ft-regular ab-left text-upper">New</div>
-                                    <div class="card-body p-0">
-                                        <div class="shop_thumb position-relative">
-                                            <a class="card-img-top d-block overflow-hidden" href="{{ route('product.specific', '') }}/${product.slug}">
-                                                <img class="card-img-top" src="${product.thumbnail}" alt="${product.name}">
-                                            </a>
-                                            <div class="product-hover-overlay bg-dark d-flex align-items-center justify-content-center">
-                                                <div class="edlio">
-                                                    <a href="#" data-toggle="modal" data-target="#quickview"
-                                                       class="text-white fs-sm ft-medium quick-view-btn"
-                                                       data-name="${product.name}" data-price="${product.price}"
-                                                       data-description="${product.description}"
-                                                       data-gallery='${JSON.stringify(product.gallery)}'
-                                                       data-category="${product.category.name}" data-reviews="412"
-                                                       data-old-price="${product.cost_price}"
-                                                       data-new-price="${product.price}">
-                                                       <i class="fas fa-eye mr-1"></i>Quick View
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-footer b-0 p-0 pt-2 bg-white">
-                                        <div class="d-flex align-items-start justify-content-between">
-                                            <div class="text-left"></div>
-                                            <div class="text-right">
-                                                <button class="btn auto btn_love snackbar-wishlist" id="wishlist">
-                                                    <i class="far fa-heart"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="text-left">
-                                            <h5 class="fw-bolder fs-md mb-0 lh-1 mb-1">
-                                                <a href="{{route('product.specific', '')}}/${product.slug}}">${product.name}</a>
-                                            </h5>
-                                            <div class="elis_rty">
-                                                <span class="ft-bold text-dark fs-sm">₹${product.price}</span>
+                        < div class="col-xl-4 col-lg-4 col-md-6 col-6" >
+                            <div class="product_grid card b-0">
+                                <div class="badge bg-info text-white position-absolute ft-regular ab-left text-upper">New</div>
+                                <div class="card-body p-0">
+                                    <div class="shop_thumb position-relative">
+                                        <a class="card-img-top d-block overflow-hidden" href="{{ route('product.specific', '') }}/${product.slug}">
+                                            <img class="card-img-top" src="${product.thumbnail}" alt="${product.name}">
+                                        </a>
+                                        <div class="product-hover-overlay bg-dark d-flex align-items-center justify-content-center">
+                                            <div class="edlio">
+                                                <a href="#" data-toggle="modal" data-target="#quickview"
+                                                    class="text-white fs-sm ft-medium quick-view-btn"
+                                                    data-name="${product.name}" data-price="${product.price}"
+                                                    data-description="${product.description}"
+                                                    data-gallery='${JSON.stringify(product.gallery)}'
+                                                    data-category="${product.category.name}" data-reviews="412"
+                                                    data-old-price="${product.cost_price}"
+                                                    data-new-price="${product.price}">
+                                                    <i class="fas fa-eye mr-1"></i>Quick View
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>`;
+                                <div class="card-footer b-0 p-0 pt-2 bg-white">
+                                    <div class="d-flex align-items-start justify-content-between">
+                                        <div class="text-left"></div>
+                                        <div class="text-right">
+                                            <button class="btn auto btn_love snackbar-wishlist" id="wishlist">
+                                                <i class="far fa-heart"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="text-left">
+                                        <h5 class="fw-bolder fs-md mb-0 lh-1 mb-1">
+                                            <a href="{{route('product.specific', '')}}/${product.slug}}">${product.name}</a>
+                                        </h5>
+                                        <div class="elis_rty">
+                                            <span class="ft-bold text-dark fs-sm">₹${product.price}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div >`;
                     productsContainer.insertAdjacentHTML('beforeend', productHTML);
                 });
             } catch (error) {
