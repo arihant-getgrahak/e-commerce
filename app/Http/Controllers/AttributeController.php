@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\attribute_value;
 use App\Models\Attributes;
 use Request;
 use Validator;
@@ -27,6 +28,29 @@ class AttributeController extends Controller
 
         $attribute = Attributes::create([
             'name' => $request->name,
+        ]);
+
+        if (! $attribute) {
+            return back()->with('error', 'Attribute not created');
+        }
+
+        return back()->with('success', 'Attribute created successfully');
+    }
+
+    public function storeAttributeValues(Request $request)
+    {
+        $validation = Validator::make($request->all(), [
+            'attribute_id' => 'required|exists:attributes,id',
+            'value' => 'required',
+        ]);
+
+        if ($validation->fails()) {
+            return back()->with('errors', $validation->errors());
+        }
+
+        $attribute = attribute_value::create([
+            'attribute_id' => $request->attribute_id,
+            'value' => $request->value,
         ]);
 
         if (! $attribute) {
