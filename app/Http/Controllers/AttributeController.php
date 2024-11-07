@@ -83,6 +83,8 @@ class AttributeController extends Controller
         $attribute->update([
             'name' => $request->name,
         ]);
+
+        return back()->with('success', 'Attribute updated successfully');
     }
 
     public function updateAttributeValues(Request $request, $id)
@@ -92,5 +94,7 @@ class AttributeController extends Controller
         $attribute->update([
             'value' => $request->value,
         ]);
+
+        return back()->with('success', 'Attribute Value updated successfully');
     }
 }
