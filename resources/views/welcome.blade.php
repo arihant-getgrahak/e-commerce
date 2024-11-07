@@ -891,14 +891,28 @@
                     });
                     const data = await res.json();
 
+                    function datediff(created_at) {
+                        const createdAt = new Date(created_at);
+                        const currentDate = new Date()
+
+                        const diffTime = Math.abs(currentDate - createdAt);
+                        return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                    }
+
+                    function generateBadge(date) {
+                        return date < 15 ? `<div class="badge bg-info text-white position-absolute ft-regular ab-left text-upper">New</div>` : '';
+                    }
+
                     productsContainer.innerHTML = '';
                     productsCount.innerText = data.product.data.length + " Items Found";
 
                     data.product.data.forEach(product => {
+                        const date_diffrence = datediff(product.created_at);
+                        const badge = generateBadge(date_diffrence);
                         const productHTML = `
-                        < div class= "col-xl-4 col-lg-4 col-md-6 col-6" >
+                        <div class= "col-xl-4 col-lg-4 col-md-6 col-6" >
                         <div class="product_grid card b-0">
-                            <div class="badge bg-info text-white position-absolute ft-regular ab-left text-upper">New</div>
+                    ${badge}
                             <div class="card-body p-0">
                                 <div class="shop_thumb position-relative">
                                     <a class="card-img-top d-block overflow-hidden" href="{{ route('product.specific', '') }}/${product.slug}">
