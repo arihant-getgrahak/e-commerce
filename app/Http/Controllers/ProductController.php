@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductAddRequest;
+use App\Models\Attributes;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Gallery;
@@ -17,6 +18,7 @@ class ProductController extends Controller
     public function index()
     {
         $categories = Category::with('parent')->get();
+        $attribute = Attributes::with('values')->get();
         $data = [];
 
         foreach ($categories as $category) {
@@ -36,12 +38,12 @@ class ProductController extends Controller
         // dd($data);
         $brand = Brand::all();
 
-        return view('addproduct')->with('category', $data)->with('brand', $brand);
+        return view('addproduct')->with('category', $data)->with('brand', $brand)->with('attribute', $attribute);
     }
 
     public function admindisplay()
     {
-        $product = Product::where('added_by', auth()->user()->id)->with(['gallery', 'meta', 'brand', 'category'])->paginate(10);
+        $product = Product::where('added_by', auth()->user()->id)->with(['gallery', 'meta', 'brand', 'category', 'attributeValues'])->paginate(10);
         $categories = Category::with('parent')->get();
         $data = [];
         $brand = Brand::all();
@@ -65,11 +67,10 @@ class ProductController extends Controller
             return view('productview')->with('product', []);
         }
 
-        // dd($product);
         return view('productview')->with('product', $product)->with('category', $data)->with('brand', $brand);
 
         // return response()->json([
-        //     "product" => $product
+        //     'product' => $product,
         // ], 200);
     }
 
@@ -119,6 +120,7 @@ class ProductController extends Controller
             ];
             DB::beginTransaction();
             $product = Product::create($data);
+            $product->attributeValues()->attach($request->attribute);
             DB::commit();
 
             if ($request->hasFile('image')) {
@@ -143,20 +145,6 @@ class ProductController extends Controller
                     DB::commit();
                 }
             }
-
-            // $data = [
-            //     'product_id' => $product->id,
-            //     'sku' => $request->sku,
-            //     'weight' => $request->weight,
-            // ];
-            // DB::beginTransaction();
-            // ProductMeta::create($data);
-            // DB::commit();
-
-            // return response()->json([
-            //     "success" => "Product created successfully",
-            //     "product" => $product,
-            // ], 201);
 
             return back()->with('success', 'Product created successfully');
         } catch (\Exception $e) {

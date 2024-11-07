@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\attribute_value;
 use App\Models\Attributes;
-use Request;
+use App\Models\AttributeValue;
+use Illuminate\Http\Request;
 use Validator;
 
 class AttributeController extends Controller
@@ -48,7 +48,7 @@ class AttributeController extends Controller
             return back()->with('errors', $validation->errors());
         }
 
-        $attribute = attribute_value::create([
+        $attribute = AttributeValue::create([
             'attribute_id' => $request->attribute_id,
             'value' => $request->value,
         ]);
@@ -70,7 +70,7 @@ class AttributeController extends Controller
 
     public function destroyAttributeValues($id)
     {
-        $attribute = attribute_value::find($id);
+        $attribute = AttributeValue::find($id);
         $attribute->delete();
 
         return back()->with('success', 'Attribute deleted successfully');
@@ -83,14 +83,18 @@ class AttributeController extends Controller
         $attribute->update([
             'name' => $request->name,
         ]);
+
+        return back()->with('success', 'Attribute updated successfully');
     }
 
     public function updateAttributeValues(Request $request, $id)
     {
-        $attribute = attribute_value::find($id);
+        $attribute = AttributeValue::find($id);
 
         $attribute->update([
             'value' => $request->value,
         ]);
+
+        return back()->with('success', 'Attribute Value updated successfully');
     }
 }

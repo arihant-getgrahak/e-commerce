@@ -6,12 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Attributes extends Model
 {
-    protected $fillables = [
+    protected $fillable = [
         'name',
     ];
 
     public function values()
     {
-        $this->hasMany(attribute_value::class, 'attribute_id');
+        return $this->hasMany(AttributeValue::class, 'attribute_id');
+    }
+
+    public function products()
+    {
+        return $this->hasManyThrough(Product::class, AttributeValue::class, 'attribute_id', 'id', 'id', 'product_id');
     }
 }
