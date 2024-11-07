@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class attribute_value extends Model
+class AttributeValue extends Model
 {
     protected $fillable = ['value', 'attribute_id', 'color_code'];
 

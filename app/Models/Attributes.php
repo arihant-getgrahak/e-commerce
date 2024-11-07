@@ -6,12 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Attributes extends Model
 {
-    protected $fillables = [
+    protected $fillable = [
         'name',
     ];
 
     public function values()
     {
-        $this->hasMany(attribute_value::class, 'attribute_id');
+        $this->hasMany(AttributeValue::class, 'attribute_id');
     }
 }
