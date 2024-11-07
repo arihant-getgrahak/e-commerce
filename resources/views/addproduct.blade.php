@@ -133,6 +133,19 @@
       <p class="text-red-500">{{ $message }}</p>
     @enderror
     </div>
+    
+    <!-- attribute -->
+    <div class="mb-4">
+      <label for="attribute" class="col-form-label required">Attributes</label>
+      <select id="attribute" name="attribute" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+        @foreach($attribute as $cat)
+      @foreach ($cat->values as $values)
+      <option value="{{ $values["id"] }}">{{ $cat['name'] . " - " . $values['value'] }}</option>
+    @endforeach
+      </option>
+    @endforeach
+      </select>
+    </div>
 
     <!-- Submit Button -->
     <button type="submit" class="btn btn-primary ms-auto">Add Product</button>
@@ -152,9 +165,9 @@
 </script>
 
 <script>
-    const arihant = document.querySelector('#alert');
-    if ("{{session('success')}}") {
-        arihant.innerHTML = `
+  const arihant = document.querySelector('#alert');
+  if ("{{session('success')}}") {
+    arihant.innerHTML = `
             <div class="alert alert-success alert-dismissible fade show" role="alert">
         ${{{ session('success') }}}
                                               <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -162,10 +175,10 @@
 											  </button>
 											</div>
                                             `
-        window.scrollTo(0, 0);
-    }
-    if ("{{session('error')}}") {
-        arihant.innerHTML = `
+    window.scrollTo(0, 0);
+  }
+  if ("{{session('error')}}") {
+    arihant.innerHTML = `
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
         ${{{ session('error') }}}
                                               <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -173,8 +186,8 @@
 											  </button>
 											</div>
                                             `
-        window.scrollTo(0, 0);
-    }
+    window.scrollTo(0, 0);
+  }
 </script>
 
 @endsection
