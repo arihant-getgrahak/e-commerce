@@ -84,4 +84,13 @@ class AttributeController extends Controller
             'name' => $request->name,
         ]);
     }
+
+    public function updateAttributeValues(Request $request, $id)
+    {
+        $attribute = attribute_value::find($id);
+
+        $attribute->update([
+            'value' => $request->value,
+        ]);
+    }
 }
