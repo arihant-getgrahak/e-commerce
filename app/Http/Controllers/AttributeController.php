@@ -67,4 +67,12 @@ class AttributeController extends Controller
 
         return back()->with('success', 'Attribute deleted successfully');
     }
+
+    public function destroyAttributeValues($id)
+    {
+        $attribute = attribute_value::find($id);
+        $attribute->delete();
+
+        return back()->with('success', 'Attribute deleted successfully');
+    }
 }
