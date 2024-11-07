@@ -528,7 +528,7 @@
 									</div>
 									<div class="cart_single_caption pl-2">
 										<h4 class="product_title fs-sm ft-medium mb-0 lh-1">${product.products[0].name}</h4>
-										<h4 class="fs-md ft-medium mb-0 lh-1">₹${product.price}</h4>
+										<h4 class="fs-md ft-medium mb-0 lh-1">₹${product.products[0].price}</h4>
 									</div>
 								</div>
 								<div class="fls_last"><button class="close_slide gray" onclick="removeCart(${product.id})"><i class="ti-close"></i></button></div>
