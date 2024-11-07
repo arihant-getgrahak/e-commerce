@@ -4,6 +4,21 @@
 @if(empty($orders))
     <h1>No orders found</h1>
 @else
+<div class="gray py-3">
+    <div class="container">
+        <div class="row">
+            <div class="colxl-12 col-lg-12 col-md-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#">Orders</a>
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
     @foreach ($orders as $order)
         <div class="ord_list_wrap border mb-4 mfliud">
             <div class="ord_list_head gray d-flex align-items-center justify-content-between px-3 py-3">
