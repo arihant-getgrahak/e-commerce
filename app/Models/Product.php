@@ -19,6 +19,7 @@ class Product extends Model
         'cost_price',
         'sku',
         'weight',
+        'attributes',
     ];
 
     protected function casts(): array
@@ -47,5 +48,10 @@ class Product extends Model
     public function brand()
     {
         return $this->belongsTo(Brand::class, 'brand_id');
+    }
+
+    public function attributeValues()
+    {
+        return $this->belongsToMany(AttributeValue::class, 'product_attribute', 'product_id', 'attribute_value_id');
     }
 }
