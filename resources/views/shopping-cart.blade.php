@@ -5,6 +5,21 @@
 @if ($cart->isEmpty())
     <p>Your cart is empty.</p>
 @else
+    <div class="gray py-3">
+        <div class="container">
+            <div class="row">
+                <div class="colxl-12 col-lg-12 col-md-12">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/">Home</a></li>
+                            <li class="breadcrumb-item"><a href="#">Cart</a>
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="alert">
 
     </div>
@@ -35,7 +50,7 @@
                                         <div class="cart_single_caption pl-2">
                                             <h4 class="product_title fs-md ft-medium mb-1 lh-1">{{$c->products[0]->name}}</h4>
                                             <!-- <p class="mb-1 lh-1"><span class="text-dark">Size: 40</span></p>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <p class="mb-3 lh-1"><span class="text-dark">Color: Blue</span></p> -->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <p class="mb-3 lh-1"><span class="text-dark">Color: Blue</span></p> -->
                                             <h4 class="fs-md ft-medium mb-3 lh-1">₹{{$c->products[0]->price}}</h4>
                                             <select class="custom-select w-auto mb-2" id="quantity" data-id="{{$c->id}}"
                                                 data-price="{{$c->products[0]->price}}">
@@ -138,24 +153,24 @@
                     const data = await res.json();
                     if (!data.status) {
                         arihant.innerHTML = `
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    ${data.message}
-                                                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                          </button>
-                                                        </div>
-                                                        `
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        ${data.message}
+                                                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                              </button>
+                                                            </div>
+                                                            `
                         window.scrollTo(0, 0);
                     }
                     else {
                         arihant.innerHTML = `
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    ${data.message}
-                                                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                          </button>
-                                                        </div>
-                                                        `
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        ${data.message}
+                                                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                              </button>
+                                                            </div>
+                                                            `
                         window.location.reload();
                     }
                 });
@@ -183,23 +198,23 @@
                     const data = await res.json();
                     if (!data.status) {
                         arihant.innerHTML = `
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                ${data.message}
-                                                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                      </button>
-                                                    </div>
-                                                    `
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    ${data.message}
+                                                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                          </button>
+                                                        </div>
+                                                        `
                         window.scrollTo(0, 0);
                     } else {
                         arihant.innerHTML = `
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                ${data.message}
-                                                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                      </button>
-                                                    </div>
-                                                    `
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    ${data.message}
+                                                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                          </button>
+                                                        </div>
+                                                        `
                         window.scrollTo(0, 0);
                         window.location.reload();
                     }
