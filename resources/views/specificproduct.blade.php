@@ -3,6 +3,21 @@
 @if (count($product) == 0)
     <h1>No Products</h1>
 @else
+    <div class="gray py-3">
+        <div class="container">
+            <div class="row">
+                <div class="colxl-12 col-lg-12 col-md-12">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/">Home</a></li>
+                            <li class="breadcrumb-item"><a href="#">{{$product[0]->slug}}</a>
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="alert">
     </div>
     <section class="middle">
