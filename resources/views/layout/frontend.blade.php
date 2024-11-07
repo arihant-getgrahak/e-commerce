@@ -232,23 +232,7 @@
         </div>
         <!-- End Navigation -->
         <div class="clearfix"></div>
-        <div class="gray py-3">
-            <div class="container">
-                <div class="row">
-                    <div class="colxl-12 col-lg-12 col-md-12">
-                        <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="/">Home</a></li>
-                                <li class="breadcrumb-item"><a href="#">{{Str::ucfirst(Route::currentRouteName())}}</a>
-                                </li>
-                            </ol>
-                        </nav>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div id="alert">
-
         </div>
         @yield('section')
         <footer class="dark-footer skin-dark-footer style-2">

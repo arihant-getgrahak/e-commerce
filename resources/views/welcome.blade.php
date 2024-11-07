@@ -1,5 +1,20 @@
 @extends('layout.frontend')
 @section("section")
+<div class="gray py-3">
+    <div class="container">
+        <div class="row">
+            <div class="colxl-12 col-lg-12 col-md-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#">Shop</a>
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
 <div id="alert">
 
 </div>
@@ -20,27 +35,6 @@
         </div>
     </div>
 </section>
-<!-- ======================= Shop Style 1 ======================== -->
-
-
-<!-- ======================= Filter Wrap Style 1 ======================== -->
-<section class="py-3 br-bottom br-top">
-    <div class="container">
-        <div class="row align-items-center justify-content-between">
-            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item"><a href="#">Shop</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Women's</li>
-                    </ol>
-                </nav>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- ============================= Filter Wrap ============================== -->
-
 
 <!-- ======================= All Product List ======================== -->
 <section class="middle">
