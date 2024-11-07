@@ -75,4 +75,13 @@ class AttributeController extends Controller
 
         return back()->with('success', 'Attribute deleted successfully');
     }
+
+    public function update(Request $request, $id)
+    {
+        $attribute = Attributes::find($id);
+
+        $attribute->update([
+            'name' => $request->name,
+        ]);
+    }
 }
