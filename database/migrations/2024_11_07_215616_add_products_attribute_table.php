@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('products_attribute', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
-            $table->foreignId('attribute_value')->constrained('attribute_values')->onDelete('cascade');
-            $table->foreignId('product_id');
+            $table->foreignId('attribute_value_id')->constrained('attribute_values')->onDelete('cascade');
+            $table->timestamps();
         });
     }
 
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('products_attribute');
     }
 };
