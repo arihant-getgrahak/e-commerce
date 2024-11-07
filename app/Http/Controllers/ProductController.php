@@ -67,12 +67,11 @@ class ProductController extends Controller
             return view('productview')->with('product', []);
         }
 
-        // dd($product);
-        // return view('productview')->with('product', $product)->with('category', $data)->with('brand', $brand);
+        return view('productview')->with('product', $product)->with('category', $data)->with('brand', $brand);
 
-        return response()->json([
-            'product' => $product,
-        ], 200);
+        // return response()->json([
+        //     'product' => $product,
+        // ], 200);
     }
 
     public function display()
