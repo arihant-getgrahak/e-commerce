@@ -38,6 +38,8 @@
                                         <th><button class="table-sort" data-sort="sort-ddate">Expected Delivery
                                                 Date</button>
                                         </th>
+                                        <th><button class="table-sort" data-sort="sort-ddate">User Email</button>
+                                        </th>
                                         <th><button class="table-sort" data-sort="sort-type">Buttons</button></th>
                                     </tr>
                                 </thead>
@@ -62,7 +64,10 @@
                                                 </td>
                                                 <td class="sort-progress" data-progress="30">
                                                     {{\Carbon\Carbon::parse($product->delivery_date)->format('d F Y') }}
+                                                </td>
 
+                                                <td class="sort-progress" data-progress="30">
+                                                    {{$order->user->email }}
                                                 </td>
 
                                                 <td class="sort-type space-y-2">

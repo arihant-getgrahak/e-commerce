@@ -55,9 +55,9 @@
                             <p class="mb-1 p-0"><span class="text-muted">Status</span></p>
                             <div class="delv_status">
                                 <span class="ft-medium small rounded px-3 py-1 
-                        {{ $orderProduct->status === 'cancelled' ? 'text-danger bg-light-danger' : '' }}
-                        {{ $orderProduct->status === 'delivered' ? 'text-success bg-light-success' : '' }}
-                        {{ $orderProduct->status === 'shipped' ? 'text-warning bg-light-warning' : '' }}">
+                                    {{ $orderProduct->status === 'cancelled' ? 'text-danger bg-light-danger' : '' }}
+                                    {{ $orderProduct->status === 'delivered' ? 'text-success bg-light-success' : '' }}
+                                    {{ $orderProduct->status === 'shipped' ? 'text-warning bg-light-warning' : '' }}">
                                     {{ Str::ucfirst($orderProduct->status) }}
                                 </span>
                             </div>
