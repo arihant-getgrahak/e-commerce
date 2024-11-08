@@ -12,7 +12,15 @@ class OrderProduct extends Model
         'quantity',
         'price',
         'status',
+        'delivery_date',
     ];
+
+    protected static function booted()
+    {
+        static::creating(function ($order) {
+            $order->delivery_date = now()->addDays(14);
+        });
+    }
 
     public function order()
     {
