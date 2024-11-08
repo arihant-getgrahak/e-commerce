@@ -53,7 +53,7 @@
                                                 <td class="sort-date" data-date="1628071164">
                                                     {{ \Carbon\Carbon::parse($order->created_at)->format('d F Y') }}
                                                 </td>
-                                                <td class="sort-quantity"> {{Str::ucfirst($order->status)}}</td>
+                                                <td class="sort-quantity">{{Str::ucfirst($product->status)}}</td>
                                                 <td class="sort-progress" data-progress="30">
                                                     ₹{{$order->total}}
                                                 </td>
@@ -66,8 +66,10 @@
 
                                                 <td class="sort-type space-y-2">
                                                     <a href="#" class="btn btn-primary btn-sm btn-success">View</a>
-                                                    <button class="btn btn-primary btn-update btn-sm" data-bs-toggle="modal"
-                                                        data-bs-target="#modal-delete-{$c['id']}}">Delete</button>
+                                                    <button id="btn-update" class="btn btn-primary btn-update btn-sm"
+                                                        data-bs-toggle="modal" data-bs-target="#modal-team"
+                                                        data-id="{{ $order->id }}" data-status="{{$product->status}}"
+                                                        data-ddate="{{$order->delivery_date}}">Update</button>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -79,51 +81,65 @@
                 </div>
             </div>
         </div>
-        <footer class="footer footer-transparent d-print-none">
-            <div class="container-xl">
-                <div class="row text-center align-items-center flex-row-reverse">
-                    <div class="col-lg-auto ms-lg-auto">
-                        <ul class="list-inline list-inline-dots mb-0">
-                            <li class="list-inline-item"><a href="https://tabler.io/docs" target="_blank"
-                                    class="link-secondary" rel="noopener">Documentation</a></li>
-                            <li class="list-inline-item"><a href="./license.html" class="link-secondary">License</a>
-                            </li>
-                            <li class="list-inline-item"><a href="https://github.com/tabler/tabler" target="_blank"
-                                    class="link-secondary" rel="noopener">Source code</a></li>
-                            <li class="list-inline-item">
-                                <a href="https://github.com/sponsors/codecalm" target="_blank" class="link-secondary"
-                                    rel="noopener">
-                                    <!-- Download SVG icon from http://tabler-icons.io/i/heart -->
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                        class="icon text-pink icon-filled icon-inline" width="24" height="24"
-                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                        stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path
-                                            d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
-                                    </svg>
-                                    Sponsor
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-12 col-lg-auto mt-3 mt-lg-0">
-                        <ul class="list-inline list-inline-dots mb-0">
-                            <li class="list-inline-item">
-                                Copyright &copy; 2023
-                                <a href="." class="link-secondary">Tabler</a>.
-                                All rights reserved.
-                            </li>
-                            <li class="list-inline-item">
-                                <a href="./changelog.html" class="link-secondary" rel="noopener">
-                                    v1.0.0-beta20
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+    </div>
+    <div class="modal modal-blur fade" id="modal-team" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Update form</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+                <div class="modal-body">
+                    <form id="productForm" class="bg-white p-6 rounded-lg shadow-lg" method="post" action=""
+                        enctype="multipart/form-data">
+                        @csrf
+
+                        <!-- Status -->
+                        <div class="mb-4">
+                            <label for="name" class="col-form-label required">Product Status</label>
+                            <input type="text" id="status" name="status"
+                                class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                                placeholder="Enter product status">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="name" class="col-form-label required">Delivery date</label>
+                            <input type="date" id="ddate" name="ddate"
+                                class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                                placeholder="Enter delivery date">
+
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary ms-auto">Update Form</button>
+                </div>
+                </form>
             </div>
-        </footer>
+        </div>
     </div>
 </main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const updateButtons = document.querySelectorAll('.btn-update');
+        const updateForm = document.getElementById("productForm");
+
+        updateButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const id = this.getAttribute('data-id');
+                const status = this.getAttribute('data-status');
+                const ddate = this.getAttribute('data-date');
+
+                console.log(status);
+
+                // updateForm.action = "{{ route('category.update', ':id') }}".replace(':id', productId);
+
+                updateForm.querySelector('#status').value = status;
+                updateForm.querySelector('#ddate').value = ddate;
+            });
+        });
+    });
+
+</script>
 @endsection
