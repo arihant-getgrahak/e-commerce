@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BrandController;
@@ -105,3 +106,5 @@ Route::get('/google/callback', [AuthController::class, 'handleGoogleCallback'])-
 
 Route::get('/facebook/redirect', [AuthController::class, 'redirectToFacebook'])->name('facebook.redirect');
 Route::get('/facebook/callback', [AuthController::class, 'handleFacebookCallback'])->name('facebook.callback');
+
+Route::get('/admin/order', [AdminController::class, 'index']);
