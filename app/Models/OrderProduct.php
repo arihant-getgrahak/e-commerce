@@ -22,6 +22,10 @@ class OrderProduct extends Model
         });
     }
 
+    protected $casts = [
+        'delivery_date' => 'datetime:d-m-Y',
+    ];
+
     public function order()
     {
         return $this->belongsTo(Order::class, 'order_id', 'id');

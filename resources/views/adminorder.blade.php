@@ -61,7 +61,8 @@
                                                     {{$order->address->city}},{{$order->address->state}}
                                                 </td>
                                                 <td class="sort-progress" data-progress="30">
-                                                    {{ \Carbon\Carbon::parse($product->delivery_date)->format('d F Y') }}
+                                                    {{\Carbon\Carbon::parse($product->delivery_date)->format('d F Y') }}
+
                                                 </td>
 
                                                 <td class="sort-type space-y-2">

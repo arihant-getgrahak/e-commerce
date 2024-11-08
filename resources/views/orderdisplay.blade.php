@@ -59,7 +59,7 @@
                         </div>
                         <div class="col-xl-4 col-lg-4 col-md-4 col-6">
                             <p class="mb-1 p-0"><span class="text-muted">Expected date by:</span></p>
-                            <h6 class="mb-0 ft-medium fs-sm">{{ \Carbon\Carbon::parse($orderProduct->delivery_date)->format('d F Y') }}
+                            <h6 class="mb-0 ft-medium fs-sm">{{ \Carbon\Carbon::parse($orderProduct->delivery_date)->format('d F Y')}}</h6>
                             </h6>
                         </div>
                     </div>

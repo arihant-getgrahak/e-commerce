@@ -28,6 +28,10 @@ class AdminController extends Controller
 
         $data = $request->only(['status', 'delivery_date']);
 
+        if ($request->status == 'delivered') {
+            $data['delivery_date'] = now();
+        }
+
         $order->update($data);
 
         return back()->with('success', 'Order updated successfully');
