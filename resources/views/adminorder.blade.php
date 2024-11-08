@@ -61,15 +61,15 @@
                                                     {{$order->address->city}},{{$order->address->state}}
                                                 </td>
                                                 <td class="sort-progress" data-progress="30">
-                                                    {{ \Carbon\Carbon::parse($order->delivery_date)->format('d F Y') }}
+                                                    {{ \Carbon\Carbon::parse($product->delivery_date)->format('d F Y') }}
                                                 </td>
 
                                                 <td class="sort-type space-y-2">
                                                     <a href="#" class="btn btn-primary btn-sm btn-success">View</a>
                                                     <button id="btn-update" class="btn btn-primary btn-update btn-sm"
                                                         data-bs-toggle="modal" data-bs-target="#modal-team"
-                                                        data-id="{{ $order->id }}" data-status="{{$product->status}}"
-                                                        data-ddate="{{$order->delivery_date}}">Update</button>
+                                                        data-id="{{ $product->id }}"
+                                                        data-status="{{$product->status}}">Update</button>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -95,16 +95,20 @@
                         @csrf
 
                         <!-- Status -->
-                        <div class="mb-4">
+
+                        <div class="mb-3">
                             <label for="name" class="col-form-label required">Product Status</label>
-                            <input type="text" id="status" name="status"
-                                class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-                                placeholder="Enter product status">
+                            <select class="form-select arihant" id="status" name="status">
+                                <option value="pending">Pending</option>
+                                <option value="shipped">Shipped</option>
+                                <option value="delivered">Delivered</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
                         </div>
 
                         <div class="mb-4">
                             <label for="name" class="col-form-label required">Delivery date</label>
-                            <input type="date" id="ddate" name="ddate"
+                            <input type="date" id="delivery_date" name="delivery_date"
                                 class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
                                 placeholder="Enter delivery date">
 
@@ -129,14 +133,12 @@
             button.addEventListener('click', function () {
                 const id = this.getAttribute('data-id');
                 const status = this.getAttribute('data-status');
-                const ddate = this.getAttribute('data-date');
 
-                console.log(status);
 
-                // updateForm.action = "{{ route('category.update', ':id') }}".replace(':id', productId);
+                console.log(id)
+                updateForm.action = "{{ route('admin.order.update', ':id') }}".replace(':id', id);
 
                 updateForm.querySelector('#status').value = status;
-                updateForm.querySelector('#ddate').value = ddate;
             });
         });
     });
