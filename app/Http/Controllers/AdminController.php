@@ -10,7 +10,6 @@ class AdminController extends Controller
     {
         $orders = Order::with(['products.product', 'user'])->get();
 
-        // return view('orderdisplay', compact('orders'));
-        return response()->json($orders);
+        return view('adminorder', compact('orders'));
     }
 }
