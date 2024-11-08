@@ -42,7 +42,7 @@ class AdminController extends Controller
         $query = Order::query();
 
         if ($request->search_content === 'order') {
-            $query->where('id', $request->search);
+            $query->where('id', $request->search)->with(['products.product', 'user', 'address']);
 
             return response()->json($query->get());
         }
@@ -50,7 +50,7 @@ class AdminController extends Controller
         if ($request->search_content === 'email') {
             $query->whereHas('user', function ($q) use ($request) {
                 $q->where('email', $request->search);
-            });
+            })->with(['products.product', 'user', 'address']);
 
             return response()->json($query->get());
         }
@@ -58,7 +58,7 @@ class AdminController extends Controller
         if ($request->search_content === 'phone') {
             $query->whereHas('user', function ($q) use ($request) {
                 $q->where('phone', $request->search);
-            });
+            })->with(['products.product', 'user', 'address']);
 
             return response()->json($query->get());
         }
