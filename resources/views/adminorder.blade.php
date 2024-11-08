@@ -11,6 +11,9 @@
                         <h2 class="page-title">
                             Datatables
                         </h2>
+                        <label for="search" class="col-form-label required">Search</label>
+                        <input type="text" id="search" name="search"
+                            class="mt-1 block p-2 border border-gray-300 rounded-md" placeholder="Enter search data">
                     </div>
                 </div>
             </div>
@@ -117,7 +120,6 @@
                             <input type="date" id="delivery_date" name="delivery_date"
                                 class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
                                 placeholder="Enter delivery date">
-
                         </div>
                 </div>
                 <div class="modal-footer">
