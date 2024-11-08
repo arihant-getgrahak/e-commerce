@@ -54,12 +54,12 @@
                         <div class="col-xl-3 col-lg-3 col-md-3 col-6">
                             <p class="mb-1 p-0"><span class="text-muted">Status</span></p>
                             <div class="delv_status"><span
-                                    class="ft-medium small text-danger bg-light-danger rounded px-3 py-1">Pending</span>
+                                    class="ft-medium small text-danger bg-light-danger rounded px-3 py-1">{{ Str::ucfirst($orderProduct->status) }}</span>
                             </div>
                         </div>
                         <div class="col-xl-4 col-lg-4 col-md-4 col-6">
                             <p class="mb-1 p-0"><span class="text-muted">Expected date by:</span></p>
-                            <h6 class="mb-0 ft-medium fs-sm">{{ \Carbon\Carbon::parse($order->delivery_date)->format('d F Y') }}
+                            <h6 class="mb-0 ft-medium fs-sm">{{ \Carbon\Carbon::parse($orderProduct->delivery_date)->format('d F Y') }}
                             </h6>
                         </div>
                     </div>
