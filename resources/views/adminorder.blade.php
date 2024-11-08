@@ -65,11 +65,8 @@
                                                 </td>
 
                                                 <td class="sort-type space-y-2">
-                                                    <button class="btn btn-primary btn-sm btn-update" data-bs-toggle="modal"
-                                                        data-bs-target="#modal-edit-$c['id']}}" data-id=" $c['id'] }}"
-                                                        data-parent-id=" $c['parent_id'] ?? null }}"
-                                                        data-name=" $c['name'] }}">Edit</button>
-                                                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                                    <a href="#" class="btn btn-primary btn-sm btn-success">View</a>
+                                                    <button class="btn btn-primary btn-update btn-sm" data-bs-toggle="modal"
                                                         data-bs-target="#modal-delete-{$c['id']}}">Delete</button>
                                                 </td>
                                             </tr>
