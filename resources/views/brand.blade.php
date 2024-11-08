@@ -42,13 +42,15 @@
                                 <td class="sort-city">{{$c["name"]}}</td>
                                 <td class="sort-type">
                                     <button class="btn btn-primary btn-sm btn-update" data-bs-toggle="modal"
-                                        data-bs-target="#modal-team" data-id="{{ $c["id"] }}"
-                                        data-name="{{ $c["name"] }}">Edit</button>
+                                        data-bs-target="#modal-edit-{{$c['id']}}" data-id="{{ $c['id'] }}"
+                                        data-name="{{ $c['name'] }}">Edit</button>
                                     <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                        data-bs-target="#modal-danger">Delete</button>
+                                        data-bs-target="#modal-delete-{{$c['id']}}">Delete</button>
                                 </td>
                             </tr>
-                            <div class="modal modal-blur fade" id="modal-danger" tabindex="-1" role="dialog"
+
+                            <!-- Delete Modal -->
+                            <div class="modal modal-blur fade" id="modal-delete-{{$c['id']}}" tabindex="-1" role="dialog"
                                 aria-hidden="true">
                                 <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
                                     <div class="modal-content">
@@ -67,10 +69,8 @@
                                                 <path d="M12 17h.01" />
                                             </svg>
                                             <h3>Are you sure?</h3>
-                                            <div class="text-secondary">Do you really want to delete this brand? This
-                                                action cannot be
-                                                undone.
-                                            </div>
+                                            <div class="text-secondary">Do you really want to delete this brand? This action
+                                                cannot be undone.</div>
                                         </div>
                                         <div class="modal-footer">
                                             <div class="w-100">
@@ -78,13 +78,13 @@
                                                     <div class="col"><a href="#" class="btn w-100"
                                                             data-bs-dismiss="modal">Cancel</a></div>
                                                     <div class="col">
-                                                        <form id="delete-form"
+                                                        <form id="delete-form-{{$c['id']}}"
                                                             action="{{ route('brand.delete', $c['id']) }}" method="POST"
                                                             class="w-100">
                                                             @csrf
                                                             @method('DELETE')
                                                             <button type="submit" class="btn btn-danger w-100">Delete
-                                                                product</button>
+                                                                brand</button>
                                                         </form>
                                                     </div>
                                                 </div>
@@ -94,8 +94,8 @@
                                 </div>
                             </div>
                         @endforeach
-
                     </tbody>
+
                 </table>
             </div>
         </div>
