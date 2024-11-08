@@ -26,9 +26,9 @@ class AdminController extends Controller
     {
         $order = OrderProduct::find($id);
 
-        $order->update([
-            'status' => $request->status,
-        ]);
+        $data = $request->only(['status', 'delivery_date']);
+
+        $order->update($data);
 
         return back()->with('success', 'Order updated successfully');
     }
