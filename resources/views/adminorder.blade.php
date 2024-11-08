@@ -11,10 +11,15 @@
                         <h2 class="page-title">
                             Datatables
                         </h2>
-                        <label for="search" class="col-form-label required">Search</label>
-                        <input type="text" id="search" name="search"
-                            class="mt-1 block p-2 border border-gray-300 rounded-md" placeholder="Enter search data">
                     </div>
+                    <select class="form-select arihant" id="search_content" name="search_content">
+                        <option value="order">OrderId</option>
+                        <option value="email">Email</option>
+                        <option value="name">Name</option>
+                        <option value="phone">Phone Number</option>
+                    </select>
+                    <input type="text" id="search" name="search"
+                        class="mt-1 block p-2 border border-gray-300 rounded-md" placeholder="Enter search data">
                 </div>
             </div>
         </div>
