@@ -109,3 +109,4 @@ Route::get('/facebook/callback', [AuthController::class, 'handleFacebookCallback
 
 Route::get('/admin/order', [AdminController::class, 'index']);
 Route::post('admin/order/update/{id}', [AdminController::class, 'update'])->name('admin.order.update');
+Route::post('/admin/search', [AdminController::class, 'search'])->name('admin.search');
