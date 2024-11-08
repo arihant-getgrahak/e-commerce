@@ -36,4 +36,32 @@ class AdminController extends Controller
 
         return back()->with('success', 'Order updated successfully');
     }
+
+    public function search(Request $request)
+    {
+        $query = Order::query();
+
+        if ($request->search_content === 'order') {
+            $query->where('id', $request->search);
+
+            return response()->json($query->get());
+        }
+
+        if ($request->search_content === 'email') {
+            $query->whereHas('user', function ($q) use ($request) {
+                $q->where('email', $request->search);
+            });
+
+            return response()->json($query->get());
+        }
+
+        if ($request->search_content === 'phone') {
+            $query->whereHas('user', function ($q) use ($request) {
+                $q->where('phone', $request->search);
+            });
+
+            return response()->json($query->get());
+        }
+
+    }
 }
