@@ -12,14 +12,18 @@
                             Datatables
                         </h2>
                     </div>
+                </div>
+                <div class="mt-3">
+                    <label for="name" class="col-form-label">Search Order</label>
                     <select class="form-select arihant" id="search_content" name="search_content">
                         <option value="order">OrderId</option>
                         <option value="email">Email</option>
-                        <option value="name">Name</option>
                         <option value="phone">Phone Number</option>
                     </select>
+
                     <input type="text" id="search" name="search"
-                        class="mt-1 block p-2 border border-gray-300 rounded-md" placeholder="Enter search data">
+                        class="mt-1 w-full block p-2 border border-gray-300 rounded-md" placeholder="Enter search data"
+                        onchange="searchInput(this.value)"></table>
                 </div>
             </div>
         </div>
@@ -51,7 +55,7 @@
                                         <th><button class="table-sort" data-sort="sort-type">Buttons</button></th>
                                     </tr>
                                 </thead>
-                                <tbody class="table-tbody">
+                                <tbody class="table-tbody" id="table-body">
                                     @foreach ($orders as $order)
                                         @foreach ($order->products as $product)
                                             <tr>
@@ -155,6 +159,72 @@
             });
         });
     });
+</script>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const updateForm = document.getElementById("productForm");
+
+        document.getElementById('table-body').addEventListener('click', function (event) {
+            if (event.target.classList.contains('btn-update')) {
+                const button = event.target;
+                const id = button.getAttribute('data-id');
+                const status = button.getAttribute('data-status');
+
+                updateForm.action = "{{ route('admin.order.update', ':id') }}".replace(':id', id);
+                updateForm.querySelector('#status').value = status;
+            }
+        });
+    });
+
+    document.getElementById('search_content').addEventListener('change', function () {
+        searchContent = this.value;
+    });
+
+    async function searchInput(value) {
+        const tableBody = document.getElementById('table-body');
+        tableBody.innerHTML = "";
+
+        const res = await fetch("{{ route('admin.search') }}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': "{{ csrf_token() }}"
+            },
+            body: JSON.stringify({ search: value, search_content: searchContent })
+        });
+
+        const data = await res.json();
+
+        data.forEach(order => {
+            order.products.forEach(product => {
+                const row = generateOrderRow(order, product);
+                tableBody.insertAdjacentHTML('beforeend', row);
+            });
+        });
+    }
+
+    function generateOrderRow(order, product) {
+        return `
+            <tr>
+                <td>${order.id}</td>
+                <td>${product.product.name}</td>
+                <td>${order.payment_method.toUpperCase()}</td>
+                <td>${product.quantity}</td>
+                <td>₹${product.price}</td>
+                <td>${new Date(order.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</td>
+                <td>${product.status.toUpperCase()}</td>
+                <td>₹${order.total}</td>
+                <td>${order.address.city}, ${order.address.state}</td>
+                <td>
+                {{\Carbon\Carbon::parse($product->delivery_date)->format('d F Y') }}
+                </td>
+                <td>${order.user.email}</td>
+               <td class="sort-type space-y-2">
+                    <a href="#" class="btn btn-primary btn-sm btn-success">View</a>
+                    <button class="btn btn-primary btn-sm btn-update" data-bs-toggle="modal" data-bs-target="#modal-team" data-id="${product.id}" data-status="${product.status}">Update</button>
+                </td>
+            </tr>`;
+    }
 </script>
 @endsection
