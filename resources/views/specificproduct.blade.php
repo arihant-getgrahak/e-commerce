@@ -10,6 +10,7 @@
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/">Home</a></li>
+                            <li class="breadcrumb-item"><a href="#">Products</a></li>
                             <li class="breadcrumb-item"><a href="#">{{$product[0]->slug}}</a>
                             </li>
                         </ol>
@@ -337,17 +338,9 @@
 @endif
 
 <script>
-    if ("{{ session('error') }}") {
-        const arihant = document.querySelector('#alert');
-        arihant.innerHTML = `
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        ${{{ session('error') }}}
-    
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-											</div >
-                                            `
+    const session = "{{session('error')}}";
+    if (session) {
+        showAlert('danger', session)
         window.scrollTo(0, 0);
     }
 </script>
@@ -371,27 +364,15 @@
 
         const data = await res.json()
         if (!data.status) {
-            arihant.innerHTML = `
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        ${data.message}
-                                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-												<span aria-hidden="true">&times;</span>
-											  </button>
-											</div>
-                                            `
+            showAlert('danger', data.message)
             window.scrollTo(0, 0);
         }
         else {
-            arihant.innerHTML = `
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-        ${data.message}
-                                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-												<span aria-hidden="true">&times;</span>
-											  </button>
-											</div>
-                                            `
+            showAlert('success', data.message)
             window.scrollTo(0, 0);
         }
     }
 </script>
+
+
 @endsection
