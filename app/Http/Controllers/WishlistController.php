@@ -20,7 +20,11 @@ class WishlistController extends Controller
     public function display()
     {
         if (! auth()->check()) {
-            return redirect()->route('login');
+            return response()->json([
+                'wishlist' => [],
+                'price' => 0,
+                'status' => true,
+            ], 200);
         }
 
         $wishlist = Wishlist::where('user_id', auth()->user()->id)->with('product')->get();
