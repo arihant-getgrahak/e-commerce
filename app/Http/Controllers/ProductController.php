@@ -76,7 +76,7 @@ class ProductController extends Controller
 
     public function display()
     {
-        $product = Product::with(['gallery', 'meta', 'brand', 'category'])->paginate(10);
+        $product = Product::with(['gallery', 'meta', 'brand', 'category', 'attributeValues.attribute'])->paginate(10);
         $categories = Category::with(['parent'])->get();
         $brand = Brand::withCount('products')->get();
 
@@ -243,7 +243,7 @@ class ProductController extends Controller
     public function specific($id)
     {
 
-        $product = Product::where('slug', $id)->with(['gallery', 'meta', 'brand', 'category'])->get();
+        $product = Product::where('slug', $id)->with(['gallery', 'meta', 'brand', 'category', 'attributeValues.attribute'])->get();
         if (! $product) {
             return view('specificproduct')->with('error', 'Incorrect product id');
         }
