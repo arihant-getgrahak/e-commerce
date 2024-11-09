@@ -57,7 +57,7 @@ class AdminController extends Controller
 
         if ($request->search_content === 'phone') {
             $query->whereHas('user', function ($q) use ($request) {
-                $q->where('phone', $request->search);
+                $q->where('phone_number', $request->search);
             })->with(['products.product', 'user', 'address']);
 
             return response()->json($query->get());
