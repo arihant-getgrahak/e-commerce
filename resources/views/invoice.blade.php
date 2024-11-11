@@ -32,41 +32,19 @@
                                     <td
                                         style="vertical-align: top; width: 30%; padding-right: 20px;padding-bottom: 35px;">
                                         <p style="font-weight: 700; color: #1A1C21;">Client Name</p>
-                                        <p style="color: #5E6470;">Business address City, Country</p>
-                                        <p style="color: #5E6470;">email@company.com</p>
+                                        <p style="color: #5E6470;">{{Str::ucfirst($order[0]->user->name)}}</p>
+                                        <p style="font-weight: 700; color: #1A1C21;">Client Email</p>
+                                        <p style="color: #5E6470;">{{$order[0]->user->email}}</p>
                                     </td>
                                     <td
                                         style="vertical-align: top; width: 35%; padding-right: 20px;padding-bottom: 35px;">
-                                        <p style="font-weight: 700; color: #1A1C21;">Pick-up</p>
-                                        <p style="color: #5E6470;">1 Hight street, London, E1 7QL Uk</p>
+                                        <p style="font-weight: 700; color: #1A1C21;">Delivery Location</p>
+                                        <p style="color: #5E6470;">
+                                            {{$order[0]->address->address}},{{$order[0]->address->city}},{{$order[0]->address->state}},{{$order[0]->address->country}},
+                                            {{$order[0]->address->pincode}}
+                                        </p>
+                                    </td>
 
-                                        <p style="font-weight: 700; color: #1A1C21;">Drop-off</p>
-                                        <p style="color: #5E6470;">1 Hight street, London, E1 7QL Uk</p>
-                                    </td>
-                                    <td style="vertical-align: top;padding-bottom: 35px;">
-                                        <table style="table-layout: fixed;width:-webkit-fill-available;">
-                                            <tr>
-                                                <th style="text-align: left; color: #1A1C21;">Job ID</th>
-                                                <td style="text-align: right;">123567</td>
-                                            </tr>
-                                            <tr>
-                                                <th style="text-align: left; color: #1A1C21;">Job date</th>
-                                                <td style="text-align: right;">14/12/2020</td>
-                                            </tr>
-                                            <tr>
-                                                <th style="text-align: left; color: #1A1C21;">Distance</th>
-                                                <td style="text-align: right;">1.568 miles</td>
-                                            </tr>
-                                            <tr>
-                                                <th style="text-align: left; color: #1A1C21;">Pick-up time</th>
-                                                <td style="text-align: right;">19:58</td>
-                                            </tr>
-                                            <tr>
-                                                <th style="text-align: left; color: #1A1C21;">Time delivered</th>
-                                                <td style="text-align: right;">20:58</td>
-                                            </tr>
-                                        </table>
-                                    </td>
                                 </tr>
                                 <tr>
                                     <td style="padding-bottom: 13px;">
@@ -75,11 +53,11 @@
                                     </td>
                                     <td style="text-align: center; padding-bottom: 13px;">
                                         <p style="color: #5E6470;">Invoice number</p>
-                                        <p style="font-weight: 700; color: #1A1C21;">#AB2324-01</p>
+                                        <p style="font-weight: 700; color: #1A1C21;">#{{$order[0]->id}}</p>
                                     </td>
                                     <td style="text-align: end; padding-bottom: 13px;">
                                         <p style="color: #5E6470;">Invoice date</p>
-                                        <p style="font-weight: 700; color: #1A1C21;">01 Aug, 2023</p>
+                                        <p style="font-weight: 700; color: #1A1C21;">{{now()}}</p>
                                     </td>
                                 </tr>
                                 <tr>
@@ -102,36 +80,28 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td style="padding-block: 12px;">
-                                                        <p style="font-weight: 700; color: #1A1C21;">Drops</p>
-                                                        <p style="color: #5E6470;">On-demand delivery</p>
-                                                    </td>
-                                                    <td style="padding-block: 12px;">
-                                                        <p style="font-weight: 700; color: #1A1C21;">1</p>
-                                                    </td>
-                                                    <td style="padding-block: 12px; text-align: end;">
-                                                        <p style="font-weight: 700; color: #1A1C21;">£5.00</p>
-                                                    </td>
-                                                    <td style="padding-block: 12px; text-align: end;">
-                                                        <p style="font-weight: 700; color: #1A1C21;">£5.00</p>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="padding-block: 12px;">
-                                                        <p style="font-weight: 700; color: #1A1C21;">Hours</p>
-                                                        <p style="color: #5E6470;">Shift delivery service</p>
-                                                    </td>
-                                                    <td style="padding-block: 12px;">
-                                                        <p style="font-weight: 700; color: #1A1C21;">0</p>
-                                                    </td>
-                                                    <td style="padding-block: 12px; text-align: end;">
-                                                        <p style="font-weight: 700; color: #1A1C21;">£0.00</p>
-                                                    </td>
-                                                    <td style="padding-block: 12px; text-align: end;">
-                                                        <p style="font-weight: 700; color: #1A1C21;">£0.00</p>
-                                                    </td>
-                                                </tr>
+                                                @foreach ($order[0]->products as $product)
+                                                    <tr>
+                                                        <td style="padding-block: 12px;">
+                                                            <p style="font-weight: 700; color: #1A1C21;">
+                                                                {{Str::ucfirst($product->product->name)}}
+                                                            </p>
+                                                        </td>
+                                                        <td style="padding-block: 12px;">
+                                                            <p style="font-weight: 700; color: #1A1C21;">
+                                                                {{$product->quantity}}
+                                                            </p>
+                                                        </td>
+                                                        <td style="padding-block: 12px; text-align: end;">
+                                                            <p style="font-weight: 700; color: #1A1C21;">
+                                                                ₹{{$product->price / $product->quantity}}</p>
+                                                        </td>
+                                                        <td style="padding-block: 12px; text-align: end;">
+                                                            <p style="font-weight: 700; color: #1A1C21;">
+                                                                ₹{{$product->price}}</p>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
                                             </tbody>
                                             <tfoot>
                                                 <tr>
@@ -145,36 +115,29 @@
                                                                         Subtotal</th>
                                                                     <td
                                                                         style="padding-top: 12px;text-align: end; color: #1A1C21;">
-                                                                        £5.00</td>
+                                                                        ₹{{$product->price}}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <th
                                                                         style="padding: 12px 0;text-align: start; color: #1A1C21;">
-                                                                        VAT in items (0%) (1)</th>
+                                                                        GST (12%)</th>
                                                                     <td
                                                                         style="padding: 12px 0;text-align: end; color: #1A1C21;">
-                                                                        £5.00</td>
+                                                                        ₹{{$product->price * 0.12}}</td>
                                                                 </tr>
                                                             </tbody>
                                                             <tfoot>
                                                                 <tr>
                                                                     <th
                                                                         style="padding: 12px 0 30px 0;text-align: start; color: #1A1C21;border-top:1px solid #D7DAE0;">
-                                                                        Total Price (2)</th>
+                                                                        Total Price</th>
                                                                     <th
                                                                         style="padding: 12px 0 30px 0;text-align: end; color: #1A1C21;border-top:1px solid #D7DAE0;">
-                                                                        £5.00</th>
+                                                                        ₹{{$product->price + $product->price * 0.12}}
+                                                                    </th>
                                                                 </tr>
                                                             </tfoot>
                                                         </table>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <p style="color: #1A1C21;">(1) VAT non applicable</p>
-                                                        <p style="color: #1A1C21;">(2) Price includes the remuneration
-                                                            for
-                                                            MealShift Services</p>
                                                     </td>
                                                 </tr>
                                             </tfoot>
@@ -189,11 +152,12 @@
             <tfoot>
                 <tr>
                     <td style="padding-top: 30px;">
-                        <p style="display: flex; gap: 0 13px;"><span style="color: #1A1C21;font-weight: 700;">MealShift
-                                Ltd</span><span>1 Assam Street, London - E1 7QL</span><span>Registration
-                                number:12793366</span></p>
+                        <p style="display: flex; gap: 0 13px;"><span style="color: #1A1C21;font-weight: 700;">Arihant
+                                E-Commerce Services Pvt. Ltd.</span><span>VidhyaDhar Nagar, Jaipur,
+                                Rajasthan</span><span>Registration
+                                number:9672670732</span></p>
                         <p style="color: #1A1C21;">Any questions, contact customer service at <a
-                                href="mailto:support@mealshift.co.uk" style="color: #000;">support@mealshift.co.uk</a>.
+                                href="mailto:arihantj916@gmail.com" style="color: #000;">arihantj916@gmail.com</a>.
                         </p>
                     </td>
                 </tr>
