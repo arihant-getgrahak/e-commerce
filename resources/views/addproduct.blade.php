@@ -133,19 +133,20 @@
       <p class="text-red-500">{{ $message }}</p>
     @enderror
     </div>
-    
+
     <!-- attribute -->
     <div class="mb-4">
       <label for="attribute" class="col-form-label required">Attributes</label>
-      <select id="attribute" name="attribute" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+      <select id="attribute" name="attribute[]" class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+        multiple>
         @foreach($attribute as $cat)
       @foreach ($cat->values as $values)
-      <option value="{{ $values["id"] }}">{{ $cat['name'] . " - " . $values['value'] }}</option>
+      <option value="{{ $values['id'] }}">{{ $cat['name'] . ' - ' . $values['value'] }}</option>
     @endforeach
-      </option>
     @endforeach
       </select>
     </div>
+
 
     <!-- Submit Button -->
     <button type="submit" class="btn btn-primary ms-auto">Add Product</button>

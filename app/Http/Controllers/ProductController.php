@@ -43,7 +43,7 @@ class ProductController extends Controller
 
     public function admindisplay()
     {
-        $product = Product::where('added_by', auth()->user()->id)->with(['gallery', 'meta', 'brand', 'category', 'attributeValues'])->paginate(10);
+        $product = Product::where('added_by', auth()->user()->id)->with(['gallery', 'meta', 'brand', 'category', 'attributeValues.attribute'])->paginate(10);
         $categories = Category::with('parent')->get();
         $data = [];
         $brand = Brand::all();
@@ -67,16 +67,16 @@ class ProductController extends Controller
             return view('productview')->with('product', []);
         }
 
-        return view('productview')->with('product', $product)->with('category', $data)->with('brand', $brand);
-
         // return response()->json([
         //     'product' => $product,
         // ], 200);
+        return view('productview')->with('product', $product)->with('category', $data)->with('brand', $brand);
+
     }
 
     public function display()
     {
-        $product = Product::with(['gallery', 'meta', 'brand', 'category'])->paginate(10);
+        $product = Product::with(['gallery', 'meta', 'brand', 'category', 'attributeValues.attribute'])->paginate(10);
         $categories = Category::with(['parent'])->get();
         $brand = Brand::withCount('products')->get();
 
@@ -120,7 +120,13 @@ class ProductController extends Controller
             ];
             DB::beginTransaction();
             $product = Product::create($data);
-            $product->attributeValues()->attach($request->attribute);
+            if (isset($request->attributes)) {
+                foreach ($request->attribute as $attribute) {
+                    $product->attributeValues()->attach($attribute);
+                }
+            } else {
+                $product->attributeValues()->attach($request->attribute);
+            }
             DB::commit();
 
             if ($request->hasFile('image')) {
@@ -237,7 +243,7 @@ class ProductController extends Controller
     public function specific($id)
     {
 
-        $product = Product::where('slug', $id)->with(['gallery', 'meta', 'brand', 'category'])->get();
+        $product = Product::where('slug', $id)->with(['gallery', 'meta', 'brand', 'category', 'attributeValues.attribute'])->get();
         if (! $product) {
             return view('specificproduct')->with('error', 'Incorrect product id');
         }

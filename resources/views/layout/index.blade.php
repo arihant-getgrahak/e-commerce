@@ -167,7 +167,7 @@
                             </li>
                         </ul>
                         <div class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last">
-                            <a class="nav-link" href='/arihant/e-commerce/public/logout'>
+                            <a class="nav-link" href="{{ route('logout') }}">
                                 <span
                                     class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/mail-opened -->
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
