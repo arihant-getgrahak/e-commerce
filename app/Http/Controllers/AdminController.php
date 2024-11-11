@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Models\User;
+use Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
@@ -86,5 +87,14 @@ class AdminController extends Controller
             ->get();
 
         return view('adminUser', compact('user'));
+    }
+
+    public function loginascustomer($id)
+    {
+        $user = User::find($id);
+        Auth::logout();
+        Auth::login($user);
+
+        return redirect()->route('my-orders');
     }
 }
