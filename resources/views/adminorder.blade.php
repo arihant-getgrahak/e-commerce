@@ -98,7 +98,7 @@
                                                         data-bs-toggle="modal" data-bs-target="#modal-team"
                                                         data-id="{{ $product->id }}"
                                                         data-status="{{$product->status}}">Update</button>
-                                                    <a href="{{route("invoice")}}">Download Invoice</a>
+                                                    <a href="{{route("invoice", $order->id)}}">Download Invoice</a>
                                                 </td>
                                             </tr>
                                         @endforeach
