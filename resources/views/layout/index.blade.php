@@ -50,8 +50,7 @@
                             <!-- home -->
                             <li @class(["nav-item", 'active' => Route::currentRouteName() === 'admin'])>
                                 <a class="nav-link" href="{{ route('admin') }}">
-                                    <span
-                                        class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
                                             viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
                                             stroke-linecap="round" stroke-linejoin="round">
@@ -64,111 +63,54 @@
                                     <span class="nav-link-title"> Home </span>
                                 </a>
                             </li>
-                            <!-- add product -->
-                            <li @class(["nav-item", 'active' => Route::currentRouteName() === 'product.add'])>
-                                <a class="nav-link" href="{{ route('product.add') }}">
-                                    <span
-                                        class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
+
+                            <li @class(["nav-item", "dropdown", 'active' => in_array(Route::currentRouteName(), ['product.add', 'product.view', 'attribute', "brand", "category"])])>
+                                <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
+                                    data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
                                             viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
                                             stroke-linecap="round" stroke-linejoin="round">
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M9 11l3 3l8 -8" />
-                                            <path
-                                                d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9" />
+                                            <path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5" />
+                                            <path d="M12 12l8 -4.5" />
+                                            <path d="M12 12l0 9" />
+                                            <path d="M12 12l-8 -4.5" />
+                                            <path d="M16 5.25l-8 4.5" />
                                         </svg>
                                     </span>
-                                    <span class="nav-link-title"> Add Product </span>
+                                    <span class="nav-link-title">
+                                        Products
+                                    </span>
                                 </a>
+                                <div class="dropdown-menu">
+                                    <div class="dropdown-menu-columns">
+                                        <div class="dropdown-menu-column">
+                                            <a class="dropdown-item" href="{{route("product.add")}}">
+                                                Add Products
+                                            </a>
+                                            <a class="dropdown-item" href="{{route("product.view")}}">
+                                                All Products
+                                            </a>
+                                            <a class="dropdown-item" href="{{route("category")}}">
+                                                Category
+                                            </a>
+                                            <a class="dropdown-item" href="{{route("brand")}}">
+                                                Brand
+                                            </a>
+                                            <a class="dropdown-item" href="{{route("attribute")}}">
+                                                Attributes
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="dropdown-menu-column"></div>
+                                </div>
                             </li>
 
-                            <!-- view product -->
-                            <li @class(["nav-item", 'active' => Route::currentRouteName() === 'product.view'])>
-                                <a class="nav-link" href="{{ route('product.view') }}">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round"
-                                            class="icon icon-tabler icons-tabler-outline icon-tabler-binoculars">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M7 16m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
-                                            <path d="M17 16m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
-                                            <path
-                                                d="M16.346 9.17l-.729 -1.261c-.16 -.248 -1.056 -.203 -1.117 .091l-.177 1.38" />
-                                            <path
-                                                d="M19.761 14.813l-2.84 -5.133c-.189 -.31 -.592 -.68 -1.421 -.68c-.828 0 -1.5 .448 -1.5 1v6" />
-                                            <path
-                                                d="M7.654 9.17l.729 -1.261c.16 -.249 1.056 -.203 1.117 .091l.177 1.38" />
-                                            <path
-                                                d="M4.239 14.813l2.84 -5.133c.189 -.31 .592 -.68 1.421 -.68c.828 0 1.5 .448 1.5 1v6" />
-                                            <rect width="4" height="2" x="10" y="12" />
-                                        </svg>
-                                    </span>
-
-                                    <span class="nav-link-title"> View Product </span>
-                                </a>
-                            </li>
-
-                            <!-- add category -->
-                            <li @class(["nav-item", 'active' => Route::currentRouteName() === 'category'])>
-                                <a class="nav-link" href="{{ route('category') }}">
-                                    <span
-                                        class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round"
-                                            class="icon icon-tabler icons-tabler-outline icon-tabler-category">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M4 4h6v6h-6z" />
-                                            <path d="M14 4h6v6h-6z" />
-                                            <path d="M4 14h6v6h-6z" />
-                                            <path d="M17 17m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
-                                        </svg>
-                                    </span>
-                                    <span class="nav-link-title"> Add Category </span>
-                                </a>
-                            </li>
-                            <li @class(["nav-item", 'active' => Route::currentRouteName() === 'brand'])>
-                                <a class="nav-link" href="{{ route('brand') }}">
-                                    <span
-                                        class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round"
-                                            class="icon icon-tabler icons-tabler-outline icon-tabler-category">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M4 4h6v6h-6z" />
-                                            <path d="M14 4h6v6h-6z" />
-                                            <path d="M4 14h6v6h-6z" />
-                                            <path d="M17 17m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
-                                        </svg>
-                                    </span>
-                                    <span class="nav-link-title"> Add Brand </span>
-                                </a>
-                            </li>
-
-                            <li @class(["nav-item", 'active' => Route::currentRouteName() === 'attribute'])>
-                                <a class="nav-link" href="{{ route('attribute') }}">
-                                    <span
-                                        class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round"
-                                            class="icon icon-tabler icons-tabler-outline icon-tabler-category">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M4 4h6v6h-6z" />
-                                            <path d="M14 4h6v6h-6z" />
-                                            <path d="M4 14h6v6h-6z" />
-                                            <path d="M17 17m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
-                                        </svg>
-                                    </span>
-                                    <span class="nav-link-title"> Add Attribute </span>
-                                </a>
-                            </li>
+                            <!-- admin order -->
                             <li @class(["nav-item", 'active' => Route::currentRouteName() === 'admin.order'])>
                                 <a class="nav-link" href="{{ route('admin.order') }}">
-                                    <span
-                                        class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                             stroke-linecap="round" stroke-linejoin="round"
@@ -186,8 +128,7 @@
                         </ul>
                         <div class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last">
                             <a class="nav-link" href="{{ route('logout') }}">
-                                <span
-                                    class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/mail-opened -->
+                                <span class="nav-link-icon d-md-none d-lg-inline-block">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                         stroke-linejoin="round"
