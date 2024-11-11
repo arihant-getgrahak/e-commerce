@@ -44,8 +44,6 @@
             <div class="collapse navbar-collapse" id="navbar-menu">
                 <div class="navbar">
                     <div class="container-xl">
-                        <!-- Route::currentRouteName() -->
-                        <!-- @class(['text-forest ', 'underline' => Route::currentRouteName() === 'about']) -->
                         <ul class="navbar-nav">
                             <!-- home -->
                             <li @class(["nav-item", 'active' => Route::currentRouteName() === 'admin'])>
@@ -184,6 +182,9 @@
             </main>
             <main>
                 @yield("attribute")
+            </main>
+            <main>
+                @yield("user")
             </main>
         </main>
     </div>
