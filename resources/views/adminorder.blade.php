@@ -83,7 +83,17 @@
                                                 </td>
 
                                                 <td class="sort-type space-y-2">
-                                                    <a href="#" class="btn btn-primary btn-sm btn-success">View</a>
+                                                    <a href="#" class="btn btn-primary btn-sm btn-success"
+                                                        data-bs-toggle="modal" data-bs-target="#modal-scrollable" id="btn-view"
+                                                        data-id="{{ $order->id }}"
+                                                        data-product-name="{{$product->product->name}}"
+                                                        data-product-thumbnail="{{$product->product->thumbnail}}"
+                                                        data-product-quantity="{{$product->quantity}}"
+                                                        data-product-price="{{$product->price}}"
+                                                        data-product-ddate="{{\Carbon\Carbon::parse($product->delivery_date)->format('d F Y') }}"
+                                                        data-user-email="{{$order->user->email}}"
+                                                        data-user-address="{{$order->address->city}},{{$order->address->state}}"
+                                                        data-product-status="{{$product->status}}">View</a>
                                                     <button id="btn-update" class="btn btn-primary btn-update btn-sm"
                                                         data-bs-toggle="modal" data-bs-target="#modal-team"
                                                         data-id="{{ $product->id }}"
@@ -136,6 +146,33 @@
                     <button type="submit" class="btn btn-primary ms-auto">Update Form</button>
                 </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- modal -->
+
+    <div class="modal modal-blur fade" id="modal-scrollable" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Order Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="order-id"></p>
+                    <p id="product-name"></p>
+                    <p id="product-quantity"></p>
+                    <p id="product-price"></p>
+                    <p id="order-status"></p>
+                    <p id="product-ddate"></p>
+                    <p id="user-email"></p>
+                    <p id="user-address"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
+                </div>
             </div>
         </div>
     </div>
@@ -226,5 +263,44 @@
                 </td>
             </tr>`;
     }
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const orderId = document.getElementById("order-id");
+        const productName = document.getElementById("product-name");
+        const productQuantity = document.getElementById("product-quantity");
+        const productPrice = document.getElementById("product-price");
+        const productDdate = document.getElementById("product-ddate");
+        const userEmail = document.getElementById("user-email");
+        const userAddress = document.getElementById("user-address");
+        const orderStatus = document.getElementById("order-status");
+        const viewBtn = document.querySelectorAll("#btn-view")
+
+        viewBtn.forEach(button => {
+            button.addEventListener('click', function () {
+                const id = this.getAttribute('data-id');
+                const name = this.getAttribute('data-product-name');
+                const productThumbnail = this.getAttribute('data-product-thumbnail');
+                const quantity = this.getAttribute('data-product-quantity');
+                const price = this.getAttribute('data-product-price');
+                const ddate = this.getAttribute('data-product-ddate');
+                const email = this.getAttribute('data-user-email');
+                const address = this.getAttribute('data-user-address');
+                const status = this.getAttribute('data-product-status');
+
+                orderId.innerText = "Order Id: " + id
+                productName.innerText = "Product Name: " + name
+                productQuantity.innerText = "Product Quantity: " + quantity
+                productPrice.innerText = "Product Price: " + price
+                orderStatus.innerText = "Product Delivery Status: " + status.toUpperCase()
+                productDdate.innerText = "Product Delivery Date: " + ddate
+                userEmail.innerText = "User Email: " + email
+                userAddress.innerText = "User Address: " + address
+            })
+
+
+        });
+    });
 </script>
 @endsection
