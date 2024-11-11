@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\OrderProduct;
+use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
@@ -71,5 +72,12 @@ class AdminController extends Controller
         $pdf = Pdf::loadView('invoice', ['order' => $order]);
 
         return $pdf->download('invoice-order-'.$order[0]->id.'.pdf');
+    }
+
+    public function user()
+    {
+        $user = User::with('order.products.product', 'order.address')->whereHas('order')->get();
+
+        return view('adminUser', compact('user'));
     }
 }
