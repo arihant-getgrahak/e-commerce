@@ -76,7 +76,14 @@ class AdminController extends Controller
 
     public function user()
     {
-        $user = User::with('order.products.product', 'order.address')->whereHas('order')->get();
+        $user = User::with([
+            'order.products.product',
+            'order.address',
+        ])
+            ->whereHas('order')
+            ->withCount('order')
+            ->withSum('order', 'total')
+            ->get();
 
         return view('adminUser', compact('user'));
     }
