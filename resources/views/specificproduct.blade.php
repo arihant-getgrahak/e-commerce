@@ -64,6 +64,25 @@
                             <p>{{$product[0]->description}}</p>
                         </div>
 
+                        @foreach ($product[0]->attributeValues as $attributeValue)
+                            <div class="prt_04 mb-4">
+                                <p class="d-flex align-items-center mb-0 text-dark ft-medium">
+                                    {{ $attributeValue->attribute->name }}
+                                </p>
+                                <div class="text-left pb-0 pt-2">
+                                    <div class="form-check size-option form-option form-check-inline mb-2">
+                                        <input class="form-check-input" type="radio"
+                                            name="attribute_{{ $attributeValue->attribute_id }}"
+                                            id="attribute_{{ $attributeValue->attribute->name }}_{{ $loop->index }}" {{ $loop->first ? 'checked' : '' }}>
+                                        <label class="form-option-label"
+                                            for="attribute_{{ $attributeValue->attribute->name }}_{{ $loop->index }}">
+                                            {{ $attributeValue->value }}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+
                         <div class="prt_05 mb-4">
                             <div class="form-row mb-7">
                                 <div class="col-12 col-lg-auto">
@@ -77,7 +96,6 @@
                                     </select>
                                 </div>
                                 <div class="col-12 col-lg">
-                                    <!-- Submit -->
                                     <button class="btn btn-block custom-height bg-dark mb-2"
                                         onclick="addToCart({{$product}})" id="add-to-cart">
                                         <i class="lni lni-shopping-basket mr-2"></i>Add to Cart
@@ -144,7 +162,7 @@
                                     <tbody>
                                         <tr>
                                             <th class="ft-medium text-dark">ID</th>
-                                            <td>{{$product[0]->id}}</td>
+                                            <td>#{{$product[0]->id}}</td>
                                         </tr>
                                         <tr>
                                             <th class="ft-medium text-dark">SKU</th>
