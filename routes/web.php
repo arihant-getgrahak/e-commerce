@@ -107,6 +107,6 @@ Route::get('/google/callback', [AuthController::class, 'handleGoogleCallback'])-
 Route::get('/facebook/redirect', [AuthController::class, 'redirectToFacebook'])->name('facebook.redirect');
 Route::get('/facebook/callback', [AuthController::class, 'handleFacebookCallback'])->name('facebook.callback');
 
-Route::get('/admin/order', [AdminController::class, 'index']);
+Route::get('/admin/order', [AdminController::class, 'index'])->name('admin.order');
 Route::post('admin/order/update/{id}', [AdminController::class, 'update'])->name('admin.order.update');
 Route::post('/admin/search', [AdminController::class, 'search'])->name('admin.search');
