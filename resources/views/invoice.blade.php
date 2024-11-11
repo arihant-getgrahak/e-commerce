@@ -115,7 +115,7 @@
                                                                         Subtotal</th>
                                                                     <td
                                                                         style="padding-top: 12px;text-align: end; color: #1A1C21;">
-                                                                        ₹{{$product->price}}</td>
+                                                                        ₹{{$order[0]->total}}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <th
@@ -123,7 +123,7 @@
                                                                         GST (12%)</th>
                                                                     <td
                                                                         style="padding: 12px 0;text-align: end; color: #1A1C21;">
-                                                                        ₹{{$product->price * 0.12}}</td>
+                                                                        ₹{{$order[0]->total * 0.12}}</td>
                                                                 </tr>
                                                             </tbody>
                                                             <tfoot>
@@ -133,7 +133,7 @@
                                                                         Total Price</th>
                                                                     <th
                                                                         style="padding: 12px 0 30px 0;text-align: end; color: #1A1C21;border-top:1px solid #D7DAE0;">
-                                                                        ₹{{$product->price + $product->price * 0.12}}
+                                                                        ₹{{$order[0]->total + $order[0]->total * 0.12}}
                                                                     </th>
                                                                 </tr>
                                                             </tfoot>
