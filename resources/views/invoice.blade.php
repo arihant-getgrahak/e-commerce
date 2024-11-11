@@ -3,8 +3,14 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invoice</title>
+    <style type="text/css">
+        * {
+            font-family: "DejaVu Sans Mono", monospace;
+        }
+    </style>
 </head>
 
 <body>
