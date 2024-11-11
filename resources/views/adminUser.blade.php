@@ -55,7 +55,8 @@
                                         </td>
 
                                         <td class="sort-button space-y-2">
-                                            <a href="javascript:void(0);" class="btn btn-primary btn-sm">Login as
+                                            <a href="{{route('admin.user.login', $users->id)}}" target="_blank"
+                                                class="btn btn-primary btn-sm">Login as
                                                 Customer</a>
                                         </td>
                                     </tr>
