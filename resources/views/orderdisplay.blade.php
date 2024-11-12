@@ -1,24 +1,28 @@
 @extends("layout.myaccount")
+
+@section("breadcrumb")
+<div class="gray py-3">
+    <div class="container">
+        <div class="row">
+            <div class="colxl-12 col-lg-12 col-md-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="#">Orders</a>
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
 @section("order-display")
 
 @if(empty($orders))
     <h1>No orders found</h1>
 @else
-    <div class="gray py-3">
-        <div class="container">
-            <div class="row">
-                <div class="colxl-12 col-lg-12 col-md-12">
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/">Home</a></li>
-                            <li class="breadcrumb-item"><a href="#">Orders</a>
-                            </li>
-                        </ol>
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </div>
     @foreach ($orders as $order)
         <div class="ord_list_wrap border mb-4 mfliud">
             <div class="ord_list_head gray d-flex align-items-center justify-content-between px-3 py-3">
@@ -55,9 +59,9 @@
                             <p class="mb-1 p-0"><span class="text-muted">Status</span></p>
                             <div class="delv_status">
                                 <span class="ft-medium small rounded px-3 py-1 
-                                    {{ $orderProduct->status === 'cancelled' ? 'text-danger bg-light-danger' : '' }}
-                                    {{ $orderProduct->status === 'delivered' ? 'text-success bg-light-success' : '' }}
-                                    {{ $orderProduct->status === 'shipped' ? 'text-warning bg-light-warning' : '' }}">
+                                                {{ $orderProduct->status === 'cancelled' ? 'text-danger bg-light-danger' : '' }}
+                                                {{ $orderProduct->status === 'delivered' ? 'text-success bg-light-success' : '' }}
+                                                {{ $orderProduct->status === 'shipped' ? 'text-warning bg-light-warning' : '' }}">
                                     {{ Str::ucfirst($orderProduct->status) }}
                                 </span>
                             </div>

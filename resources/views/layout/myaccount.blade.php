@@ -1,6 +1,7 @@
 @extends('layout.frontend')
 
 @section('section')
+@yield("breadcrumb")
 <section class="middle">
     <div class="container">
         <div class="row align-items-start justify-content-between">
@@ -28,7 +29,7 @@
                                         class="lni lni-heart mr-2"></i>Wishlist</a></li>
                             <li><a href="profile-info.html" @class(["", "active" => Route::currentRouteName() === "profile"])><i class="lni lni-user mr-2"></i>Profile
                                     Info</a></li>
-                            <li><a href="addresses.html" @class(["", "active" => Route::currentRouteName() === "addresses"])><i
+                            <li><a href="{{route('address')}}" @class(["", "active" => Route::currentRouteName() === "address"])><i
                                         class="lni lni-map-marker mr-2"></i>Addresses</a></li>
                             <li><a href="{{ route('logout') }}" @class(["", "active" => Route::currentRouteName() === "logout"])><i class="lni lni-power-switch mr-2"></i>Log
                                     Out</a></li>
