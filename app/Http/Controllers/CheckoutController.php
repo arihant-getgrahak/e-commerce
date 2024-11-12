@@ -8,6 +8,7 @@ use App\Models\GuestOrder;
 use App\Models\Order;
 use App\Models\OrderAdress;
 use App\Models\OrderProduct;
+use App\Models\OrderStatus;
 use App\Models\SessionCart;
 use App\Models\SessionOrder;
 use App\Models\User;
@@ -119,6 +120,11 @@ class CheckoutController extends Controller
                     'payment_method' => $request->payment_method,
                 ]);
 
+                OrderStatus::create([
+                    'order_id' => $order->id,
+                    'status' => 'pending',
+                ]);
+
                 foreach ($cart as $c) {
                     OrderProduct::create([
                         'order_id' => $order->id,
@@ -175,6 +181,11 @@ class CheckoutController extends Controller
                     'address_id' => $order->id,
                     'total' => $price,
                     'payment_method' => $request->payment_method,
+                ]);
+
+                OrderStatus::create([
+                    'order_id' => $order->id,
+                    'status' => 'pending',
                 ]);
 
                 DB::commit();

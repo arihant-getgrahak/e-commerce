@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\OrderProduct;
+use App\Models\OrderStatus;
 use App\Models\User;
 use Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -35,7 +36,17 @@ class AdminController extends Controller
             $data['delivery_date'] = now();
         }
 
+        if ($order->status == 'cancelled') {
+            return back()->with('error', 'You cannot update cancelled order');
+        }
+
         $order->update($data);
+
+        OrderStatus::create([
+            'order_id' => $order->order_id,
+            'status' => $request->status,
+            'created_at' => now(),
+        ]);
 
         return back()->with('success', 'Order updated successfully');
     }
@@ -96,5 +107,13 @@ class AdminController extends Controller
         Auth::login($user);
 
         return redirect()->route('my-orders');
+    }
+
+    public function track()
+    {
+        $id = 1;
+        $orderstatus = OrderStatus::where('order_id', 18)->with('order')->get();
+
+        return view('ordertrack', compact('orderstatus'));
     }
 }
