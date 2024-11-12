@@ -112,15 +112,15 @@
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                             stroke-linecap="round" stroke-linejoin="round"
-                                            class="icon icon-tabler icons-tabler-outline icon-tabler-category">
+                                            class="icon icon-tabler icons-tabler-outline icon-tabler-truck-delivery">
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M4 4h6v6h-6z" />
-                                            <path d="M14 4h6v6h-6z" />
-                                            <path d="M4 14h6v6h-6z" />
-                                            <path d="M17 17m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
+                                            <path d="M7 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                                            <path d="M17 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                                            <path d="M5 17h-2v-4m-1 -8h11v12m-4 0h6m4 0h2v-6h-8m0 -5h5l3 5" />
+                                            <path d="M3 9l4 0" />
                                         </svg>
                                     </span>
-                                    <span class="nav-link-title"> All Orders </span>
+                                    <span class="nav-link-title"> Orders </span>
                                 </a>
                             </li>
                             <!-- admin order -->
@@ -130,15 +130,15 @@
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                             stroke-linecap="round" stroke-linejoin="round"
-                                            class="icon icon-tabler icons-tabler-outline icon-tabler-category">
+                                            class="icon icon-tabler icons-tabler-outline icon-tabler-users">
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M4 4h6v6h-6z" />
-                                            <path d="M14 4h6v6h-6z" />
-                                            <path d="M4 14h6v6h-6z" />
-                                            <path d="M17 17m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
+                                            <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+                                            <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+                                            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                                            <path d="M21 21v-2a4 4 0 0 0 -3 -3.85" />
                                         </svg>
                                     </span>
-                                    <span class="nav-link-title"> All Users </span>
+                                    <span class="nav-link-title"> Customers </span>
                                 </a>
                             </li>
                         </ul>
