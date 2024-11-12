@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\ProductImport;
 use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Models\OrderStatus;
@@ -9,7 +10,7 @@ use App\Models\User;
 use Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
-use Maatwebsite\Excel\Excel;
+use Maatwebsite\Excel\Facades\Excel;
 use Validator;
 
 class AdminController extends Controller
@@ -167,11 +168,12 @@ class AdminController extends Controller
             'file' => 'required|mimes:csv,txt',
         ]);
 
+        // dd($validate);
         if ($validate->fails()) {
             return back()->with('error', $validate->errors()->first());
         }
 
-        // Excel::import( $request->file('file'));
+        Excel::import(new ProductImport, $request->file('file'));
 
         return redirect()->back()->with('success', 'Products uploaded successfully.');
     }
