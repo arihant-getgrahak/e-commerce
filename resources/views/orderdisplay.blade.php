@@ -27,7 +27,7 @@
                     <h6 class="mb-0 ft-medium">#{{ $order->id }}</h6>
                 </div>
                 <div class="olh_flex">
-                    <a href="javascript:void(0);" class="btn btn-sm btn-dark">Track Order</a>
+                    <a href="{{route("order.track", $order->id)}}" class="btn btn-sm btn-dark">Track Order</a>
                 </div>
             </div>
 
