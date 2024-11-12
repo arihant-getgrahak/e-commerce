@@ -109,42 +109,28 @@
         <figcaption>
             <h4>Tracking Details</h4>
             <h6>Order Number</h6>
-            <h2># A61452B</h2>
+            <h2># {{$orderstatus[0]->order->id}}</h2>
         </figcaption>
     </figure>
     <div class="order-track">
-        <div class="order-track-step">
-            <div class="order-track-status">
-                <span class="order-track-status-dot"></span>
-                <span class="order-track-status-line"></span>
+        @foreach ($orderstatus as $status)
+            <div class="order-track-step">
+                <div class="order-track-status">
+                    <span class="order-track-status-dot"></span>
+                    <span class="order-track-status-line"></span>
+                </div>
+                <div class="order-track-text">
+                    <p class="order-track-text-stat">
+                        @unless($status->status === 'pending')
+                            {{ Str::ucfirst($status->status) }}
+                        @else
+                            Order Created
+                        @endunless
+                    </p>
+                    <span class="order-track-text-sub">{{$status->created_at}}</span>
+                </div>
             </div>
-            <div class="order-track-text">
-                <p class="order-track-text-stat">Label Created</p>
-                <span class="order-track-text-sub">1st November, 2019</span>
-            </div>
-        </div>
-        <div class="order-track-step">
-            <div class="order-track-status">
-                <span class="order-track-status-dot"></span>
-                <span class="order-track-status-line"></span>
-            </div>
-            <div class="order-track-text">
-                <p class="order-track-text-stat"> Shipped - 123 Start St.
-                    Seattle, WA </p>
-                <span class="order-track-text-sub">1st November, 2019</span>
-            </div>
-        </div>
-        <div class="order-track-step">
-            <div class="order-track-status">
-                <span class="order-track-status-dot"></span>
-                <span class="order-track-status-line"></span>
-            </div>
-            <div class="order-track-text">
-                <p class="order-track-text-stat"> Estimated - 456 End St.
-                    New York City, NY</p>
-                <span class="order-track-text-sub">3rd November, 2019</span>
-            </div>
-        </div>
+        @endforeach
     </div>
 </section>
 @endsection
