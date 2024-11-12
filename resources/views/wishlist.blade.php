@@ -1,6 +1,5 @@
 @extends("layout.myaccount")
-
-@section("order-display")
+@section("breadcrumb")
 <div class="gray py-3">
     <div class="container">
         <div class="row">
@@ -8,6 +7,7 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
                         <li class="breadcrumb-item"><a href="{{route('wishlist')}}">Wishlist</a>
                         </li>
                     </ol>
@@ -16,6 +16,8 @@
         </div>
     </div>
 </div>
+@endsection
+@section("order-display")
 <div class="col-12 col-md-12 col-lg-8 col-xl-8 text-center">
     <div class="row align-items-center">
         @if(count($wishlist) == 0)

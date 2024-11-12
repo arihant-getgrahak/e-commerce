@@ -7,6 +7,7 @@ use App\Models\Attributes;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Gallery;
+use App\Models\OrderAdress;
 use App\Models\Product;
 use DB;
 use Illuminate\Http\Request;
@@ -288,5 +289,16 @@ class ProductController extends Controller
         $priceFilter = Product::whereBetween('price', [$request->min, $request->max])->with(['gallery', 'meta', 'brand', 'category'])->paginate(10);
 
         return response()->json(['product' => $priceFilter], 200);
+    }
+
+    public function address()
+    {
+        $address = OrderAdress::where('user_id', auth()->id())->paginate(5);
+
+        if ($address->isEmpty()) {
+            return view('address');
+        }
+
+        return view('address', compact('address'));
     }
 }
