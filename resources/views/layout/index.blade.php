@@ -99,6 +99,9 @@
                                             <a class="dropdown-item" href="{{route("attribute")}}">
                                                 Attributes
                                             </a>
+                                            <a class="dropdown-item" href="{{route("bulk")}}">
+                                                Bulk Import
+                                            </a>
                                         </div>
                                     </div>
                                     <div class="dropdown-menu-column"></div>
@@ -182,6 +185,9 @@
             </main>
             <main>
                 @yield("attribute")
+            </main>
+            <main>
+                @yield("bulk")
             </main>
             <main>
                 @yield("user")

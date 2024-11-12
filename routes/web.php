@@ -34,6 +34,10 @@ Route::group(['middleware' => AdminMiddleware::class], function () {
         Route::delete('delete/{id}', [ProductController::class, 'delete'])->name('product.delete');
 
         Route::get('brand', [BrandController::class, 'index'])->name('brand');
+
+        Route::get('bulk', function () {
+            return view('adminproductbulk');
+        })->name('bulk');
     });
 
     Route::group(['prefix' => '/attribute'], function () {
@@ -120,3 +124,5 @@ Route::get('/admin/user/login/{id}', [AdminController::class, 'loginascustomer']
 Route::get('/order/track/{id}', [AdminController::class, 'track'])->name('order.track');
 
 Route::get('/address', [ProductController::class, 'address'])->name('address');
+
+Route::post('/bulk/import', [AdminController::class, 'importCSV'])->name('admin.bulk.import');
