@@ -187,6 +187,9 @@
                 @yield("attribute")
             </main>
             <main>
+                @yield("bulk")
+            </main>
+            <main>
                 @yield("user")
             </main>
         </main>

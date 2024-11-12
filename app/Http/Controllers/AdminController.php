@@ -9,6 +9,8 @@ use App\Models\User;
 use Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Excel;
+use Validator;
 
 class AdminController extends Controller
 {
@@ -157,5 +159,20 @@ class AdminController extends Controller
         $orderstatus = OrderStatus::where('order_id', $id)->with('order')->get();
 
         return view('ordertrack', compact('orderstatus'));
+    }
+
+    public function importCSV(Request $request)
+    {
+        $validate = Validator::make($request->all(), [
+            'file' => 'required|mimes:csv,txt',
+        ]);
+
+        if ($validate->fails()) {
+            return back()->with('error', $validate->errors()->first());
+        }
+
+        // Excel::import( $request->file('file'));
+
+        return redirect()->back()->with('success', 'Products uploaded successfully.');
     }
 }
