@@ -116,3 +116,7 @@ Route::get('/invoice/{id}', [AdminController::class, 'download'])->name('invoice
 Route::get('/admin/user', [AdminController::class, 'user'])->name('admin.user');
 
 Route::get('/admin/user/login/{id}', [AdminController::class, 'loginascustomer'])->name('admin.user.login');
+
+Route::get('/order/track', function () {
+    return view('ordertrack');
+});
