@@ -40,6 +40,10 @@ class AdminController extends Controller
             return back()->with('error', 'You cannot update cancelled order');
         }
 
+        if ($order->status == 'delivered') {
+            return back()->with('error', 'You cannot update delivered order');
+        }
+
         $order->update($data);
 
         OrderStatus::create([
