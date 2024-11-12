@@ -14,7 +14,9 @@ class AdminController extends Controller
 {
     public function index()
     {
-        $orders = Order::with(['products.product', 'user', 'address'])->get();
+        $orders = Order::with(['products.product', 'user', 'address'])
+            ->orderByDesc('created_at')
+            ->get();
 
         return view('adminorder', compact('orders'));
     }
@@ -28,7 +30,11 @@ class AdminController extends Controller
 
     public function update(Request $request, $id)
     {
-        $order = OrderProduct::find($id);
+        $orderproduct = OrderProduct::find($id);
+
+        if (! $orderproduct) {
+            return back()->with('error', 'Product not found.');
+        }
 
         $data = $request->only(['status', 'delivery_date']);
 
@@ -36,19 +42,37 @@ class AdminController extends Controller
             $data['delivery_date'] = now();
         }
 
-        if ($order->status == 'cancelled') {
+        if ($orderproduct->status == 'cancelled') {
             return back()->with('error', 'You cannot update cancelled order');
         }
 
-        if ($order->status == 'delivered') {
+        if ($orderproduct->status == 'delivered') {
             return back()->with('error', 'You cannot update delivered order');
         }
 
-        $order->update($data);
+        $orderproduct->update($data);
+
+        $order = Order::with(['products'])->find($orderproduct->order_id);
+
+        $allDelivered = $order->products->every(fn ($product) => $product->status === 'delivered');
+        $allCancelled = $order->products->every(fn ($product) => $product->status === 'cancelled');
+        $allshipped = $order->products->every(fn ($product) => $product->status === 'shipped');
+
+        if ($allDelivered) {
+            $order->status = 'delivered';
+        } elseif ($allCancelled) {
+            $order->status = 'cancelled';
+        } elseif ($allshipped) {
+            $order->status = 'shipped';
+        } else {
+            $order->status = 'pending';
+        }
+
+        $order->save();
 
         OrderStatus::create([
-            'order_id' => $order->order_id,
-            'status' => $request->status,
+            'order_id' => $order->id,
+            'status' => $order->status,
             'created_at' => now(),
         ]);
 
@@ -101,9 +125,8 @@ class AdminController extends Controller
 
         $pdf = Pdf::loadView('invoice', ['order' => $order]);
 
-        // return $pdf->download('invoice-order-' . $order[0]->id . '.pdf');
+        return $pdf->download('invoice-order-'.$order->id.'.pdf');
 
-        return view('invoice', compact('order'));
     }
 
     public function user()
