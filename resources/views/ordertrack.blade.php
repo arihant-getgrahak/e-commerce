@@ -105,7 +105,6 @@
 @section("section")
 <section class="root">
     <figure>
-        <img src="https://image.flaticon.com/icons/svg/970/970514.svg" alt="">
         <figcaption>
             <h4>Tracking Details</h4>
             <h6>Order Number</h6>
