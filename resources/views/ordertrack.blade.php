@@ -104,32 +104,36 @@
 @endsection
 @section("section")
 <section class="root">
-    <figure>
-        <figcaption>
-            <h4>Tracking Details</h4>
-            <h6>Order Number</h6>
-            <h2># {{$orderstatus[0]->order->id}}</h2>
-        </figcaption>
-    </figure>
-    <div class="order-track">
-        @foreach ($orderstatus as $status)
-            <div class="order-track-step">
-                <div class="order-track-status">
-                    <span class="order-track-status-dot"></span>
-                    <span class="order-track-status-line"></span>
+    @if($orderstatus->isEmpty())
+        <h1>No Tracking Details Found</h1>
+    @else
+        <figure>
+            <figcaption>
+                <h4>Tracking Details</h4>
+                <h6>Order Number</h6>
+                <h2># {{$orderstatus[0]->order->id}}</h2>
+            </figcaption>
+        </figure>
+        <div class="order-track">
+            @foreach ($orderstatus as $status)
+                <div class="order-track-step">
+                    <div class="order-track-status">
+                        <span class="order-track-status-dot"></span>
+                        <span class="order-track-status-line"></span>
+                    </div>
+                    <div class="order-track-text">
+                        <p class="order-track-text-stat">
+                            @unless($status->status === 'pending')
+                                {{ Str::ucfirst($status->status) }}
+                            @else
+                                Order Created
+                            @endunless
+                        </p>
+                        <span class="order-track-text-sub">{{$status->created_at}}</span>
+                    </div>
                 </div>
-                <div class="order-track-text">
-                    <p class="order-track-text-stat">
-                        @unless($status->status === 'pending')
-                            {{ Str::ucfirst($status->status) }}
-                        @else
-                            Order Created
-                        @endunless
-                    </p>
-                    <span class="order-track-text-sub">{{$status->created_at}}</span>
-                </div>
-            </div>
-        @endforeach
-    </div>
+            @endforeach
+        </div>
+    @endif
 </section>
 @endsection
