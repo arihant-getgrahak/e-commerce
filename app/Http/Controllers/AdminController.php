@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\OrderProduct;
+use App\Models\OrderStatus;
 use App\Models\User;
 use Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -13,7 +14,9 @@ class AdminController extends Controller
 {
     public function index()
     {
-        $orders = Order::with(['products.product', 'user', 'address'])->get();
+        $orders = Order::with(['products.product', 'user', 'address'])
+            ->orderByDesc('created_at')
+            ->get();
 
         return view('adminorder', compact('orders'));
     }
@@ -27,7 +30,11 @@ class AdminController extends Controller
 
     public function update(Request $request, $id)
     {
-        $order = OrderProduct::find($id);
+        $orderproduct = OrderProduct::find($id);
+
+        if (! $orderproduct) {
+            return back()->with('error', 'Product not found.');
+        }
 
         $data = $request->only(['status', 'delivery_date']);
 
@@ -35,7 +42,39 @@ class AdminController extends Controller
             $data['delivery_date'] = now();
         }
 
-        $order->update($data);
+        if ($orderproduct->status == 'cancelled') {
+            return back()->with('error', 'You cannot update cancelled order');
+        }
+
+        if ($orderproduct->status == 'delivered') {
+            return back()->with('error', 'You cannot update delivered order');
+        }
+
+        $orderproduct->update($data);
+
+        $order = Order::with(['products'])->find($orderproduct->order_id);
+
+        $allDelivered = $order->products->every(fn ($product) => $product->status === 'delivered');
+        $allCancelled = $order->products->every(fn ($product) => $product->status === 'cancelled');
+        $allshipped = $order->products->every(fn ($product) => $product->status === 'shipped');
+
+        if ($allDelivered) {
+            $order->status = 'delivered';
+        } elseif ($allCancelled) {
+            $order->status = 'cancelled';
+        } elseif ($allshipped) {
+            $order->status = 'shipped';
+        } else {
+            $order->status = 'pending';
+        }
+
+        $order->save();
+
+        OrderStatus::create([
+            'order_id' => $order->id,
+            'status' => $order->status,
+            'created_at' => now(),
+        ]);
 
         return back()->with('success', 'Order updated successfully');
     }
@@ -69,10 +108,25 @@ class AdminController extends Controller
 
     public function download($id)
     {
-        $order = Order::where('id', $id)->with(['products.product', 'user', 'address'])->get();
+        $order = Order::with([
+            'products' => function ($query) {
+                $query->where('status', '!=', 'cancelled');
+            },
+            'products.product',
+            'user',
+            'address',
+        ])
+            ->withSum([
+                'products as total_price' => function ($query) {
+                    $query->where('status', '!=', 'cancelled');
+                },
+            ], 'price')
+            ->find($id);
+
         $pdf = Pdf::loadView('invoice', ['order' => $order]);
 
-        return $pdf->download('invoice-order-'.$order[0]->id.'.pdf');
+        return $pdf->download('invoice-order-'.$order->id.'.pdf');
+
     }
 
     public function user()
@@ -96,5 +150,12 @@ class AdminController extends Controller
         Auth::login($user);
 
         return redirect()->route('my-orders');
+    }
+
+    public function track($id)
+    {
+        $orderstatus = OrderStatus::where('order_id', $id)->with('order')->get();
+
+        return view('ordertrack', compact('orderstatus'));
     }
 }

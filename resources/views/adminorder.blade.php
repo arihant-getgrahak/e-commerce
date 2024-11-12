@@ -115,19 +115,18 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Update form</h5>
+                    <h5 class="modal-title">Update Form</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="productForm" class="bg-white p-6 rounded-lg shadow-lg" method="post" action=""
+                    <form id="productForm" class="bg-white p-4 rounded-lg shadow-lg" method="POST" action=""
                         enctype="multipart/form-data">
                         @csrf
 
-                        <!-- Status -->
-
+                        <!-- Product Status -->
                         <div class="mb-3">
-                            <label for="name" class="col-form-label required">Product Status</label>
-                            <select class="form-select arihant" id="status" name="status">
+                            <label for="status" class="col-form-label required">Product Status</label>
+                            <select class="form-select" id="status" name="status" required>
                                 <option value="pending">Pending</option>
                                 <option value="shipped">Shipped</option>
                                 <option value="delivered">Delivered</option>
@@ -135,21 +134,22 @@
                             </select>
                         </div>
 
-                        <div class="mb-4">
-                            <label for="name" class="col-form-label required">Delivery date</label>
-                            <input type="date" id="delivery_date" name="delivery_date"
-                                class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-                                placeholder="Enter delivery date">
+                        <!-- Delivery Date -->
+                        <div class="mb-3">
+                            <label for="delivery_date" class="col-form-label required">Delivery Date</label>
+                            <input type="date" id="delivery_date" name="delivery_date" class="form-control" required>
                         </div>
+                    </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary ms-auto">Update Form</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" form="productForm" class="btn btn-primary" id="btn-update-product">Update
+                        Form</button>
                 </div>
-                </form>
             </div>
         </div>
     </div>
+
 
     <!-- modal -->
 
@@ -201,6 +201,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const updateForm = document.getElementById("productForm");
+        const btnUpdate = document.getElementById("btn-update-product");
 
         document.getElementById('table-body').addEventListener('click', function (event) {
             if (event.target.classList.contains('btn-update')) {
@@ -209,6 +210,10 @@
                 const status = button.getAttribute('data-status');
 
                 updateForm.action = "{{ route('admin.order.update', ':id') }}".replace(':id', id);
+                const today = new Date().toISOString().split("T")[0];
+                
+                updateForm.querySelector("#delivery_date").setAttribute("min", today);
+                updateForm.querySelector("#delivery_date").value = today;
                 updateForm.querySelector('#status').value = status;
             }
         });
@@ -298,9 +303,13 @@
                 userEmail.innerText = "User Email: " + email
                 userAddress.innerText = "User Address: " + address
             })
-
-
         });
     });
+</script>
+
+<script>
+    if ("{{session("error")}}") {
+        alert("{{session("error")}}");
+    }
 </script>
 @endsection
