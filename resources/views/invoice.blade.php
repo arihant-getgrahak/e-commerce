@@ -14,6 +14,9 @@
 </head>
 
 <body>
+    @php
+        echo $order;
+    @endphp
     <div
         style="max-width: 800px;margin: auto;padding: 16px;border: 1px solid #eee;font-size: 16px;line-height: 24px;font-family: 'Inter', sans-serif;color: #555;background-color: #F9FAFC;">
         <table style="font-size: 12px; line-height: 20px;">
@@ -38,16 +41,16 @@
                                     <td
                                         style="vertical-align: top; width: 30%; padding-right: 20px;padding-bottom: 35px;">
                                         <p style="font-weight: 700; color: #1A1C21;">Client Name</p>
-                                        <p style="color: #5E6470;">{{Str::ucfirst($order[0]->user->name)}}</p>
+                                        <p style="color: #5E6470;">{{Str::ucfirst($order->user->name)}}</p>
                                         <p style="font-weight: 700; color: #1A1C21;">Client Email</p>
-                                        <p style="color: #5E6470;">{{$order[0]->user->email}}</p>
+                                        <p style="color: #5E6470;">{{$order->user->email}}</p>
                                     </td>
                                     <td
                                         style="vertical-align: top; width: 35%; padding-right: 20px;padding-bottom: 35px;">
                                         <p style="font-weight: 700; color: #1A1C21;">Delivery Location</p>
                                         <p style="color: #5E6470;">
-                                            {{$order[0]->address->address}},{{$order[0]->address->city}},{{$order[0]->address->state}},{{$order[0]->address->country}},
-                                            {{$order[0]->address->pincode}}
+                                            {{$order->address->address}},{{$order->address->city}},{{$order->address->state}},{{$order->address->country}},
+                                            {{$order->address->pincode}}
                                         </p>
                                     </td>
 
@@ -59,7 +62,7 @@
                                     </td>
                                     <td style="text-align: center; padding-bottom: 13px;">
                                         <p style="color: #5E6470;">Invoice number</p>
-                                        <p style="font-weight: 700; color: #1A1C21;">#{{$order[0]->id}}</p>
+                                        <p style="font-weight: 700; color: #1A1C21;">#{{$order->id}}</p>
                                     </td>
                                     <td style="text-align: end; padding-bottom: 13px;">
                                         <p style="color: #5E6470;">Invoice date</p>
@@ -86,7 +89,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($order[0]->products as $product)
+                                                @foreach ($order->products as $product)
                                                     <tr>
                                                         <td style="padding-block: 12px;">
                                                             <p style="font-weight: 700; color: #1A1C21;">
@@ -121,7 +124,7 @@
                                                                         Subtotal</th>
                                                                     <td
                                                                         style="padding-top: 12px;text-align: end; color: #1A1C21;">
-                                                                        ₹{{$order[0]->total}}</td>
+                                                                        ₹{{$order->total_price}}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <th
@@ -129,7 +132,7 @@
                                                                         GST (12%)</th>
                                                                     <td
                                                                         style="padding: 12px 0;text-align: end; color: #1A1C21;">
-                                                                        ₹{{$order[0]->total * 0.12}}</td>
+                                                                        ₹{{$order->total_price * 0.12}}</td>
                                                                 </tr>
                                                             </tbody>
                                                             <tfoot>
@@ -139,7 +142,7 @@
                                                                         Total Price</th>
                                                                     <th
                                                                         style="padding: 12px 0 30px 0;text-align: end; color: #1A1C21;border-top:1px solid #D7DAE0;">
-                                                                        ₹{{$order[0]->total + $order[0]->total * 0.12}}
+                                                                        ₹{{$order->total_price + $order->total_price * 0.12}}
                                                                     </th>
                                                                 </tr>
                                                             </tfoot>

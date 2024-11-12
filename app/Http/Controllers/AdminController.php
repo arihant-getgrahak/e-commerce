@@ -84,10 +84,26 @@ class AdminController extends Controller
 
     public function download($id)
     {
-        $order = Order::where('id', $id)->with(['products.product', 'user', 'address'])->get();
+        $order = Order::with([
+            'products' => function ($query) {
+                $query->where('status', '!=', 'cancelled');
+            },
+            'products.product',
+            'user',
+            'address',
+        ])
+            ->withSum([
+                'products as total_price' => function ($query) {
+                    $query->where('status', '!=', 'cancelled');
+                },
+            ], 'price')
+            ->find($id);
+
         $pdf = Pdf::loadView('invoice', ['order' => $order]);
 
-        return $pdf->download('invoice-order-'.$order[0]->id.'.pdf');
+        // return $pdf->download('invoice-order-' . $order[0]->id . '.pdf');
+
+        return view('invoice', compact('order'));
     }
 
     public function user()
@@ -113,10 +129,9 @@ class AdminController extends Controller
         return redirect()->route('my-orders');
     }
 
-    public function track()
+    public function track($id)
     {
-        $id = 1;
-        $orderstatus = OrderStatus::where('order_id', 18)->with('order')->get();
+        $orderstatus = OrderStatus::where('order_id', $id)->with('order')->get();
 
         return view('ordertrack', compact('orderstatus'));
     }
