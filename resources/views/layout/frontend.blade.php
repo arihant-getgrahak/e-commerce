@@ -458,7 +458,7 @@
         </div>
 
         <!-- Search -->
-        <div class="w3-ch-sideBar w3-bar-block w3-card-2 w3-animate-right" style="display:none;right:0;" id="Search">
+        <div class="w3-ch-sideBar w3-bar-block w3-card-2 w3-animate-right" style="display:none; right:0;" id="Search">
             <div class="rightMenu-scroll">
                 <div class="d-flex align-items-center justify-content-between slide-head py-3 px-3">
                     <h4 class="cart_heading fs-md ft-medium mb-0">Search Products</h4>
@@ -466,33 +466,52 @@
                 </div>
 
                 <div class="cart_action px-3 py-4">
-                    <form class="form m-0 p-0" action="{{route("search")}}" method="POST">
+                    <form class="form m-0 p-0" action="{{ route('search') }}" method="GET" id="searchform">
                         @csrf
                         <div class="form-group">
                             <input type="text" class="form-control" placeholder="Product Keyword.." name="search"
                                 id="search" />
                             @error("search")
-                                <p>{{$message}}</p>
+                                <p>{{ $message }}</p>
                             @enderror
                         </div>
 
-                        <!-- <div class="form-group">
-                            <select class="custom-select">
-                                <option value="1" selected="">Choose Category</option>
-                                <option value="2">Men's Store</option>
-                                <option value="3">Women's Store</option>
-                                <option value="4">Kid's Fashion</option>
-                                <option value="5">Inner Wear</option>
-                            </select>
-                        </div> -->
+                        <!-- Category selection (commented out for future use) -->
+                        <!-- 
+                <div class="form-group">
+                    <select class="custom-select">
+                        <option value="1" selected>Choose Category</option>
+                        <option value="2">Men's Store</option>
+                        <option value="3">Women's Store</option>
+                        <option value="4">Kid's Fashion</option>
+                        <option value="5">Inner Wear</option>
+                    </select>
+                </div>
+                -->
 
                         <div class="form-group mb-0">
                             <button type="submit" class="btn d-block full-width btn-dark">Search Product</button>
                         </div>
                     </form>
                 </div>
+
+                <!-- Dynamic product list -->
+                <div class="cart_action px-3 py-4 d-flex flex-column">
+                    @if(session('search') && session('search')->isNotEmpty())
+                    <h1>Search Results</h1>
+                        @foreach(session('search') as $product)
+                            <div class="d-flex align-items-center mb-4">
+                                <img style="width:50px;" src="{{ $product->thumbnail }}" alt="{{ $product->name }}">
+                                <p>{{ $product->name }}</p>
+                            </div>
+                        @endforeach
+                    @else
+
+                    @endif
+                </div>
             </div>
         </div>
+
 
         <script src="{{asset('assets/js/jquery.min.js')}}"></script>
         <script src="{{asset('assets/js/popper.min.js')}}"></script>
@@ -666,7 +685,13 @@
             }
         </script>
 
-        <script></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                @if(session('search') && session('search')->isNotEmpty())
+                    document.getElementById('Search').style.display = 'block';
+                @endif
+            });
+        </script>
 </body>
 
 </html>
