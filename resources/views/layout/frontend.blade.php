@@ -493,16 +493,19 @@
                 </div>
 
                 <!-- Recent Searches -->
-                @if(session('recentsearch'))
-                    <h1>Recent Searches</h1>
-                    @foreach(session('recentsearch') as $search)
-                        <div class="d-flex align-items-center justify-content-between py-3 px-3"
-                            style="gap:10px;!important; border-bottom: 1px solid black;">
-                            <p>{{ $search->search_keyword }}</p>
-                            <p>Count: {{ $search->count }}</p>
-                        </div>
-                    @endforeach
-                @endif
+                <div class="cart_action px-3 py-4 d-flex flex-column">
+
+                    @if(session('recentsearch'))
+                        <h1>Recent Searches</h1>
+                        @foreach(session('recentsearch') as $search)
+                            <div class="d-flex align-items-center justify-content-between py-3 px-3"
+                                style="gap:10px;!important; border-bottom: 1px solid black;">
+                                <p>{{ $search->search_keyword }}</p>
+                                <p>Count: {{ $search->count }}</p>
+                            </div>
+                        @endforeach
+                    @endif
+                </div>
 
                 <!-- Dynamic product list -->
                 <div class="cart_action px-3 py-4 d-flex flex-column">
