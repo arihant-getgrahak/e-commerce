@@ -25,7 +25,7 @@ class SearchController extends Controller
         echo $searchProduct;
 
         $search = Search::where('search_keyword', $request->search)->first;
-        if (! $search) {
+        if ($search) {
             $search->update([
                 'count' => $search->count + 1,
             ]);
