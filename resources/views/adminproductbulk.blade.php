@@ -19,4 +19,10 @@
         </form>
     </div>
 </main>
+
+<script>
+    if ("{{session('success')}}") {
+        alert("{{session('success')}}");
+    }
+</script>
 @endsection
