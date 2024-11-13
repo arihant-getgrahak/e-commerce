@@ -22,9 +22,7 @@ class SearchController extends Controller
 
         $searchProduct = $query->get();
 
-        echo $searchProduct;
-
-        $search = Search::where('search_keyword', $request->search)->first;
+        $search = Search::where('search_keyword', $request->search)->first();
         if ($search) {
             $search->update([
                 'count' => $search->count + 1,
@@ -37,14 +35,9 @@ class SearchController extends Controller
         }
 
         if ($searchProduct->isNotEmpty()) {
-            return response()->json([
-                'message' => 'Product found',
-                'products' => $searchProduct,
-            ], 200);
+            return back()->with('search', $searchProduct);
         }
 
-        return response()->json([
-            'message' => 'Product not found',
-        ], 404);
+        return back()->with('search', []);
     }
 }
