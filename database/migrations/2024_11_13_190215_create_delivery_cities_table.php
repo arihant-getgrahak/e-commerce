@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('delivery_cities', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('state_id')->constrained('delivery_states')->onDelete('cascade');
+            $table->foreignId('country_id')->constrained('delivery_countries')->onDelete('cascade');
+            $table->string('name');
+            $table->bollean('status')->default(true);
             $table->timestamps();
         });
     }
