@@ -8,6 +8,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Support\Facades\Route;
@@ -126,3 +127,5 @@ Route::get('/order/track/{id}', [AdminController::class, 'track'])->name('order.
 Route::get('/address', [ProductController::class, 'address'])->name('address');
 
 Route::post('/bulk/import', [AdminController::class, 'importCSV'])->name('admin.bulk.import');
+
+Route::get('search', [SearchController::class, 'search'])->name('search');

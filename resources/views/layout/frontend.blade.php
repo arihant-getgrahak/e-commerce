@@ -457,6 +457,73 @@
             </div>
         </div>
 
+        <!-- Search -->
+        <div class="w3-ch-sideBar w3-bar-block w3-card-2 w3-animate-right" style="display:none; right:0;" id="Search">
+            <div class="rightMenu-scroll">
+                <div class="d-flex align-items-center justify-content-between slide-head py-3 px-3">
+                    <h4 class="cart_heading fs-md ft-medium mb-0">Search Products</h4>
+                    <button onclick="closeSearch()" class="close_slide"><i class="ti-close"></i></button>
+                </div>
+
+                <div class="cart_action px-3 py-4">
+                    <form class="form m-0 p-0" action="{{ route('search') }}" method="GET" id="searchform">
+                        @csrf
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Product Keyword.." name="search"
+                                id="search" />
+                            @error("search")
+                                <p>{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- <div class="form-group">
+                    <select class="custom-select">
+                        <option value="1" selected>Choose Category</option>
+                        <option value="2">Men's Store</option>
+                        <option value="3">Women's Store</option>
+                        <option value="4">Kid's Fashion</option>
+                        <option value="5">Inner Wear</option>
+                    </select>
+                </div> -->
+
+                        <div class="form-group mb-0">
+                            <button type="submit" class="btn d-block full-width btn-dark">Search Product</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Recent Searches -->
+                @if(session('recentsearch'))
+                    <h1>Recent Searches</h1>
+                    @foreach(session('recentsearch') as $search)
+                        <div class="d-flex align-items-center justify-content-between py-3 px-3"
+                            style="gap:10px;!important; border-bottom: 1px solid black;">
+                            <p>{{ $search->search_keyword }}</p>
+                            <p>Count: {{ $search->count }}</p>
+                        </div>
+                    @endforeach
+                @endif
+
+                <!-- Dynamic product list -->
+                <div class="cart_action px-3 py-4 d-flex flex-column">
+                    @if(session('search') && !empty(session('search')))
+                        <h1>Search Results</h1>
+                        @foreach(session('search') as $product)
+                            <a href="{{ route('product.specific', $product->slug) }}">
+                                <div class="d-flex align-items-center mb-4" style="gap:10px;">
+                                    <img style="width:50px;" src="{{ $product->thumbnail }}" alt="{{ $product->name }}">
+                                    <p>{{ $product->name }}</p>
+                                </div>
+                            </a>
+                        @endforeach
+                    @else
+                    @endif
+                </div>
+
+            </div>
+        </div>
+
+
         <script src="{{asset('assets/js/jquery.min.js')}}"></script>
         <script src="{{asset('assets/js/popper.min.js')}}"></script>
         <script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
@@ -487,6 +554,16 @@
                 document.getElementById("Wishlist").style.display = "none";
             }
         </script>
+
+        <script>
+            function openSearch() {
+                document.getElementById("Search").style.display = "block";
+            }
+            function closeSearch() {
+                document.getElementById("Search").style.display = "none";
+            }
+        </script>
+
 
         <script>
             document.addEventListener('DOMContentLoaded', async function () {
@@ -561,7 +638,7 @@
                 });
             });
         </script>
-        
+
         <script>
             async function removeWishlist(id) {
                 const res = await fetch("{{route("wishlist.delete", ":id")}}".replace(':id', id), {
@@ -617,6 +694,14 @@
             </div>
         `;
             }
+        </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                @if(session('search') && session('search')->isNotEmpty())
+                    document.getElementById('Search').style.display = 'block';
+                @endif
+            });
         </script>
 </body>
 
