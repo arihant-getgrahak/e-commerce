@@ -21,17 +21,42 @@ class SearchController extends Controller
         }
 
         $searchProduct = $query->get();
+        $isLoggedin = auth()->check();
+        $search = null;
+        $recentSearches = null;
 
-        $search = Search::where('search_keyword', $request->search)->first();
+        if ($isLoggedin) {
+            $recentSearches = Search::where('user_id', auth()->user()->id)->get();
+        } else {
+            $recentSearches = Search::where('session_id', session()->getId())->get();
+        }
+        session()->remove('recentsearch');
+        session()->put('recentsearch', $recentSearches);
+
+        if ($isLoggedin) {
+            $search = Search::where('search_keyword', $request->search)->where('user_id', auth()->user()->id)->first();
+        } else {
+            $search = Search::where('search_keyword', $request->search)->where('session_id', session()->getId())->first();
+        }
+
         if ($search) {
             $search->update([
                 'count' => $search->count + 1,
             ]);
         } else {
-            Search::create([
-                'search_keyword' => $request->search,
-                'count' => 1,
-            ]);
+            if (auth()->check()) {
+                Search::create([
+                    'search_keyword' => $request->search,
+                    'count' => 1,
+                    'user_id' => auth()->user()->id,
+                ]);
+            } else {
+                Search::create([
+                    'search_keyword' => $request->search,
+                    'count' => 1,
+                    'session_id' => session()->getId(),
+                ]);
+            }
         }
 
         if ($searchProduct->isNotEmpty()) {
