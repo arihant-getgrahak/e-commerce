@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('search_keyword')->unique();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->integer('count');
             $table->timestamps();
         });
     }
