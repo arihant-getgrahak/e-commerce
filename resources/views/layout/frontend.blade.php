@@ -476,9 +476,7 @@
                             @enderror
                         </div>
 
-                        <!-- Category selection (commented out for future use) -->
-                        <!-- 
-                <div class="form-group">
+                        <!-- <div class="form-group">
                     <select class="custom-select">
                         <option value="1" selected>Choose Category</option>
                         <option value="2">Men's Store</option>
@@ -486,8 +484,7 @@
                         <option value="4">Kid's Fashion</option>
                         <option value="5">Inner Wear</option>
                     </select>
-                </div>
-                -->
+                </div> -->
 
                         <div class="form-group mb-0">
                             <button type="submit" class="btn d-block full-width btn-dark">Search Product</button>
@@ -495,22 +492,34 @@
                     </form>
                 </div>
 
+                <!-- Recent Searches -->
+                @if(session('recentsearch'))
+                    <h1>Recent Searches</h1>
+                    @foreach(session('recentsearch') as $search)
+                        <div class="d-flex align-items-center justify-content-between py-3 px-3"
+                            style="gap:10px;!important; border-bottom: 1px solid black;">
+                            <p>{{ $search->search_keyword }}</p>
+                            <p>Count: {{ $search->count }}</p>
+                        </div>
+                    @endforeach
+                @endif
+
                 <!-- Dynamic product list -->
                 <div class="cart_action px-3 py-4 d-flex flex-column">
-                    @if(session('search') && session('search')->isNotEmpty())
+                    @if(session('search') && !empty(session('search')))
                         <h1>Search Results</h1>
                         @foreach(session('search') as $product)
-                            <a href={{route('product.specific', $product->slug)}}>
-                                <div class="d-flex align-items-center mb-4">
+                            <a href="{{ route('product.specific', $product->slug) }}">
+                                <div class="d-flex align-items-center mb-4" style="gap:10px;">
                                     <img style="width:50px;" src="{{ $product->thumbnail }}" alt="{{ $product->name }}">
                                     <p>{{ $product->name }}</p>
                                 </div>
                             </a>
                         @endforeach
                     @else
-
                     @endif
                 </div>
+
             </div>
         </div>
 
