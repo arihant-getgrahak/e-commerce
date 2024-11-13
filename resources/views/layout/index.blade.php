@@ -211,6 +211,9 @@
             <main>
                 @yield("user")
             </main>
+            <main>
+                @yield("address")
+            </main>
         </main>
     </div>
     <footer class="footer footer-transparent d-print-none">
