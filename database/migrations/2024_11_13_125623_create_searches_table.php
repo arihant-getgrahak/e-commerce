@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('search_keyword')->unique();
             $table->integer('count');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->nullable();
+            $table->string('session_id')->nullable();
             $table->timestamps();
         });
     }
