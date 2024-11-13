@@ -16,4 +16,9 @@ class DeliveryState extends Model
     {
         return $this->belongsTo(DeliveryCountry::class, 'country_id');
     }
+
+    public function city()
+    {
+        return $this->hasMany(DeliveryCity::class, 'state_id');
+    }
 }

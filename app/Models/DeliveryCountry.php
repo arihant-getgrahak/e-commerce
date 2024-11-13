@@ -13,11 +13,11 @@ class DeliveryCountry extends Model
 
     public function state()
     {
-        return $this->hasMany(DeliveryState::class);
+        return $this->hasMany(DeliveryState::class, 'country_id');
     }
 
     public function city()
     {
-        return $this->hasMany(DeliveryCity::class);
+        return $this->hasMany(DeliveryCity::class, 'country_id');
     }
 }
