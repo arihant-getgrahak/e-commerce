@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('delivery_states', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('country_id')->constrained('delivery_country')->onDelete('cascade');
+            $table->foreignId('country_id')->constrained('delivery_countries')->onDelete('cascade');
             $table->string('name');
             $table->boolean('status')->default(true);
             $table->timestamps();

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Imports\ProductImport;
+use App\Models\DeliveryCountry;
 use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Models\OrderStatus;
@@ -176,5 +177,12 @@ class AdminController extends Controller
         Excel::import(new ProductImport, $request->file('file'));
 
         return redirect()->back()->with('success', 'Products uploaded successfully.');
+    }
+
+    public function address()
+    {
+        $country = DeliveryCountry::with(['state', 'city'])->get();
+
+        return view('adminaddress', compact('country'));
     }
 }

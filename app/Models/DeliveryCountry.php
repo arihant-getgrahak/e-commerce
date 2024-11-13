@@ -10,4 +10,14 @@ class DeliveryCountry extends Model
         'name',
         'status',
     ];
+
+    public function state()
+    {
+        return $this->hasMany(DeliveryState::class);
+    }
+
+    public function city()
+    {
+        return $this->hasMany(DeliveryCity::class);
+    }
 }

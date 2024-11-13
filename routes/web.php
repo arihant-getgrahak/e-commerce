@@ -130,6 +130,4 @@ Route::post('/bulk/import', [AdminController::class, 'importCSV'])->name('admin.
 
 Route::get('search', [SearchController::class, 'search'])->name('search');
 
-Route::get('/admin/address', function () {
-    return view('adminaddress');
-})->name('admin.address');
+Route::get('/admin/address', [AdminController::class, 'address'])->name('admin.address');
