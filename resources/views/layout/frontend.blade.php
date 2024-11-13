@@ -498,12 +498,14 @@
                 <!-- Dynamic product list -->
                 <div class="cart_action px-3 py-4 d-flex flex-column">
                     @if(session('search') && session('search')->isNotEmpty())
-                    <h1>Search Results</h1>
+                        <h1>Search Results</h1>
                         @foreach(session('search') as $product)
-                            <div class="d-flex align-items-center mb-4">
-                                <img style="width:50px;" src="{{ $product->thumbnail }}" alt="{{ $product->name }}">
-                                <p>{{ $product->name }}</p>
-                            </div>
+                            <a href={{route('product.specific', $product->slug)}}>
+                                <div class="d-flex align-items-center mb-4">
+                                    <img style="width:50px;" src="{{ $product->thumbnail }}" alt="{{ $product->name }}">
+                                    <p>{{ $product->name }}</p>
+                                </div>
+                            </a>
                         @endforeach
                     @else
 
