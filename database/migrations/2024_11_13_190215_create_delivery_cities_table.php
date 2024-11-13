@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('state_id')->constrained('delivery_states')->onDelete('cascade');
             $table->foreignId('country_id')->constrained('delivery_countries')->onDelete('cascade');
             $table->string('name');
-            $table->bollean('status')->default(true);
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }

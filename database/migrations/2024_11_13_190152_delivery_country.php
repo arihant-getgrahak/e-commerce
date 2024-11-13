@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('delivery_countries', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->bollean('status')->default(true);
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }
