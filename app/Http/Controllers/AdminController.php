@@ -181,7 +181,7 @@ class AdminController extends Controller
 
     public function address()
     {
-        $country = DeliveryCountry::with(['state', 'city'])->get();
+        $country = DeliveryCountry::with('state.city')->get();
 
         return view('adminaddress', compact('country'));
     }
