@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\Gallery;
 use App\Models\OrderAdress;
 use App\Models\Product;
+use App\Models\Search;
 use DB;
 use Illuminate\Http\Request;
 use Storage;
@@ -96,7 +97,16 @@ class ProductController extends Controller
             }
         }
 
-        // return response()->json($data);
+        $isLoggedin = auth()->check();
+        $recentSearches = null;
+
+        if ($isLoggedin) {
+            $recentSearches = Search::where('user_id', auth()->user()->id)->get();
+        } else {
+            $recentSearches = Search::where('session_id', session()->getId())->get();
+        }
+        session()->remove('recentsearch');
+        session()->put('recentsearch', $recentSearches);
 
         return view('welcome')->with('product', $product)->with('categories', collect($data))->with('brand', $brand);
     }
