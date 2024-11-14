@@ -181,7 +181,7 @@ class AdminController extends Controller
         return redirect()->back()->with('success', 'Products uploaded successfully.');
     }
 
-    public function address()
+    public function country()
     {
         $country = DeliveryCountry::all();
 
