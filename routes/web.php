@@ -137,5 +137,5 @@ Route::post('/bulk/import', [AdminController::class, 'importCSV'])->name('admin.
 Route::get('search', [SearchController::class, 'search'])->name('search');
 
 Route::post('/country/update', [AdminController::class, 'addressUpdate'])->name('country.update');
-Route::post('/country/state', [AdminController::class, 'stateUpdate'])->name('state.update');
-Route::post('/city/state', [AdminController::class, 'cityUpdate'])->name('city.update');
+Route::post('/state/update', [AdminController::class, 'stateUpdate'])->name('state.update');
+Route::post('/city/update', [AdminController::class, 'cityUpdate'])->name('city.update');
