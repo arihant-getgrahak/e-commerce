@@ -55,7 +55,7 @@ Route::group(['middleware' => AdminMiddleware::class], function () {
     });
 
     Route::group(['prefix' => '/admin/address'], function () {
-        Route::get('country', [AdminController::class, 'country'])->name('admin.country');
+        Route::get('/', [AdminController::class, 'country'])->name('admin.country');
         Route::get('state/{id}', [AdminController::class, 'getState'])->name('admin.state');
         Route::get('city/{id}', [AdminController::class, 'getCity'])->name('admin.city');
     });
@@ -135,3 +135,7 @@ Route::get('/address', [ProductController::class, 'address'])->name('address');
 Route::post('/bulk/import', [AdminController::class, 'importCSV'])->name('admin.bulk.import');
 
 Route::get('search', [SearchController::class, 'search'])->name('search');
+
+Route::post('/country/update', [AdminController::class, 'addressUpdate'])->name('country.update');
+Route::post('/country/state', [AdminController::class, 'stateUpdate'])->name('state.update');
+Route::post('/city/state', [AdminController::class, 'cityUpdate'])->name('city.update');
