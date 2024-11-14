@@ -5,44 +5,62 @@
 
 <div class="row">
     <div class="mb-3 col">
-        <div>
-            <label class="form-label required">Country Name</label>
-            <select class="form-select" id="country" name="country">
+        <form action="{{route("country.update")}}" method="post">
+            @csrf
+            <div>
+                <label class="form-label required">Country Name</label>
+                <select class="form-select" id="country" name="country">
+                    @foreach ($country as $c)
+                        <option value="{{ $c->id }}">{{ $c->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="mt-3">
+                <label class="form-label required">IsActive</label>
                 @foreach ($country as $c)
-                    <option value="{{ $c->id }}">{{ $c->name }}</option>
+                    <input type="radio" name="status" id="status-yes" value="1" {{ $c->status == 1 ? 'checked' : '' }}>
+                    <label for="status-yes">Yes</label>
+                    <input type="radio" name="status" id="status-no" value="0" {{ $c->status == 0 ? 'checked' : '' }}>
+                    <label for="status-no">No</label>
                 @endforeach
-            </select>
-        </div>
-        <div>
-            <label class="form-label required">IsActive</label>
-            <input type="radio" name="status" id="status" value="1"> Yes
-            <input type="radio" name="status" id="status" value="0"> No
-        </div>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">Submit</button>
+        </form>
     </div>
     <div class="mb-3 col">
-        <div>
-            <label class="form-label required">State Name</label>
-            <select class="form-select" id="state" name="state">
-            </select>
-        </div>
-        <div>
-            <label class="form-label required">IsActive</label>
-            <input type="radio" name="status" id="status" value="1"> Yes
-            <input type="radio" name="status" id="status" value="0"> No
-        </div>
+        <form action="{{route("state.update")}}" method="post">
+            @csrf
+            <div>
+                <label class="form-label required">State Name</label>
+                <select class="form-select" id="state" name="state">
+                </select>
+            </div>
+            <div class="mt-3">
+                <label class="form-label required">IsActive</label>
+                <input type="radio" name="status" id="status-state" value="1"> Yes
+                <input type="radio" name="status" id="status-state" value="0"> No
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-3">Submit</button>
+        </form>
     </div>
 
     <div class="mb-3 col">
-        <div>
-            <label class="form-label required">City Name</label>
-            <select class="form-select" id="city" name="city">
-            </select>
-        </div>
-        <div>
-            <label class="form-label required">IsActive</label>
-            <input type="radio" name="status" id="status" value="1"> Yes
-            <input type="radio" name="status" id="status" value="0"> No
-        </div>
+        <form action="{{route("city.update")}}" method="post">
+            @csrf
+            <div>
+                <label class="form-label required">City Name</label>
+                <select class="form-select" id="city" name="city">
+                    <option value="">Select City</option>
+                </select>
+            </div>
+            <div class="mt-3">
+                <label class="form-label required">IsActive</label>
+                <input type="radio" name="status" id="status-city" value="1"> Yes
+                <input type="radio" name="status" id="status-city" value="0"> No
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">Submit</button>
+        </form>
     </div>
 </div>
 
@@ -66,10 +84,22 @@
 
             const data = await res.json();
             data.forEach(option => {
-                const html = `<option value="${option.id}">${option.name}</option>`;
+                const html = `<option data-status="${option.status}" value="${option.id}">${option.name}</option>`;
                 stateSelect.insertAdjacentHTML('beforeend', html);
             });
+
+            stateSelect.addEventListener('change', function () {
+                const selectedCity = this.options[this.selectedIndex];
+                const status = selectedCity.getAttribute('data-status');
+                if (status === '1') {
+                    document.querySelector('input[id="status-state"][value="1"]').checked = true;
+                } else {
+                    document.querySelector('input[id="status-state"][value="0"]').checked = true;
+                }
+            });
         }
+
+
 
         if (countryId) {
             await fetchStates(countryId);
@@ -103,8 +133,18 @@
 
             const data = await res.json();
             data.forEach(option => {
-                const html = `<option value="${option.id}">${option.name}</option>`;
+                const html = `<option data-status-city="${option.status}" value="${option.id}">${option.name}</option>`;
                 city.insertAdjacentHTML('beforeend', html);
+            });
+
+            city.addEventListener('change', function () {
+                const selectedCity = this.options[this.selectedIndex];
+                const status = selectedCity.getAttribute('data-status-city');
+                if (status === '1') {
+                    document.querySelector('input[id="status-city"][value="1"]').checked = true;
+                } else {
+                    document.querySelector('input[id="status-city"][value="0"]').checked = true;
+                }
             });
         }
 
@@ -121,5 +161,10 @@
     });
 </script>
 
+<script>
+    if ("{{ session('success') }}") {
+        alert("{{ session('success') }}");
+    }
+</script>
 
 @endsection
