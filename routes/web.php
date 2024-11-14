@@ -53,6 +53,12 @@ Route::group(['middleware' => AdminMiddleware::class], function () {
         Route::post('value/update/{id}', [AttributeController::class, 'updateAttributeValues'])->name('attribute.value.update');
         Route::delete('value/delete/{id}', [AttributeController::class, 'destroyAttributeValues'])->name('attribute.value.delete');
     });
+
+    Route::group(['prefix' => '/admin/address'], function () {
+        Route::get('/', [AdminController::class, 'country'])->name('admin.country');
+        Route::get('state/{id}', [AdminController::class, 'getState'])->name('admin.state');
+        Route::get('city/{id}', [AdminController::class, 'getCity'])->name('admin.city');
+    });
 });
 
 Route::get('/child-category/{id}', [ProductController::class, 'child_category'])->name('child-category');
@@ -129,3 +135,9 @@ Route::get('/address', [ProductController::class, 'address'])->name('address');
 Route::post('/bulk/import', [AdminController::class, 'importCSV'])->name('admin.bulk.import');
 
 Route::get('search', [SearchController::class, 'search'])->name('search');
+
+Route::post('/country/update', [AdminController::class, 'addressUpdate'])->name('country.update');
+Route::post('/state/update', [AdminController::class, 'stateUpdate'])->name('state.update');
+Route::post('/city/update', [AdminController::class, 'cityUpdate'])->name('city.update');
+
+Route::get('/address/available', [AdminController::class, 'checkAddress'])->name('address.available');

@@ -3,12 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Imports\ProductImport;
+use App\Models\DeliveryCity;
+use App\Models\DeliveryCountry;
+use App\Models\DeliveryState;
 use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Models\OrderStatus;
 use App\Models\User;
 use Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Http;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Validator;
@@ -176,5 +180,121 @@ class AdminController extends Controller
         Excel::import(new ProductImport, $request->file('file'));
 
         return redirect()->back()->with('success', 'Products uploaded successfully.');
+    }
+
+    public function country()
+    {
+        $country = DeliveryCountry::all();
+
+        return view('adminaddress', compact('country'));
+    }
+
+    public function getState($id)
+    {
+        $state = DeliveryState::where('country_id', $id)->get();
+        if (! $state) {
+            return response()->json([]);
+        }
+
+        return response()->json($state);
+    }
+
+    public function getCity($id)
+    {
+        $city = DeliveryCity::where('state_id', $id)->get();
+        if (! $city) {
+            return response()->json([]);
+        }
+
+        return response()->json($city);
+    }
+
+    public function addressUpdate(Request $request)
+    {
+        $validate = Validator::make($request->all(), [
+            'country' => 'required|exists:delivery_countries,id',
+            'status' => 'required|in:0,1',
+        ]);
+
+        if ($validate->fails()) {
+            return back()->with('error', $validate->errors()->first());
+        }
+
+        $country = DeliveryCountry::find($request->country);
+        if (! $country) {
+            return back()->with('error', 'Country not found');
+        }
+        $country->status = $request->status;
+        $country->save();
+
+        return back()->with('success', 'Country Status updated successfully');
+    }
+
+    public function stateUpdate(Request $request)
+    {
+        $validate = Validator::make($request->all(), [
+            'state' => 'required|exists:delivery_states,id',
+            'status' => 'required|in:0,1',
+        ]);
+
+        if ($validate->fails()) {
+            return back()->with('error', $validate->errors()->first());
+        }
+
+        $state = DeliveryState::find($request->state);
+        if (! $state) {
+            return back()->with('error', 'State not found');
+        }
+        $state->status = $request->status;
+        $state->save();
+
+        return back()->with('success', 'State Status updated successfully');
+    }
+
+    public function cityUpdate(Request $request)
+    {
+        $validate = Validator::make($request->all(), [
+            'city' => 'required|exists:delivery_cities,id',
+            'status' => 'required|in:0,1',
+        ]);
+
+        if ($validate->fails()) {
+            return back()->with('error', $validate->errors()->first());
+        }
+
+        $city = DeliveryCity::find($request->city);
+        if (! $city) {
+            return back()->with('error', 'City not found');
+        }
+        $city->status = $request->status;
+        $city->save();
+
+        return back()->with('success', 'City Status updated successfully');
+    }
+
+    public function checkAddress(Request $request)
+    {
+        $validate = Validator::make($request->all(), [
+            'pincode' => 'required',
+        ]);
+
+        if ($validate->fails()) {
+            return back()->with('error', $validate->errors()->first());
+        }
+
+        $res = Http::get('https://api.postalpincode.in/pincode/'.$request->pincode);
+        $data = $res->json()[0];
+        if ($data['Status'] !== 'Success') {
+            return response()->json([
+                'error' => 'Invalid Pincode',
+            ], 400);
+        }
+
+        $city = DeliveryCity::where('name', $data['PostOffice'][0]['District'])->first();
+        if ($city->status) {
+            return back()->with('success', 'Delivery Available');
+        }
+
+        return back()->with('error', 'Delivery Not Available');
     }
 }
