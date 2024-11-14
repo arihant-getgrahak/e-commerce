@@ -211,7 +211,7 @@ class AdminController extends Controller
     public function addressUpdate(Request $request)
     {
         $validate = Validator::make($request->all(), [
-            'country' => 'required',
+            'country' => 'required|exists:delivery_countries,id',
             'status' => 'required|in:0,1',
         ]);
 
@@ -227,5 +227,26 @@ class AdminController extends Controller
         $country->save();
 
         return back()->with('success', 'Country Status updated successfully');
+    }
+
+    public function stateUpdate(Request $request)
+    {
+        $validate = Validator::make($request->all(), [
+            'state' => 'required|exists:delivery_states,id',
+            'status' => 'required|in:0,1',
+        ]);
+
+        if ($validate->fails()) {
+            return back()->with('error', $validate->errors()->first());
+        }
+
+        $state = DeliveryState::find($request->state);
+        if (! $state) {
+            return back()->with('error', 'State not found');
+        }
+        $state->status = $request->status;
+        $state->save();
+
+        return back()->with('success', 'State Status updated successfully');
     }
 }
