@@ -185,8 +185,9 @@ class AdminController extends Controller
     public function country()
     {
         $country = DeliveryCountry::all();
+        $state = DeliveryState::where('country_id', 1)->get();
 
-        return view('adminaddress', compact('country'));
+        return view('adminaddress', compact(['country', 'state']));
     }
 
     public function getState($id)
@@ -303,6 +304,7 @@ class AdminController extends Controller
         $validate = Validator::make($request->all(), [
             'name' => 'required',
             'state_id' => 'required|exists:delivery_states,id',
+            'country' => 'required|exists:delivery_countries,id',
         ]);
         if ($validate->fails()) {
             return back()->with('error', $validate->errors()->first());
@@ -311,6 +313,7 @@ class AdminController extends Controller
         $city = DeliveryCity::create([
             'name' => $request->name,
             'state_id' => $request->state_id,
+            'country_id' => $request->country,
         ]);
 
         if (! $city) {
