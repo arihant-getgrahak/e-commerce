@@ -249,4 +249,25 @@ class AdminController extends Controller
 
         return back()->with('success', 'State Status updated successfully');
     }
+
+    public function cityUpdate(Request $request)
+    {
+        $validate = Validator::make($request->all(), [
+            'city' => 'required|exists:delivery_cities,id',
+            'status' => 'required|in:0,1',
+        ]);
+
+        if ($validate->fails()) {
+            return back()->with('error', $validate->errors()->first());
+        }
+
+        $city = DeliveryCity::find($request->city);
+        if (! $city) {
+            return back()->with('error', 'City not found');
+        }
+        $city->status = $request->status;
+        $city->save();
+
+        return back()->with('success', 'City Status updated successfully');
+    }
 }
