@@ -12,6 +12,7 @@ use App\Models\OrderStatus;
 use App\Models\User;
 use Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Http;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Validator;
@@ -269,5 +270,31 @@ class AdminController extends Controller
         $city->save();
 
         return back()->with('success', 'City Status updated successfully');
+    }
+
+    public function checkAddress(Request $request)
+    {
+        $validate = Validator::make($request->all(), [
+            'pincode' => 'required',
+        ]);
+
+        if ($validate->fails()) {
+            return back()->with('error', $validate->errors()->first());
+        }
+
+        $res = Http::get('https://api.postalpincode.in/pincode/'.$request->pincode);
+        $data = $res->json()[0];
+        if ($data['Status'] !== 'Success') {
+            return response()->json([
+                'error' => 'Invalid Pincode',
+            ], 400);
+        }
+
+        $city = DeliveryCity::where('name', $data['PostOffice'][0]['District'])->first();
+        if ($city->status) {
+            return back()->with('success', 'Delivery Available');
+        }
+
+        return back()->with('error', 'Delivery Not Available');
     }
 }
