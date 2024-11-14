@@ -141,3 +141,7 @@ Route::post('/state/update', [AdminController::class, 'stateUpdate'])->name('sta
 Route::post('/city/update', [AdminController::class, 'cityUpdate'])->name('city.update');
 
 Route::get('/address/available', [AdminController::class, 'checkAddress'])->name('address.available');
+
+Route::get('/track-order', function () {
+    return view('trackorderinput');
+});
