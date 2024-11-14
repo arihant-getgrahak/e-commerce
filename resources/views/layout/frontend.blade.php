@@ -200,6 +200,7 @@
                             </li>
 
                             <li><a href="docs.html">Docs</a></li>
+                            <li><a href="{{route("track.order")}}">Track Order</a></li>
 
                         </ul>
 
