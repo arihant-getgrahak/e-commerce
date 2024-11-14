@@ -214,6 +214,9 @@
             <main>
                 @yield("address")
             </main>
+            <main>
+                @yield("navigation")
+            </main>
         </main>
     </div>
     <footer class="footer footer-transparent d-print-none">
