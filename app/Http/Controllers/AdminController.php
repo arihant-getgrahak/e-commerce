@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Imports\ProductImport;
+use App\Models\DeliveryCity;
 use App\Models\DeliveryCountry;
+use App\Models\DeliveryState;
 use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Models\OrderStatus;
@@ -181,8 +183,28 @@ class AdminController extends Controller
 
     public function address()
     {
-        $country = DeliveryCountry::with('state.city')->get();
+        $country = DeliveryCountry::all();
 
         return view('adminaddress', compact('country'));
+    }
+
+    public function getState($id)
+    {
+        $state = DeliveryState::where('country_id', $id)->get();
+        if (! $state) {
+            return response()->json([]);
+        }
+
+        return response()->json($state);
+    }
+
+    public function getCity($id)
+    {
+        $city = DeliveryCity::where('state_id', $id)->get();
+        if (! $city) {
+            return response()->json([]);
+        }
+
+        return response()->json($city);
     }
 }
