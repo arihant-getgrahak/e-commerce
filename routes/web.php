@@ -7,6 +7,7 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\NavigationController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\WishlistController;
@@ -59,6 +60,8 @@ Route::group(['middleware' => AdminMiddleware::class], function () {
         Route::get('state/{id}', [AdminController::class, 'getState'])->name('admin.state');
         Route::get('city/{id}', [AdminController::class, 'getCity'])->name('admin.city');
     });
+
+    Route::get('/admin/navigation', [NavigationController::class, 'index'])->name('admin.navigation');
 });
 
 Route::get('/child-category/{id}', [ProductController::class, 'child_category'])->name('child-category');
