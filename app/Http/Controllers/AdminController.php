@@ -207,4 +207,25 @@ class AdminController extends Controller
 
         return response()->json($city);
     }
+
+    public function addressUpdate(Request $request)
+    {
+        $validate = Validator::make($request->all(), [
+            'country' => 'required',
+            'status' => 'required|in:0,1',
+        ]);
+
+        if ($validate->fails()) {
+            return back()->with('error', $validate->errors()->first());
+        }
+
+        $country = DeliveryCountry::find($request->country);
+        if (! $country) {
+            return back()->with('error', 'Country not found');
+        }
+        $country->status = $request->status;
+        $country->save();
+
+        return back()->with('success', 'Country Status updated successfully');
+    }
 }
