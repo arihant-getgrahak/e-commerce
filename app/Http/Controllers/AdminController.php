@@ -297,4 +297,26 @@ class AdminController extends Controller
 
         return back()->with('error', 'Delivery Not Available');
     }
+
+    public function addCity(Request $request)
+    {
+        $validate = Validator::make($request->all(), [
+            'name' => 'required',
+            'state_id' => 'required|exists:delivery_states,id',
+        ]);
+        if ($validate->fails()) {
+            return back()->with('error', $validate->errors()->first());
+        }
+
+        $city = DeliveryCity::create([
+            'name' => $request->name,
+            'state_id' => $request->state_id,
+        ]);
+
+        if (! $city) {
+            return back()->with('error', 'City not found');
+        }
+
+        return back()->with('success', 'City added successfully');
+    }
 }
