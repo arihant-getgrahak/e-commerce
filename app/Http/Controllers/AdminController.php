@@ -161,7 +161,7 @@ class AdminController extends Controller
 
     public function track($id)
     {
-        $orderstatus = OrderStatus::where('order_id', $id)->with('order')->get();
+        $orderstatus = OrderStatus::where('order_id', $id)->with(['order.address', 'order.products.product'])->get();
 
         return view('ordertrack', compact('orderstatus'));
     }

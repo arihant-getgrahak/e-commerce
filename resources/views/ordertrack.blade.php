@@ -114,6 +114,30 @@
                 <h2># {{$orderstatus[0]->order->id}}</h2>
             </figcaption>
         </figure>
+        <div>
+            <div>
+                <h4>Shipping Address</h4>
+                <p>{{$orderstatus[0]->order->address->address}},
+                    {{$orderstatus[0]->order->address->city}}, {{$orderstatus[0]->order->address->state}},
+                    {{$orderstatus[0]->order->address->pincode}}
+                </p>
+            </div>
+        </div>
+        <div>
+            <h4>Products</h4>
+            <div class="d-flex flex-column">
+                @foreach ($orderstatus[0]->order->products as $product)
+                    <div class="d-flex align-items-center" style="gap:10px;">
+                        <img style="width:50px;" src="{{$product->product->thumbnail}}" alt="{{$product->product->name}}">
+                        <div class="d-flex flex-column">
+                            <p>{{$product->product->name}}</p>
+                            <p>Quantity: {{$product->quantity}}</p>
+                            <p>Price: ₹{{$product->price}}</p>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
         <div class="order-track">
             @foreach ($orderstatus as $status)
                 <div class="order-track-step">
