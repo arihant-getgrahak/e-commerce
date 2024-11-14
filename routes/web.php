@@ -139,3 +139,5 @@ Route::get('search', [SearchController::class, 'search'])->name('search');
 Route::post('/country/update', [AdminController::class, 'addressUpdate'])->name('country.update');
 Route::post('/state/update', [AdminController::class, 'stateUpdate'])->name('state.update');
 Route::post('/city/update', [AdminController::class, 'cityUpdate'])->name('city.update');
+
+Route::get('/address/available', [AdminController::class, 'checkAddress'])->name('address.available');
