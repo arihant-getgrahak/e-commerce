@@ -145,3 +145,5 @@ Route::get('/address/available', [AdminController::class, 'checkAddress'])->name
 Route::get('/track-order', function () {
     return view('trackorderinput');
 })->name('track.order');
+
+Route::post('/city/add', [AdminController::class, 'addCity'])->name('city.add');

@@ -64,6 +64,44 @@
     </div>
 </div>
 
+<div class="mb-3 mt-3 col">
+    <h2>Add new city</h2>
+    <form action="{{route("city.add")}}" method="post" id="orderForm" class="d-flex align-items-center row p-4"
+        style="gap:10px">
+        @csrf
+        <div>
+            <label class="form-label required">Country Name</label>
+            <select class="form-select" id="country" name="country" required>
+                @foreach ($country as $c)
+                    <option value="{{ $c->id }}">{{ $c->name }}</option>
+                @endforeach
+            </select>
+            @error('country')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+        </div>
+        <div>
+            <label class="form-label required">Country Name</label>
+            <select class="form-select" id="state_id" name="state_id" required>
+                @foreach ($state as $c)
+                    <option value="{{ $c->id }}">{{ $c->name }}</option>
+                @endforeach
+            </select>
+            @error('state_id')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+        </div>
+        <div>
+            <label class="form-label required">Enter City Name</label>
+            <input type="text" class="form-control" placeholder="Enter City" name="name" id="name" required />
+            @error('name')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+        </div>
+        <button class="btn btn-primary" type="submit">Submit</button>
+    </form>
+</div>
+
 <!-- fetch State -->
 <script>
     document.addEventListener('DOMContentLoaded', async function () {
