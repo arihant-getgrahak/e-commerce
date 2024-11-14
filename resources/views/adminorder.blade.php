@@ -187,9 +187,7 @@
             button.addEventListener('click', function () {
                 const id = this.getAttribute('data-id');
                 const status = this.getAttribute('data-status');
-
-
-                console.log(id)
+                
                 updateForm.action = "{{ route('admin.order.update', ':id') }}".replace(':id', id);
 
                 updateForm.querySelector('#status').value = status;

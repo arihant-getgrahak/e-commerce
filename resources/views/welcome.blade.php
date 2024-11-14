@@ -697,7 +697,6 @@
                 document.querySelectorAll('#quantity').forEach(q => {
                     q.addEventListener('change', function () {
                         quantity = this.value;
-                        console.log(quantity);
                     })
                 })
 
