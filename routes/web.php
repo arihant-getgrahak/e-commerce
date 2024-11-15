@@ -150,3 +150,5 @@ Route::get('/track-order', function () {
 })->name('track.order');
 
 Route::post('/city/add', [AdminController::class, 'addCity'])->name('city.add');
+
+Route::post('/city/update/{id}', [AdminController::class, 'updateCity'])->name('city.update');
