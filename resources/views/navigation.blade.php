@@ -36,11 +36,15 @@
                                             @if($n->menus->isNotEmpty())
                                                 <ul>
                                                     @foreach ($n->menus as $menu)
-                                                        <li class="sort-name">{{ $menu->name }}({{$menu->link}})</li>
+                                                        <li class="sort-name">{{ $menu->name }}(<a
+                                                                href="{{$menu->link}}">{{$menu->link}}</a>)</li>
                                                         @if($menu->children->isNotEmpty())
                                                             <ul>
                                                                 @foreach ($menu->children as $child)
-                                                                    <li class="sort-name">{{ $child->name }}({{$child->link}})</li>
+                                                                    <li class="sort-name">{{ $child->name }}(
+                                                                        <a href="{{$child->link}}">{{$child->link}}</a>
+                                                                        )
+                                                                    </li>
                                                                 @endforeach
                                                             </ul>
                                                         @endif
