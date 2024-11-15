@@ -350,4 +350,24 @@ class AdminController extends Controller
             'status' => true,
         ]);
     }
+
+    public function deleteCity($id)
+    {
+
+        $city = DeliveryCity::find($id);
+
+        if (! $city) {
+            return response()->json([
+                'error' => 'City not found',
+                'status' => false,
+            ], 404);
+        }
+
+        $city->delete();
+
+        return response()->json([
+            'message' => 'City deleted successfully',
+            'status' => true,
+        ]);
+    }
 }
