@@ -322,4 +322,32 @@ class AdminController extends Controller
 
         return back()->with('success', 'City added successfully');
     }
+
+    public function updateCity(Request $request, $id)
+    {
+        $validate = Validator::make($request->all(), [
+            'name' => 'required',
+        ]);
+        if ($validate->fails()) {
+            return back()->with('error', $validate->errors()->first());
+        }
+
+        $city = DeliveryCity::find($id);
+
+        if (! $city) {
+            return response()->json([
+                'error' => 'City not found',
+                'status' => false,
+            ], 404);
+        }
+
+        $city->update([
+            'name' => $request->name,
+        ]);
+
+        return response()->json([
+            'message' => 'City updated successfully',
+            'status' => true,
+        ]);
+    }
 }
