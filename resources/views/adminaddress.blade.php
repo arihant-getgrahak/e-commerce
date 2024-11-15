@@ -60,6 +60,7 @@
                 <input type="radio" name="status" id="status-city" value="0"> No
             </div>
             <button type="submit" class="btn btn-primary mt-3">Submit</button>
+            <button class="btn btn-danger mt-3" id="deleteBtn">Delete</button>
         </form>
     </div>
 </div>
@@ -203,6 +204,31 @@
     if ("{{ session('success') }}") {
         alert("{{ session('success') }}");
     }
+</script>
+
+<script>
+    const deleteBtn = document.getElementById('deleteBtn');
+    const city = document.getElementById('city');
+    deleteBtn.addEventListener('click', async function (e) {
+        e.preventDefault();
+        const id = city.value;
+
+        const res = await fetch("{{ route('city.delete.js', ':id') }}".replace(':id', id), {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': "{{ csrf_token() }}"
+            }
+        })
+
+        const data = await res.json();
+        if (data.status) {
+            alert(data.message);
+        }
+        else {
+            console.log(data);
+        }
+    })
 </script>
 
 @endsection

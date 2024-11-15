@@ -151,5 +151,5 @@ Route::get('/track-order', function () {
 
 Route::post('/city/add', [AdminController::class, 'addCity'])->name('city.add');
 
-Route::post('/city/update/{id}', [AdminController::class, 'updateCity'])->name('city.update');
-Route::delete('/city/delete/{id}', [AdminController::class, 'deleteCity'])->name('city.delete');
+Route::post('/city/update/{id}', [AdminController::class, 'updateCity'])->name('city.update.js');
+Route::delete('/city/delete/{id}', [AdminController::class, 'deleteCity'])->name('city.delete.js');
