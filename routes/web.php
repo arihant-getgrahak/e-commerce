@@ -141,7 +141,7 @@ Route::get('search', [SearchController::class, 'search'])->name('search');
 
 Route::post('/country/update', [AdminController::class, 'addressUpdate'])->name('country.update');
 Route::post('/state/update', [AdminController::class, 'stateUpdate'])->name('state.update');
-Route::post('/city/update', [AdminController::class, 'cityUpdate'])->name('city.update');
+Route::post('/city/update/{id}', [AdminController::class, 'cityUpdate'])->name('city.update');
 
 Route::get('/address/available', [AdminController::class, 'checkAddress'])->name('address.available');
 
@@ -150,3 +150,7 @@ Route::get('/track-order', function () {
 })->name('track.order');
 
 Route::post('/city/add', [AdminController::class, 'addCity'])->name('city.add');
+
+Route::delete('/city/delete/{id}', [AdminController::class, 'deleteCity'])->name('city.delete.js');
+
+Route::get('/city/{id}', [AdminController::class, 'city'])->name('city.get');

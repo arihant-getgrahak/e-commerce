@@ -252,25 +252,27 @@ class AdminController extends Controller
         return back()->with('success', 'State Status updated successfully');
     }
 
-    public function cityUpdate(Request $request)
+    public function cityUpdate(Request $request, $id)
     {
+
         $validate = Validator::make($request->all(), [
-            'city' => 'required|exists:delivery_cities,id',
-            'status' => 'required|in:0,1',
+            'status' => 'nullable|in:0,1',
+            'name' => 'nullable',
         ]);
 
         if ($validate->fails()) {
             return back()->with('error', $validate->errors()->first());
         }
 
-        $city = DeliveryCity::find($request->city);
+        $city = DeliveryCity::find($id);
         if (! $city) {
             return back()->with('error', 'City not found');
         }
-        $city->status = $request->status;
-        $city->save();
+        $data = $request->only(['name', 'status']);
+        $city->update($data);
+        // dd($city);
 
-        return back()->with('success', 'City Status updated successfully');
+        return back()->with('success', 'City Status Updated Successfully');
     }
 
     public function checkAddress(Request $request)
@@ -321,5 +323,43 @@ class AdminController extends Controller
         }
 
         return back()->with('success', 'City added successfully');
+    }
+
+    public function deleteCity($id)
+    {
+
+        $city = DeliveryCity::find($id);
+
+        if (! $city) {
+            return response()->json([
+                'error' => 'City not found',
+                'status' => false,
+            ], 404);
+        }
+
+        $city->delete();
+
+        return response()->json([
+            'message' => 'City deleted successfully',
+            'status' => true,
+        ]);
+    }
+
+    public function city($id)
+    {
+        $city = DeliveryCity::find($id);
+
+        if (! $city) {
+            return response()->json([
+                'error' => 'City not found',
+                'status' => false,
+            ], 404);
+        }
+
+        return response()->json([
+            'message' => 'City fetched successfully',
+            'data' => $city,
+            'status' => true,
+        ]);
     }
 }
