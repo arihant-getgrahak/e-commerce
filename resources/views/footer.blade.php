@@ -9,65 +9,48 @@
                         <img src="{{asset('assets/img/logo-light.png')}}" class="img-footer small mb-2" alt="" />
 
                         <div class="address mt-3">
-                            3298 Grant Street Longview, TX<br>United Kingdom 75601
+                            Jaipur<br>India 302039
                         </div>
                         <div class="address mt-3">
-                            1-202-555-0106<br>help@shopper.com
+                            +919672670732<br>arihant.jain@getgrahak.in
                         </div>
                         <div class="address mt-3">
                             <ul class="list-inline">
                                 <li class="list-inline-item"><a href="#"><i class="lni lni-facebook-filled"></i></a>
                                 </li>
-                                <li class="list-inline-item"><a href="#"><i class="lni lni-twitter-filled"></i></a></li>
+                                <li class="list-inline-item"><a href="https://x.com/arihantjain916"><i
+                                            class="lni lni-twitter-filled"></i></a></li>
                                 <li class="list-inline-item"><a href="#"><i class="lni lni-youtube"></i></a>
                                 </li>
-                                <li class="list-inline-item"><a href="#"><i class="lni lni-instagram-filled"></i></a>
+                                <li class="list-inline-item"><a href="https://www.instagram.com/arihantjain91/"><i
+                                            class="lni lni-instagram-filled"></i></a>
                                 </li>
-                                <li class="list-inline-item"><a href="#"><i class="lni lni-linkedin-original"></i></a>
+                                <li class="list-inline-item"><a href="https://www.linkedin.com/in/arihantjain916/"><i
+                                            class="lni lni-linkedin-original"></i></a>
                                 </li>
                             </ul>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-xl-2 col-lg-2 col-md-2 col-sm-12">
-                    <div class="footer_widget">
-                        <h4 class="widget_title">Supports</h4>
-                        <ul class="footer-menu">
-                            <li><a href="#">Contact Us</a></li>
-                            <li><a href="#">About Page</a></li>
-                            <li><a href="#">Size Guide</a></li>
-                            <li><a href="#">Shipping & Returns</a></li>
-                            <li><a href="#">FAQ's Page</a></li>
-                            <li><a href="#">Privacy</a></li>
-                        </ul>
-                    </div>
-                </div>
+                @foreach (session('navigation') as $navigation)
+                    @if ($navigation->name === 'Footer')
+                        @foreach ($navigation->menus as $menu)
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-12">
+                                <div class="footer_widget">
+                                    <h4 class="widget_title">{{ $menu->name }}</h4>
+                                    <ul class="footer-menu">
+                                        @foreach ($menu->children as $children)
+                                            <li><a href="{{ $children->link }}">{{ $children->name }}</a></li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            </div>
+                        @endforeach
+                    @endif
+                @endforeach
 
-                <div class="col-xl-2 col-lg-2 col-md-2 col-sm-12">
-                    <div class="footer_widget">
-                        <h4 class="widget_title">Shop</h4>
-                        <ul class="footer-menu">
-                            <li><a href="#">Men's Shopping</a></li>
-                            <li><a href="#">Women's Shopping</a></li>
-                            <li><a href="#">Kids's Shopping</a></li>
-                            <li><a href="#">Furniture</a></li>
-                            <li><a href="#">Discounts</a></li>
-                        </ul>
-                    </div>
-                </div>
 
-                <div class="col-xl-2 col-lg-2 col-md-2 col-sm-12">
-                    <div class="footer_widget">
-                        <h4 class="widget_title">Company</h4>
-                        <ul class="footer-menu">
-                            <li><a href="#">About</a></li>
-                            <li><a href="#">Blog</a></li>
-                            <li><a href="#">Affiliate</a></li>
-                            <li><a href="#">Login</a></li>
-                        </ul>
-                    </div>
-                </div>
 
                 <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12">
                     <div class="footer_widget">
