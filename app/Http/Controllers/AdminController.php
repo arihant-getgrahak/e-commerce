@@ -61,6 +61,11 @@ class AdminController extends Controller
 
         $order = Order::with(['products'])->find($orderproduct->order_id);
 
+        // if ($order->status === 'pending') {
+        //     // Do not update order status if it is already pending
+        //     return back()->with('success', 'Product updated successfully, order status remains pending');
+        // }
+
         $allDelivered = $order->products->every(fn ($product) => $product->status === 'delivered');
         $allCancelled = $order->products->every(fn ($product) => $product->status === 'cancelled');
         $allshipped = $order->products->every(fn ($product) => $product->status === 'shipped');
@@ -71,17 +76,17 @@ class AdminController extends Controller
             $order->status = 'cancelled';
         } elseif ($allshipped) {
             $order->status = 'shipped';
-        } else {
-            $order->status = 'pending';
         }
 
         $order->save();
 
-        OrderStatus::create([
-            'order_id' => $order->id,
-            'status' => $order->status,
-            'created_at' => now(),
-        ]);
+        if ($order->status !== 'pending') {
+            OrderStatus::create([
+                'order_id' => $order->id,
+                'status' => $order->status,
+                'created_at' => now(),
+            ]);
+        }
 
         return back()->with('success', 'Order updated successfully');
     }

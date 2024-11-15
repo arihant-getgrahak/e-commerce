@@ -200,16 +200,6 @@
                 const html = `<option data-status-city="${option.status}" value="${option.id}">${option.name}</option>`;
                 city.insertAdjacentHTML('beforeend', html);
             });
-
-            // city.addEventListener('change', function () {
-            //     const selectedCity = this.options[this.selectedIndex];
-            //     const status = selectedCity.getAttribute('data-status-city');
-            //     if (status === '1') {
-            //         document.querySelector('input[id="status-city"][value="1"]').checked = true;
-            //     } else {
-            //         document.querySelector('input[id="status-city"][value="0"]').checked = true;
-            //     }
-            // });
         }
 
         if (stateid) {
@@ -229,6 +219,8 @@
     if ("{{ session('success') }}") {
         alert("{{ session('success') }}");
     }
+
+
 </script>
 
 <script>
