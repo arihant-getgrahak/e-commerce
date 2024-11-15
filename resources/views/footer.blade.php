@@ -36,16 +36,29 @@
                 @foreach (session('navigation') as $navigation)
                     @if ($navigation->name === 'Footer')
                         @foreach ($navigation->menus as $menu)
-                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-12">
-                                <div class="footer_widget">
-                                    <h4 class="widget_title">{{ $menu->name }}</h4>
-                                    <ul class="footer-menu">
-                                        @foreach ($menu->children as $children)
-                                            <li><a href="{{ $children->link }}">{{ $children->name }}</a></li>
-                                        @endforeach
-                                    </ul>
+                            @if(count($menu->children) > 0)
+                                <div class="col-xl-2 col-lg-2 col-md-2 col-sm-12">
+                                    <div class="footer_widget">
+                                        <h4 class="widget_title">{{ $menu->name }}</h4>
+                                        <ul class="footer-menu">
+                                            @foreach ($menu->children as $children)
+                                                <li><a href="{{ $children->link }}">{{ $children->name }}</a></li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
                                 </div>
-                            </div>
+                            @else
+                                <div class="col-xl-2 col-lg-2 col-md-2 col-sm-12">
+                                    <div class="footer_widget">
+                                        <h4 class="widget_title">
+                                            <a href="{{$menu->link}}">
+                                                <h4 class="widget_title">
+                                                    {{ $menu->name }}
+                                                </h4>
+                                            </a>
+                                    </div>
+                                </div>
+                            @endif
                         @endforeach
                     @endif
                 @endforeach
