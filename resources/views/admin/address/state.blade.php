@@ -6,7 +6,7 @@
 <main class="space-y-6">
     <div class="card">
         <div class="card-body">
-            <h1>All Categories</h1>
+            <h1>All States</h1>
             <div id="table-categories" class="table-responsive">
                 <table class="table table-striped">
                     <thead>
