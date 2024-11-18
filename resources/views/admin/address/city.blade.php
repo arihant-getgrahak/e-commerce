@@ -17,7 +17,7 @@
                             <th><button class="table-sort">ID</button></th>
                             <th><button class="table-sort">Name</button></th>
                             <th><button class="table-sort">State</button></th>
-                            <th>Status</th>
+                            <th>Buttons</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -27,23 +27,59 @@
                                 <td class="sort-name">{{ $s->name }}</td>
                                 <td class="sort-name">{{ $s->state->name }}</td>
                                 <td>
-                                    <div class="flex items-center space-x-4">
-                                        <div>
-                                            <input type="radio" name="status_{{ $s->id }}" id="status-yes-{{ $s->id }}"
-                                                value="1" {{ $s->status == 1 ? 'checked' : '' }}>
-                                            <label for="status-yes-{{ $s->id }}">Yes</label>
-                                        </div>
-                                        <div>
-                                            <input type="radio" name="status_{{ $s->id }}" id="status-no-{{ $s->id }}"
-                                                value="0" {{ $s->status == 0 ? 'checked' : '' }}>
-                                            <label for="status-no-{{ $s->id }}">No</label>
-                                        </div>
-                                    </div>
+                                    <button class="btn btn-primary btn-sm btn-update">Edit</button>
+                                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                        data-bs-target="#modal-delete-{{$s->id}}">Delete</button>
                                 </td>
                             </tr>
+                            <!-- Delete Modal -->
+                            <div class="modal modal-blur fade" id="modal-delete-{{$s->id}}" tabindex="-1" role="dialog"
+                                aria-hidden="true">
+                                <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                        <div class="modal-status bg-danger"></div>
+                                        <div class="modal-body text-center py-4">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg"
+                                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                                stroke="currentColor" fill="none" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path
+                                                    d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z" />
+                                                <path d="M12 9v4" />
+                                                <path d="M12 17h.01" />
+                                            </svg>
+                                            <h3>Are you sure?</h3>
+                                            <div class="text-secondary">Do you really want to delete this product? This
+                                                action cannot be undone.</div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <div class="w-100">
+                                                <div class="row">
+                                                    <div class="col"><a href="#" class="btn w-100"
+                                                            data-bs-dismiss="modal">Cancel</a></div>
+                                                    <div class="col">
+                                                        <form id="delete-form-{{$s->id}}"
+                                                            action="{{ route('city.delete', $s->id) }}" method="POST"
+                                                            class="w-100">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-danger w-100">Delete
+                                                                City</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         @endforeach
                     </tbody>
                 </table>
+
             </div>
         </div>
     </div>
