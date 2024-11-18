@@ -220,7 +220,9 @@
         alert("{{ session('success') }}");
     }
 
-
+    if ("{{ session('error') }}") {
+        alert("{{ session('error') }}");
+    }
 </script>
 
 <script>

@@ -314,7 +314,10 @@ class AdminController extends Controller
         if ($validate->fails()) {
             return back()->with('error', $validate->errors()->first());
         }
-
+        $cityExist = DeliveryCity::where('name', $request->name)->first();
+        if ($cityExist) {
+            return back()->with('error', 'City already exist');
+        }
         $city = DeliveryCity::create([
             'name' => $request->name,
             'state_id' => $request->state_id,
