@@ -195,24 +195,24 @@ class AdminController extends Controller
         return view('adminaddress', compact(['country', 'state']));
     }
 
-    public function getState($id)
+    public function state()
     {
-        $state = DeliveryState::where('country_id', $id)->get();
+        $state = DeliveryState::with('country')->get();
         if (! $state) {
-            return response()->json([]);
+            return back()->with('error', 'State not found');
         }
 
-        return response()->json($state);
+        return view('adminstate', compact('state'));
     }
 
-    public function getCity($id)
+    public function city()
     {
-        $city = DeliveryCity::where('state_id', $id)->get();
+        $city = DeliveryCity::with('state')->get();
         if (! $city) {
-            return response()->json([]);
+            return back()->with('error', 'City not found');
         }
 
-        return response()->json($city);
+        return view('admincity', compact('city'));
     }
 
     public function addressUpdate(Request $request)
@@ -351,7 +351,7 @@ class AdminController extends Controller
         ]);
     }
 
-    public function city($id)
+    public function acity($id)
     {
         $city = DeliveryCity::find($id);
 
