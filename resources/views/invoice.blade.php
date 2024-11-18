@@ -14,9 +14,6 @@
 </head>
 
 <body>
-    @php
-        echo $order;
-    @endphp
     <div
         style="max-width: 800px;margin: auto;padding: 16px;border: 1px solid #eee;font-size: 16px;line-height: 24px;font-family: 'Inter', sans-serif;color: #555;background-color: #F9FAFC;">
         <table style="font-size: 12px; line-height: 20px;">

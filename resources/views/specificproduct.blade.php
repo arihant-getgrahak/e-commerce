@@ -84,11 +84,14 @@
                         @endforeach
 
                         <div class="mb-4">
-                            <form action="{{route("address.available")}}" method="" get>
+                            <form action="{{route("address.available")}}" method="GET">
                                 <label for="pincode" class="col-form-label required">Check Availability</label>
                                 <input type="text" id="pincode" name="pincode"
                                     class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
                                     placeholder="Enter pincode">
+                                @error("pincode")
+                                    <span class="text-danger">{{$message}}</span>
+                                @enderror
 
                                 <button type="submit">Check Availability</button>
                             </form>
@@ -368,23 +371,21 @@
     </section>
 @endif
 
+@endsection
+
+@section("script")
 <script>
     const status = document.getElementsByClassName("status")[0]
     const error = "{{session('error')}}"
     const success = "{{session('success')}}"
     if (error) {
-        // status.innerText = error;
         status.innerHTML = `<p class="text-danger">${error}</p>`;
     }
 
     if (success) {
-        status.innerHtml = `<p class="text-success">${success}</p>`;
+        status.innerHTML = `<p class="text-success">${success}</p>`;
     }
 </script>
-
-@endsection
-
-@section("script")
 <script>
     const session = "{{session('error')}}";
     if (session) {

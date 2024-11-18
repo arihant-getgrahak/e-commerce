@@ -36,23 +36,24 @@
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
                             <div class="form-group">
                                 <label id="fname" class="text-dark">First Name *</label>
-                                <input type="text" class="form-control" placeholder="First Name" id="fname"
-                                    name="fname" />
+                                <input type="text" class="form-control" placeholder="First Name" id="fname" name="fname"
+                                    required />
                             </div>
                         </div>
 
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
                             <div class="form-group">
                                 <label id="lname" class="text-dark">Last Name *</label>
-                                <input type="text" class="form-control" placeholder="Last Name" id="lname"
-                                    name="lname" />
+                                <input type="text" class="form-control" placeholder="Last Name" id="lname" name="lname"
+                                    required />
                             </div>
                         </div>
 
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                             <div class="form-group">
                                 <label id="email" class="text-dark">Email *</label>
-                                <input type="email" class="form-control" placeholder="Email" id="email" name="email" />
+                                <input type="email" class="form-control" placeholder="Email" id="email" name="email"
+                                    required />
                             </div>
                         </div>
 
@@ -60,7 +61,7 @@
                             <div class="form-group">
                                 <label class="text-dark" id="address1">Address 1 *</label>
                                 <input type="text" class="form-control" placeholder="Address 1" id="address1"
-                                    name="address1" />
+                                    name="address1" required />
                             </div>
                         </div>
 
@@ -75,7 +76,7 @@
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                             <div class="form-group">
                                 <label id="country" class="text-dark">Country *</label>
-                                <select class="custom-select" id="country" name="country">
+                                <select class="custom-select" id="country" name="country" required>
                                     <option value="India" selected="">India</option>
                                     <option value="United State">United State</option>
                                     <option value="United Kingdom">United Kingdom</option>
@@ -88,15 +89,16 @@
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                             <div class="form-group">
                                 <label class="text-dark" id="state">State *</label>
-                                <input type="text" class="form-control" placeholder="State" name="state" id="state" />
+                                <input type="text" class="form-control" placeholder="State" name="state" id="state"
+                                    required />
                             </div>
                         </div>
 
                         <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                             <div class="form-group">
                                 <label class="text-dark" id="city">City / Town *</label>
-                                <input type="text" class="form-control" placeholder="City / Town" name="city"
-                                    id="city" />
+                                <input type="text" class="form-control" placeholder="City / Town" name="city" id="city"
+                                    required />
                             </div>
                         </div>
 
@@ -104,7 +106,7 @@
                             <div class="form-group">
                                 <label class="text-dark" id="pincode">ZIP / Postcode *</label>
                                 <input type="text" class="form-control" id="pincode" name="pincode"
-                                    placeholder="Zip / Postcode" />
+                                    placeholder="Zip / Postcode" required />
                             </div>
                         </div>
 
@@ -112,7 +114,7 @@
                             <div class="form-group">
                                 <label class="text-dark" id="phone">Mobile Number *</label>
                                 <input type="text" class="form-control" placeholder="Mobile Number" name="phone"
-                                    id="phone" />
+                                    id="phone" required />
                             </div>
                         </div>
 
@@ -153,7 +155,7 @@
                                 <!-- Cash on Delivery -->
                                 <div class="col-12 d-block">
                                     <input id="payment_method_cod" class="select-custom" name="payment_method"
-                                        type="radio" value="cod">
+                                        type="radio" value="cod" required>
                                     <label for="payment_method_cod" class="checkbox-custom-label">Cash on
                                         Delivery</label>
                                 </div>
@@ -196,7 +198,7 @@
                                                 <h4 class="product_title fs-md ft-medium mb-1 lh-1">{{$c->products[0]->name}}
                                                 </h4>
                                                 <!-- <p class="mb-1 lh-1"><span class="text-dark">Size: 40</span></p>
-                                                                                                            <p class="mb-3 lh-1"><span class="text-dark">Color: Blue</span></p> -->
+                                                                                                                    <p class="mb-3 lh-1"><span class="text-dark">Color: Blue</span></p> -->
                                                 <h4 class="fs-md ft-medium mb-3 lh-1">₹{{$c->price}}</h4>
                                             </div>
                                         </div>

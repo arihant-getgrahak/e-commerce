@@ -61,6 +61,11 @@ class AdminController extends Controller
 
         $order = Order::with(['products'])->find($orderproduct->order_id);
 
+        // if ($order->status === 'pending') {
+        //     // Do not update order status if it is already pending
+        //     return back()->with('success', 'Product updated successfully, order status remains pending');
+        // }
+
         $allDelivered = $order->products->every(fn ($product) => $product->status === 'delivered');
         $allCancelled = $order->products->every(fn ($product) => $product->status === 'cancelled');
         $allshipped = $order->products->every(fn ($product) => $product->status === 'shipped');
@@ -71,17 +76,17 @@ class AdminController extends Controller
             $order->status = 'cancelled';
         } elseif ($allshipped) {
             $order->status = 'shipped';
-        } else {
-            $order->status = 'pending';
         }
 
         $order->save();
 
-        OrderStatus::create([
-            'order_id' => $order->id,
-            'status' => $order->status,
-            'created_at' => now(),
-        ]);
+        if ($order->status !== 'pending') {
+            OrderStatus::create([
+                'order_id' => $order->id,
+                'status' => $order->status,
+                'created_at' => now(),
+            ]);
+        }
 
         return back()->with('success', 'Order updated successfully');
     }
@@ -185,9 +190,29 @@ class AdminController extends Controller
     public function country()
     {
         $country = DeliveryCountry::all();
-        $state = DeliveryState::where('country_id', 1)->get();
 
-        return view('adminaddress', compact(['country', 'state']));
+        return view('admin.address.country', compact('country'));
+    }
+
+    public function state()
+    {
+        $state = DeliveryState::with('country')->get();
+        if (! $state) {
+            return back()->with('error', 'State not found');
+        }
+
+        return view('admin.address.state', compact('state'));
+    }
+
+    public function city()
+    {
+        $city = DeliveryCity::with('state')->get();
+        $country = DeliveryCountry::all();
+        if (! $city) {
+            return back()->with('error', 'City not found');
+        }
+
+        return view('admin.address.city', compact(['city', 'country']));
     }
 
     public function getState($id)
@@ -198,16 +223,6 @@ class AdminController extends Controller
         }
 
         return response()->json($state);
-    }
-
-    public function getCity($id)
-    {
-        $city = DeliveryCity::where('state_id', $id)->get();
-        if (! $city) {
-            return response()->json([]);
-        }
-
-        return response()->json($city);
     }
 
     public function addressUpdate(Request $request)
@@ -278,7 +293,7 @@ class AdminController extends Controller
     public function checkAddress(Request $request)
     {
         $validate = Validator::make($request->all(), [
-            'pincode' => 'required',
+            'pincode' => 'required|numeric|digits:6',
         ]);
 
         if ($validate->fails()) {
@@ -288,12 +303,10 @@ class AdminController extends Controller
         $res = Http::get('https://api.postalpincode.in/pincode/'.$request->pincode);
         $data = $res->json()[0];
         if ($data['Status'] !== 'Success') {
-            return response()->json([
-                'error' => 'Invalid Pincode',
-            ], 400);
+            return back()->with('error', 'Invalid Pincode');
         }
-
         $city = DeliveryCity::where('name', $data['PostOffice'][0]['District'])->first();
+
         if ($city->status) {
             return back()->with('success', 'Delivery Available');
         }
@@ -307,15 +320,20 @@ class AdminController extends Controller
             'name' => 'required',
             'state_id' => 'required|exists:delivery_states,id',
             'country' => 'required|exists:delivery_countries,id',
+            'status' => 'required|in:0,1',
         ]);
         if ($validate->fails()) {
             return back()->with('error', $validate->errors()->first());
         }
-
+        $cityExist = DeliveryCity::where('name', $request->name)->first();
+        if ($cityExist) {
+            return back()->with('error', 'City already exist');
+        }
         $city = DeliveryCity::create([
             'name' => $request->name,
             'state_id' => $request->state_id,
             'country_id' => $request->country,
+            'status' => $request->status,
         ]);
 
         if (! $city) {
@@ -331,35 +349,11 @@ class AdminController extends Controller
         $city = DeliveryCity::find($id);
 
         if (! $city) {
-            return response()->json([
-                'error' => 'City not found',
-                'status' => false,
-            ], 404);
+            return back()->with('error', 'City not found');
         }
 
         $city->delete();
 
-        return response()->json([
-            'message' => 'City deleted successfully',
-            'status' => true,
-        ]);
-    }
-
-    public function city($id)
-    {
-        $city = DeliveryCity::find($id);
-
-        if (! $city) {
-            return response()->json([
-                'error' => 'City not found',
-                'status' => false,
-            ], 404);
-        }
-
-        return response()->json([
-            'message' => 'City fetched successfully',
-            'data' => $city,
-            'status' => true,
-        ]);
+        return back()->with('success', 'City deleted successfully');
     }
 }
