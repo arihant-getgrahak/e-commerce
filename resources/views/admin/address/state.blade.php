@@ -32,13 +32,11 @@
                                 <td>
                                     <div class="flex items-center space-x-4">
                                         <div>
-                                            <input type="radio" name="status_{{ $s->id }}" id="status-yes-{{ $s->id }}"
-                                                value="1" {{ $s->status == 1 ? 'checked' : '' }}>
+                                            <input type="radio" name="status_{{ $s->id }}" id="status-yes" value="1" {{ $s->status == 1 ? 'checked' : '' }}>
                                             <label for="status-yes-{{ $s->id }}">Yes</label>
                                         </div>
                                         <div>
-                                            <input type="radio" name="status_{{ $s->id }}" id="status-no-{{ $s->id }}"
-                                                value="0" {{ $s->status == 0 ? 'checked' : '' }}>
+                                            <input type="radio" name="status_{{ $s->id }}" id="status-no" value="0" {{ $s->status == 0 ? 'checked' : '' }}>
                                             <label for="status-no-{{ $s->id }}">No</label>
                                         </div>
                                     </div>
@@ -62,4 +60,38 @@
         alert("{{ session('error') }}");
     }
 </script>
+
+<script>
+    const statusInputs = document.querySelectorAll("input[name^='status_']");
+
+    statusInputs.forEach(input => {
+        input.addEventListener("change", async () => {
+            const status = input.value;
+            const id = input.name.split('_')[1];
+            console.log(`ID: ${id}, Status: ${status}`);
+            const res = await fetch("{{route("state.update")}}",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                    },
+                    body: JSON.stringify({
+                        state: id,
+                        status: status,
+                    }),
+                }
+            )
+            const data = await res.json();
+            if(data.success){
+                alert(data.message)
+                window.location.reload();
+            }
+            else{
+                alert(data.message);
+            }
+        });
+    });
+</script>
+
 @endsection

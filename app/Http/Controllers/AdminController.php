@@ -254,17 +254,17 @@ class AdminController extends Controller
         ]);
 
         if ($validate->fails()) {
-            return back()->with('error', $validate->errors()->first());
+            return response()->json(['success' => false, 'message' => $validate->errors()->first()], 400);
         }
 
         $state = DeliveryState::find($request->state);
         if (! $state) {
-            return back()->with('error', 'State not found');
+            return response()->json(['success' => false, 'message' => 'State not found'], 404);
         }
         $state->status = $request->status;
         $state->save();
 
-        return back()->with('success', 'State Status updated successfully');
+        return response()->json(['success' => true, 'message' => 'State Status updated successfully'], 200);
     }
 
     public function cityUpdate(Request $request, $id)
