@@ -13,6 +13,7 @@
                         <tr>
                             <th><button class="table-sort" data-sort="sort-id">ID</button></th>
                             <th><button class="table-sort" data-sort="sort-name">Name</button></th>
+                            <th><button class="table-sort" data-sort="sort-name">Status</button></th>
                             <th>Status</th>
                         </tr>
                     </thead>
@@ -21,6 +22,13 @@
                             <tr>
                                 <td class="sort-id">{{ $s->id }}</td>
                                 <td class="sort-name">{{ $s->name }}</td>
+                                <td>
+                                    @if ($s->status == 1)
+                                        <span class="badge bg-success text-white">Active</span>
+                                    @else
+                                        <span class="badge bg-danger text-white">Inactive</span>
+                                    @endif
+                                </td>
                                 <td>
                                     <div class="flex items-center space-x-4">
                                         <div>
