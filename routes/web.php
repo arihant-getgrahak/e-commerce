@@ -56,9 +56,10 @@ Route::group(['middleware' => AdminMiddleware::class], function () {
     });
 
     Route::group(['prefix' => '/admin/address'], function () {
-        Route::get('/', [AdminController::class, 'country'])->name('admin.country');
-        Route::get('state/{id}', [AdminController::class, 'getState'])->name('admin.state');
-        Route::get('city/{id}', [AdminController::class, 'getCity'])->name('admin.city');
+        Route::get('/country', [AdminController::class, 'country'])->name('admin.country');
+        Route::get('/state', [AdminController::class, 'state'])->name('admin.state');
+        Route::get('/city', [AdminController::class, 'city'])->name('admin.city');
+        Route::get('/state/{id}', [AdminController::class, 'getState'])->name('admin.state.list');
     });
 
     Route::get('/admin/navigation', [NavigationController::class, 'index'])->name('admin.navigation');
@@ -152,5 +153,3 @@ Route::get('/track-order', function () {
 Route::post('/city/add', [AdminController::class, 'addCity'])->name('city.add');
 
 Route::delete('/city/delete/{id}', [AdminController::class, 'deleteCity'])->name('city.delete.js');
-
-Route::get('/city/{id}', [AdminController::class, 'city'])->name('city.get');
