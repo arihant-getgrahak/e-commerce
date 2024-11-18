@@ -349,17 +349,11 @@ class AdminController extends Controller
         $city = DeliveryCity::find($id);
 
         if (! $city) {
-            return response()->json([
-                'error' => 'City not found',
-                'status' => false,
-            ], 404);
+            return back()->with('error', 'City not found');
         }
 
         $city->delete();
 
-        return response()->json([
-            'message' => 'City deleted successfully',
-            'status' => true,
-        ]);
+        return back()->with('success', 'City deleted successfully');
     }
 }
