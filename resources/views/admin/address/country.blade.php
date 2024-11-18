@@ -6,7 +6,7 @@
 <main class="space-y-6">
     <div class="card">
         <div class="card-body">
-            <h1>All Category</h1>
+            <h1>All Country</h1>
             <div id="table-default" class="table-responsive">
                 <table class="table">
                     <thead>
