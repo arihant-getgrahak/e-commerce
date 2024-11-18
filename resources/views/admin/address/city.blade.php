@@ -2,8 +2,8 @@
 
 @section('address')
 <div class="d-flex justify-content-between mb-4">
-<h1>Address</h1>
-<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#cityModal">Add</button>
+    <h1>Address</h1>
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#cityModal">Add</button>
 </div>
 
 <main class="space-y-6">
@@ -14,9 +14,9 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th><button class="table-sort" data-sort="sort-id">ID</button></th>
-                            <th><button class="table-sort" data-sort="sort-name">Name</button></th>
-                            <th><button class="table-sort" data-sort="sort-state">State</button></th>
+                            <th><button class="table-sort">ID</button></th>
+                            <th><button class="table-sort">Name</button></th>
+                            <th><button class="table-sort">State</button></th>
                             <th>Status</th>
                         </tr>
                     </thead>
@@ -54,15 +54,16 @@
 
 
 
-{{--<div class="modal modal-blur fade" id="modal-team" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal modal-blur fade" id="cityModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Update City</h5>
+                <h5 class="modal-title">Add New City</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="productForm" class="bg-white p-6 rounded-lg shadow-lg" method="post" action="">
+                <form id="cityForm" class="bg-white p-6 rounded-lg shadow-lg" method="post"
+                    action="{{route("city.add")}}">
                     @csrf
                     <!-- Name -->
                     <div class="mb-4">
@@ -70,6 +71,25 @@
                         <input type="text" id="name" name="name"
                             class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
                             placeholder="Enter product name">
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label required">State Name</label>
+                        <select class="form-select" id="state_id" name="state_id" required>
+                        </select>
+                        @error('state_id')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label required">Country Name</label>
+                        <select class="form-select" id="country" name="country" required>
+                            @foreach ($country as $c)
+                                <option value="{{ $c->id }}">{{ $c->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('country')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="mt-3">
                         <label class="form-label required">IsActive</label>
@@ -79,12 +99,12 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary ms-auto">Update</button>
+                <button type="submit" class="btn btn-primary ms-auto">Add</button>
             </div>
             </form>
         </div>
     </div>
-</div>--}}
+</div>
 
 
 <script>
@@ -95,5 +115,30 @@
     if ("{{ session('error') }}") {
         alert("{{ session('error') }}");
     }
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', async function () {
+        const country = document.getElementById('country');
+        const state = document.getElementById('state_id');
+
+        const res = await fetch("{{route("admin.state.list", ":id")}}".replace(':id', country.value), {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            }
+        });
+
+        const data = await res.json();
+
+        state.innerHTML = '';
+        state.innerHTML += '<option value="">Select State</option>';
+
+        data.forEach(option => {
+            const HTML = `<option value="${option.id}">${option.name}</option>`;
+            state.innerHTML += HTML;
+        });
+    })
 </script>
 @endsection
