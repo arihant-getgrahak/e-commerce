@@ -207,11 +207,22 @@ class AdminController extends Controller
     public function city()
     {
         $city = DeliveryCity::with('state')->get();
+        $country = DeliveryCountry::all();
         if (! $city) {
             return back()->with('error', 'City not found');
         }
 
-        return view('admin.address.city', compact('city'));
+        return view('admin.address.city', compact(['city', 'country']));
+    }
+
+    public function getState($id)
+    {
+        $state = DeliveryState::where('country_id', $id)->get();
+        if (! $state) {
+            return response()->json([]);
+        }
+
+        return response()->json($state);
     }
 
     public function addressUpdate(Request $request)
@@ -309,6 +320,7 @@ class AdminController extends Controller
             'name' => 'required',
             'state_id' => 'required|exists:delivery_states,id',
             'country' => 'required|exists:delivery_countries,id',
+            'status' => 'required|in:0,1',
         ]);
         if ($validate->fails()) {
             return back()->with('error', $validate->errors()->first());
@@ -321,6 +333,7 @@ class AdminController extends Controller
             'name' => $request->name,
             'state_id' => $request->state_id,
             'country_id' => $request->country,
+            'status' => $request->status,
         ]);
 
         if (! $city) {
@@ -346,24 +359,6 @@ class AdminController extends Controller
 
         return response()->json([
             'message' => 'City deleted successfully',
-            'status' => true,
-        ]);
-    }
-
-    public function acity($id)
-    {
-        $city = DeliveryCity::find($id);
-
-        if (! $city) {
-            return response()->json([
-                'error' => 'City not found',
-                'status' => false,
-            ], 404);
-        }
-
-        return response()->json([
-            'message' => 'City fetched successfully',
-            'data' => $city,
             'status' => true,
         ]);
     }
