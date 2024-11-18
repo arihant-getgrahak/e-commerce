@@ -17,6 +17,7 @@
                             <th><button class="table-sort">ID</button></th>
                             <th><button class="table-sort">Name</button></th>
                             <th><button class="table-sort">State</button></th>
+                            <th><button class="table-sort">Status</button></th>
                             <th>Buttons</th>
                         </tr>
                     </thead>
@@ -26,6 +27,13 @@
                                 <td class="sort-id">{{ $s->id }}</td>
                                 <td class="sort-name">{{ $s->name }}</td>
                                 <td class="sort-name">{{ $s->state->name }}</td>
+                                <td>
+                                    @if ($s->status == 1)
+                                        <span class="badge bg-success text-white">Active</span>
+                                    @else
+                                        <span class="badge bg-danger text-white">Inactive</span>
+                                    @endif
+                                </td>
                                 <td>
                                     <button class="btn btn-primary btn-sm btn-update" id="btn-update" data-bs-toggle="modal"
                                         data-bs-target="#modal-city-update" data-id="{{ $s->id }}"
