@@ -305,10 +305,18 @@ class AdminController extends Controller
         if ($data['Status'] !== 'Success') {
             return back()->with('error', 'Invalid Pincode');
         }
-        $city = DeliveryCity::where('name', $data['PostOffice'][0]['District'])->first();
+        $state = DeliveryState::where('name', $data['PostOffice'][0]['State'])->first();
 
-        if ($city->status) {
-            return back()->with('success', 'Delivery Available');
+        if ($state->status) {
+            $city = DeliveryCity::where('name', $data['PostOffice'][0]['District'])->first();
+            if (! $city) {
+                return back()->with('error', 'Delivery Not Available');
+            }
+            if ($city->status) {
+                return back()->with('success', 'Delivery Available');
+            }
+
+            return back()->with('error', 'Delivery Not Available');
         }
 
         return back()->with('error', 'Delivery Not Available');
