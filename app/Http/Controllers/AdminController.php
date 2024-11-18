@@ -283,7 +283,7 @@ class AdminController extends Controller
     public function checkAddress(Request $request)
     {
         $validate = Validator::make($request->all(), [
-            'pincode' => 'required',
+            'pincode' => 'required|numeric|digits:6',
         ]);
 
         if ($validate->fails()) {
@@ -293,12 +293,10 @@ class AdminController extends Controller
         $res = Http::get('https://api.postalpincode.in/pincode/'.$request->pincode);
         $data = $res->json()[0];
         if ($data['Status'] !== 'Success') {
-            return response()->json([
-                'error' => 'Invalid Pincode',
-            ], 400);
+            return back()->with('error', 'Invalid Pincode');
         }
-
         $city = DeliveryCity::where('name', $data['PostOffice'][0]['District'])->first();
+
         if ($city->status) {
             return back()->with('success', 'Delivery Available');
         }
