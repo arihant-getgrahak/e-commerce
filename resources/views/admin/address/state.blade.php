@@ -6,26 +6,34 @@
 <main class="space-y-6">
     <div class="card">
         <div class="card-body">
-            <h1>All Category</h1>
-            <div id="table-default" class="table-responsive">
-                <table class="table">
+            <h1>All Categories</h1>
+            <div id="table-categories" class="table-responsive">
+                <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th><button class="table-sort" data-sort="sort-name">Id</button></th>
-                            <th><button class="table-sort" data-sort="sort-city">Name</button></th>
-                            <th><button class="table-sort" data-sort="sort-type">Buttons</button></th>
+                            <th><button class="table-sort" data-sort="sort-id">ID</button></th>
+                            <th><button class="table-sort" data-sort="sort-name">Name</button></th>
+                            <th>Status</th>
                         </tr>
                     </thead>
-                    <tbody class="table-tbody">
+                    <tbody>
                         @foreach ($state as $s)
                             <tr>
-                                <td class="sort-name">{{$s->id}}</td>
-                                <td class="sort-city">{{$s->name}}</td>
-                                <td class="sort-type">
-                                    <input type="radio" name="status" id="status-yes" value="1" {{ $s->status == 1 ? 'checked' : '' }}>
-                                    <label for="status-yes">Yes</label>
-                                    <input type="radio" name="status" id="status-no" value="0" {{ $s->status == 0 ? 'checked' : '' }}>
-                                    <label for="status-no">No</label>
+                                <td class="sort-id">{{ $s->id }}</td>
+                                <td class="sort-name">{{ $s->name }}</td>
+                                <td>
+                                    <div class="flex items-center space-x-4">
+                                        <div>
+                                            <input type="radio" name="status_{{ $s->id }}" id="status-yes-{{ $s->id }}"
+                                                value="1" {{ $s->status == 1 ? 'checked' : '' }}>
+                                            <label for="status-yes-{{ $s->id }}">Yes</label>
+                                        </div>
+                                        <div>
+                                            <input type="radio" name="status_{{ $s->id }}" id="status-no-{{ $s->id }}"
+                                                value="0" {{ $s->status == 0 ? 'checked' : '' }}>
+                                            <label for="status-no-{{ $s->id }}">No</label>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach
@@ -35,6 +43,7 @@
         </div>
     </div>
 </main>
+
 
 
 
