@@ -371,6 +371,9 @@
     </section>
 @endif
 
+@endsection
+
+@section("script")
 <script>
     const status = document.getElementsByClassName("status")[0]
     const error = "{{session('error')}}"
@@ -378,15 +381,11 @@
     if (error) {
         status.innerHTML = `<p class="text-danger">${error}</p>`;
     }
-    
+
     if (success) {
         status.innerHTML = `<p class="text-success">${success}</p>`;
     }
 </script>
-
-@endsection
-
-@section("script")
 <script>
     const session = "{{session('error')}}";
     if (session) {
