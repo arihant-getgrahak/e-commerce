@@ -190,7 +190,7 @@
                 </h2>
             </div>
             <div class="col-auto ms-auto d-print-none">
-                <button type="button" class="btn btn-primary" onclick="javascript:window.print();">
+                <button type="button" class="btn btn-primary" onclick="toggleDropdown()">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
                         stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
                         stroke-linejoin="round">
@@ -201,7 +201,13 @@
                     </svg>
                     Print Invoice
                 </button>
+
+                <div id="print-dropdown" class="dropdown-menu" style="display: none;">
+                    <a class="dropdown-item" href="#" onclick="printInvoice('pdf')">Print as PDF</a>
+                    <a class="dropdown-item" href="#" onclick="printInvoice('html')">Print using PrintNode</a>
+                </div>
             </div>
+
         </div>
     </div>
 </div>
@@ -279,5 +285,29 @@
     </div>
 </div>
 
+<script>
+    function toggleDropdown() {
+        const dropdown = document.getElementById("print-dropdown");
+        dropdown.style.display = dropdown.style.display === "none" ? "block" : "none";
+    }
 
+    function printInvoice(type) {
+        if (type === "pdf") {
+            window.print();
+        } else if (type === "html") {
+            console.log("Printing as HTML...");
+        }
+
+        document.getElementById("print-dropdown").style.display = "none";
+    }
+
+    document.addEventListener("click", function (event) {
+        const dropdown = document.getElementById("print-dropdown");
+        const button = event.target.closest(".btn-primary");
+        if (!dropdown.contains(event.target) && !button) {
+            dropdown.style.display = "none";
+        }
+    });
+
+</script>
 @endsection

@@ -25,7 +25,7 @@
                             <thead>
                                 <tr>
                                     <th><button class="table-sort" data-sort="sort-name">Name</button></th>
-                                    <th><button class="table-sort" data-sort="sort-name">Menu</button></th>
+                                    <th><button class="table-sort" data-sort="sort-name">Links</button></th>
                                 </tr>
                             </thead>
                             <tbody class="table-tbody">
