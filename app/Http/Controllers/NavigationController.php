@@ -58,7 +58,6 @@ class NavigationController extends Controller
     {
         $validate = Validator::make($request->all(), [
             'name' => 'required|unique:navigations,name',
-            'navigation_id' => 'required|exists:navigations,id',
         ]);
 
         if ($validate->fails()) {
