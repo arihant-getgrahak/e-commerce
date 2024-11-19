@@ -153,3 +153,7 @@ Route::get('/track-order', function () {
 Route::post('/city/add', [AdminController::class, 'addCity'])->name('city.add');
 
 Route::delete('/city/delete/{id}', [AdminController::class, 'deleteCity'])->name('city.delete');
+
+Route::get('/links/{id}', [NavigationController::class, 'getLinks'])->name('links');
+Route::post('/link', [NavigationController::class, 'store'])->name('link.add');
+Route::post('/menu', [NavigationController::class, 'addMenu'])->name('menu.add');

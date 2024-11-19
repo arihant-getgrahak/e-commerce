@@ -33,7 +33,7 @@
                     </div>
                 </div>
 
-                @foreach (session('navigation') as $navigation)
+                @foreach ($navigations as $navigation)
                     @if ($navigation->name === 'Footer')
                         @foreach ($navigation->menus as $menu)
                             @if(count($menu->children) > 0)

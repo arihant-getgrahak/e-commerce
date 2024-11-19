@@ -7,7 +7,6 @@ use App\Models\Attributes;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Gallery;
-use App\Models\Navigation;
 use App\Models\OrderAdress;
 use App\Models\Product;
 use App\Models\Search;
@@ -108,13 +107,6 @@ class ProductController extends Controller
         }
         session()->remove('recentsearch');
         session()->put('recentsearch', $recentSearches);
-
-        $navigation = Navigation::with('menus.children')->get();
-        foreach ($navigation as $n) {
-            $n->menus = $n->menus->whereNull('parent_id');
-        }
-
-        session()->put('navigation', $navigation);
 
         return view('welcome')->with('product', $product)->with('categories', collect($data))->with('brand', $brand);
     }
