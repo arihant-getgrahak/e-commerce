@@ -245,7 +245,7 @@
                     </thead>
                     @foreach ($order->products as $product)
                                     <tr>
-                                        <td class="text-center"></td>
+                                        <td class="text-center">{{ $loop->iteration }}</td>
                                         <td>
                                             <p class="strong mb-1">{{Str::ucfirst($product->product->name)}}</p>
                                         </td>
