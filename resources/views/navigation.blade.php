@@ -14,7 +14,9 @@
         <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs">
             @foreach ($navigation as $nav)
                 <li class="nav-item">
-                    <a href="#tabs-{{$nav->id}}" class="nav-link" data-bs-toggle="tab">{{ $nav->name }}</a>
+                    <a href="#tabs-{{$nav->id}}" class="nav-link" data-bs-toggle="tab">
+                        {{ $nav->name }}
+                    </a>
                 </li>
             @endforeach
         </ul>
@@ -25,12 +27,16 @@
                 <div class="tab-pane {{ $index === 0 ? 'active show' : '' }}" id="tabs-{{$nav->id}}">
                     @foreach ($nav->menus as $menu)
                         <ul>
-                            <li>{{ $menu->name }} (<a href="{{ $menu->link }}">{{ $menu->link }}</a>)</li>
+                            <li>
+                                {{ $menu->name }}
+                                (<a href="{{ $menu->link }}">{{ $menu->link }}</a>)
+                            </li>
                             @if ($menu->children->isNotEmpty())
                                 <ul>
                                     @foreach ($menu->children as $child)
                                         <li class="sort-name">
-                                            {{ $child->name }} (<a href="{{ $child->link }}">{{ $child->link }}</a>)
+                                            {{ $child->name }}
+                                            (<a href="{{ $child->link }}">{{ $child->link }}</a>)
                                         </li>
                                     @endforeach
                                 </ul>
@@ -42,7 +48,6 @@
         </div>
     </div>
 </div>
-
 
 <!-- add link modal -->
 <div class="modal modal-blur fade" id="modal-link" tabindex="-1" role="dialog" aria-hidden="true">
