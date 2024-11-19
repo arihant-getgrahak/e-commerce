@@ -1,68 +1,131 @@
 @extends('layout.index')
-
 @section('navigation')
 
-<div class="page-wrapper">
-    <!-- Page header -->
-    <div class="page-header d-print-none">
-        <div class="container-xl">
-            <div class="row g-2 align-items-center">
-                <div class="col">
-                    <h2 class="page-title">
-                        Datatables
-                    </h2>
-                </div>
-            </div>
-        </div>
+<div class="d-flex justify-content-between mb-4">
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-link">
+        Add Link
+    </button>
+</div>
+<div class="card">
+    <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs">
+            <li class="nav-item">
+                <a href="#tabs-home" class="nav-link active" data-bs-toggle="tab">Header</a>
+            </li>
+            <li class="nav-item">
+                <a href="#tabs-footer" class="nav-link" data-bs-toggle="tab">Footer</a>
+            </li>
+
+        </ul>
     </div>
-    <!-- Page body -->
-    <div class="page-body">
-        <div class="container-xl">
-            <div class="card">
-                <div class="card-body">
-                    <div id="table-default" class="table-responsive">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th><button class="table-sort" data-sort="sort-name">Name</button></th>
-                                    <th><button class="table-sort" data-sort="sort-name">Menu</button></th>
-                                </tr>
-                            </thead>
-                            <tbody class="table-tbody">
-                                @foreach ($navigation as $n)
-                                    <tr>
-                                        <td class="sort-name">{{ $n->name }}</td>
-                                        <td>
-                                            @if($n->menus->isNotEmpty())
+    <div class="card-body">
+        <div class="tab-content">
+            @foreach (['Header' => 'tabs-home', 'Footer' => 'tabs-footer'] as $type => $id)
+                        <div class="tab-pane {{ $type === 'Header' ? 'active show' : '' }}" id="{{ $id }}">
+                            @php
+                                $navigationItem = $navigation->firstWhere('name', $type);
+                            @endphp
+                            @if ($navigationItem && $navigationItem->menus->isNotEmpty())
+                                <ul class="nested-sortable">
+                                    @foreach ($navigationItem->menus as $menu)
+                                        <li class="sort-name">
+                                            {{ $menu->name }} (<a href="{{ $menu->link }}">{{ $menu->link }}</a>)
+                                            @if ($menu->children->isNotEmpty())
                                                 <ul>
-                                                    @foreach ($n->menus as $menu)
-                                                        <li class="sort-name">{{ $menu->name }}(<a
-                                                                href="{{$menu->link}}">{{$menu->link}}</a>)</li>
-                                                        @if($menu->children->isNotEmpty())
-                                                            <ul>
-                                                                @foreach ($menu->children as $child)
-                                                                    <li class="sort-name">{{ $child->name }}(
-                                                                        <a href="{{$child->link}}">{{$child->link}}</a>
-                                                                        )
-                                                                    </li>
-                                                                @endforeach
-                                                            </ul>
-                                                        @endif
+                                                    @foreach ($menu->children as $child)
+                                                        <li class="sort-name">
+                                                            {{ $child->name }} (<a href="{{ $child->link }}">{{ $child->link }}</a>)
+                                                        </li>
                                                     @endforeach
                                                 </ul>
-                                            @else
-                                                No Children
                                             @endif
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @else
+                                <p>No Children</p>
+                            @endif
+                        </div>
+            @endforeach
         </div>
     </div>
-
 </div>
+
+
+<div class="modal modal-blur fade" id="modal-link" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Links Form</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="productForm" class="bg-white p-6 rounded-lg shadow-lg" method="post"
+                    action="{{route("link.add")}}" enctype="multipart/form-data">
+                    @csrf
+
+                    <!-- menu_id -->
+                    <div class="mb-3">
+                        <label class="form-label required">Menu</label>
+                        <select class="form-select" id="navigation_id" name="navigation_id" required>
+                            <option value="">Select Parent Menu</option>
+                            @foreach ($navigation as $m)
+                                <option value="{{ $m->id }}">{{ $m->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- parent_id -->
+                    <div class="mb-3">
+                        <label class="form-label">Parent (Optional)</label>
+                        <select class="form-select" id="parent_id" name="parent_id">
+                            <option value="">Select Parent Menu</option>
+                        </select>
+                    </div>
+
+                    <!-- Name -->
+                    <div class="mb-4">
+                        <label for="name" class="col-form-label required">Name</label>
+                        <input type="text" id="name" name="name"
+                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="Enter name"
+                            required>
+                    </div>
+
+                    <!-- link -->
+                    <div class="mb-4">
+                        <label for="name" class="col-form-label required">Link</label>
+                        <input type="text" id="link" name="link"
+                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="Enter link"
+                            required>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary ms-auto">Add Link</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const menuId = document.getElementById("navigation_id");
+        let tempId = menuId.value;
+
+        menuId.addEventListener("change", async function () {
+            const parentIdSelect = document.getElementById("parent_id");
+            const res = await fetch("{{route("links", ":id")}}".replace(":id", menuId.value));
+            const data = await res.json();
+            // parentIdSelect.innerHTML = "";
+
+            data.links.forEach(option => {
+                const HTML = `<option value="${option.id}">${option.name}</option>`;
+                parentIdSelect.insertAdjacentHTML("beforeend", HTML);
+            });
+        });
+
+    })
+</script>
+
 @endsection
