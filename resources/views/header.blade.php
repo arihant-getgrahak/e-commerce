@@ -33,7 +33,7 @@
             </div>
             <div class="nav-menus-wrapper" style="transition-property: none;">
                 <ul class="nav-menu">
-                    @foreach (session('navigation') as $navigation)
+                    @foreach ($navigations as $navigation)
                         @if ($navigation->name === 'Header')
                             @foreach ($navigation->menus as $menu)
                                 <li>
