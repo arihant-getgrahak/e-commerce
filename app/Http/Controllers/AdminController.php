@@ -11,7 +11,6 @@ use App\Models\OrderProduct;
 use App\Models\OrderStatus;
 use App\Models\User;
 use Auth;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Http;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -135,9 +134,7 @@ class AdminController extends Controller
             ], 'price')
             ->find($id);
 
-        $pdf = Pdf::loadView('invoice', ['order' => $order]);
-
-        return $pdf->download('invoice-order-'.$order->id.'.pdf');
+        return view('invoice', ['order' => $order]);
 
     }
 
