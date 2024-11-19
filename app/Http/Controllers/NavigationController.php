@@ -53,4 +53,22 @@ class NavigationController extends Controller
 
         return back()->with('success', 'Navigation menu created successfully');
     }
+
+    public function addMenu(Request $request)
+    {
+        $validate = Validator::make($request->all(), [
+            'name' => 'required|unique:navigations,name',
+            'navigation_id' => 'required|exists:navigations,id',
+        ]);
+
+        if ($validate->fails()) {
+            return back()->with('errors', $validate->errors());
+        }
+        $data = [
+            'name' => $request->name,
+        ];
+        Navigation::create($data);
+
+        return back()->with('success', 'Navigation created successfully');
+    }
 }
