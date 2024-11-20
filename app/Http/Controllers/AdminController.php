@@ -155,7 +155,7 @@ class AdminController extends Controller
             ], 'price')
             ->find($id);
 
-        $pdf = Pdf::loadView('invoices.invoice', [
+        $pdf = Pdf::loadView('invoice', [
             'order' => $order,
         ])
             ->setPaper('A4');
@@ -163,7 +163,7 @@ class AdminController extends Controller
         $pdfOutput = $pdf->output();
         $pdfBase64 = base64_encode($pdfOutput);
 
-        $isPrintSuccess = $this->sendToPrintNode($pdfBase64, 'Invoice'.$order[0]->id);
+        $isPrintSuccess = $this->sendToPrintNode($pdfBase64, 'Invoice'.$order->id);
         if ($isPrintSuccess['success']) {
             return response()->json(['success' => true, 'message' => 'Invoice printed successfully'], 200);
         }

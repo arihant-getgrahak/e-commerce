@@ -24,7 +24,8 @@
 
                 <div id="print-dropdown" class="dropdown-menu" style="display: none;">
                     <a class="dropdown-item" href="#" onclick="printInvoice('pdf')">Print as PDF</a>
-                    <a class="dropdown-item" href="#" onclick="printInvoice('html')">Print using PrintNode</a>
+                    <a class="dropdown-item" href="#" onclick="printInvoice('printnode',{{$order->id}}??null)">Print
+                        using PrintNode</a>
                 </div>
             </div>
 
@@ -94,7 +95,8 @@
                     </tr>
                     <tr>
                         <td colspan="4" class="font-weight-bold text-uppercase text-end">Total Due</td>
-                        <td class="font-weight-bold text-end"> ₹{{$order->total_price + $order->total_price * 0.12}}</td>
+                        <td class="font-weight-bold text-end"> ₹{{$order->total_price + $order->total_price * 0.12}}
+                        </td>
                     </tr>
                 </table>
                 <p class="text-secondary text-center mt-5">Thank you for your order.</p>
@@ -109,11 +111,24 @@
         dropdown.style.display = dropdown.style.display === "none" ? "block" : "none";
     }
 
-    function printInvoice(type) {
+    async function printInvoice(type, orderId) {
         if (type === "pdf") {
             window.print();
-        } else if (type === "html") {
+        } else if (type === "printnode") {
             console.log("Printing as HTML...");
+            console.log(orderId);
+
+            if (!orderId) alert("Order ID not found");
+
+            const res = await fetch("{{ route('printNode', ':id') }}".replace(':id', orderId), {
+                method: "get",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                },
+            })
+            const data = await res.json();
+            console.log(data);
         }
 
         document.getElementById("print-dropdown").style.display = "none";
