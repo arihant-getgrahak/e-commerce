@@ -255,6 +255,9 @@
             <main>
                 @yield("navigation")
             </main>
+            <main>
+                @yield("specificOrder")
+            </main>
         </main>
     </div>
     <footer class="footer footer-transparent d-print-none">

@@ -115,9 +115,6 @@
         if (type === "pdf") {
             window.print();
         } else if (type === "printnode") {
-            console.log("Printing as HTML...");
-            console.log(orderId);
-
             if (!orderId) alert("Order ID not found");
 
             const res = await fetch("{{ route('printNode', ':id') }}".replace(':id', orderId), {
