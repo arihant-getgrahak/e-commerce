@@ -11,6 +11,7 @@ use App\Models\OrderProduct;
 use App\Models\OrderStatus;
 use App\Models\User;
 use Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Http;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -117,7 +118,7 @@ class AdminController extends Controller
         }
     }
 
-    public function download($id)
+    public function invoice($id)
     {
         $order = Order::with([
             'products' => function ($query) {
@@ -135,7 +136,66 @@ class AdminController extends Controller
             ->find($id);
 
         return view('invoice', ['order' => $order]);
+    }
 
+    public function printNode($id)
+    {
+        $order = Order::with([
+            'products' => function ($query) {
+                $query->where('status', '!=', 'cancelled');
+            },
+            'products.product',
+            'user',
+            'address',
+        ])
+            ->withSum([
+                'products as total_price' => function ($query) {
+                    $query->where('status', '!=', 'cancelled');
+                },
+            ], 'price')
+            ->find($id);
+
+        $pdf = Pdf::loadView('invoices.invoice', [
+            'order' => $order,
+        ])
+            ->setPaper('A4');
+
+        $pdfOutput = $pdf->output();
+        $pdfBase64 = base64_encode($pdfOutput);
+
+        $isPrintSuccess = $this->sendToPrintNode($pdfBase64, 'Invoice'.$order[0]->id);
+        if ($isPrintSuccess['success']) {
+            return response()->json(['success' => true, 'message' => 'Invoice printed successfully'], 200);
+        }
+
+        return response()->json(['success' => false, 'message' => $isPrintSuccess['error']], 400);
+    }
+
+    private function sendToPrintNode($pdfBase64, $title)
+    {
+        $apiKey = env('PRINTNODE_AUTH_USERNAME');
+        $desktopId = env('PRINTNODE_DESKTOP_ID');
+        $client = new \GuzzleHttp\Client;
+
+        try {
+            $response = $client->post('https://api.printnode.com/printjobs', [
+                'auth' => [$apiKey, env('PRINTNODE_AUTH_KEY')],
+                'json' => [
+                    'printerId' => $desktopId,
+                    'title' => $title,
+                    'contentType' => 'pdf_base64',
+                    'content' => $pdfBase64,
+                ],
+            ]);
+
+            if ($response->getStatusCode() === 201) {
+                return ['success' => true];
+            }
+
+            return ['success' => false, 'error' => 'Unexpected response from PrintNode'];
+        } catch (\Exception $e) {
+            return ['success' => false, 'error' => $e->getMessage()];
+        }
     }
 
     public function user()
