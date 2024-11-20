@@ -24,7 +24,7 @@
     <div class="card-body">
         <div class="tab-content">
             @foreach ($navigation as $index => $nav)
-                <div class="tab-pane {{ $index === 0 ? 'active show' : '' }}" id="tabs-{{$nav->id}}">
+                <div class="tab-pane {{ $nav->id == 0 ? 'active show' : '' }}" id="tabs-{{$nav->id}}">
                     @foreach ($nav->menus as $menu)
                         <ul>
                             <li>
