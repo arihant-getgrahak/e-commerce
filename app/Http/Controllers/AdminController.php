@@ -364,4 +364,14 @@ class AdminController extends Controller
 
         return back()->with('success', 'City deleted successfully');
     }
+
+    public function orderspeicific($id)
+    {
+        $order = Order::with(['products.product', 'user', 'address'])->find($id);
+        if (! $order) {
+            return back()->with('error', 'Order not found');
+        }
+
+        return view('orderspecific', compact('order'));
+    }
 }
