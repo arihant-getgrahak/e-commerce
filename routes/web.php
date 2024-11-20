@@ -126,7 +126,8 @@ Route::get('/admin/order', [AdminController::class, 'index'])->name('admin.order
 Route::post('admin/order/update/{id}', [AdminController::class, 'update'])->name('admin.order.update');
 Route::post('/admin/search', [AdminController::class, 'search'])->name('admin.search');
 
-Route::get('/invoice/{id}', [AdminController::class, 'download'])->name('invoice');
+Route::get('/invoice/{id}', [AdminController::class, 'invoice'])->name('invoice');
+Route::get('/print/{id}', [AdminController::class, 'printNode'])->name('printNode');
 
 Route::get('/admin/user', [AdminController::class, 'user'])->name('admin.user');
 
@@ -146,9 +147,7 @@ Route::post('/city/update/{id}', [AdminController::class, 'cityUpdate'])->name('
 
 Route::get('/address/available', [AdminController::class, 'checkAddress'])->name('address.available');
 
-Route::get('/track-order', function () {
-    return view('trackorderinput');
-})->name('track.order');
+Route::get('/track-order', [AdminController::class, 'track_order'])->name('track.order');
 
 Route::post('/city/add', [AdminController::class, 'addCity'])->name('city.add');
 
