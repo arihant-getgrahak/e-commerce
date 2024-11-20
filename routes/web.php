@@ -147,9 +147,7 @@ Route::post('/city/update/{id}', [AdminController::class, 'cityUpdate'])->name('
 
 Route::get('/address/available', [AdminController::class, 'checkAddress'])->name('address.available');
 
-Route::get('/track-order', function () {
-    return view('trackorderinput');
-})->name('track.order');
+Route::get('/track-order', [AdminController::class, 'track_order'])->name('track.order');
 
 Route::post('/city/add', [AdminController::class, 'addCity'])->name('city.add');
 
