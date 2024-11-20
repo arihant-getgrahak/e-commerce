@@ -128,7 +128,13 @@
                 },
             })
             const data = await res.json();
-            console.log(data);
+
+            if (data.status) {
+                alert(data.message);
+            }
+            else {
+                alert(data.message);
+            }
         }
 
         document.getElementById("print-dropdown").style.display = "none";
