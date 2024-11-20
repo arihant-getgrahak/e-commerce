@@ -124,9 +124,15 @@
         if (type === "pdf") {
             window.print();
         } else if (type === "printnode") {
-            if (!orderId) alert("Order ID not found");
 
-            const res = await fetch("{{ route('printNode', ':id') }}".replace(':id', orderId), {
+            if (!orderId) alert("Order ID not found");
+            if (!printerId) alert("Printer ID not found");
+
+            const url = `{{ route('printNode', [':id', ":printerId"]) }}`
+                .replace(':id', orderId)
+                .replace(':printerId', printerId);
+
+            const res = await fetch(url, {
                 method: "get",
                 headers: {
                     "Content-Type": "application/json",

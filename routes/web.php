@@ -127,7 +127,7 @@ Route::post('admin/order/update/{id}', [AdminController::class, 'update'])->name
 Route::post('/admin/search', [AdminController::class, 'search'])->name('admin.search');
 
 Route::get('/invoice/{id}', [AdminController::class, 'invoice'])->name('invoice');
-Route::get('/print/{id}', [AdminController::class, 'printNode'])->name('printNode');
+Route::get('/print/{id}/{printerId}', [AdminController::class, 'printNode'])->name('printNode');
 
 Route::get('/admin/user', [AdminController::class, 'user'])->name('admin.user');
 
