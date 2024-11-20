@@ -158,3 +158,5 @@ Route::post('/link', [NavigationController::class, 'store'])->name('link.add');
 Route::post('/menu', [NavigationController::class, 'addMenu'])->name('menu.add');
 
 Route::get('/admin/order/{id}', [AdminController::class, 'orderspeicific'])->name('order.specific');
+
+Route::get('/getPrinter', [AdminController::class, 'getPrinters'])->name('getPrinter');
