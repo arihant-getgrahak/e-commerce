@@ -155,15 +155,15 @@ class AdminController extends Controller
             ], 'price')
             ->find($id);
 
-        $pdf = Pdf::loadView('invoice', [
+        $pdf = Pdf::loadView('printinvoice', [
             'order' => $order,
-        ])
-            ->setPaper('A4');
+        ]);
+        // ->setOption('enable_font_subsetting', true);
 
         $pdfOutput = $pdf->output();
         $pdfBase64 = base64_encode($pdfOutput);
 
-        $isPrintSuccess = $this->sendToPrintNode($pdfBase64, 'Invoice'.$order->id);
+        $isPrintSuccess = $this->sendToPrintNode($pdfBase64, "Invoice{$order->id}");
         if ($isPrintSuccess['success']) {
             return response()->json(['success' => true, 'message' => 'Invoice printed successfully'], 200);
         }
@@ -174,14 +174,14 @@ class AdminController extends Controller
     private function sendToPrintNode($pdfBase64, $title)
     {
         $apiKey = env('PRINTNODE_AUTH_USERNAME');
-        $desktopId = env('PRINTNODE_DESKTOP_ID');
+        $printerId = env('PRINTNODE_PRINTER_ID');
         $client = new \GuzzleHttp\Client;
 
         try {
             $response = $client->post('https://api.printnode.com/printjobs', [
                 'auth' => [$apiKey, env('PRINTNODE_AUTH_KEY')],
                 'json' => [
-                    'printerId' => $desktopId,
+                    'printerId' => $printerId,
                     'title' => $title,
                     'contentType' => 'pdf_base64',
                     'content' => $pdfBase64,
