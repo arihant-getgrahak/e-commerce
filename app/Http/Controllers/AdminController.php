@@ -421,4 +421,9 @@ class AdminController extends Controller
 
         return back()->with('success', 'City deleted successfully');
     }
+
+    public function track_order()
+    {
+        return view('trackorderinput');
+    }
 }
