@@ -118,7 +118,7 @@ class AdminController extends Controller
         }
     }
 
-    public function download($id)
+    public function invoice($id)
     {
         $order = Order::with([
             'products' => function ($query) {
@@ -135,10 +135,67 @@ class AdminController extends Controller
             ], 'price')
             ->find($id);
 
-        $pdf = Pdf::loadView('invoice', ['order' => $order]);
+        return view('invoice', ['order' => $order]);
+    }
 
-        return $pdf->download('invoice-order-'.$order->id.'.pdf');
+    public function printNode($id)
+    {
+        $order = Order::with([
+            'products' => function ($query) {
+                $query->where('status', '!=', 'cancelled');
+            },
+            'products.product',
+            'user',
+            'address',
+        ])
+            ->withSum([
+                'products as total_price' => function ($query) {
+                    $query->where('status', '!=', 'cancelled');
+                },
+            ], 'price')
+            ->find($id);
 
+        $pdf = Pdf::loadView('printinvoice', [
+            'order' => $order,
+        ]);
+        // ->setOption('enable_font_subsetting', true);
+
+        $pdfOutput = $pdf->output();
+        $pdfBase64 = base64_encode($pdfOutput);
+
+        $isPrintSuccess = $this->sendToPrintNode($pdfBase64, "Invoice{$order->id}");
+        if ($isPrintSuccess['success']) {
+            return response()->json(['success' => true, 'message' => 'Invoice printed successfully'], 200);
+        }
+
+        return response()->json(['success' => false, 'message' => $isPrintSuccess['error']], 400);
+    }
+
+    private function sendToPrintNode($pdfBase64, $title)
+    {
+        $apiKey = env('PRINTNODE_AUTH_USERNAME');
+        $printerId = env('PRINTNODE_PRINTER_ID');
+        $client = new \GuzzleHttp\Client;
+
+        try {
+            $response = $client->post('https://api.printnode.com/printjobs', [
+                'auth' => [$apiKey, env('PRINTNODE_AUTH_KEY')],
+                'json' => [
+                    'printerId' => $printerId,
+                    'title' => $title,
+                    'contentType' => 'pdf_base64',
+                    'content' => $pdfBase64,
+                ],
+            ]);
+
+            if ($response->getStatusCode() === 201) {
+                return ['success' => true];
+            }
+
+            return ['success' => false, 'error' => 'Unexpected response from PrintNode'];
+        } catch (\Exception $e) {
+            return ['success' => false, 'error' => $e->getMessage()];
+        }
     }
 
     public function user()
@@ -363,15 +420,5 @@ class AdminController extends Controller
         $city->delete();
 
         return back()->with('success', 'City deleted successfully');
-    }
-
-    public function orderspeicific($id)
-    {
-        $order = Order::with(['products.product', 'user', 'address'])->find($id);
-        if (! $order) {
-            return back()->with('error', 'Order not found');
-        }
-
-        return view('orderspecific', compact('order'));
     }
 }

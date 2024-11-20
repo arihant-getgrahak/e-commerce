@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CategoryStoreRequest;
 use App\Models\Category;
+use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Validator;
@@ -92,19 +93,23 @@ class CategoryController extends Controller
         $category = Category::find($id);
         if (! $category) {
             return back()->with('error', 'Incorrect category id');
-            // return response()->json([
-            //     'status' => false,
-            //     'message' => 'Category not found',
-            // ], 404);
+        }
+
+        // $order = Order::with('products.product')->whereHas('products.product', function ($query) use ($id) {
+        //     $query->where('category_id', $id);
+        // });
+
+        $hasOrders = Order::whereHas('products.product', function ($query) use ($id) {
+            $query->where('category_id', $id);
+        })->exists();
+
+        if ($hasOrders) {
+            return back()->with('error', 'Cannot delete category with orders');
         }
 
         $category->delete();
 
         return back()->with('success', 'Category deleted successfully');
-        // return response()->json([
-        //     'status' => true,
-        //     'message' => 'Category deleted successfully',
-        // ], status: 200);
     }
 
     // for child

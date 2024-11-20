@@ -101,7 +101,7 @@
                                                             @csrf
                                                             @method('DELETE')
                                                             <button type="submit" class="btn btn-danger w-100">Delete
-                                                                product</button>
+                                                                Category</button>
                                                         </form>
                                                     </div>
                                                 </div>
@@ -123,7 +123,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Update form</h5>
+                    <h5 class="modal-title">Update Form</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -152,7 +152,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary ms-auto">Update Product</button>
+                    <button type="submit" class="btn btn-primary ms-auto">Update Category</button>
                 </div>
                 </form>
             </div>
@@ -160,28 +160,12 @@
     </div>
 </main>
 <script>
-    const arihant = document.querySelector('#alert');
+    // const arihant = document.querySelector('#alert');
     if ("{{session('success')}}") {
-        arihant.innerHTML = `
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-        ${{{ session('success') }}}
-                                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-												<span aria-hidden="true">&times;</span>
-											  </button>
-											</div>
-                                            `
-        window.scrollTo(0, 0);
+        alert("{{session('success')}}");
     }
     if ("{{session('error')}}") {
-        arihant.innerHTML = `
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        ${{{ session('error') }}}
-                                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-												<span aria-hidden="true">&times;</span>
-											  </button>
-											</div>
-                                            `
-        window.scrollTo(0, 0);
+        alert("{{session('error')}}");
     }
 </script>
 <script>
