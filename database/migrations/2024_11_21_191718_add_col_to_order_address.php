@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('order_address', function (Blueprint $table) {
+        Schema::table('order_adresses', function (Blueprint $table) {
             $table->boolean('is_default')->default(false);
             $table->enum('type', ['billing', 'shipping'])->default('billing');
         });
