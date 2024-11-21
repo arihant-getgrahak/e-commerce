@@ -16,6 +16,8 @@ class OrderAdress extends Model
         'country',
         'pincode',
         'phone',
+        'is_default',
+        'type',
     ];
 
     public function user()
