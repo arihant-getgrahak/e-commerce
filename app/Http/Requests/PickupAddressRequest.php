@@ -31,6 +31,7 @@ class PickupAddressRequest extends FormRequest
             'pincode' => 'required|numeric|digits:6',
             'phone' => 'required|numeric|digits:10',
             'is_default' => 'required|boolean',
+            'tag' => 'required|string',
         ];
     }
 
