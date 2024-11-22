@@ -2,6 +2,9 @@
 
 @section('pickupaddress')
 <h1>Pickup Address</h1>
+<div class="mb-4">
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-add">Add Pickup Address</button>
+</div>
 <div class="col-12">
     <div class="card">
         <div class="table-responsive">
@@ -148,7 +151,130 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary ms-auto">Update Category</button>
+                <button type="submit" class="btn btn-primary ms-auto">Update Address</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Add Pickup Address model -->
+<div class="modal modal-blur fade" id="modal-add" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create Address</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addrescreatesForm" class="bg-white p-6 rounded-lg shadow-lg" method="post"
+                    action="{{route('pickupaddress.create')}}">
+                    @csrf
+
+                    <!-- Address Tag -->
+                    <div class="mb-4">
+                        <label for="name" class="col-form-label required">Address NickName</label>
+                        <input type="text" id="tag" name="tag"
+                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                        @error('tag')
+                            <p class="text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Person to be contacted -->
+                    <div class="mb-4">
+                        <label for="name" class="col-form-label required">Person Name</label>
+                        <input type="text" id="name" name="name"
+                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                        @error('name')
+                            <p class="text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Email to be contacted -->
+                    <div class="mb-4">
+                        <label for="name" class="col-form-label required">Person Email</label>
+                        <input type="text" id="email" name="email"
+                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                        @error('email')
+                            <p class="text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+
+                    <!-- Phone -->
+                    <div class="mb-4">
+                        <label for="name" class="col-form-label required">Phone</label>
+                        <input type="tel" id="phone" name="phone"
+                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                        @error('phone')
+                            <p class="text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Address -->
+                    <div class="mb-4">
+                        <label for="name" class="col-form-label required">Address</label>
+                        <input type="text" id="address" name="address"
+                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                        @error('address')
+                            <p class="text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Address City -->
+                    <div class="mb-4">
+                        <label for="name" class="col-form-label required">City</label>
+                        <input type="text" id="city" name="city"
+                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                        @error('city')
+                            <p class="text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- State -->
+                    <div class="mb-4">
+                        <label for="name" class="col-form-label required">State</label>
+                        <input type="text" id="state" name="state"
+                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                        @error('state')
+                            <p class="text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Country -->
+                    <div class="mb-4">
+                        <label for="name" class="col-form-label required">Country</label>
+                        <input type="text" id="country" name="country"
+                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                        @error('country')
+                            <p class="text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Pincode -->
+                    <div class="mb-4">
+                        <label for="name" class="col-form-label required">Pincode</label>
+                        <input type="text" id="pincode" name="pincode"
+                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                        @error('pincode')
+                            <p class="text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- isDefault -->
+                    <div class="mb-4">
+                        <label for="name" class="col-form-label required">IsDefault</label>
+                        <input type="radio" name="is_default" id="is_default" value="1">Yes
+                        <input type="radio" name="is_default" id="is_default" value="0">No
+                        @error('is_default')
+                            <p class="text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary ms-auto">Create Address</button>
             </div>
             </form>
         </div>
