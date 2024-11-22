@@ -11,17 +11,12 @@ class PickupAddressController extends Controller
 {
     public function index()
     {
-        return view('admin.pickupaddress');
-    }
-
-    public function display()
-    {
         if (! auth()->check()) {
             return redirect()->route('login');
         }
         $addresses = PickupAddress::where('user_id', auth()->user()->id)->get();
 
-        return view('pickupaddress', compact('addresses'));
+        return view('admin.pickupaddress', compact('addresses'));
     }
 
     public function store(PickupAddressRequest $request)

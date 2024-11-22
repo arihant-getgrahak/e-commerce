@@ -8,6 +8,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\NavigationController;
+use App\Http\Controllers\PickupAddressController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\WishlistController;
@@ -63,6 +64,13 @@ Route::group(['middleware' => AdminMiddleware::class], function () {
     });
 
     Route::get('/admin/navigation', [NavigationController::class, 'index'])->name('admin.navigation');
+
+    Route::group(['prefix' => '/pickupaddress'], function () {
+        Route::get('/', [PickupAddressController::class, 'index'])->name('pickupaddress');
+        Route::post('/store', [PickupAddressController::class, 'store'])->name('pickupaddress.create');
+        Route::post('/update/{id}', [PickupAddressController::class, 'update'])->name('pickupaddress.update');
+        Route::delete('/delete/{id}', [PickupAddressController::class, 'delete'])->name('pickupaddress.delete');
+    });
 });
 
 Route::get('/child-category/{id}', [ProductController::class, 'child_category'])->name('child-category');
