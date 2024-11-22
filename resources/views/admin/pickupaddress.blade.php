@@ -11,6 +11,7 @@
                         <th>Address NickName</th>
                         <th>Address</th>
                         <th>Email to be contacted</th>
+                        <th>Number to be contacted</th>
                         <th class="w-1"></th>
                     </tr>
                 </thead>
@@ -20,6 +21,9 @@
                             <td>{{$address->name}}</td>
                             <td class="text-secondary">
                                 {{$address->address}}, {{$address->city}}, {{$address->state}}, {{$address->pincode}}
+                            </td>
+                            <td class="text-secondary">
+                                {{$address->phone}}
                             </td>
                             <td class="text-secondary"><a href="#" class="text-reset">{{$address->email}}</a></td>
                             <td class="d-flex" style="gap: 0.5rem;">
@@ -59,7 +63,7 @@
 
                     <!-- Person to be contacted -->
                     <div class="mb-4">
-                        <label for="name" class="col-form-label required">Person</label>
+                        <label for="name" class="col-form-label required">Person Name</label>
                         <input type="text" id="name" name="name"
                             class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
                         @error('name')
@@ -73,6 +77,17 @@
                         <input type="text" id="email" name="email"
                             class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
                         @error('email')
+                            <p class="text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+
+                    <!-- Phone -->
+                    <div class="mb-4">
+                        <label for="name" class="col-form-label required">Phone</label>
+                        <input type="tel" id="phone" name="phone"
+                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                        @error('phone')
                             <p class="text-red-500">{{ $message }}</p>
                         @enderror
                     </div>
@@ -113,16 +128,6 @@
                         <input type="text" id="country" name="country"
                             class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
                         @error('country')
-                            <p class="text-red-500">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Pincode -->
-                    <div class="mb-4">
-                        <label for="name" class="col-form-label required">Pincode</label>
-                        <input type="text" id="pincode" name="pincode"
-                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
-                        @error('pincode')
                             <p class="text-red-500">{{ $message }}</p>
                         @enderror
                     </div>
