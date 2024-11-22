@@ -44,7 +44,7 @@ class AdminController extends Controller
         }
 
         $data = $request->only(['status', 'delivery_date']);
-        $order = Order::with(['products'])->find($orderproduct->order_id);
+        $order = Order::with(['products', 'address', 'user'])->find($orderproduct->order_id);
 
         if ($request->status == 'delivered') {
             $data['delivery_date'] = now();
