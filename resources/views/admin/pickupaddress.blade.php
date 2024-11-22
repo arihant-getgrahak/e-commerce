@@ -18,7 +18,7 @@
                 <tbody>
                     @foreach ($addresses as $address)
                         <tr>
-                            <td>{{$address->name}}</td>
+                            <td>{{$address->tag}}</td>
                             <td class="text-secondary">
                                 {{$address->address}}, {{$address->city}}, {{$address->state}}, {{$address->pincode}}
                             </td>
@@ -27,7 +27,12 @@
                             </td>
                             <td class="text-secondary"><a href="#" class="text-reset">{{$address->email}}</a></td>
                             <td class="d-flex" style="gap: 0.5rem;">
-                                <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modal-update">Edit</a>
+                                <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modal-update"
+                                    id="btn-update" data-id="{{$address->id}}" data-tag="{{$address->tag}}"
+                                    data-email="{{$address->email}}" data-phone="{{$address->phone}}"
+                                    data-address="{{$address->address}}" data-pincode="{{$address->pincode}}"
+                                    data-name="{{$address->name}}" data-city="{{$address->city}}"
+                                    data-state="{{$address->state}}" data-country="{{$address->country}}">Edit</a>
                                 <a href="javascript:void(0)" class="text-danger">Delete</a>
                             </td>
                         </tr>
@@ -47,14 +52,13 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="addressForm" class="bg-white p-6 rounded-lg shadow-lg" method="post"
-                    action="{{route("pickupaddress.create")}}">
+                <form id="addressForm" class="bg-white p-6 rounded-lg shadow-lg" method="post" action="">
                     @csrf
 
                     <!-- Address Tag -->
                     <div class="mb-4">
                         <label for="name" class="col-form-label required">Address NickName</label>
-                        <input type="text" id="tag=" name="tag"
+                        <input type="text" id="tag" name="tag"
                             class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
                         @error('tag')
                             <p class="text-red-500">{{ $message }}</p>
@@ -214,5 +218,48 @@
         @endif
     </ul>
 </div>
+
+<script>
+    if ("{{session('success')}}") {
+        alert("{{session('success')}}");
+    }
+    if ("{{session('error')}}") {
+        alert("{{session('error')}}");
+    }
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const updateButtons = document.querySelectorAll('#btn-update');
+        const addressForm = document.getElementById("addressForm");
+
+        updateButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const addressId = this.getAttribute('data-id');
+                const name = this.getAttribute('data-name');
+                const tag = this.getAttribute('data-tag');
+                const email = this.getAttribute('data-email');
+                const phone = this.getAttribute('data-phone');
+                const address = this.getAttribute('data-address');
+                const pincode = this.getAttribute('data-pincode');
+                const city = this.getAttribute('data-city');
+                const state = this.getAttribute('data-state');
+                const country = this.getAttribute('data-country');
+
+                addressForm.action = "{{route("pickupaddress.update", ":id")}}".replace(':id', addressId);
+
+                addressForm.querySelector('#tag').value = tag;
+                addressForm.querySelector('#name').value = name;
+                addressForm.querySelector('#email').value = email;
+                addressForm.querySelector('#phone').value = phone;
+                addressForm.querySelector('#address').value = address;
+                addressForm.querySelector('#pincode').value = pincode;
+                addressForm.querySelector('#city').value = city;
+                addressForm.querySelector('#state').value = state;
+                addressForm.querySelector('#country').value = country;
+            });
+        });
+    });
+
+</script>
 
 @endsection

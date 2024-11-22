@@ -22,7 +22,7 @@ class PickupAddressUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'nullable|string|unique:pickup_addresses,name',
+            'name' => 'nullable|string',
             'email' => 'nullable|email',
             'address' => 'nullable|string',
             'city' => 'nullable|string',
@@ -32,6 +32,13 @@ class PickupAddressUpdateRequest extends FormRequest
             'phone' => 'nullable|numeric|digits:10',
             'tag' => 'nullable|string',
             'is_default' => 'nullable|boolean',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'name.unique' => 'The name has already been taken.',
         ];
     }
 }
