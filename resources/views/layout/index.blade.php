@@ -37,9 +37,7 @@
 </head>
 
 <body class="bg-gray-100">
-    <!-- <header>This is header</header> -->
     <div>
-
         <header class="navbar-expand-md">
             <div class="collapse navbar-collapse" id="navbar-menu">
                 <div class="navbar">
@@ -84,7 +82,7 @@
                                 <div class="dropdown-menu">
                                     <div class="dropdown-menu-columns">
                                         <div class="dropdown-menu-column">
-                                            <a class="dropdown-item" href="{{route("product.add")}}">
+                                            <a class="dropdown-item" href="{{route("product.add.view")}}">
                                                 Add Products
                                             </a>
                                             <a class="dropdown-item" href="{{route("product.view")}}">
@@ -146,7 +144,7 @@
                             </li>
 
                             <!-- address -->
-                            <li @class(["nav-item", "dropdown", 'active' => in_array(Route::currentRouteName(), ['admin.country', 'admin.state', 'admin.city'])])>
+                            <li @class(["nav-item", "dropdown", 'active' => in_array(Route::currentRouteName(), ['admin.country', 'admin.state', 'admin.city', 'pickupaddress'])])>
                                 <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
                                     data-bs-auto-close="outside" role="button" aria-expanded="false">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -176,6 +174,9 @@
                                             </a>
                                             <a class="dropdown-item" href="{{route("admin.city")}}">
                                                 City
+                                            </a>
+                                            <a class="dropdown-item" href="{{ route('pickupaddress') }}">
+                                                Pickup Address
                                             </a>
                                         </div>
                                     </div>
@@ -257,6 +258,9 @@
             </main>
             <main>
                 @yield("specificOrder")
+            </main>
+            <main>
+                @yield("pickupaddress")
             </main>
         </main>
     </div>

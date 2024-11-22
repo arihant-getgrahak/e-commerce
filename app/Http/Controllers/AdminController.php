@@ -444,4 +444,9 @@ class AdminController extends Controller
 
         return view('orderspecific', compact('order'));
     }
+
+    public function track_order()
+    {
+        return view('trackorderinput');
+    }
 }

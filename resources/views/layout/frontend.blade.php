@@ -103,11 +103,16 @@
         <!-- Start Navigation -->
         @include('header')
         <!-- End Navigation -->
+
         <div class="clearfix"></div>
-        <div id="alert">
-        </div>
+        <div id="alert"></div>
+
         @yield('section')
+
+
+        <!-- Start Footer -->
         @include('footer')
+        <!-- End Footer -->
 
         <!-- Log In Modal -->
         <div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="loginmodal" aria-hidden="true">
@@ -214,7 +219,8 @@
                         </div>
                         <div class="form-group">
                             <button type="button" class="btn d-block full-width btn-dark-light">Edit or View</button>
-          i        </div>
+                            i
+                        </div>
                     </div>
 
                 </div>
