@@ -37,9 +37,7 @@
 </head>
 
 <body class="bg-gray-100">
-    <!-- <header>This is header</header> -->
     <div>
-
         <header class="navbar-expand-md">
             <div class="collapse navbar-collapse" id="navbar-menu">
                 <div class="navbar">
