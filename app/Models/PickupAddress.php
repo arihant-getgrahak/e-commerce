@@ -8,6 +8,7 @@ class PickupAddress extends Model
 {
     protected $fillable = [
         'user_id',
+        'tag',
         'name',
         'email',
         'address',
