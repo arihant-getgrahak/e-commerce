@@ -30,7 +30,7 @@ class PickupAddressUpdateRequest extends FormRequest
             'country' => 'nullable|string',
             'pincode' => 'nullable|numeric|digits:6',
             'phone' => 'nullable|numeric|digits:10',
-            'tag' => 'required|string',
+            'tag' => 'nullable|string',
             'is_default' => 'nullable|boolean',
         ];
     }

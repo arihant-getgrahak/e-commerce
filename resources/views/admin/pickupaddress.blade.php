@@ -22,8 +22,9 @@
                                 {{$address->address}}, {{$address->city}}, {{$address->state}}, {{$address->pincode}}
                             </td>
                             <td class="text-secondary"><a href="#" class="text-reset">{{$address->email}}</a></td>
-                            <td>
-                                <a href="#">Edit</a>
+                            <td class="d-flex" style="gap: 0.5rem;">
+                                <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modal-update">Edit</a>
+                                <a href="javascript:void(0)" class="text-danger">Delete</a>
                             </td>
                         </tr>
                     @endforeach
@@ -33,40 +34,120 @@
     </div>
 </div>
 
-{{--<div class="mt-3">
-    {{$addresses->links()}}
+<!-- update model -->
+<div class="modal modal-blur fade" id="modal-update" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Update Address</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addressForm" class="bg-white p-6 rounded-lg shadow-lg" method="post"
+                    action="{{route("pickupaddress.create")}}">
+                    @csrf
+
+                    <!-- Address Tag -->
+                    <div class="mb-4">
+                        <label for="name" class="col-form-label required">Address NickName</label>
+                        <input type="text" id="tag=" name="tag"
+                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                        @error('tag')
+                            <p class="text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Person to be contacted -->
+                    <div class="mb-4">
+                        <label for="name" class="col-form-label required">Person</label>
+                        <input type="text" id="name" name="name"
+                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                        @error('name')
+                            <p class="text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Email to be contacted -->
+                    <div class="mb-4">
+                        <label for="name" class="col-form-label required">Person Email</label>
+                        <input type="text" id="email" name="email"
+                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                        @error('email')
+                            <p class="text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Address -->
+                    <div class="mb-4">
+                        <label for="name" class="col-form-label required">Address</label>
+                        <input type="text" id="address" name="address"
+                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                        @error('address')
+                            <p class="text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Address City -->
+                    <div class="mb-4">
+                        <label for="name" class="col-form-label required">City</label>
+                        <input type="text" id="city" name="city"
+                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                        @error('city')
+                            <p class="text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- State -->
+                    <div class="mb-4">
+                        <label for="name" class="col-form-label required">State</label>
+                        <input type="text" id="state" name="state"
+                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                        @error('state')
+                            <p class="text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Country -->
+                    <div class="mb-4">
+                        <label for="name" class="col-form-label required">Country</label>
+                        <input type="text" id="country" name="country"
+                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                        @error('country')
+                            <p class="text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Pincode -->
+                    <div class="mb-4">
+                        <label for="name" class="col-form-label required">Pincode</label>
+                        <input type="text" id="pincode" name="pincode"
+                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                        @error('pincode')
+                            <p class="text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Pincode -->
+                    <div class="mb-4">
+                        <label for="name" class="col-form-label required">Pincode</label>
+                        <input type="text" id="pincode" name="pincode"
+                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                        @error('pincode')
+                            <p class="text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary ms-auto">Update Category</button>
+            </div>
+            </form>
+        </div>
+    </div>
 </div>
 
-<ul class="pagination ">
-    <li class="page-item disabled">
-        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
-            <!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
-                stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M15 6l-6 6l6 6" />
-            </svg>
-            prev
-        </a>
-    </li>
-    <li class="page-item"><a class="page-link" href="#">1</a></li>
-    <li class="page-item active"><a class="page-link" href="#">2</a></li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
-    <li class="page-item"><a class="page-link" href="#">4</a></li>
-    <li class="page-item"><a class="page-link" href="#">5</a></li>
-    <li class="page-item">
-        <a class="page-link" href="#">
-            next <!-- Download SVG icon from http://tabler-icons.io/i/chevron-right -->
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
-                stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M9 6l6 6l-6 6" />
-            </svg>
-        </a>
-    </li>
-</ul>--}}
-
-<div class="mt-3">
+<!-- pagination starts -->
+<div class="mt-3 d-flex justify-content-between">
     <div class="mb-3 text-gray-600">
         Showing {{ $addresses->firstItem() }} to {{ $addresses->lastItem() }} out of {{ $addresses->total() }} results
     </div>
