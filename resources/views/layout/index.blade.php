@@ -84,7 +84,7 @@
                                 <div class="dropdown-menu">
                                     <div class="dropdown-menu-columns">
                                         <div class="dropdown-menu-column">
-                                            <a class="dropdown-item" href="{{route("product.add")}}">
+                                            <a class="dropdown-item" href="{{route("product.add.view")}}">
                                                 Add Products
                                             </a>
                                             <a class="dropdown-item" href="{{route("product.view")}}">
@@ -257,6 +257,9 @@
             </main>
             <main>
                 @yield("specificOrder")
+            </main>
+            <main>
+                @yield("pickupaddress")
             </main>
         </main>
     </div>
