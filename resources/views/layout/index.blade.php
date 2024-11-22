@@ -146,7 +146,7 @@
                             </li>
 
                             <!-- address -->
-                            <li @class(["nav-item", "dropdown", 'active' => in_array(Route::currentRouteName(), ['admin.country', 'admin.state', 'admin.city'])])>
+                            <li @class(["nav-item", "dropdown", 'active' => in_array(Route::currentRouteName(), ['admin.country', 'admin.state', 'admin.city', 'pickupaddress'])])>
                                 <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
                                     data-bs-auto-close="outside" role="button" aria-expanded="false">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -177,6 +177,9 @@
                                             <a class="dropdown-item" href="{{route("admin.city")}}">
                                                 City
                                             </a>
+                                            <a class="dropdown-item" href="{{ route('pickupaddress') }}">
+                                                Pickup Address
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -199,25 +202,6 @@
                                         </svg>
                                     </span>
                                     <span class="nav-link-title"> Navigation </span>
-                                </a>
-                            </li>
-                            <li @class(["nav-item", 'active' => Route::currentRouteName() === 'pickupaddress'])>
-                                <a class="nav-link" href="{{ route('pickupaddress') }}">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round"
-                                            class="icon icon-tabler icons-tabler-outline icon-tabler-home-link">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M20.085 11.085l-8.085 -8.085l-9 9h2v7a2 2 0 0 0 2 2h4.5" />
-                                            <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 1.807 1.143" />
-                                            <path d="M21 21m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
-                                            <path d="M21 16m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
-                                            <path d="M16 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
-                                            <path d="M21 16l-5 3l5 2" />
-                                        </svg>
-                                    </span>
-                                    <span class="nav-link-title"> PickupAddress </span>
                                 </a>
                             </li>
                         </ul>

@@ -2,6 +2,6 @@
 
 @section('pickupaddress')
 @php
-echo $addresses;
+    echo $addresses;
 @endphp
 @endsection

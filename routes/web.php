@@ -62,16 +62,10 @@ Route::group(['middleware' => AdminMiddleware::class], function () {
             Route::get('/state', [AdminController::class, 'state'])->name('admin.state');
             Route::get('/city', [AdminController::class, 'city'])->name('admin.city');
             Route::get('/state/{id}', [AdminController::class, 'getState'])->name('admin.state.list');
+            Route::get('/pickup', [PickupAddressController::class, 'index'])->name('pickupaddress');
         });
 
         Route::get('/navigation', [NavigationController::class, 'index'])->name('admin.navigation');
-
-        Route::group(['prefix' => '/pickupaddress'], function () {
-            Route::get('/', [PickupAddressController::class, 'index'])->name('pickupaddress');
-            Route::post('/store', [PickupAddressController::class, 'store'])->name('pickupaddress.create');
-            Route::post('/update/{id}', [PickupAddressController::class, 'update'])->name('pickupaddress.update');
-            Route::delete('/delete/{id}', [PickupAddressController::class, 'delete'])->name('pickupaddress.delete');
-        });
 
         Route::get('/order', [AdminController::class, 'index'])->name('admin.order');
 
@@ -172,3 +166,7 @@ Route::post('/link', [NavigationController::class, 'store'])->name('link.add');
 Route::post('/menu', [NavigationController::class, 'addMenu'])->name('menu.add');
 
 Route::get('/getPrinter', [AdminController::class, 'getPrinters'])->name('getPrinter');
+
+Route::post('/pickup/store', [PickupAddressController::class, 'store'])->name('pickupaddress.create');
+Route::post('/pickup/update/{id}', [PickupAddressController::class, 'update'])->name('pickupaddress.update');
+Route::delete('/pickup/delete/{id}', [PickupAddressController::class, 'delete'])->name('pickupaddress.delete');
