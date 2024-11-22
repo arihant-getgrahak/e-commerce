@@ -25,6 +25,7 @@ class PickupAddressController extends Controller
             $data = [
                 'user_id' => auth()->user()->id,
                 'name' => $request->name,
+                'tag' => $request->tag,
                 'email' => $request->email,
                 'phone' => $request->phone,
                 'address' => $request->address,
@@ -64,6 +65,7 @@ class PickupAddressController extends Controller
                 'country',
                 'is_default',
                 'email',
+                'tag',
             ]);
 
             DB::beginTransaction();
