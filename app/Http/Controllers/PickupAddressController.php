@@ -20,12 +20,14 @@ class PickupAddressController extends Controller
             $data = [
                 'user_id' => auth()->user()->id,
                 'name' => $request->name,
+                'email' => $request->email,
                 'phone' => $request->phone,
                 'address' => $request->address,
                 'city' => $request->city,
                 'state' => $request->state,
                 'pincode' => $request->pincode,
                 'country' => $request->country,
+                'is_default' => $request->is_default,
             ];
 
             DB::beginTransaction();
@@ -47,7 +49,17 @@ class PickupAddressController extends Controller
             if (! $update) {
                 return back()->with('error', 'Pickup address not found');
             }
-            $data = $request->only(['name', 'phone', 'address', 'city', 'state', 'pincode', 'country']);
+            $data = $request->only([
+                'name',
+                'phone',
+                'address',
+                'city',
+                'state',
+                'pincode',
+                'country',
+                'is_default',
+                'email',
+            ]);
 
             DB::beginTransaction();
             $update->update($data);
