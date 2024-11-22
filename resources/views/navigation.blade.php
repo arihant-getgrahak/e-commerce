@@ -24,7 +24,7 @@
     <div class="card-body">
         <div class="tab-content">
             @foreach ($navigation as $index => $nav)
-                <div class="tab-pane {{ $index === 0 ? 'active show' : '' }}" id="tabs-{{$nav->id}}">
+                <div class="tab-pane {{ $nav->id == 0 ? 'active show' : '' }}" id="tabs-{{$nav->id}}">
                     @foreach ($nav->menus as $menu)
                         <ul>
                             <li>
@@ -77,7 +77,6 @@
                     <div class="mb-3">
                         <label class="form-label">Parent (Optional)</label>
                         <select class="form-select" id="parent_id" name="parent_id">
-                            <option value="">Select Parent Menu</option>
                         </select>
                     </div>
 
@@ -149,7 +148,8 @@
             const parentIdSelect = document.getElementById("parent_id");
             const res = await fetch("{{route("links", ":id")}}".replace(":id", menuId.value));
             const data = await res.json();
-            // parentIdSelect.innerHTML = "";
+            parentIdSelect.innerHTML = "";
+            parentIdSelect.innerHTML = `<option value="">Select Parent Menu</option>`;
 
             data.links.forEach(option => {
                 const HTML = `<option value="${option.id}">${option.name}</option>`;

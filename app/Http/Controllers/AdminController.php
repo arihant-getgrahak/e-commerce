@@ -138,7 +138,7 @@ class AdminController extends Controller
         return view('invoice', ['order' => $order]);
     }
 
-    public function printNode($id)
+    public function printNode($id, $printerId)
     {
         $order = Order::with([
             'products' => function ($query) {
@@ -163,7 +163,7 @@ class AdminController extends Controller
         $pdfOutput = $pdf->output();
         $pdfBase64 = base64_encode($pdfOutput);
 
-        $isPrintSuccess = $this->sendToPrintNode($pdfBase64, "Invoice{$order->id}");
+        $isPrintSuccess = $this->sendToPrintNode($pdfBase64, "Invoice{$order->id}", $printerId);
         if ($isPrintSuccess['success']) {
             return response()->json(['success' => true, 'message' => 'Invoice printed successfully'], 200);
         }
@@ -171,10 +171,10 @@ class AdminController extends Controller
         return response()->json(['success' => false, 'message' => $isPrintSuccess['error']], 400);
     }
 
-    private function sendToPrintNode($pdfBase64, $title)
+    private function sendToPrintNode($pdfBase64, $title, $printerId)
     {
         $apiKey = env('PRINTNODE_AUTH_USERNAME');
-        $printerId = env('PRINTNODE_PRINTER_ID');
+        // $printerId = env('PRINTNODE_PRINTER_ID');
         $client = new \GuzzleHttp\Client;
 
         try {
@@ -195,6 +195,19 @@ class AdminController extends Controller
             return ['success' => false, 'error' => 'Unexpected response from PrintNode'];
         } catch (\Exception $e) {
             return ['success' => false, 'error' => $e->getMessage()];
+        }
+    }
+
+    public function getPrinters()
+    {
+        $apiKey = env('PRINTNODE_AUTH_USERNAME');
+        $response = Http::withBasicAuth($apiKey, env('PRINTNODE_AUTH_KEY'))
+            ->get('https://api.printnode.com/printers');
+
+        if ($response->successful()) {
+            return response()->json(['success' => true, 'data' => $response->json()], 200);
+        } else {
+            return response()->json(['success' => false, 'error' => 'Failed to fetch printers'], $response->status());
         }
     }
 
@@ -420,6 +433,16 @@ class AdminController extends Controller
         $city->delete();
 
         return back()->with('success', 'City deleted successfully');
+    }
+
+    public function orderspeicific($id)
+    {
+        $order = Order::with(['products.product', 'user', 'address'])->find($id);
+        if (! $order) {
+            return back()->with('error', 'Order not found');
+        }
+
+        return view('orderspecific', compact('order'));
     }
 
     public function track_order()

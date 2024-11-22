@@ -24,8 +24,17 @@
 
                 <div id="print-dropdown" class="dropdown-menu" style="display: none;">
                     <a class="dropdown-item" href="#" onclick="printInvoice('pdf')">Print as PDF</a>
-                    <a class="dropdown-item" href="#" onclick="printInvoice('printnode',{{$order->id}}??null)">Print
-                        using PrintNode</a>
+                    <a class="nav-link dropdown-toggle p-1" href="#navbar-base" data-bs-toggle="dropdown"
+                        data-bs-auto-close="outside" role="button" aria-expanded="false">Print
+                        using PrintNode
+                    </a>
+                    <div class="dropdown-menu mt-3">
+                        <div class="dropdown-menu-columns">
+                            <div class="dropdown-menu-column" id="printnode-dropdown">
+                            </div>
+                        </div>
+                    </div>
+                    </p>
                 </div>
             </div>
 
@@ -111,16 +120,19 @@
         dropdown.style.display = dropdown.style.display === "none" ? "block" : "none";
     }
 
-    async function printInvoice(type, orderId) {
+    async function printInvoice(type, orderId, printerId) {
         if (type === "pdf") {
             window.print();
         } else if (type === "printnode") {
-            console.log("Printing as HTML...");
-            console.log(orderId);
 
             if (!orderId) alert("Order ID not found");
+            if (!printerId) alert("Printer ID not found");
 
-            const res = await fetch("{{ route('printNode', ':id') }}".replace(':id', orderId), {
+            const url = `{{ route('printNode', [':id', ":printerId"]) }}`
+                .replace(':id', orderId)
+                .replace(':printerId', printerId);
+
+            const res = await fetch(url, {
                 method: "get",
                 headers: {
                     "Content-Type": "application/json",
@@ -147,6 +159,32 @@
             dropdown.style.display = "none";
         }
     });
+</script>
 
+<script>
+    document.addEventListener('DOMContentLoaded', async function () {
+        const dropdown = document.getElementById("printnode-dropdown");
+        const res = await fetch("{{route("getPrinter")}}", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+            },
+        })
+
+        const data = await res.json();
+        dropdown.innerHTML = '';
+
+        const orderId = "{{$order->id}}"
+
+        if (data.success) {
+            data.data.forEach(printer => {
+                dropdown.innerHTML += `
+                    <a class="dropdown-item" href="javascript:void(0)" onclick="printInvoice('printnode', ${orderId},  ${printer.id})">
+                        <i class="dropdown-icon fe fe-printer"></i> ${printer.name}
+                    </a>`
+            })
+        }
+    });
 </script>
 @endsection

@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class OrderAdress extends Model
+class PickupAddress extends Model
 {
     protected $fillable = [
         'user_id',
+        'tag',
         'name',
         'email',
         'address',
@@ -17,7 +18,6 @@ class OrderAdress extends Model
         'pincode',
         'phone',
         'is_default',
-        'type',
     ];
 
     public function user()
