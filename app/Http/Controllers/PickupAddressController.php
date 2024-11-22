@@ -14,6 +14,16 @@ class PickupAddressController extends Controller
         return view('admin.pickupaddress');
     }
 
+    public function display()
+    {
+        if (! auth()->check()) {
+            return redirect()->route('login');
+        }
+        $addresses = PickupAddress::where('user_id', auth()->user()->id)->get();
+
+        return view('pickupaddress', compact('addresses'));
+    }
+
     public function store(PickupAddressRequest $request)
     {
         try {
