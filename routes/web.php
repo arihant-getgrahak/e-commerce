@@ -25,51 +25,62 @@ Route::group(['middleware' => AdminMiddleware::class], function () {
         return view('admin');
     })->name('admin');
 
-    Route::group(['prefix' => '/product'], function () {
-        Route::get('category', [CategoryController::class, 'index'])->name('category');
+    Route::group(['prefix' => '/admin'], function () {
+        Route::group(['prefix' => '/product'], function () {
+            Route::get('category', [CategoryController::class, 'index'])->name('category');
 
-        Route::get('add', [ProductController::class, 'index'])->name('product.add');
+            Route::get('add', [ProductController::class, 'index'])->name('product.add.view');
 
-        Route::get('view', [ProductController::class, 'admindisplay'])->name('product.view');
+            Route::get('view', [ProductController::class, 'admindisplay'])->name('product.view');
 
-        Route::post('update/{id}', [ProductController::class, 'update'])->name('product.update');
+            Route::post('update/{id}', [ProductController::class, 'update'])->name('product.update');
 
-        Route::delete('delete/{id}', [ProductController::class, 'delete'])->name('product.delete');
+            Route::delete('delete/{id}', [ProductController::class, 'delete'])->name('product.delete');
 
-        Route::get('brand', [BrandController::class, 'index'])->name('brand');
+            Route::get('brand', [BrandController::class, 'index'])->name('brand');
 
-        Route::get('bulk', function () {
-            return view('adminproductbulk');
-        })->name('bulk');
-    });
+            Route::get('bulk', function () {
+                return view('adminproductbulk');
+            })->name('bulk');
+        });
 
-    Route::group(['prefix' => '/attribute'], function () {
-        // attributes
-        Route::get('/', [AttributeController::class, 'index'])->name('attribute');
-        Route::post('add', [AttributeController::class, 'store'])->name('attribute.add');
-        Route::post('update/{id}', [AttributeController::class, 'update'])->name('attribute.update');
-        Route::delete('delete/{id}', [AttributeController::class, 'destroy'])->name('attribute.delete');
+        Route::group(['prefix' => '/attribute'], function () {
+            // attributes
+            Route::get('/', [AttributeController::class, 'index'])->name('attribute');
+            Route::post('add', [AttributeController::class, 'store'])->name('attribute.add');
+            Route::post('update/{id}', [AttributeController::class, 'update'])->name('attribute.update');
+            Route::delete('delete/{id}', [AttributeController::class, 'destroy'])->name('attribute.delete');
 
-        // attributes values
-        Route::post('value/add', [AttributeController::class, 'storeAttributeValues'])->name('attribute.value.add');
-        Route::post('value/update/{id}', [AttributeController::class, 'updateAttributeValues'])->name('attribute.value.update');
-        Route::delete('value/delete/{id}', [AttributeController::class, 'destroyAttributeValues'])->name('attribute.value.delete');
-    });
+            // attributes values
+            Route::post('value/add', [AttributeController::class, 'storeAttributeValues'])->name('attribute.value.add');
+            Route::post('value/update/{id}', [AttributeController::class, 'updateAttributeValues'])->name('attribute.value.update');
+            Route::delete('value/delete/{id}', [AttributeController::class, 'destroyAttributeValues'])->name('attribute.value.delete');
+        });
 
-    Route::group(['prefix' => '/admin/address'], function () {
-        Route::get('/country', [AdminController::class, 'country'])->name('admin.country');
-        Route::get('/state', [AdminController::class, 'state'])->name('admin.state');
-        Route::get('/city', [AdminController::class, 'city'])->name('admin.city');
-        Route::get('/state/{id}', [AdminController::class, 'getState'])->name('admin.state.list');
-    });
+        Route::group(['prefix' => '/address'], function () {
+            Route::get('/country', [AdminController::class, 'country'])->name('admin.country');
+            Route::get('/state', [AdminController::class, 'state'])->name('admin.state');
+            Route::get('/city', [AdminController::class, 'city'])->name('admin.city');
+            Route::get('/state/{id}', [AdminController::class, 'getState'])->name('admin.state.list');
+        });
 
-    Route::get('/admin/navigation', [NavigationController::class, 'index'])->name('admin.navigation');
+        Route::get('/navigation', [NavigationController::class, 'index'])->name('admin.navigation');
 
-    Route::group(['prefix' => '/pickupaddress'], function () {
-        Route::get('/', [PickupAddressController::class, 'index'])->name('pickupaddress');
-        Route::post('/store', [PickupAddressController::class, 'store'])->name('pickupaddress.create');
-        Route::post('/update/{id}', [PickupAddressController::class, 'update'])->name('pickupaddress.update');
-        Route::delete('/delete/{id}', [PickupAddressController::class, 'delete'])->name('pickupaddress.delete');
+        Route::group(['prefix' => '/pickupaddress'], function () {
+            Route::get('/', [PickupAddressController::class, 'index'])->name('pickupaddress');
+            Route::post('/store', [PickupAddressController::class, 'store'])->name('pickupaddress.create');
+            Route::post('/update/{id}', [PickupAddressController::class, 'update'])->name('pickupaddress.update');
+            Route::delete('/delete/{id}', [PickupAddressController::class, 'delete'])->name('pickupaddress.delete');
+        });
+
+        Route::get('/order', [AdminController::class, 'index'])->name('admin.order');
+
+        Route::group(['prefix' => '/customer'], function () {
+            Route::get('/', [AdminController::class, 'user'])->name('admin.user');
+            Route::get('/login/{id}', [AdminController::class, 'loginascustomer'])->name('admin.user.login');
+        });
+
+        Route::get('/order/{id}', [AdminController::class, 'orderspeicific'])->name('order.specific');
     });
 });
 
@@ -130,16 +141,11 @@ Route::get('/google/callback', [AuthController::class, 'handleGoogleCallback'])-
 Route::get('/facebook/redirect', [AuthController::class, 'redirectToFacebook'])->name('facebook.redirect');
 Route::get('/facebook/callback', [AuthController::class, 'handleFacebookCallback'])->name('facebook.callback');
 
-Route::get('/admin/order', [AdminController::class, 'index'])->name('admin.order');
 Route::post('admin/order/update/{id}', [AdminController::class, 'update'])->name('admin.order.update');
 Route::post('/admin/search', [AdminController::class, 'search'])->name('admin.search');
 
 Route::get('/invoice/{id}', [AdminController::class, 'invoice'])->name('invoice');
 Route::get('/print/{id}/{printerId}', [AdminController::class, 'printNode'])->name('printNode');
-
-Route::get('/admin/user', [AdminController::class, 'user'])->name('admin.user');
-
-Route::get('/admin/user/login/{id}', [AdminController::class, 'loginascustomer'])->name('admin.user.login');
 
 Route::get('/order/track/{id}', [AdminController::class, 'track'])->name('order.track');
 
@@ -164,7 +170,5 @@ Route::delete('/city/delete/{id}', [AdminController::class, 'deleteCity'])->name
 Route::get('/links/{id}', [NavigationController::class, 'getLinks'])->name('links');
 Route::post('/link', [NavigationController::class, 'store'])->name('link.add');
 Route::post('/menu', [NavigationController::class, 'addMenu'])->name('menu.add');
-
-Route::get('/admin/order/{id}', [AdminController::class, 'orderspeicific'])->name('order.specific');
 
 Route::get('/getPrinter', [AdminController::class, 'getPrinters'])->name('getPrinter');
