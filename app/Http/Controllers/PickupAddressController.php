@@ -14,7 +14,10 @@ class PickupAddressController extends Controller
         if (! auth()->check()) {
             return redirect()->route('login');
         }
-        $addresses = PickupAddress::where('user_id', auth()->user()->id)->paginate(5);
+
+        $addresses = PickupAddress::where('user_id', auth()->id())
+            ->orderBy('created_at', 'desc')
+            ->paginate(5);
 
         return view('admin.pickupaddress', ['addresses' => $addresses]);
     }
