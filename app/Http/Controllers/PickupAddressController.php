@@ -57,7 +57,27 @@ class PickupAddressController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return back()->with('error', 'Pickup address not updated');
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function delete($id)
+    {
+        try {
+            $update = PickupAddress::where('id', $id);
+            if (! $update) {
+                return back()->with('error', 'Pickup address not found');
+            }
+
+            DB::beginTransaction();
+            $update->delete();
+            DB::commit();
+
+            return back()->with('success', 'Pickup address deleted');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return back()->with('error', $e->getMessage());
         }
     }
 }
