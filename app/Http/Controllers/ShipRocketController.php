@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Shipments;
 use Http;
 
 class ShipRocketController extends Controller
@@ -15,18 +16,18 @@ class ShipRocketController extends Controller
         $this->token = env('SHIPROCKET_TOKEN');
     }
 
-    public function createOrder()
+    public function createOrder($data, $orderproduct)
     {
         try {
             $api = Http::withHeaders([
                 'Content-Type' => 'application/json',
                 'Authorization' => 'Bearer '.$this->token,
             ])->post('https://apiv2.shiprocket.in/v1/external/orders/create/adhoc', [
-                'order_id' => '224',
-                'order_date' => '2024-11-22 09:11',
+                'order_id' => $data->id,
+                'order_date' => $data->created_at->format('Y-m-d H:i:s'),
                 'pickup_location' => 'home',
                 'channel_id' => '5777349',
-                'comment' => 'Reseller=> M/s Goku',
+                'comment' => '',
                 'billing_customer_name' => 'Naruto',
                 'billing_last_name' => 'Uzumaki',
                 'billing_address' => 'House 221B, Leaf Village',
@@ -50,16 +51,16 @@ class ShipRocketController extends Controller
                 'shipping_phone' => '',
                 'order_items' => [
                     [
-                        'name' => 'Kunai',
-                        'sku' => 'chakra123',
-                        'units' => 10,
-                        'selling_price' => '900',
+                        'name' => $orderproduct->product->name,
+                        'sku' => $orderproduct->product->sku,
+                        'units' => $orderproduct->quantity,
+                        'selling_price' => $orderproduct->price,
                         'discount' => '',
                         'tax' => '',
                         'hsn' => 441122,
                     ],
                 ],
-                'payment_method' => 'Prepaid',
+                'payment_method' => $orderproduct->payment_method == 'cod' ? 'postpaid' : 'prepaid',
                 'shipping_charges' => 0,
                 'giftwrap_charges' => 0,
                 'transaction_charges' => 0,
@@ -71,20 +72,38 @@ class ShipRocketController extends Controller
                 'weight' => 2.5,
             ]);
 
-            if ($api->status() == 200) {
-                return response()->json([
-                    'response' => $api->json(),
-                ], 200);
+            return $api;
 
-            }
-
-            return response()->json([
-                'response' => $api->json(),
-            ], 500);
         } catch (\Exception $e) {
-            return response()->json([
-                's' => $e->getMessage(),
-            ], 500);
+            return false;
+        }
+    }
+
+    public function store($data)
+    {
+        $shiprocket = Shipments::create([
+            'order_id' => $data['order_id'],
+            'channel_order_id' => $data['channel_order_id'],
+            'shipment_id' => $data['shipment_id'],
+            'courier_name' => '',
+            'status' => $data['status'],
+            'pickup_address_id' => 2,
+            'actual_weight' => '',
+            'volumetric_weight' => '',
+            'platform' => '5777349',
+            'charges' => '',
+        ]);
+
+        if ($shiprocket) {
+            return [
+                'status' => true,
+                'message' => 'Shipment created successfully',
+            ];
+        } else {
+            return [
+                'status' => false,
+                'message' => 'Shipment not created',
+            ];
         }
     }
 }
