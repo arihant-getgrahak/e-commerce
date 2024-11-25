@@ -70,4 +70,6 @@
         </div>
     </div>
 </div>
+
+@include('layout.pagination', ['paginator' => $user])
 @endsection
