@@ -112,7 +112,7 @@
                                                                         Subtotal</th>
                                                                     <td
                                                                         style="padding-top: 12px;text-align: end; color: #1A1C21;">
-                                                                        {{$order->total_price}}
+                                                                        ₹{{$order->total_price}}
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
@@ -121,7 +121,7 @@
                                                                         GST (12%)</th>
                                                                     <td
                                                                         style="padding: 12px 0;text-align: end; color: #1A1C21;">
-                                                                        {{$order->total_price * 0.12}}
+                                                                        ₹{{$order->total_price * 0.12}}
                                                                     </td>
                                                                 </tr>
                                                             </tbody>

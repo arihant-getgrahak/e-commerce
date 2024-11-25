@@ -11,19 +11,6 @@ class OrderProduct extends Model
         'product_id',
         'quantity',
         'price',
-        'status',
-        'delivery_date',
-    ];
-
-    protected static function booted()
-    {
-        static::creating(function ($order) {
-            $order->delivery_date = now()->addDays(14);
-        });
-    }
-
-    protected $casts = [
-        'delivery_date' => 'datetime:d-m-Y',
     ];
 
     public function order()

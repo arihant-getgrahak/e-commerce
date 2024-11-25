@@ -7,7 +7,6 @@ use App\Models\DeliveryCity;
 use App\Models\DeliveryCountry;
 use App\Models\DeliveryState;
 use App\Models\Order;
-use App\Models\OrderProduct;
 use App\Models\OrderStatus;
 use App\Models\User;
 use Auth;
@@ -25,7 +24,7 @@ class AdminController extends Controller
             ->orderByDesc('created_at')
             ->get();
 
-        return view('adminorder', compact('orders'));
+        return view('admin.order', compact('orders'));
     }
 
     public function specific($id)
@@ -35,50 +34,39 @@ class AdminController extends Controller
         return view('adminorderspecific', compact('order'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, ShipRocketController $shipRocketController)
     {
-        $orderproduct = OrderProduct::find($id);
+        $order = Order::with([
+            'products.product',
+            'user',
+            'address',
+        ])->find($id);
 
-        if (! $orderproduct) {
-            return back()->with('error', 'Product not found.');
+        if (! $order) {
+            return back()->with('error', 'Order not found.');
         }
 
-        $data = $request->only(['status', 'delivery_date']);
-
-        if ($request->status == 'delivered') {
-            $data['delivery_date'] = now();
+        $restrictedStatuses = ['cancelled', 'delivered'];
+        if (in_array($order->status, $restrictedStatuses)) {
+            return back()->with('error', 'You cannot update '.$order->status.' order.');
         }
 
-        if ($orderproduct->status == 'cancelled') {
-            return back()->with('error', 'You cannot update cancelled order');
+        if ($request->status === 'shipped') {
+            $shipRocketResponse = $shipRocketController->createOrder($order);
+
+            if (! $shipRocketResponse || ! method_exists($shipRocketResponse, 'status')) {
+                return back()->with('error', 'Failed to create order in ShipRocket.');
+            }
+
+            if ($shipRocketResponse->status() === 200) {
+                $storeResponse = $shipRocketController->store($shipRocketResponse->json());
+
+                if (! $storeResponse['status']) {
+                    return back()->with('error', $storeResponse['message']);
+                }
+            } else {
+            }
         }
-
-        if ($orderproduct->status == 'delivered') {
-            return back()->with('error', 'You cannot update delivered order');
-        }
-
-        $orderproduct->update($data);
-
-        $order = Order::with(['products'])->find($orderproduct->order_id);
-
-        // if ($order->status === 'pending') {
-        //     // Do not update order status if it is already pending
-        //     return back()->with('success', 'Product updated successfully, order status remains pending');
-        // }
-
-        $allDelivered = $order->products->every(fn ($product) => $product->status === 'delivered');
-        $allCancelled = $order->products->every(fn ($product) => $product->status === 'cancelled');
-        $allshipped = $order->products->every(fn ($product) => $product->status === 'shipped');
-
-        if ($allDelivered) {
-            $order->status = 'delivered';
-        } elseif ($allCancelled) {
-            $order->status = 'cancelled';
-        } elseif ($allshipped) {
-            $order->status = 'shipped';
-        }
-
-        $order->save();
 
         if ($order->status !== 'pending') {
             OrderStatus::create([
@@ -88,7 +76,11 @@ class AdminController extends Controller
             ]);
         }
 
-        return back()->with('success', 'Order updated successfully');
+        $order->update([
+            'status' => $request->status,
+        ]);
+
+        return back()->with('success', 'Order updated successfully.');
     }
 
     public function search(Request $request)
