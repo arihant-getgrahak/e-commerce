@@ -181,6 +181,7 @@
     </div>
 </div>
 
+@include('layout.pagination', ['paginator' => $city])
 
 <script>
     if ("{{ session('success') }}") {
