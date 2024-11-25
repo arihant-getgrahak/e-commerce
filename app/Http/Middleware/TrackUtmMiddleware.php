@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
+use Auth;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,8 +26,12 @@ class TrackUtmMiddleware
         ]);
 
         if (! empty($utmParameters)) {
-
-            session(['utm' => $utmParameters]);
+            if (Auth::check()) {
+                $user = User::find(Auth::user()->id);
+                $user->update($utmParameters);
+            } else {
+                session(['utm' => $utmParameters]);
+            }
         }
 
         return $next($request);
