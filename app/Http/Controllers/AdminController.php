@@ -259,7 +259,7 @@ class AdminController extends Controller
 
     public function state()
     {
-        $state = DeliveryState::with('country')->get();
+        $state = DeliveryState::with('country')->paginate(10);
         if (! $state) {
             return back()->with('error', 'State not found');
         }
@@ -269,7 +269,7 @@ class AdminController extends Controller
 
     public function city()
     {
-        $city = DeliveryCity::with('state')->get();
+        $city = DeliveryCity::with('state')->paginate(10);
         $country = DeliveryCountry::all();
         if (! $city) {
             return back()->with('error', 'City not found');
