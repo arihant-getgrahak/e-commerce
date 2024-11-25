@@ -37,62 +37,93 @@
                                 <thead>
                                     <tr>
                                         <th><button class="table-sort" data-sort="sort-id">Order Id</button></th>
-                                        <th><button class="table-sort" data-sort="sort-name">Product Name</button></th>
+                                        <th><button class="table-sort" data-sort="sort-name">Total Product
+                                                Ordered</button></th>
+                                        <th><button class="table-sort" data-sort="sort-quantity">Total Price</button>
+                                        </th>
                                         <th><button class="table-sort" data-sort="sort-mehod">Payment Method</button>
                                         </th>
-                                        <th><button class="table-sort" data-sort="sort-quantity">Quantity</button></th>
-                                        <th><button class="table-sort" data-sort="sort-ptotal">Product Total</button>
-                                        </th>
-                                        <th><button class="table-sort" data-sort="sort-date">Date</button></th>
                                         <th><button class="table-sort" data-sort="sort-status">Status</button></th>
-                                        <th><button class="table-sort" data-sort="sort-ototal">Order Total</button></th>
-                                        <th><button class="table-sort" data-sort="sort-ototal">Address</button></th>
-                                        <th><button class="table-sort" data-sort="sort-ddate">Expected Delivery
-                                                Date</button>
+                                        <th><button class="table-sort" data-sort="sort-ototal">User Address</button>
+                                        </th>
+                                        <th><button class="table-sort" data-sort="sort-ddate">User Name</button>
                                         </th>
                                         <th><button class="table-sort" data-sort="sort-ddate">User Email</button>
                                         </th>
-                                        <th><button class="table-sort" data-sort="sort-type">Buttons</button></th>
+                                        <th><button class="table-sort" data-sort="sort-ddate">Expected Delivery
+                                                Date</button>
+                                        </th>
+                                        <th><button class="table-sort" data-sort="sort-type">Actions</button></th>
                                     </tr>
                                 </thead>
                                 <tbody class="table-tbody" id="table-body">
                                     @foreach ($orders as $order)
-                                        @foreach ($order->products as $product)
-                                            <tr>
-                                                <td class="sort-name">{{$order->id}}</td>
-                                                <td class="sort-city">{{$product->product->name}}</td>
-                                                <td class="sort-type">{{Str::upper($order->payment_method)}}</td>
-                                                <td class="sort-quantity">{{$product->quantity}}</td>
-                                                <td class="sort-score">₹{{$product->price}}</td>
-                                                <td class="sort-date" data-date="1628071164">
-                                                    {{ \Carbon\Carbon::parse($order->created_at)->format('d F Y') }}
-                                                </td>
-                                                <td class="sort-quantity">{{Str::ucfirst($product->status)}}</td>
-                                                <td class="sort-progress" data-progress="30">
-                                                    ₹{{$order->total}}
-                                                </td>
-                                                <td class="sort-progress" data-progress="30">
-                                                    {{$order->address->city}},{{$order->address->state}}
-                                                </td>
-                                                <td class="sort-progress" data-progress="30">
-                                                    {{\Carbon\Carbon::parse($product->delivery_date)->format('d F Y') }}
-                                                </td>
+                                        <tr>
+                                            <td class="sort-name">{{$order->id}}</td>
+                                            <td class="sort-quantity">{{$order->products->count()}}</td>
+                                            <td class="sort-city">₹{{$productSum}}</td>
+                                            <td class="sort-type">{{Str::upper($order->payment_method)}}</td>
+                                            <td class="sort-progress">
+                                                {{$order->address->address}},
+                                                {{$order->address->city}},{{$order->address->state}},
+                                                {{$order->address->pincode}}
+                                            </td>
+                                            <td class="sort-progress">
+                                                {{$order->user->email }}
+                                            </td>
+                                            <td class="sort-progress">
+                                                {{$order->user->name }}
+                                            </td>
+                                            <td class="sort-progress">
+                                                {{$order->user->phone_number }}
+                                            </td>
 
-                                                <td class="sort-progress" data-progress="30">
-                                                    {{$order->user->email }}
-                                                </td>
+                                            <td class="sort-type space-y-2">
+                                                <a href="{{route("order.specific", $order->id)}}"
+                                                    class="btn btn-primary btn-sm btn-success">View</a>
+                                                <button id="btn-update" class="btn btn-primary btn-update btn-sm"
+                                                    data-bs-toggle="modal" data-bs-target="#modal-team"
+                                                    data-id="{{ $order->id }}"
+                                                    data-status="{{$order->status}}">Update</button>
+                                                <a href="{{route("invoice", $order->id)}}">Download Invoice</a>
+                                            </td>
+                                        </tr>
+                                        {{--@foreach ($order->products as $product)
+                                        <tr>
+                                            <td class="sort-name">{{$order->id}}</td>
+                                            <td class="sort-city">{{$product->product->name}}</td>
+                                            <td class="sort-type">{{Str::upper($order->payment_method)}}</td>
+                                            <td class="sort-quantity">{{$product->quantity}}</td>
+                                            <td class="sort-score">₹{{$product->price}}</td>
+                                            <td class="sort-date" data-date="1628071164">
+                                                {{ \Carbon\Carbon::parse($order->created_at)->format('d F Y') }}
+                                            </td>
+                                            <td class="sort-quantity">{{Str::ucfirst($product->status)}}</td>
+                                            <td class="sort-progress">
+                                                ₹{{$order->total}}
+                                            </td>
+                                            <td class="sort-progress">
+                                                {{$order->address->city}},{{$order->address->state}}
+                                            </td>
+                                            <td class="sort-progress">
+                                                {{\Carbon\Carbon::parse($product->delivery_date)->format('d F Y') }}
+                                            </td>
 
-                                                <td class="sort-type space-y-2">
-                                                    <a href="{{route("order.specific", $order->id)}}"
-                                                        class="btn btn-primary btn-sm btn-success">View</a>
-                                                    <button id="btn-update" class="btn btn-primary btn-update btn-sm"
-                                                        data-bs-toggle="modal" data-bs-target="#modal-team"
-                                                        data-id="{{ $product->id }}"
-                                                        data-status="{{$product->status}}">Update</button>
-                                                    <a href="{{route("invoice", $order->id)}}">Download Invoice</a>
-                                                </td>
-                                            </tr>
-                                        @endforeach
+                                            <td class="sort-progress">
+                                                {{$order->user->email }}
+                                            </td>
+
+                                            <td class="sort-type space-y-2">
+                                                <a href="{{route(" order.specific", $order->id)}}"
+                                                    class="btn btn-primary btn-sm btn-success">View</a>
+                                                <button id="btn-update" class="btn btn-primary btn-update btn-sm"
+                                                    data-bs-toggle="modal" data-bs-target="#modal-team"
+                                                    data-id="{{ $product->id }}"
+                                                    data-status="{{$product->status}}">Update</button>
+                                                <a href="{{route(" invoice", $order->id)}}">Download Invoice</a>
+                                            </td>
+                                        </tr>
+                                        @endforeach--}}
                                     @endforeach
                                 </tbody>
                             </table>
@@ -222,7 +253,7 @@
                 <td>₹${order.total}</td>
                 <td>${order.address.city}, ${order.address.state}</td>
                 <td>
-                {{\Carbon\Carbon::parse($product->delivery_date)->format('d F Y') }}
+                    ${new Date(product.delivery_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
                 </td>
                 <td>${order.user.email}</td>
                <td class="sort-type space-y-2">
