@@ -77,6 +77,7 @@ class CartController extends Controller
                 'product_id' => $request->product_id,
                 'quantity' => $request->quantity,
                 'price' => $request->price * $request->quantity,
+                'name' => $request->name,
             ];
 
             $cart = Cart::create($data);
@@ -104,6 +105,7 @@ class CartController extends Controller
             $cart->update([
                 'quantity' => $request->quantity,
                 'price' => $request->price * $request->quantity,
+                'name' => $request->name,
             ]);
 
             return response()->json([
@@ -116,6 +118,7 @@ class CartController extends Controller
             'product_id' => $request->product_id,
             'quantity' => $request->quantity,
             'price' => $request->price * $request->quantity,
+            'name' => $request->name,
         ];
 
         $cart = SessionCart::create($data);

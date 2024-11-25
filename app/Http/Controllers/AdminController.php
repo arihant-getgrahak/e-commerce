@@ -65,6 +65,7 @@ class AdminController extends Controller
                     return back()->with('error', $storeResponse['message']);
                 }
             } else {
+                return response()->json(['data' => $shipRocketResponse->json()]);
             }
         }
 

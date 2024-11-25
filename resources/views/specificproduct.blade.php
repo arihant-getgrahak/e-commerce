@@ -407,7 +407,8 @@
             body: JSON.stringify({
                 product_id: productId[0].id,
                 quantity: quantity,
-                price: productId[0].price
+                price: productId[0].price,
+                name: productId[0].name
             }),
         })
 
