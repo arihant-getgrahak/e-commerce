@@ -268,4 +268,6 @@
         });
     });
 </script>
+
+(@include('layout.pagination', ['paginator' => $product]))
 @endsection
