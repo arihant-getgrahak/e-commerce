@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('carts', function (Blueprint $table) {
-            $table->integer('name')->default('');
+            $table->string('name')->default('');
         });
         Schema::table('session_carts', function (Blueprint $table) {
-            $table->integer('name')->default('');
+            $table->string('name')->default('');
         });
     }
 
