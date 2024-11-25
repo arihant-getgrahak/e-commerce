@@ -56,6 +56,17 @@ class User extends Authenticatable
         ];
     }
 
+    // protected static function boot(): void
+    // {
+    //     parent::boot();
+
+    //     static::created(function ($user) {
+    //         if (session()->has('utm')) {
+    //             User::where('id', $user->id)->update(session('utm'));
+    //         }
+    //     });
+    // }
+
     public function order()
     {
         return $this->hasMany(Order::class);
