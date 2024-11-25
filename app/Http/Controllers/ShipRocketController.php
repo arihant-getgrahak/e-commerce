@@ -34,7 +34,7 @@ class ShipRocketController extends Controller
 
             $api = Http::withHeaders([
                 'Content-Type' => 'application/json',
-                'Authorization' => 'Bearer '.'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjU0NDQzNTcsInNvdXJjZSI6InNyLWF1dGgtaW50IiwiZXhwIjoxNzMzMzk2NTcxLCJqdGkiOiJsQndOUXpnS2Z0R0kwSWFmIiwiaWF0IjoxNzMyNTMyNTcxLCJpc3MiOiJodHRwczovL3NyLWF1dGguc2hpcHJvY2tldC5pbi9hdXRob3JpemUvdXNlciIsIm5iZiI6MTczMjUzMjU3MSwiY2lkIjo1MjM4NTM1LCJ0YyI6MzYwLCJ2ZXJib3NlIjpmYWxzZSwidmVuZG9yX2lkIjowLCJ2ZW5kb3JfY29kZSI6IiJ9.nQqBaEET2b7_RCD7MAwsF2yve60ndqCf6cq2enr9DnA',
+                'Authorization' => 'Bearer '.$this->token,
             ])->post('https://apiv2.shiprocket.in/v1/external/orders/create/adhoc', [
                 'order_id' => $data->id,
                 'order_date' => $data->created_at->format('Y-m-d H:i:s'),
