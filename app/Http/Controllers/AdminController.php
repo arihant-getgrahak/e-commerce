@@ -22,7 +22,7 @@ class AdminController extends Controller
     {
         $orders = Order::with(['products.product', 'user', 'address'])
             ->orderByDesc('created_at')
-            ->get();
+            ->paginate(5);
 
         return view('admin.order', compact('orders'));
     }
