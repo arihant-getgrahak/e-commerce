@@ -84,7 +84,7 @@ class ShipRocketController extends Controller
 
     public function store($data)
     {
-        $shiprocket = Shipments::create([
+        $shiprocket = Shipments::updateOrCreate([
             'order_id' => $data['order_id'],
             'channel_order_id' => $data['channel_order_id'],
             'shipment_id' => $data['shipment_id'],
