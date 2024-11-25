@@ -50,6 +50,8 @@
     </div>
 </main>
 
+@include('layout.pagination', ['paginator' => $state])
+
 
 <script>
     if ("{{ session('success') }}") {
