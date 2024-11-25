@@ -213,7 +213,7 @@ class AdminController extends Controller
             ->whereHas('order')
             ->withCount('order')
             ->withSum('order', 'total')
-            ->get();
+            ->paginate(5);
 
         return view('adminUser', compact('user'));
     }
