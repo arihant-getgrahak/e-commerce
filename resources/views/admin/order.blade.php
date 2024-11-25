@@ -134,6 +134,8 @@
     </div>
 </main>
 
+@include('layout.pagination', ['paginator' => $orders])
+
 <script>
     const searchInputField = document.getElementById('search_content');
     let searchContent = searchInputField.value;
