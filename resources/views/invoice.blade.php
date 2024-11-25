@@ -96,15 +96,15 @@
                     <!-- Summary -->
                     <tr>
                         <td colspan="4" class="strong text-end">Subtotal</td>
-                        <td class="text-end">₹{{$order->total_price}}</td>
+                        <td class="text-end">₹{{$order->total}}</td>
                     </tr>
                     <tr>
                         <td colspan="4" class="strong text-end">GST(12%)</td>
-                        <td class="text-end">₹{{$order->total_price * 0.12}}</td>
+                        <td class="text-end">₹{{$order->total * 0.12}}</td>
                     </tr>
                     <tr>
                         <td colspan="4" class="font-weight-bold text-uppercase text-end">Total Due</td>
-                        <td class="font-weight-bold text-end"> ₹{{$order->total_price + $order->total_price * 0.12}}
+                        <td class="font-weight-bold text-end"> ₹{{$order->total + $order->total * 0.12}}
                         </td>
                     </tr>
                 </table>
