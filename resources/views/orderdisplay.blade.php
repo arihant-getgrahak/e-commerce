@@ -58,11 +58,13 @@
                         <div class="col-xl-3 col-lg-3 col-md-3 col-6">
                             <p class="mb-1 p-0"><span class="text-muted">Status</span></p>
                             <div class="delv_status">
-                                <span class="ft-medium small rounded px-3 py-1 
-                                                {{ $orderProduct->status === 'cancelled' ? 'text-danger bg-light-danger' : '' }}
-                                                {{ $orderProduct->status === 'delivered' ? 'text-success bg-light-success' : '' }}
-                                                {{ $orderProduct->status === 'shipped' ? 'text-warning bg-light-warning' : '' }}">
-                                    {{ Str::ucfirst($orderProduct->status) }}
+                                <span
+                                    class="ft-medium small rounded px-3 py-1 
+                                                                                {{ $order->status === 'cancelled' ? 'text-danger bg-light-danger' : '' }}
+                                                                                                {{ $order->status === 'delivered' ? 'text-success bg-light-success' : '' }}
+                                                                                                {{ $order->status === 'shipped' ? 'text-warning bg-light-warning' : '' }}
+                                                                                                {{ $order->status === 'pending' ? 'text-info bg-light-info' : '' }}">
+                                    {{ Str::ucfirst($order->status) }}
                                 </span>
                             </div>
                         </div>
@@ -70,7 +72,7 @@
                         <div class="col-xl-4 col-lg-4 col-md-4 col-6">
                             <p class="mb-1 p-0"><span class="text-muted">Expected date by:</span></p>
                             <h6 class="mb-0 ft-medium fs-sm">
-                                {{ \Carbon\Carbon::parse($orderProduct->delivery_date)->format('d F Y')}}
+                                {{ \Carbon\Carbon::parse($orderProduct->created_at->addDays(14))->format('d F Y')}}
                             </h6>
                             </h6>
                         </div>
