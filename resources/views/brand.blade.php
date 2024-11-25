@@ -139,6 +139,8 @@
     </div>
 </div>
 
+@include('layout.pagination', ['paginator' => $brand])
+
 <script>
     const arihant = document.querySelector('#alert');
     if ("{{session('success')}}") {
