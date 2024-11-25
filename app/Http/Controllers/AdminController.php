@@ -24,9 +24,7 @@ class AdminController extends Controller
             ->orderByDesc('created_at')
             ->get();
 
-        $productSum = Order::with('products')->sum('total');
-
-        return view('admin.order', compact(['orders', 'productSum']));
+        return view('admin.order', compact('orders'));
     }
 
     public function specific($id)
