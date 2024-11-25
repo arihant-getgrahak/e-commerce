@@ -83,7 +83,7 @@
                         <tr>
                             <td class="text-center">{{ $loop->iteration }}</td>
                             <td>
-                                <p class="strong mb-1">{{Str::ucfirst($product->product->name)}}</p>
+                                <p class="strong mb-1">{{Str::ucfirst($product->name)}}</p>
                             </td>
                             <td class="text-center">
                                 {{$product->quantity}}
