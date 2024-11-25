@@ -131,6 +131,7 @@ class CheckoutController extends Controller
                         'product_id' => $c->product_id,
                         'quantity' => $c->quantity,
                         'price' => $c->price,
+                        'name' => $c->name,
                     ]);
                 }
 
@@ -195,6 +196,7 @@ class CheckoutController extends Controller
                         'product_id' => $c->product_id,
                         'quantity' => $c->quantity,
                         'price' => $c->price,
+                        'name' => $c->name,
                     ]);
                 }
 
