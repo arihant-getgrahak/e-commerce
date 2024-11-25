@@ -7,7 +7,6 @@ use App\Models\DeliveryCity;
 use App\Models\DeliveryCountry;
 use App\Models\DeliveryState;
 use App\Models\Order;
-use App\Models\OrderProduct;
 use App\Models\OrderStatus;
 use App\Models\User;
 use Auth;
@@ -25,7 +24,9 @@ class AdminController extends Controller
             ->orderByDesc('created_at')
             ->get();
 
-        return view('adminorder', compact('orders'));
+        $productSum = Order::with('products')->sum('total');
+
+        return view('admin.order', compact(['orders', 'productSum']));
     }
 
     public function specific($id)
@@ -37,52 +38,31 @@ class AdminController extends Controller
 
     public function update(Request $request, $id, ShipRocketController $shipRocketController)
     {
-        $orderproduct = OrderProduct::find($id);
+        $order = Order::find($id);
 
-        if (! $orderproduct) {
-            return back()->with('error', 'Product not found.');
+        if (! $order) {
+            return back()->with('error', 'Order not found.');
         }
 
-        $data = $request->only(['status', 'delivery_date']);
-        $order = Order::with(['products', 'address', 'user'])->find($orderproduct->order_id);
-
-        if ($request->status == 'delivered') {
-            $data['delivery_date'] = now();
-        }
-
-        if ($orderproduct->status == 'cancelled') {
+        if ($order->status == 'cancelled') {
             return back()->with('error', 'You cannot update cancelled order');
         }
 
-        if ($orderproduct->status == 'delivered') {
+        if ($order->status == 'delivered') {
             return back()->with('error', 'You cannot update delivered order');
         }
 
-        if ($orderproduct->status == 'shipped') {
-            $res = $shipRocketController->createOrder($order, $orderproduct);
+        if ($order->status == 'shipped') {
+            $res = $shipRocketController->createOrder($order, $order);
             if ($res->status() == 200) {
                 $res = $shipRocketController->store($res->json());
                 if (! $res['status']) {
                     return back()->with('error', $res['message']);
                 }
+            } else {
+                return response()->json($res->json());
             }
         }
-
-        $orderproduct->update($data);
-
-        $allDelivered = $order->products->every(fn ($product) => $product->status === 'delivered');
-        $allCancelled = $order->products->every(fn ($product) => $product->status === 'cancelled');
-        $allshipped = $order->products->every(fn ($product) => $product->status === 'shipped');
-
-        if ($allDelivered) {
-            $order->status = 'delivered';
-        } elseif ($allCancelled) {
-            $order->status = 'cancelled';
-        } elseif ($allshipped) {
-            $order->status = 'shipped';
-        }
-
-        $order->save();
 
         if ($order->status !== 'pending') {
             OrderStatus::create([
@@ -91,6 +71,10 @@ class AdminController extends Controller
                 'created_at' => now(),
             ]);
         }
+
+        $order->update([
+            'status' => $request->status,
+        ]);
 
         return back()->with('success', 'Order updated successfully');
     }
