@@ -44,23 +44,26 @@ class AdminController extends Controller
             return back()->with('error', 'Order not found.');
         }
 
-        if ($order->status == 'cancelled') {
-            return back()->with('error', 'You cannot update cancelled order');
+        $restrictedStatuses = ['cancelled', 'delivered'];
+        if (in_array($order->status, $restrictedStatuses)) {
+            return back()->with('error', 'You cannot update '.$order->status.' order.');
         }
 
-        if ($order->status == 'delivered') {
-            return back()->with('error', 'You cannot update delivered order');
-        }
+        if ($request->status === 'shipped') {
+            $shipRocketResponse = $shipRocketController->createOrder($order, $order);
 
-        if ($order->status == 'shipped') {
-            $res = $shipRocketController->createOrder($order, $order);
-            if ($res->status() == 200) {
-                $res = $shipRocketController->store($res->json());
-                if (! $res['status']) {
-                    return back()->with('error', $res['message']);
+            if (! $shipRocketResponse || ! method_exists($shipRocketResponse, 'status')) {
+                return back()->with('error', 'Failed to create order in ShipRocket.');
+            }
+
+            if ($shipRocketResponse->status() === 200) {
+                $storeResponse = $shipRocketController->store($shipRocketResponse->json());
+
+                if (! $storeResponse['status']) {
+                    return back()->with('error', $storeResponse['message']);
                 }
             } else {
-                return response()->json($res->json());
+                return response()->json($shipRocketResponse->json());
             }
         }
 
@@ -76,7 +79,7 @@ class AdminController extends Controller
             'status' => $request->status,
         ]);
 
-        return back()->with('success', 'Order updated successfully');
+        return back()->with('success', 'Order updated successfully.');
     }
 
     public function search(Request $request)
