@@ -20,7 +20,7 @@
     <p>Products:</p>
     <ul>
         @foreach ($order->products as $product)
-            <li>{{ $product->product->name }}</li>
+            <li>{{ $product->name }}</li>
             <ul>
                 <li>Price: ₹{{ $product->price }}</li>
                 <li>Quantity: {{ $product->quantity }}</li>

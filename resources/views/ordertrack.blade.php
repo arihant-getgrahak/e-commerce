@@ -128,9 +128,9 @@
             <div class="d-flex flex-column">
                 @foreach ($orderstatus[0]->order->products as $product)
                     <div class="d-flex align-items-center" style="gap:10px;">
-                        <img style="width:50px;" src="{{$product->product->thumbnail}}" alt="{{$product->product->name}}">
+                        <img style="width:50px;" src="{{$product->product->thumbnail}}" alt="{{$product->name}}">
                         <div class="d-flex flex-column">
-                            <p>{{$product->product->name}}</p>
+                            <p>{{$product->name}}</p>
                             <p>Quantity: {{$product->quantity}}</p>
                             <p>Price: ₹{{$product->price}}</p>
                         </div>

@@ -42,12 +42,12 @@
                             <div class="cart_single d-flex align-items-start mfliud-bot">
                                 <div class="cart_selected_single_thumb">
                                     <a href="#"><img src="{{ $orderProduct->product->thumbnail }}" width="75"
-                                            class="img-fluid rounded" alt={{ $orderProduct->product->name }}></a>
+                                            class="img-fluid rounded" alt={{ $orderProduct->name }}></a>
                                 </div>
                                 <div class="cart_single_caption pl-3">
                                     <p class="mb-0"><span class="text-muted small">
                                             {{ $orderProduct->product->category->name }}</span></p>
-                                    <h4 class="product_title fs-sm ft-medium mb-1 lh-1">{{ $orderProduct->product->name }}</h4>
+                                    <h4 class="product_title fs-sm ft-medium mb-1 lh-1">{{ $orderProduct->name }}</h4>
                                     <p class="mb-2"><span class="text-dark medium">SKU: {{ $orderProduct->product->sku }}</span>,
                                         <span class="text-dark medium">Weight: {{ $orderProduct->product->weight }}g</span>
                                     </p>
