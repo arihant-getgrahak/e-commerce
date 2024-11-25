@@ -16,9 +16,22 @@ class ShipRocketController extends Controller
         $this->token = env('SHIPROCKET_TOKEN');
     }
 
-    public function createOrder($data, $orderproduct)
+    public function createOrder($data)
     {
         try {
+            $products = [];
+            foreach ($data->products as $product) {
+                $products[] = [
+                    'name' => $product->product->name,
+                    'sku' => $product->product->sku,
+                    'units' => $product->quantity,
+                    'selling_price' => $product->price,
+                    'discount' => '',
+                    'tax' => '',
+                    'hsn' => 441122,
+                ];
+            }
+
             $api = Http::withHeaders([
                 'Content-Type' => 'application/json',
                 'Authorization' => 'Bearer '.$this->token,
@@ -37,7 +50,7 @@ class ShipRocketController extends Controller
                 'billing_state' => $data->address->state,
                 'billing_country' => $data->address->country,
                 'billing_email' => $data->user->email,
-                'billing_phone' => $data->user->phone,
+                'billing_phone' => $data->user->phone_number,
                 'shipping_is_billing' => true,
                 'shipping_customer_name' => '',
                 'shipping_last_name' => '',
@@ -49,18 +62,8 @@ class ShipRocketController extends Controller
                 'shipping_state' => '',
                 'shipping_email' => '',
                 'shipping_phone' => '',
-                'order_items' => [
-                    [
-                        'name' => $orderproduct->product->name,
-                        'sku' => $orderproduct->product->sku,
-                        'units' => $orderproduct->quantity,
-                        'selling_price' => $orderproduct->price,
-                        'discount' => '',
-                        'tax' => '',
-                        'hsn' => 441122,
-                    ],
-                ],
-                'payment_method' => $orderproduct->payment_method == 'cod' ? 'postpaid' : 'prepaid',
+                'order_items' => $products,
+                'payment_method' => $data->payment_method == 'cod' ? 'postpaid' : 'prepaid',
                 'shipping_charges' => 0,
                 'giftwrap_charges' => 0,
                 'transaction_charges' => 0,

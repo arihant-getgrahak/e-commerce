@@ -38,7 +38,11 @@ class AdminController extends Controller
 
     public function update(Request $request, $id, ShipRocketController $shipRocketController)
     {
-        $order = Order::find($id);
+        $order = Order::with([
+            'products.product',
+            'user',
+            'address',
+        ])->find($id);
 
         if (! $order) {
             return back()->with('error', 'Order not found.');
@@ -50,7 +54,7 @@ class AdminController extends Controller
         }
 
         if ($request->status === 'shipped') {
-            $shipRocketResponse = $shipRocketController->createOrder($order, $order);
+            $shipRocketResponse = $shipRocketController->createOrder($order);
 
             if (! $shipRocketResponse || ! method_exists($shipRocketResponse, 'status')) {
                 return back()->with('error', 'Failed to create order in ShipRocket.');
@@ -63,7 +67,6 @@ class AdminController extends Controller
                     return back()->with('error', $storeResponse['message']);
                 }
             } else {
-                return response()->json($shipRocketResponse->json());
             }
         }
 
