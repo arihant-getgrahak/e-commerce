@@ -134,24 +134,14 @@ class AdminController extends Controller
     public function printNode($id, $printerId)
     {
         $order = Order::with([
-            'products' => function ($query) {
-                $query->where('status', '!=', 'cancelled');
-            },
             'products.product',
             'user',
             'address',
-        ])
-            ->withSum([
-                'products as total_price' => function ($query) {
-                    $query->where('status', '!=', 'cancelled');
-                },
-            ], 'price')
-            ->find($id);
+        ])->find($id);
 
         $pdf = Pdf::loadView('printinvoice', [
             'order' => $order,
         ]);
-        // ->setOption('enable_font_subsetting', true);
 
         $pdfOutput = $pdf->output();
         $pdfBase64 = base64_encode($pdfOutput);
