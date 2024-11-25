@@ -22,7 +22,7 @@ class AdminController extends Controller
     {
         $orders = Order::with(['products.product', 'user', 'address'])
             ->orderByDesc('created_at')
-            ->get();
+            ->paginate(5);
 
         return view('admin.order', compact('orders'));
     }
@@ -194,7 +194,7 @@ class AdminController extends Controller
             ->whereHas('order')
             ->withCount('order')
             ->withSum('order', 'total')
-            ->get();
+            ->paginate(5);
 
         return view('adminUser', compact('user'));
     }
@@ -240,7 +240,7 @@ class AdminController extends Controller
 
     public function state()
     {
-        $state = DeliveryState::with('country')->get();
+        $state = DeliveryState::with('country')->paginate(10);
         if (! $state) {
             return back()->with('error', 'State not found');
         }
@@ -250,7 +250,7 @@ class AdminController extends Controller
 
     public function city()
     {
-        $city = DeliveryCity::with('state')->get();
+        $city = DeliveryCity::with('state')->paginate(10);
         $country = DeliveryCountry::all();
         if (! $city) {
             return back()->with('error', 'City not found');
