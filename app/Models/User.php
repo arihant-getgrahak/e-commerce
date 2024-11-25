@@ -26,6 +26,11 @@ class User extends Authenticatable
         'phone_number',
         'provider',
         'provider_id',
+        'utm_source',
+        'utm_medium',
+        'utm_campaign',
+        'utm_term',
+        'utm_content',
     ];
 
     /**
@@ -50,6 +55,17 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    // protected static function boot(): void
+    // {
+    //     parent::boot();
+
+    //     static::created(function ($user) {
+    //         if (session()->has('utm')) {
+    //             User::where('id', $user->id)->update(session('utm'));
+    //         }
+    //     });
+    // }
 
     public function order()
     {
