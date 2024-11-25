@@ -60,7 +60,7 @@
                                         <tr>
                                             <td class="sort-name">{{$order->id}}</td>
                                             <td class="sort-quantity">{{$order->products->count()}}</td>
-                                            <td class="sort-city">₹{{$productSum}}</td>
+                                            <td class="sort-city">₹{{$order->total}}</td>
                                             <td class="sort-type">{{Str::upper($order->payment_method)}}</td>
                                             <td class="sort-progress">
                                                 {{Str::ucfirst($order->status)}}
@@ -91,7 +91,6 @@
                                                 @endif
                                             </td>
                                         </tr>
-
                                     @endforeach
                                 </tbody>
                             </table>
@@ -133,102 +132,101 @@
             </div>
         </div>
     </div>
-
 </main>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const updateButtons = document.querySelectorAll('.btn-update');
-        const updateForm = document.getElementById("productForm");
+    const searchInputField = document.getElementById('search_content');
+    let searchContent = searchInputField.value;
 
-        updateButtons.forEach(button => {
-            button.addEventListener('click', function () {
-                const id = this.getAttribute('data-id');
-                const status = this.getAttribute('data-status');
-
-                updateForm.action = "{{ route('admin.order.update', ':id') }}".replace(':id', id);
-
-                updateForm.querySelector('#status').value = status;
-            });
-        });
-    });
-</script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const updateForm = document.getElementById("productForm");
-        const btnUpdate = document.getElementById("btn-update-product");
-
-        document.getElementById('table-body').addEventListener('click', function (event) {
-            if (event.target.classList.contains('btn-update')) {
-                const button = event.target;
-                const id = button.getAttribute('data-id');
-                const status = button.getAttribute('data-status');
-
-                updateForm.action = "{{ route('admin.order.update', ':id') }}".replace(':id', id);
-                const today = new Date().toISOString().split("T")[0];
-
-                updateForm.querySelector("#delivery_date").setAttribute("min", today);
-                updateForm.querySelector("#delivery_date").value = today;
-                updateForm.querySelector('#status').value = status;
-            }
-        });
-    });
-
-    document.getElementById('search_content').addEventListener('change', function () {
+    searchInputField.addEventListener('input', function () {
         searchContent = this.value;
+        console.log("Search Content:", searchContent);
     });
 
     async function searchInput(value) {
         const tableBody = document.getElementById('table-body');
         tableBody.innerHTML = "";
 
-        const res = await fetch("{{ route('admin.search') }}", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': "{{ csrf_token() }}"
-            },
-            body: JSON.stringify({ search: value, search_content: searchContent })
-        });
+        try {
+            const res = await fetch("{{ route('admin.search') }}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                },
+                body: JSON.stringify({ search: value, search_content: searchContent })
+            });
 
-        const data = await res.json();
+            if (!res.ok) throw new Error("Failed to fetch data");
 
-        data.forEach(order => {
-            order.products.forEach(product => {
-                const row = generateOrderRow(order, product);
+            const data = await res.json();
+
+            data.forEach(order => {
+                const row = generateOrderRow(order);
                 tableBody.insertAdjacentHTML('beforeend', row);
             });
-        });
+        } catch (error) {
+            console.error("Error fetching search results:", error);
+        }
     }
 
-    function generateOrderRow(order, product) {
+    function generateOrderRow(order) {
+        const status = order.status;
+        let data;
+        if (status !== "cancelled") {
+            data = `<a href="/invoice/${order.id}">Download Invoice</a>`
+        }
         return `
             <tr>
                 <td>${order.id}</td>
-                <td>${product.product.name}</td>
-                <td>${order.payment_method.toUpperCase()}</td>
-                <td>${product.quantity}</td>
-                <td>₹${product.price}</td>
-                <td>${new Date(order.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</td>
-                <td>${product.status.toUpperCase()}</td>
+                <td>${order.products.length}</td>
                 <td>₹${order.total}</td>
-                <td>${order.address.city}, ${order.address.state}</td>
-                <td>
-                    ${new Date(product.delivery_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
-                </td>
+                <td>${order.payment_method.toUpperCase()}</td>
+                <td>${order.status.toUpperCase()}</td>
+                <td>${order.address.address}, 
+                 ${order.address.city},
+                 ${order.address.state}, 
+                 ${order.address.pincode}</td>
+                <td>${order.user.name}</td>
                 <td>${order.user.email}</td>
-               <td class="sort-type space-y-2">
-                    <a href="#" class="btn btn-primary btn-sm btn-success">View</a>
-                    <button class="btn btn-primary btn-sm btn-update" data-bs-toggle="modal" data-bs-target="#modal-team" data-id="${product.id}" data-status="${product.status}">Update</button>
+                <td>${order.user.phone_number}</td>
+                <td class="sort-type space-y-2">
+                    <a href="/admin/order/${order.id}" class="btn btn-primary btn-sm btn-success">View</a>
+                    <button class="btn btn-primary btn-sm btn-update" 
+                        data-bs-toggle="modal" data-bs-target="#modal-team" 
+                        data-id=${order.id} data-status=${order.status}>Update</button>
+                    ${data ?? ""}
                 </td>
             </tr>`;
     }
 </script>
 
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const updateForm = document.getElementById("productForm");
+
+        document.body.addEventListener('click', function (event) {
+            if (event.target.classList.contains('btn-update')) {
+                const button = event.target;
+                const id = button.getAttribute('data-id');
+                const status = button.getAttribute('data-status');
+
+                updateForm.action = "{{ route('admin.order.update', ':id') }}".replace(':id', id);
+
+                updateForm.querySelector('#status').value = status;
+            }
+        });
+    });
+</script>
+
+
+<script>
     if ("{{session("error")}}") {
         alert("{{session("error")}}");
+    }
+
+    if ("{{session("success")}}") {
+        alert("{{session("success")}}");
     }
 </script>
 @endsection
