@@ -114,19 +114,10 @@ class AdminController extends Controller
     public function invoice($id)
     {
         $order = Order::with([
-            'products' => function ($query) {
-                $query->where('status', '!=', 'cancelled');
-            },
             'products.product',
             'user',
             'address',
-        ])
-            ->withSum([
-                'products as total_price' => function ($query) {
-                    $query->where('status', '!=', 'cancelled');
-                },
-            ], 'price')
-            ->find($id);
+        ])->find($id);
 
         return view('invoice', ['order' => $order]);
     }
