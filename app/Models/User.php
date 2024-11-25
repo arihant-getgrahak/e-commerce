@@ -26,6 +26,11 @@ class User extends Authenticatable
         'phone_number',
         'provider',
         'provider_id',
+        'utm_source',
+        'utm_medium',
+        'utm_campaign',
+        'utm_term',
+        'utm_content',
     ];
 
     /**
