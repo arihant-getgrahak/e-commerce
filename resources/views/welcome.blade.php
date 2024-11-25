@@ -693,7 +693,7 @@
                 const newPrice = this.getAttribute('data-new-price');
                 const id = this.getAttribute('data-id');
 
-                let quantity;
+                let quantity = 1;
                 document.querySelectorAll('#quantity').forEach(q => {
                     q.addEventListener('change', function () {
                         quantity = this.value;
@@ -704,8 +704,9 @@
                     btn.addEventListener('click', function () {
                         const data = {
                             id: id,
-                            quantity,
-                            price: productPrice
+                            quantity: quantity,
+                            price: productPrice,
+                            name: productName
                         }
                         addToCart(data);
                     });
@@ -729,7 +730,7 @@
         });
 
         async function addToCart(params) {
-            const quantity = 1;
+            console.log(params);
             const res = await fetch("{{route("cart.add")}}", {
                 method: "POST",
                 headers: {
@@ -739,7 +740,8 @@
                 body: JSON.stringify({
                     product_id: params.id,
                     quantity: params.quantity,
-                    price: params.price
+                    price: params.price,
+                    name: params.name
                 }),
             })
 
