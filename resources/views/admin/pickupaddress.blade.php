@@ -328,7 +328,7 @@
 </div>
 
 <!-- pagination starts -->
-@include('layout.pagination', ['paginator' => $addresses->links()])
+@include('layout.pagination', ['paginator' => $addresses])
 <script>
     if ("{{session('success')}}") {
         alert("{{session('success')}}");
