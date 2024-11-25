@@ -68,7 +68,7 @@ class ShipRocketController extends Controller
                 'giftwrap_charges' => 0,
                 'transaction_charges' => 0,
                 'total_discount' => 0,
-                'sub_total' => 9000,
+                'sub_total' => $data->total,
                 'length' => 10,
                 'breadth' => 15,
                 'height' => 20,
