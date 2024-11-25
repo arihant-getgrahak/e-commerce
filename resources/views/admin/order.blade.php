@@ -109,8 +109,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="productForm" class="bg-white p-4 rounded-lg shadow-lg" method="POST" action=""
-                        enctype="multipart/form-data">
+                    <form id="productForm" class="bg-white p-4 rounded-lg shadow-lg" method="POST" action="">
                         @csrf
 
                         <!-- Order Status -->
@@ -129,7 +128,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="submit" form="productForm" class="btn btn-primary" id="btn-update-product">Update
-                        Form</button>
+                        Status</button>
                 </div>
             </div>
         </div>
