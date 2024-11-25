@@ -17,20 +17,12 @@ class Order extends Model
         'currency', //default inr
         'razorpay_order_id', //nullable for cod
         'razorpay_payment_id', //nullable for cod
-        'delivery_date', //default +14 days
     ];
 
     protected $casts = [
         'created_at' => 'datetime:Y-m-d',
         'updated_at' => 'datetime:Y-m-d',
     ];
-
-    protected static function booted()
-    {
-        static::creating(function ($order) {
-            $order->delivery_date = now()->addDays(14);
-        });
-    }
 
     public function user()
     {
