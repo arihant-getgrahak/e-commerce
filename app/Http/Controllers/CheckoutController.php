@@ -37,7 +37,11 @@ class CheckoutController extends Controller
             }
         }
 
-        return view('checkout', compact('isLoggedIn', 'cart', 'price'));
+        $ip = '146.70.245.84';
+        $data = getLocationInfo($ip);
+        $telcode = getTelCode($data['data']['country'] ?? 'IN');
+
+        return view('checkout', compact('isLoggedIn', 'cart', 'price', 'telcode'));
     }
 
     public function display()
@@ -108,8 +112,7 @@ class CheckoutController extends Controller
                     'state' => $request->state,
                     'country' => $request->country,
                     'pincode' => $request->pincode,
-                    'phone' => $request->phone,
-
+                    'phone' => $request->ccode + $request->phone,
                 ]);
 
                 // create order
