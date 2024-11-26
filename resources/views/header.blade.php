@@ -33,7 +33,7 @@
             </div>
             <div class="nav-menus-wrapper" style="transition-property: none;">
                 <ul class="nav-menu">
-                    @foreach ($navigations as $navigation)
+                    @foreach (collect($navigations[0]) as $navigation)
                         @if ($navigation->name === 'Header')
                             @foreach ($navigation->menus as $menu)
                                 <li>
@@ -57,6 +57,12 @@
 
 
                 <ul class="nav-menu nav-menu-social align-to-right">
+                    <select name="language" id="language">
+                        <option value="IN">India</option>
+                        <option value="IN">India</option>
+                        <option value="IN">India</option>
+                        <option value="IN">India</option>
+                    </select>
                     <li>
                         <a href="#" onclick="openSearch()">
                             <i class="lni lni-search-alt"></i>
