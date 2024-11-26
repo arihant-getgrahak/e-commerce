@@ -13,8 +13,11 @@ abstract class Controller
         foreach ($navigation as $n) {
             $n->menus = $n->menus->whereNull('parent_id');
         }
+        // $ip = request()->ip();
+        $ip = '146.70.245.84';
+        $data = getLocationInfo($ip);
+        $telcode = $data['data']['country'] ?? 'IN';
 
-        // view()->share('navigations', $navigation);
-        View::share('navigations', $navigation);
+        View::share('navigations', [$navigation, $telcode]);
     }
 }
