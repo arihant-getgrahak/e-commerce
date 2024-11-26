@@ -136,15 +136,9 @@ class AuthController extends Controller
     {
 
         $ip = request()->ip();
-        // $ip = "106.219.68.84";
+        // $ip = "146.70.244.118";
         $data = $this->getLocationInfo($ip);
-        if ($data['status'] == 'error') {
-            $telcode = $data['message'];
-
-            return view('register', compact('telcode'));
-        }
-
-        $telcode = $this->getTelCode($data['data']['country']);
+        $telcode = $this->getTelCode($data['data']['country'] ?? 'IN');
 
         return view('register', compact('telcode'));
     }
@@ -156,9 +150,15 @@ class AuthController extends Controller
             $data = $response->json();
             $telephoneCode = $data[0]['idd']['root'].$data[0]['idd']['suffixes'][0];
 
-            return $telephoneCode;
+            return [
+                'code' => $telephoneCode,
+                'status' => true,
+            ];
         } else {
-            echo 'Country not found.';
+            return [
+                'code' => 'Country not found.',
+                'status' => false,
+            ];
         }
     }
 
@@ -172,24 +172,24 @@ class AuthController extends Controller
 
                 if (isset($data['bogon']) && $data['bogon'] == 1) {
                     return [
-                        'status' => 'error',
+                        'status' => false,
                         'message' => 'Bogon IP address detected. Unable to determine location.',
                     ];
                 }
 
                 return [
-                    'status' => 'success',
+                    'status' => true,
                     'data' => $data,
                 ];
             }
 
             return [
-                'status' => 'error',
+                'status' => false,
                 'message' => 'Unable to retrieve location data.',
             ];
         } catch (\Throwable $th) {
             return [
-                'status' => 'error',
+                'status' => false,
                 'message' => 'An error occurred while fetching location data.',
             ];
         }
