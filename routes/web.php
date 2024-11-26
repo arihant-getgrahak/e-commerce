@@ -81,13 +81,9 @@ Route::group(['middleware' => TrackUtmMiddleware::class], function () {
 
     Route::get('/child-category/{id}', [ProductController::class, 'child_category'])->name('child-category');
 
-    Route::get('login', function () {
-        return view('login');
-    })->name('login');
+    Route::get('login', [AuthController::class, 'loginView'])->name('login');
 
-    Route::get('register', function () {
-        return view('register');
-    })->name('register');
+    Route::get('register', [AuthController::class, 'registerView'])->name('register');
 
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 

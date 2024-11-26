@@ -44,20 +44,15 @@ class AuthController extends Controller
             'phone_number' => $request->phone_number,
         ]);
 
-        if (! $user) {
-            // return response()->json([
-            //     "message" => "Something went wrong",
-            // ]);
+        if (session('utm')) {
+            $user->update(session('utm'));
+        }
 
+        if (! $user) {
             return back()->with('error', 'Something went wrong');
         }
 
-        // return response()->json([
-        //     "message" => "User created successfully",
-        //     "user" => $user
-        // ]);
-
-        return back()->with('success', 'User created successfully');
+        return back()->with('success', 'User created successfully. Please login');
     }
 
     public function logout()
@@ -130,5 +125,15 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             return redirect('/register');
         }
+    }
+
+    public function loginView()
+    {
+        return view('login');
+    }
+
+    public function registerView()
+    {
+        return view('register');
     }
 }
