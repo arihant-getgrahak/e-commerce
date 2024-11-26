@@ -2,6 +2,10 @@
 
 @section("section")
 
+@php
+print_r($country)
+@endphp
+
 <section class="middle">
     <div class="gray py-3">
         <div class="container">
