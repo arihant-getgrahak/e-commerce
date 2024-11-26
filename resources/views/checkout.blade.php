@@ -1,6 +1,7 @@
 @extends('layout.frontend')
 
 @section('section')
+
 <div class="gray py-3">
     <div class="container">
         <div class="row">
@@ -110,7 +111,15 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-xl-2 col-lg-6 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label class="text-dark" id="phone">Tel Code *</label>
+                                <input type="text" class="form-control" placeholder="+91" name="ccode" id="ccode"
+                                    value="{{$telcode["code"]}}" required />
+                            </div>
+                        </div>
+
+                        <div class="col-xl-10 col-lg-6 col-md-12 col-sm-12 col-12">
                             <div class="form-group">
                                 <label class="text-dark" id="phone">Mobile Number *</label>
                                 <input type="text" class="form-control" placeholder="Mobile Number" name="phone"
@@ -198,7 +207,7 @@
                                                 <h4 class="product_title fs-md ft-medium mb-1 lh-1">{{$c->products[0]->name}}
                                                 </h4>
                                                 <!-- <p class="mb-1 lh-1"><span class="text-dark">Size: 40</span></p>
-                                                                                                                    <p class="mb-3 lh-1"><span class="text-dark">Color: Blue</span></p> -->
+                                                                                                                                                            <p class="mb-3 lh-1"><span class="text-dark">Color: Blue</span></p> -->
                                                 <h4 class="fs-md ft-medium mb-3 lh-1">₹{{$c->price}}</h4>
                                             </div>
                                         </div>
