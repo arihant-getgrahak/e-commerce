@@ -21,17 +21,27 @@
                     <a href="javascript:void(0);" data-toggle="dropdown" class="popup-title" title="Currency"
                         aria-label="Currency dropdown">
                         <span class="hidden-xl-down medium text-light">Currency:</span>
-                        <span class="iso_code medium text-light">₹INR</span>
+                        <span class="iso_code medium text-light"> <img
+                                src="{{ asset('vendor/blade-flags/country-in.svg') }}" width="32" height="32" /> India
+                        </span>
                         <i class="fa fa-angle-down medium text-light"></i>
                     </a>
                     <ul class="popup-content dropdown-menu">
-                        <li><a title="Euro" href="#" class="dropdown-item medium text-medium">EUR €</a></li>
-                        <li class="current"><a title="US Dollar" href="#" class="dropdown-item medium text-medium">UK
-                                £</a></li>
-                        <li class="current"><a title="US Dollar" href="#" class="dropdown-item medium text-medium">USA $
-                                $</a></li>
-                        <li class="current"><a title="US Dollar" href="#" class="dropdown-item medium text-medium">China
-                                ¥</a></li>
+                        <li><a title="Euro" href="#" class="dropdown-item medium text-medium"><img
+                                    src="{{ asset('vendor/blade-flags/country-eu.svg') }}" width="32"
+                                    height="32" />Europe</a>
+                        </li>
+                        <li class="current"><a title="US Dollar" href="#" class="dropdown-item medium text-medium">
+                                <img src="{{ asset('vendor/blade-flags/country-uk.svg') }}" width="32" height="32" />
+                                UK</a></li>
+                        <li class="current"><a title="US Dollar" href="#" class="dropdown-item medium text-medium">
+                                <img src="{{ asset('vendor/blade-flags/country-us.svg') }}" width="32" height="32" />
+                                USA
+                            </a></li>
+                        <li class="current"><a title="US Dollar" href="#" class="dropdown-item medium text-medium">
+                                <img src="{{ asset('vendor/blade-flags/country-cn.svg') }}" width="32" height="32" />
+                                China
+                            </a></li>
                     </ul>
                 </div>
 
