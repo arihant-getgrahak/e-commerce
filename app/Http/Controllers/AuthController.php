@@ -136,9 +136,30 @@ class AuthController extends Controller
     {
 
         $ip = request()->ip();
-        $country = $this->getLocationInfo($ip);
+        // $ip = "106.219.68.84";
+        $data = $this->getLocationInfo($ip);
+        if ($data['status'] == 'error') {
+            $telcode = $data['message'];
 
-        return view('register', compact('country'));
+            return view('register', compact('telcode'));
+        }
+
+        $telcode = $this->getTelCode($data['data']['country']);
+
+        return view('register', compact('telcode'));
+    }
+
+    protected function getTelCode($data)
+    {
+        $response = Http::get("https://restcountries.com/v3.1/alpha/{$data}");
+        if ($response->ok()) {
+            $data = $response->json();
+            $telephoneCode = $data[0]['idd']['root'].$data[0]['idd']['suffixes'][0];
+
+            return $telephoneCode;
+        } else {
+            echo 'Country not found.';
+        }
     }
 
     protected function getLocationInfo(string $ip): array
