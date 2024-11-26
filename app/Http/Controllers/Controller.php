@@ -18,6 +18,6 @@ abstract class Controller
         $data = getLocationInfo($ip);
         $telcode = $data['data']['country'] ?? 'IN';
 
-        View::share('navigations', [$navigation, $telcode]);
+        View::share('navigations', compact('navigation', 'telcode'));
     }
 }
