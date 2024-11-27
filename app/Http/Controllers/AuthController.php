@@ -136,8 +136,7 @@ class AuthController extends Controller
     public function registerView()
     {
 
-        // $ip = request()->ip();
-        $ip = '146.70.245.84';
+        $ip = request()->ip() ?? '146.70.245.84';
         $data = getLocationInfo($ip);
         $telcode = getTelCode($data['data']['country'] ?? 'IN');
 
