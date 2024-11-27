@@ -32,12 +32,12 @@
                                     src="{{ asset('vendor/blade-flags/country-in.svg') }}" width="32"
                                     height="32" />India</a>
                         </li>
-                        <li><a title="Euro" onclick="country(this.id)" href="javascript:void(0);" id="eu"
+                        <li><a title="Euro" onclick="country(this.id)" href="javascript:void(0);" id="de"
                                 class="dropdown-item medium text-medium"><img
-                                    src="{{ asset('vendor/blade-flags/country-eu.svg') }}" width="32"
-                                    height="32" />Europe</a>
+                                    src="{{ asset('vendor/blade-flags/country-de.svg') }}" width="32"
+                                    height="32" />Germany</a>
                         </li>
-                        <li class="current"><a title="US Dollar" href="javascript:void(0);" id="uk"
+                        <li class="current"><a title="US Dollar" href="javascript:void(0);" id="gb"
                                 onclick="country(this.id)" class="dropdown-item medium text-medium">
                                 <img src="{{ asset('vendor/blade-flags/country-uk.svg') }}" width="32" height="32" />
                                 UK</a></li>
