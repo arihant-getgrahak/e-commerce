@@ -135,10 +135,17 @@ class AuthController extends Controller
 
     public function registerView()
     {
+        $country = session('country', 'IN');
 
-        $ip = request()->ip() ?? '146.70.245.84';
-        $data = getLocationInfo($ip);
-        $telcode = getTelCode($data['data']['country'] ?? 'IN');
+        if (auth()->check()) {
+            $country = auth()->user()->country ?? $country;
+        } elseif (! session('country')) {
+            $ip = request()->ip() ?? '146.70.245.84';
+            $data = getLocationInfo($ip);
+            $country = $data['data']['country'] ?? $country;
+        }
+
+        $telcode = getTelCode($country)['code'];
 
         return view('register', compact('telcode'));
     }
