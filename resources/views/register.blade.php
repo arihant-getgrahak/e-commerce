@@ -44,7 +44,7 @@
                 <div class="form-group col-md-6">
                     <label for="country_code">Country Code *</label>
                     <input type="text" class="form-control" placeholder="+91" required name="country_code"
-                        id="country_code" value="{{ $telcode["code"] }}">
+                        id="country_code" value="{{ $telcode }}">
                     @error('country_code')
                         <p class="text-red-500">{{ $message }}</p>
                     @enderror
