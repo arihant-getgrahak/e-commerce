@@ -121,13 +121,37 @@
                                 <option value="cancelled">Cancelled</option>
                             </select>
                         </div>
-
+                        <input type="text" id="pickup" name="pickup" hidden>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="submit" form="productForm" class="btn btn-primary" id="btn-update-product">Update
                         Status</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pickup Address -->
+    <div class="modal modal-blur fade" id="modal-pickup" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Select Pickup Address</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <label for="pickup_id" class="col-form-label required">Pickup Address</label>
+                    <select class="form-select" id="pickup_name" name="pickup_name" required>
+                        @foreach ($pickupAddress as $address)
+                            <option value="{{$address->tag}}">{{$address->tag}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Select Address</button>
                 </div>
             </div>
         </div>
@@ -220,6 +244,33 @@
         });
     });
 </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const modalElement = document.getElementById("modal-pickup");
+        const modal = new bootstrap.Modal(modalElement);
+        const updateForm = document.getElementById("productForm");
+        const form = document.getElementById("pickupAddress");
+        const statusElement = document.getElementById("status");
+        const pickupInput = updateForm.querySelector('#pickup');
+        const pickupNameInput = document.getElementById("pickup_name");
+
+        statusElement.addEventListener("change", function () {
+            if (this.value === "shipped") {
+                modal.show();
+            }
+        });
+
+        pickupNameInput.addEventListener("input", function () {
+            const pickupName = this.value.trim();
+            if (pickupName) {
+                pickupInput.value = pickupName;
+            }
+        })
+    });
+
+</script>
+
 
 
 <script>
