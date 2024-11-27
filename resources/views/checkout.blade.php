@@ -115,7 +115,7 @@
                             <div class="form-group">
                                 <label class="text-dark" id="phone">Tel Code *</label>
                                 <input type="text" class="form-control" placeholder="+91" name="ccode" id="ccode"
-                                    value="{{$telcode["code"]}}" required />
+                                    value="{{$telcode}}" required />
                             </div>
                         </div>
 
