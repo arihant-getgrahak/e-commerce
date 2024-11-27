@@ -37,9 +37,17 @@ class CheckoutController extends Controller
             }
         }
 
-        $ip = '146.70.245.84';
-        $data = getLocationInfo($ip);
-        $telcode = getTelCode($data['data']['country'] ?? 'IN');
+        $country = session('country', 'IN');
+
+        if (auth()->check()) {
+            $country = auth()->user()->country ?? $country;
+        } elseif (! session('country')) {
+            $ip = request()->ip() ?? '146.70.245.84';
+            $data = getLocationInfo($ip);
+            $country = $data['data']['country'] ?? $country;
+        }
+
+        $telcode = getTelCode($country)['code'];
 
         return view('checkout', compact('isLoggedIn', 'cart', 'price', 'telcode'));
     }
