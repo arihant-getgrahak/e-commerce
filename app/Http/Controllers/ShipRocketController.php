@@ -16,7 +16,7 @@ class ShipRocketController extends Controller
         $this->token = env('SHIPROCKET_TOKEN');
     }
 
-    public function createOrder($data)
+    public function createOrder($data, $pickupaddress)
     {
         try {
             $products = [];
@@ -38,7 +38,7 @@ class ShipRocketController extends Controller
             ])->post('https://apiv2.shiprocket.in/v1/external/orders/create/adhoc', [
                 'order_id' => $data->id,
                 'order_date' => $data->created_at->format('Y-m-d H:i:s'),
-                'pickup_location' => 'home',
+                'pickup_location' => $pickupaddress ?? 'home',
                 'channel_id' => '5777349',
                 'comment' => '',
                 'billing_customer_name' => $data->user->name,

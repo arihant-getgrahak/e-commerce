@@ -46,13 +46,12 @@ class AdminController extends Controller
             return back()->with('error', 'Order not found.');
         }
 
-        $restrictedStatuses = ['cancelled', 'delivered'];
+        $restrictedStatuses = ['cancelled', 'delivered', 'shipped'];
         if (in_array($order->status, $restrictedStatuses)) {
             return back()->with('error', 'You cannot update '.$order->status.' order.');
         }
-
         if ($request->status === 'shipped') {
-            $shipRocketResponse = $shipRocketController->createOrder($order);
+            $shipRocketResponse = $shipRocketController->createOrder($order, $request->pickup);
 
             if (! $shipRocketResponse || ! method_exists($shipRocketResponse, 'status')) {
                 return back()->with('error', 'Failed to create order in ShipRocket.');
