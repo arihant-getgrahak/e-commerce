@@ -423,4 +423,11 @@ class AdminController extends Controller
     {
         return view('trackorderinput');
     }
+
+    public function updateGlobalCountry(Request $request)
+    {
+        session()->put('country', $request->name);
+
+        return response()->json(['success' => true], 200);
+    }
 }
