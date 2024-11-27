@@ -13,6 +13,8 @@ class ShipRocketController extends Controller
 
     protected $channelId;
 
+    protected $pickup;
+
     public function __construct()
     {
         $this->token = env('SHIPROCKET_TOKEN');
@@ -21,6 +23,7 @@ class ShipRocketController extends Controller
 
     public function createOrder($data, $pickupaddress)
     {
+        $this->pickup = $pickupaddress::where('tag', $pickupaddress)->first()->id;
         try {
             $products = [];
             $totalLength = 0;
@@ -41,10 +44,10 @@ class ShipRocketController extends Controller
             }
 
             foreach ($data->products as $product) {
-                $totalLength += $product->product->length;
-                $totalBreadth += $product->product->breath;
-                $totalHeight += $product->product->height;
-                $totalWeight += $product->product->weight;
+                $totalLength += (int) $product->product->length;
+                $totalBreadth += (int) $product->product->breath;
+                $totalHeight += (int) $product->product->height;
+                $totalWeight += (int) $product->product->weight;
             }
 
             $api = Http::withHeaders([
@@ -93,7 +96,7 @@ class ShipRocketController extends Controller
             return $api;
 
         } catch (\Exception $e) {
-            return false;
+            return $e->getMessage();
         }
     }
 
@@ -105,10 +108,10 @@ class ShipRocketController extends Controller
             'shipment_id' => $data['shipment_id'],
             'courier_name' => '',
             'status' => $data['status'],
-            'pickup_address_id' => 2,
+            'pickup_address_id' => $this->pickup,
             'actual_weight' => '',
             'volumetric_weight' => '',
-            'platform' => '5777349',
+            'platform' => $this->channelId,
             'charges' => '',
         ]);
 
