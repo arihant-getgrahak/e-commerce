@@ -8,6 +8,7 @@ use App\Models\DeliveryCountry;
 use App\Models\DeliveryState;
 use App\Models\Order;
 use App\Models\OrderStatus;
+use App\Models\PickupAddress;
 use App\Models\User;
 use Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -24,7 +25,9 @@ class AdminController extends Controller
             ->orderByDesc('created_at')
             ->paginate(5);
 
-        return view('admin.order', compact('orders'));
+        $pickupAddress = PickupAddress::where('user_id', Auth::user()->id)->get();
+
+        return view('admin.order', compact('orders', 'pickupAddress'));
     }
 
     public function specific($id)
