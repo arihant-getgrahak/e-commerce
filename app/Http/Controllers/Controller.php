@@ -15,14 +15,20 @@ abstract class Controller
             },
         ])->get();
 
-        $telcode = session('country', 'IN');
-        if (auth()->check()) {
-            $telcode = auth()->user()->country ?? $telcode;
-        } elseif (! session('country')) {
-            $ip = request()->ip() ?? '146.70.245.84';
-            $data = getLocationInfo($ip);
-            $telcode = $data['data']['country'] ?? $telcode;
+        $telcode = 'IN';
+
+        if (! session()->has('country')) {
+            if (auth()->check()) {
+                session()->put('country', auth()->user()->country);
+            } else {
+                $ip = request()->ip() ?? '146.70.245.84';
+                $data = getLocationInfo($ip);
+                $country = $data['data']['country'] ?? $telcode;
+                session()->put('country', $country);
+            }
         }
+
+        $telcode = session('country', 'IN');
 
         View::share('navigations', compact('navigation', 'telcode'));
     }
