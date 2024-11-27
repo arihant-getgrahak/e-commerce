@@ -261,10 +261,13 @@
             }
         });
 
-        pickupNameInput.addEventListener("input", function () {
-            const pickupName = this.value.trim();
+        pickupInput.value = pickupNameInput.value;
+        console.log(pickupInput.value);
+        pickupNameInput.addEventListener("change", function () {
+            const pickupName = this.value;
             if (pickupName) {
                 pickupInput.value = pickupName;
+                console.log("Pickup Name:", pickupName);
             }
         })
     });
