@@ -32,7 +32,7 @@
             <div class="card card-md">
                 <div class="card-body">
                     <h2 class="h2 text-center mb-4">Login to your account</h2>
-                    <form action="{{ route('login') }}" method="post" autocomplete="off">
+                    <form action="{{ route('login.post') }}" method="post" autocomplete="off">
                         @csrf
                         <div class="mb-3">
                             <label class="form-label">Email address</label>
