@@ -19,10 +19,10 @@ return new class extends Migration
             $table->string('courier_name');
             $table->string('status');
             $table->foreignId('pickup_address_id')->constrained('pickup_addresses')->onDelete('cascade');
-            $table->decimal('actual_weight', 8, 2);
-            $table->decimal('volumetric_weight', 8, 2);
+            $table->decimal('actual_weight', 8, 2)->nullable();
+            $table->decimal('volumetric_weight', 8, 2)->nullable();
             $table->string('platform');
-            $table->float('charges');
+            $table->float('charges')->nullable();
             $table->timestamps();
         });
     }
