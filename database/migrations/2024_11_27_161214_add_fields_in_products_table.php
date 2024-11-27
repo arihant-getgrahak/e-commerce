@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->string('length')->default('10');
-            $table->string('breath')->default('5');
-            $table->string('height')->default('1');
+            $table->decimal('length', 8, 2)->default(10);
+            $table->decimal('breath', 8, 2)->default(5);
+            $table->decimal('height', 8, 2)->default(1);
         });
     }
 
