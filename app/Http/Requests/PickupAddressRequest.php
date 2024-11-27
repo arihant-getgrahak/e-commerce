@@ -22,7 +22,7 @@ class PickupAddressRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|unique:pickup_addresses,name',
+            'name' => 'required|string',
             'email' => 'required|email',
             'address' => 'required|string',
             'city' => 'required|string',
@@ -31,7 +31,7 @@ class PickupAddressRequest extends FormRequest
             'pincode' => 'required|numeric|digits:6',
             'phone' => 'required|numeric|digits:10',
             'is_default' => 'required|boolean',
-            'tag' => 'required|string',
+            'tag' => 'required|string|unique:pickup_addresses,tag',
         ];
     }
 
