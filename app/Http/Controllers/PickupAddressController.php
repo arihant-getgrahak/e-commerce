@@ -40,10 +40,6 @@ class PickupAddressController extends Controller
                 'is_default' => $request->is_default,
             ];
 
-            DB::beginTransaction();
-            PickupAddress::create($data);
-            DB::commit();
-
             $res = Http::withHeaders([
                 'Content-Type' => 'application/json',
                 'Authorization' => 'Bearer '.env('SHIPROCKET_TOKEN'),
@@ -60,10 +56,14 @@ class PickupAddressController extends Controller
             ]);
 
             if (! $res->successful()) {
-                $error = $res->json()['errors']['address'][0];
+                $error = $res->json()['errors']['address'][0] ?? $res->json()['errors']['pickup_location'][0];
 
                 return back()->with('error', $error);
             }
+
+            DB::beginTransaction();
+            PickupAddress::create($data);
+            DB::commit();
 
             return back()->with('success', 'Pickup address created');
         } catch (\Exception $e) {
