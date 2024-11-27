@@ -108,10 +108,10 @@ class ShipRocketController extends Controller
             'courier_name' => '',
             'status' => $data['status'],
             'pickup_address_id' => $this->pickup,
-            'actual_weight' => '',
-            'volumetric_weight' => '',
+            'actual_weight' => null,
+            'volumetric_weight' => null,
             'platform' => $this->channelId,
-            'charges' => '',
+            'charges' => null,
         ]);
 
         if ($shiprocket) {
