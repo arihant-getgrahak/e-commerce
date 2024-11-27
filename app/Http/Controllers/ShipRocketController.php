@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PickupAddress;
 use App\Models\Shipments;
 use Http;
 
@@ -23,7 +24,7 @@ class ShipRocketController extends Controller
 
     public function createOrder($data, $pickupaddress)
     {
-        $this->pickup = $pickupaddress::where('tag', $pickupaddress)->first()->id;
+        $this->pickup = PickupAddress::where('tag', $pickupaddress)->first()->id;
         try {
             $products = [];
             $totalLength = 0;
@@ -41,9 +42,7 @@ class ShipRocketController extends Controller
                     'tax' => '',
                     'hsn' => 441122,
                 ];
-            }
 
-            foreach ($data->products as $product) {
                 $totalLength += (int) $product->product->length;
                 $totalBreadth += (int) $product->product->breath;
                 $totalHeight += (int) $product->product->height;
