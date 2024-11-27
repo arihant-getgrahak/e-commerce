@@ -52,7 +52,7 @@
                             <h2 class="m-0 ft-regular">Login</h2>
                         </div>
 
-                        <form action="{{ route('login') }}" method="post" autocomplete="off">
+                        <form action="{{ route('login.post') }}" method="post" autocomplete="off">
                             @csrf
                             <div class="form-group">
                                 <label>Email</label>

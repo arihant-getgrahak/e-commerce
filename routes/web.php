@@ -91,7 +91,7 @@ Route::group(['middleware' => TrackUtmMiddleware::class], function () {
     Route::post('category/child/add', [CategoryController::class, 'storechild'])->name('category.child.add');
     Route::post('brand/add', [BrandController::class, 'store'])->name('brand.add');
     Route::post('/product/add', [ProductController::class, 'store'])->name('product.add');
-    Route::post('login', [AuthController::class, 'login'])->name('login');
+    Route::post('login', [AuthController::class, 'login'])->name('login.post');
     Route::post('register', [AuthController::class, 'register'])->name('register');
 
     Route::get('/', [ProductController::class, 'display'])->name('product');

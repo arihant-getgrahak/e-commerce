@@ -11,9 +11,12 @@ class ShipRocketController extends Controller
 
     protected $token;
 
+    protected $channelId;
+
     public function __construct()
     {
         $this->token = env('SHIPROCKET_TOKEN');
+        $this->channelId = env('SHIPROCKET_CHANNEL_ID');
     }
 
     public function createOrder($data, $pickupaddress)
@@ -51,7 +54,7 @@ class ShipRocketController extends Controller
                 'order_id' => $data->id,
                 'order_date' => $data->created_at->format('Y-m-d H:i:s'),
                 'pickup_location' => $pickupaddress ?? 'home',
-                'channel_id' => '5777349',
+                'channel_id' => $this->channelId,
                 'comment' => '',
                 'billing_customer_name' => $data->user->name,
                 'billing_last_name' => '',
