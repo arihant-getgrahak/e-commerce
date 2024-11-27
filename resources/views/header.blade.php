@@ -13,10 +13,8 @@
                             class="medium text-light text-underline">Shop Now</a></p>
                 </div>
             </div>
-
             <!-- Right Menu -->
             <div class="col-xl-4 col-lg-4 col-md-5 col-sm-12">
-
                 <div class="currency-selector dropdown js-dropdown float-right">
                     <a href="javascript:void(0);" data-toggle="dropdown" class="popup-title" title="Currency"
                         aria-label="Currency dropdown">
@@ -124,7 +122,7 @@
             </div>
             <div class="nav-menus-wrapper" style="transition-property: none;">
                 <ul class="nav-menu">
-                    @foreach (collect($navigations[0]) as $navigation)
+                    @foreach (collect($navigations["navigation"]) as $navigation)
                         @if ($navigation->name === 'Header')
                             @foreach ($navigation->menus as $menu)
                                 <li>
@@ -145,7 +143,6 @@
                         @endif
                     @endforeach
                 </ul>
-
 
                 <ul class="nav-menu nav-menu-social align-to-right">
                     <li>
