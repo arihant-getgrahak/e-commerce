@@ -6,6 +6,7 @@ use App\Http\Requests\PickupAddressRequest;
 use App\Http\Requests\PickupAddressUpdateRequest;
 use App\Models\PickupAddress;
 use DB;
+use Http;
 
 class PickupAddressController extends Controller
 {
@@ -38,6 +39,27 @@ class PickupAddressController extends Controller
                 'country' => $request->country,
                 'is_default' => $request->is_default,
             ];
+
+            $res = Http::withHeaders([
+                'Content-Type' => 'application/json',
+                'Authorization' => 'Bearer '.env('SHIPROCKET_TOKEN'),
+            ])->post('https://apiv2.shiprocket.in/v1/external/settings/company/addpickup', [
+                'pickup_location' => $request->tag,
+                'name' => $request->name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'address' => $request->address,
+                'city' => $request->city,
+                'state' => $request->state,
+                'country' => $request->country,
+                'pin_code' => $request->pincode,
+            ]);
+
+            if (! $res->successful()) {
+                $error = $res->json()['errors']['address'][0] ?? $res->json()['errors']['pickup_location'][0];
+
+                return back()->with('error', $error);
+            }
 
             DB::beginTransaction();
             PickupAddress::create($data);

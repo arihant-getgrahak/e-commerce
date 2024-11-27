@@ -36,8 +36,8 @@
                                     data-address="{{$address->address}}" data-pincode="{{$address->pincode}}"
                                     data-name="{{$address->name}}" data-city="{{$address->city}}"
                                     data-state="{{$address->state}}" data-country="{{$address->country}}">Edit</a>
-                                <a href="javascript:void(0)" class="text-danger" data-bs-toggle="modal"
-                                    data-bs-target="#modal-delete-{{$address->id}}">Delete</a>
+                                {{-- <a href="javascript:void(0)" class="text-danger" data-bs-toggle="modal"
+                                    data-bs-target="#modal-delete-{{$address->id}}">Delete</a>--}}
                             </td>
                         </tr>
 
