@@ -20,16 +20,28 @@ class ShipRocketController extends Controller
     {
         try {
             $products = [];
+            $totalLength = 0;
+            $totalBreadth = 0;
+            $totalHeight = 0;
+            $totalWeight = 0;
+
             foreach ($data->products as $product) {
                 $products[] = [
                     'name' => $product->product->name,
                     'sku' => $product->product->sku,
                     'units' => $product->quantity,
-                    'selling_price' => $product->price,
+                    'selling_price' => $product->price / $product->quantity,
                     'discount' => '',
                     'tax' => '',
                     'hsn' => 441122,
                 ];
+            }
+
+            foreach ($data->products as $product) {
+                $totalLength += $product->product->length;
+                $totalBreadth += $product->product->breath;
+                $totalHeight += $product->product->height;
+                $totalWeight += $product->product->weight;
             }
 
             $api = Http::withHeaders([
@@ -69,10 +81,10 @@ class ShipRocketController extends Controller
                 'transaction_charges' => 0,
                 'total_discount' => 0,
                 'sub_total' => $data->total,
-                'length' => 10,
-                'breadth' => 15,
-                'height' => 20,
-                'weight' => 2.5,
+                'length' => $totalLength,
+                'breadth' => $totalBreadth,
+                'height' => $totalHeight,
+                'weight' => $totalWeight,
             ]);
 
             return $api;
