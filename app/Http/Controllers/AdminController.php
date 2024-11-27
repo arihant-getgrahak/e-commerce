@@ -428,11 +428,7 @@ class AdminController extends Controller
 
     public function updateGlobalCountry(Request $request)
     {
-        if (auth()->check()) {
-            auth()->user()->update(['country' => $request->name]);
-        } else {
-            session()->put('country', $request->name);
-        }
+        session()->put('country', $request->name);
 
         return response()->json(['success' => true], 200);
     }
