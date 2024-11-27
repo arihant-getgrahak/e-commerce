@@ -167,4 +167,6 @@ Route::group(['middleware' => TrackUtmMiddleware::class], function () {
     Route::post('/pickup/store', [PickupAddressController::class, 'store'])->name('pickupaddress.create');
     Route::post('/pickup/update/{id}', [PickupAddressController::class, 'update'])->name('pickupaddress.update');
     Route::delete('/pickup/delete/{id}', [PickupAddressController::class, 'delete'])->name('pickupaddress.delete');
+
+    Route::post('/update/globalCountry', [AdminController::class, 'updateGlobalCountry'])->name('update.global.country');
 });

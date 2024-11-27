@@ -37,7 +37,19 @@ class CheckoutController extends Controller
             }
         }
 
-        return view('checkout', compact('isLoggedIn', 'cart', 'price'));
+        $country = session('country', 'IN');
+
+        if (auth()->check()) {
+            $country = auth()->user()->country ?? $country;
+        } elseif (! session('country')) {
+            $ip = request()->ip() ?? '146.70.245.84';
+            $data = getLocationInfo($ip);
+            $country = $data['data']['country'] ?? $country;
+        }
+
+        $telcode = getTelCode($country)['code'];
+
+        return view('checkout', compact('isLoggedIn', 'cart', 'price', 'telcode'));
     }
 
     public function display()
@@ -108,8 +120,7 @@ class CheckoutController extends Controller
                     'state' => $request->state,
                     'country' => $request->country,
                     'pincode' => $request->pincode,
-                    'phone' => $request->phone,
-
+                    'phone' => $request->ccode + $request->phone,
                 ]);
 
                 // create order

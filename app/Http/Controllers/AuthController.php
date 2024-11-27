@@ -58,6 +58,7 @@ class AuthController extends Controller
     public function logout()
     {
         Auth::logout();
+        session()->flush();
 
         return redirect()->route('login');
     }
@@ -134,43 +135,18 @@ class AuthController extends Controller
 
     public function registerView()
     {
+        $country = session('country', 'IN');
 
-        $ip = request()->ip();
-        $country = $this->getLocationInfo($ip);
-
-        return view('register', compact('country'));
-    }
-
-    protected function getLocationInfo(string $ip): array
-    {
-        try {
-            $response = Http::get("http://ipinfo.io/{$ip}/json");
-
-            if ($response->successful()) {
-                $data = $response->json();
-
-                if (isset($data['bogon']) && $data['bogon'] == 1) {
-                    return [
-                        'status' => 'error',
-                        'message' => 'Bogon IP address detected. Unable to determine location.',
-                    ];
-                }
-
-                return [
-                    'status' => 'success',
-                    'data' => $data,
-                ];
-            }
-
-            return [
-                'status' => 'error',
-                'message' => 'Unable to retrieve location data.',
-            ];
-        } catch (\Throwable $th) {
-            return [
-                'status' => 'error',
-                'message' => 'An error occurred while fetching location data.',
-            ];
+        if (auth()->check()) {
+            $country = auth()->user()->country ?? $country;
+        } elseif (! session('country')) {
+            $ip = request()->ip() ?? '146.70.245.84';
+            $data = getLocationInfo($ip);
+            $country = $data['data']['country'] ?? $country;
         }
+
+        $telcode = getTelCode($country)['code'];
+
+        return view('register', compact('telcode'));
     }
 }

@@ -1,3 +1,103 @@
+<div class="py-2 bg-dark">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-4 col-lg-4 col-md-5 col-sm-12 hide-ipad">
+                <div class="top_first">
+                    <a href="callto:+919672670732" class="medium text-light">(+91)9672670732</a>.
+                </div>
+            </div>
+
+            <div class="col-xl-4 col-lg-4 col-md-5 col-sm-12 hide-ipad">
+                <div class="top_second text-center">
+                    <p class="medium text-light m-0 p-0">Get Free delivery from ₹2000 <a href="#"
+                            class="medium text-light text-underline">Shop Now</a></p>
+                </div>
+            </div>
+
+            <!-- Right Menu -->
+            <div class="col-xl-4 col-lg-4 col-md-5 col-sm-12">
+                <div class="currency-selector dropdown js-dropdown float-right">
+                    <a href="javascript:void(0);" data-toggle="dropdown" class="popup-title" title="Currency"
+                        aria-label="Currency dropdown">
+                        <span class="hidden-xl-down medium text-light">Country:</span>
+                        <span class="iso_code medium text-light"> <img
+                                src="{{ asset('vendor/blade-flags/country-' . Str::lcfirst($navigations["telcode"]) . '.svg') }}"
+                                width="20" height="20" /> {{Str::upper($navigations["telcode"])}}
+                        </span>
+                        <i class="fa fa-angle-down medium text-light"></i>
+                    </a>
+                    <ul class="popup-content dropdown-menu">
+                        <li><a title="Euro" onclick="country(this.id)" href="javascript:void(0);" id="in"
+                                class="dropdown-item medium text-medium"><img
+                                    src="{{ asset('vendor/blade-flags/country-in.svg') }}" width="32"
+                                    height="32" />India</a>
+                        </li>
+                        <li><a title="Euro" onclick="country(this.id)" href="javascript:void(0);" id="eu"
+                                class="dropdown-item medium text-medium"><img
+                                    src="{{ asset('vendor/blade-flags/country-eu.svg') }}" width="32"
+                                    height="32" />Europe</a>
+                        </li>
+                        <li class="current"><a title="US Dollar" href="javascript:void(0);" id="uk"
+                                onclick="country(this.id)" class="dropdown-item medium text-medium">
+                                <img src="{{ asset('vendor/blade-flags/country-uk.svg') }}" width="32" height="32" />
+                                UK</a></li>
+                        <li class="current"><a title="US Dollar" href="javascript:void(0);" id="us"
+                                onclick="country(this.id)" class="dropdown-item medium text-medium">
+                                <img src="{{ asset('vendor/blade-flags/country-us.svg') }}" width="32" height="32" />
+                                USA
+                            </a></li>
+                        <li class="current"><a title="US Dollar" href="javascript:void(0);" id="cn"
+                                onclick="country(this.id)" class="dropdown-item medium text-medium">
+                                <img src="{{ asset('vendor/blade-flags/country-cn.svg') }}" width="32" height="32" />
+                                China
+                            </a></li>
+                    </ul>
+                </div>
+
+                <!-- Choose Language -->
+
+                <div class="language-selector-wrapper dropdown js-dropdown float-right mr-3">
+                    <a class="popup-title" href="javascript:void(0)" data-toggle="dropdown" title="Language"
+                        aria-label="Language dropdown">
+                        <span class="hidden-xl-down medium text-light">Language:</span>
+                        <span class="iso_code medium text-light">English</span>
+                        <i class="fa fa-angle-down medium text-light"></i>
+                    </a>
+                    <ul class="dropdown-menu popup-content link">
+                        <li class="current"><a href="javascript:void(0);" class="dropdown-item medium text-medium"><img
+                                    src="assets/img/1.jpg" alt="en" width="16" height="11" /><span>English</span></a>
+                        </li>
+                        <li><a href="javascript:void(0);" class="dropdown-item medium text-medium"><img
+                                    src="assets/img/2.jpg" alt="fr" width="16" height="11" /><span>Français</span></a>
+                        </li>
+                        <li><a href="javascript:void(0);" class="dropdown-item medium text-medium"><img
+                                    src="assets/img/3.jpg" alt="de" width="16" height="11" /><span>Deutsch</span></a>
+                        </li>
+                        <li><a href="javascript:void(0);" class="dropdown-item medium text-medium"><img
+                                    src="assets/img/4.jpg" alt="it" width="16" height="11" /><span>Italiano</span></a>
+                        </li>
+                        <li><a href="javascript:void(0);" class="dropdown-item medium text-medium"><img
+                                    src="assets/img/5.jpg" alt="es" width="16" height="11" /><span>Español</span></a>
+                        </li>
+                        <li><a href="javascript:void(0);" class="dropdown-item medium text-medium"><img
+                                    src="assets/img/6.jpg" alt="ar" width="16" height="11" /><span>اللغة
+                                    العربية</span></a></li>
+                    </ul>
+                </div>
+
+                <div class="currency-selector dropdown js-dropdown float-right mr-3">
+                    <a href="{{route('wishlist')}}" class="text-light medium">Wishlist</a>
+                </div>
+
+                <div class="currency-selector dropdown js-dropdown float-right mr-3">
+                    <a href="{{route('my-orders')}}" class="text-light medium">My Account</a>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
 <div class="header header-light dark-text">
     <div class="container">
         <nav id="navigation" class="navigation navigation-landscape">
@@ -33,7 +133,7 @@
             </div>
             <div class="nav-menus-wrapper" style="transition-property: none;">
                 <ul class="nav-menu">
-                    @foreach ($navigations as $navigation)
+                    @foreach (collect($navigations["navigation"]) as $navigation)
                         @if ($navigation->name === 'Header')
                             @foreach ($navigation->menus as $menu)
                                 <li>
@@ -54,7 +154,6 @@
                         @endif
                     @endforeach
                 </ul>
-
 
                 <ul class="nav-menu nav-menu-social align-to-right">
                     <li>
@@ -83,3 +182,19 @@
         </nav>
     </div>
 </div>
+
+<script>
+    function country(id) {
+        $.ajax({
+            url: "{{ route('update.global.country') }}",
+            type: "POST",
+            data: {
+                "_token": "{{ csrf_token() }}",
+                "name": id
+            },
+            success: function (data) {
+                location.reload();
+            }
+        });
+    }
+</script>
