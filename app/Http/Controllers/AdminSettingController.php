@@ -2,24 +2,63 @@
 
 namespace App\Http\Controllers;
 
+use Artisan;
+use File;
 use Illuminate\Http\Request;
+use Validator;
 
 class AdminSettingController extends Controller
 {
+    public function shiprocketView()
+    {
+        return view('admin.setting');
+    }
+
     public function changeCredentials(Request $request)
     {
-        $data = $request->only(['username', 'password', 'channelId']);
-
-        config([
-            'shiprocket.email' => $data['email'],
-            'shiprocket.password' => $data['password'],
-            'shiprocket.channelId' => $data['channelId'],
+        $validate = Validator::make($request->all(), [
+            'username' => 'nullable|string',
+            'password' => 'nullable|string',
+            'channelId' => 'nullable|string',
         ]);
 
-        if (env('shiprocket.email') === $data['email'] && env('shiprocket.password') === $data['password'] && env('shiprocket.channelId') === $data['channelId']) {
-            return back()->with('success', 'Credentials updated');
+        if ($validate->fails()) {
+            return back()->withErrors($validate->errors());
         }
 
-        return back()->with('error', 'Credentials not updated');
+        $data = $request->only(['username', 'password', 'channelId']);
+
+        $this->updateEnv([
+            'SHIPROCKET_USERNAME' => $data['username'],
+            'SHIPROCKET_PASSWORD' => $data['password'],
+            'SHIPROCKET_CHANNEL_ID' => $data['channelId'],
+        ]);
+
+        return back()->with('success', 'Credentials updated');
+    }
+
+    protected function updateEnv(array $data)
+    {
+        $envPath = base_path('.env');
+
+        if (! File::exists($envPath)) {
+            return false;
+        }
+
+        $envContent = File::get($envPath);
+
+        foreach ($data as $key => $value) {
+            $escaped = preg_quote('='.env($key), '/');
+            $envContent = preg_replace("/^{$key}{$escaped}/m", "{$key}={$value}", $envContent) ?? $envContent;
+
+            if (! str_contains($envContent, "{$key}=")) {
+                $envContent .= "\n{$key}={$value}";
+            }
+        }
+
+        File::put($envPath, $envContent);
+
+        Artisan::call('config:clear');
+        Artisan::call('config:cache');
     }
 }
