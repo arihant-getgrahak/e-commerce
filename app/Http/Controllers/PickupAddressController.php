@@ -16,6 +16,12 @@ class PickupAddressController extends Controller
             return redirect()->route('login');
         }
 
+        $data = $this->getPickupAddress();
+
+        if ($data !== true) {
+            echo $data;
+        }
+
         $addresses = PickupAddress::where('user_id', auth()->id())
             ->orderBy('created_at', 'desc')
             ->paginate(5);
@@ -122,6 +128,46 @@ class PickupAddressController extends Controller
             DB::rollBack();
 
             return back()->with('error', $e->getMessage());
+        }
+    }
+
+    protected function getPickupAddress()
+    {
+        try {
+            $address = Http::withHeaders([
+                'Content-Type' => 'application/json',
+                'Authorization' => 'Bearer '.env('SHIPROCKET_TOKEN'),
+            ])->get('https://apiv2.shiprocket.in/v1/external/settings/company/pickup');
+
+            DB::beginTransaction();
+            foreach ($address->json()['data']['shipping_address'] as $key => $value) {
+                PickupAddress::updateOrCreate(
+                    [
+                        'tag' => $value['pickup_location'],
+                    ],
+                    [
+                        'user_id' => auth()->user()->id,
+                        'name' => $value['name'],
+                        'email' => $value['email'],
+                        'phone' => $value['phone'],
+                        'address' => $value['address'].' '.$value['address_2'],
+                        'city' => $value['city'],
+                        'state' => $value['state'],
+                        'pincode' => $value['pin_code'],
+                        'country' => $value['country'],
+                        'is_default' => $value['is_primary_location'],
+                    ]
+                );
+            }
+
+            DB::commit();
+
+            return true;
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return $e->getMessage();
         }
     }
 }
