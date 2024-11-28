@@ -2,9 +2,11 @@
 
 @section('setting')
 
+<h1>
+    Shiprocket Settings
+</h1>
 <form action="{{route("admin.shiprocket.update")}}" method="post">
     @csrf
-
     <div class="mb-3">
         <label class="form-label required">Shiprocket Username</label>
         <input type="text" class="form-control" id="username" name="username" value="{{$data['username']}}">
