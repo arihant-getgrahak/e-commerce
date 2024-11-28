@@ -98,11 +98,8 @@ class CheckoutController extends Controller
             if ($isloggedIn) {
                 $cart = Cart::where('user_id', auth()->user()->id)->with('products')->get();
 
-                if (! $cart) {
-                    return response()->json([
-                        'message' => 'Cart is empty',
-                        'status' => false,
-                    ], 404);
+                if (count($cart) == 0) {
+                    return back()->with('error', 'Cart is empty');
                 }
 
                 $price = $cart->sum('price');

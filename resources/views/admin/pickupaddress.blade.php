@@ -13,6 +13,7 @@
                     <tr>
                         <th>Address NickName</th>
                         <th>Address</th>
+                        <th>Person to be contacted</th>
                         <th>Email to be contacted</th>
                         <th>Number to be contacted</th>
                         <th class="w-1"></th>
@@ -25,10 +26,11 @@
                             <td class="text-secondary">
                                 {{$address->address}}, {{$address->city}}, {{$address->state}}, {{$address->pincode}}
                             </td>
+                            <td class="text-secondary">{{$address->name}}</td>
                             <td class="text-secondary">
                                 {{$address->phone}}
                             </td>
-                            <td class="text-secondary"><a href="#" class="text-reset">{{$address->email}}</a></td>
+                            <td class="text-secondary">{{$address->email}}</td>
                             <td class="d-flex" style="gap: 0.5rem;">
                                 <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modal-update"
                                     id="btn-update" data-id="{{$address->id}}" data-tag="{{$address->tag}}"
