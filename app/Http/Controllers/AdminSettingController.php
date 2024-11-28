@@ -64,7 +64,7 @@ class AdminSettingController extends Controller
 
         File::put($envPath, $envContent);
 
-        Artisan::call('config:clear');
         Artisan::call('config:cache');
+        Artisan::call('config:clear');
     }
 }
