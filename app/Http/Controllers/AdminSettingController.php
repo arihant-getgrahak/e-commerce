@@ -11,7 +11,13 @@ class AdminSettingController extends Controller
 {
     public function shiprocketView()
     {
-        return view('admin.setting');
+        $data = [
+            'username' => env('SHIPROCKET_USERNAME'),
+            'password' => env('SHIPROCKET_PASSWORD'),
+            'channelId' => env('SHIPROCKET_CHANNEL_ID'),
+        ];
+
+        return view('admin.setting', compact('data'));
     }
 
     public function changeCredentials(Request $request)
