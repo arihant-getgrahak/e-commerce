@@ -262,6 +262,9 @@
             <main>
                 @yield("pickupaddress")
             </main>
+            <main>
+                @yield("setting")
+            </main>
         </main>
     </div>
     <footer class="footer footer-transparent d-print-none">
