@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminSettingController;
 use App\Http\Controllers\AttributeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BrandController;
@@ -76,6 +77,8 @@ Route::group(['middleware' => TrackUtmMiddleware::class], function () {
             });
 
             Route::get('/order/{id}', [AdminController::class, 'orderspeicific'])->name('order.specific');
+
+            Route::get('/shiprocket/credentials', action: [AdminSettingController::class, 'shiprocketView'])->name('admin.shiprocket.view');
         });
     });
 
@@ -169,4 +172,6 @@ Route::group(['middleware' => TrackUtmMiddleware::class], function () {
     Route::delete('/pickup/delete/{id}', [PickupAddressController::class, 'delete'])->name('pickupaddress.delete');
 
     Route::post('/update/globalCountry', [AdminController::class, 'updateGlobalCountry'])->name('update.global.country');
+
+    Route::post('/admin/shiprocket/update', [AdminSettingController::class, 'changeCredentials'])->name('admin.shiprocket.update');
 });
