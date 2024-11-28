@@ -182,7 +182,6 @@
                                     </div>
                                 </div>
                             </li>
-                            </main>
 
                             <!-- navigation -->
                             <li @class(["nav-item", 'active' => Route::currentRouteName() === 'admin.navigation'])>
@@ -201,6 +200,46 @@
                                     </span>
                                     <span class="nav-link-title"> Navigation </span>
                                 </a>
+                            </li>
+
+                            <!-- settings -->
+                            <li @class(["nav-item", "dropdown", 'active' => in_array(Route::currentRouteName(), ['admin.setting.shiprocket'])])>
+                                <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
+                                    data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5" />
+                                            <path d="M12 12l8 -4.5" />
+                                            <path d="M12 12l0 9" />
+                                            <path d="M12 12l-8 -4.5" />
+                                            <path d="M16 5.25l-8 4.5" />
+                                        </svg>
+                                    </span>
+                                    <span class="nav-link-title">
+                                        Settings
+                                    </span>
+                                </a>
+                                <div class="dropdown-menu">
+                                    <div class="dropdown-menu-columns">
+                                        <div class="dropdown-menu-column">
+                                            <a class="dropdown-item" href="{{route("admin.setting.shiprocket")}}">
+                                                ShipRocket
+                                            </a>
+                                            {{--<a class="dropdown-item" href="{{route(" admin.state")}}">
+                                                State
+                                            </a>
+                                            <a class="dropdown-item" href="{{route(" admin.city")}}">
+                                                City
+                                            </a>
+                                            <a class="dropdown-item" href="{{ route('pickupaddress') }}">
+                                                Pickup Address
+                                            </a>--}}
+                                        </div>
+                                    </div>
+                                </div>
                             </li>
                         </ul>
                         <div class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last">

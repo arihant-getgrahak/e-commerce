@@ -78,7 +78,9 @@ Route::group(['middleware' => TrackUtmMiddleware::class], function () {
 
             Route::get('/order/{id}', [AdminController::class, 'orderspeicific'])->name('order.specific');
 
-            Route::get('/shiprocket/credentials', action: [AdminSettingController::class, 'shiprocketView'])->name('admin.shiprocket.view');
+            Route::group(['prefix' => '/setting'], function () {
+                Route::get('/shiprocket', action: [AdminSettingController::class, 'shiprocketView'])->name('admin.setting.shiprocket');
+            });
         });
     });
 
