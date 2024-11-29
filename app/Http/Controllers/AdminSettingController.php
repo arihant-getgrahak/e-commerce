@@ -20,6 +20,11 @@ class AdminSettingController extends Controller
         return view('admin.setting.shiprocket', compact('data'));
     }
 
+    public function forexView()
+    {
+        return view('admin.setting.forex');
+    }
+
     public function changeCredentials(Request $request)
     {
         $validate = Validator::make($request->all(), [
