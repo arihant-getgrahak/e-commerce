@@ -17,6 +17,7 @@ class Order extends Model
         'currency', //default inr
         'razorpay_order_id', //nullable for cod
         'razorpay_payment_id', //nullable for cod
+        'shipping_address',
     ];
 
     protected $casts = [
@@ -37,5 +38,10 @@ class Order extends Model
     public function address()
     {
         return $this->belongsTo(OrderAdress::class, 'address_id', 'id');
+    }
+
+    public function shipping_address()
+    {
+        return $this->belongsTo(OrderAdress::class, 'shipping_address', 'id');
     }
 }
