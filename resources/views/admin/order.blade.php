@@ -71,13 +71,13 @@
                                                 {{$order->address->pincode}}
                                             </td>
                                             <td class="sort-progress">
-                                                {{$order->user->name }}
+                                                {{$order->address->name }}
                                             </td>
                                             <td class="sort-progress">
-                                                {{$order->user->email }}
+                                                {{$order->address->email }}
                                             </td>
                                             <td class="sort-progress">
-                                                {{$order->user->phone_number }}
+                                                {{$order->address->phone }}
                                             </td>
                                             <td class="sort-type space-y-2">
                                                 <a href="{{route("order.specific", $order->id)}}"
