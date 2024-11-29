@@ -105,29 +105,44 @@ class CheckoutController extends Controller
                 $price = $cart->sum('price');
 
                 DB::beginTransaction();
-                $name = $request->fname.' '.$request->lname;
-                $address = $request->address1;
-                if ($request->address2) {
-                    $address = $address.', '.$request->address2;
-                }
 
                 // create order address
-                $order = OrderAdress::create([
+                $billingAddress = OrderAdress::create([
                     'user_id' => auth()->user()->id,
-                    'name' => $name,
+                    'name' => "{$request->fname} {$request->lname}",
                     'email' => $request->email,
-                    'address' => $address,
+                    'address' => "{$request->address1}, {$request->address2}",
                     'city' => $request->city,
                     'state' => $request->state,
                     'country' => $request->country,
                     'pincode' => $request->pincode,
                     'phone' => $request->ccode + $request->phone,
+                    'is_default' => $request->is_default ?? false,
+                    'type' => 'billing',
                 ]);
+
+                $shippingAddress = null;
+                if ($request->shipping) {
+                    $shippingAddress = OrderAdress::create([
+                        'user_id' => auth()->user()->id,
+                        'name' => "{$request->sfname} {$request->slname}",
+                        'email' => $request->semail,
+                        'address' => "{$request->saddress1}, {$request->saddress2}",
+                        'city' => $request->scity,
+                        'state' => $request->sstate,
+                        'country' => $request->scountry,
+                        'pincode' => $request->spincode,
+                        'phone' => $request->ccode + $request->sphone,
+                        'is_default' => $request->sis_default ?? false,
+                        'type' => 'shipping',
+                    ]);
+                }
 
                 // create order
                 $order = Order::create([
                     'user_id' => auth()->user()->id,
-                    'address_id' => $order->id,
+                    'address_id' => $billingAddress->id,
+                    'shipping_address' => $shippingAddress->id ?? null,
                     'total' => $price,
                     'payment_method' => $request->payment_method,
                 ]);
@@ -149,7 +164,7 @@ class CheckoutController extends Controller
 
                 DB::commit();
 
-                $order = Order::with(['products.product', 'address'])->where('id', $order->id)->first();
+                // $order = Order::with(['products.product', 'address'])->where('id', $order->id)->first();
 
                 Cart::where('user_id', auth()->user()->id)->delete();
 
