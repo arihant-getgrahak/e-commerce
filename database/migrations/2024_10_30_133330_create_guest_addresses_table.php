@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('guest_addresses', function (Blueprint $table) {
             $table->id();
-            $table->string('session_icolumn: d');
+            $table->string('session_id');
             $table->string('name');
             $table->string('email');
             $table->string('address');
