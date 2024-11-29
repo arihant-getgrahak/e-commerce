@@ -133,6 +133,8 @@
                                 <textarea class="form-control ht-50"></textarea>
                             </div>
                         </div>
+
+                        <input type="text" name="billing" value="billing" hidden>
                     </div>
 
                     @if(!auth()->check())
@@ -166,11 +168,12 @@
                             <div id="shippingAddress" class="collapse">
                                 <h5 class="mb-4 ft-medium mt-4">Shipping Details</h5>
                                 <div class="row mb-2">
+                                    <input type="text" name="shipping" id="shipping" hidden>
                                     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
                                         <div class="form-group">
                                             <label id="fname" class="text-dark">First Name *</label>
                                             <input type="text" class="form-control" placeholder="First Name" id="sfname"
-                                                name="fname" required />
+                                                name="sfname" />
                                         </div>
                                     </div>
 
@@ -178,7 +181,7 @@
                                         <div class="form-group">
                                             <label id="lname" class="text-dark">Last Name *</label>
                                             <input type="text" class="form-control" placeholder="Last Name" id="slname"
-                                                name="lname" required />
+                                                name="slname" />
                                         </div>
                                     </div>
 
@@ -186,7 +189,7 @@
                                         <div class="form-group">
                                             <label id="email" class="text-dark">Email *</label>
                                             <input type="email" class="form-control" placeholder="Email" id="semail"
-                                                name="email" required />
+                                                name="semail" />
                                         </div>
                                     </div>
 
@@ -194,7 +197,7 @@
                                         <div class="form-group">
                                             <label class="text-dark" id="address1">Address 1 *</label>
                                             <input type="text" class="form-control" placeholder="Address 1"
-                                                id="address1" name="saddress1" required />
+                                                id="saddress1" name="saddress1" />
                                         </div>
                                     </div>
 
@@ -202,14 +205,14 @@
                                         <div class="form-group">
                                             <label class="text-dark" id="address2">Address 2</label>
                                             <input type="text" class="form-control" placeholder="Address 2"
-                                                id="address2" name="saddress2" />
+                                                id="saddress2" name="saddress2" />
                                         </div>
                                     </div>
 
                                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                         <div class="form-group">
                                             <label id="country" class="text-dark">Country *</label>
-                                            <select class="custom-select" id="country" name="scountry" required>
+                                            <select class="custom-select" id="scountry" name="scountry">
                                                 <option value="India" selected="">India</option>
                                                 <option value="United State">United State</option>
                                                 <option value="United Kingdom">United Kingdom</option>
@@ -223,7 +226,7 @@
                                         <div class="form-group">
                                             <label class="text-dark" id="state">State *</label>
                                             <input type="text" class="form-control" placeholder="State" name="sstate"
-                                                id="state" required />
+                                                id="sstate" />
                                         </div>
                                     </div>
 
@@ -231,15 +234,15 @@
                                         <div class="form-group">
                                             <label class="text-dark" id="city">City / Town *</label>
                                             <input type="text" class="form-control" placeholder="City / Town"
-                                                name="scity" id="city" required />
+                                                name="scity" id="scity" />
                                         </div>
                                     </div>
 
                                     <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                                         <div class="form-group">
                                             <label class="text-dark" id="pincode">ZIP / Postcode *</label>
-                                            <input type="text" class="form-control" id="pincode" name="spincode"
-                                                placeholder="Zip / Postcode" required />
+                                            <input type="text" class="form-control" id="spincode" name="spincode"
+                                                placeholder="Zip / Postcode" />
                                         </div>
                                     </div>
 
@@ -247,7 +250,7 @@
                                         <div class="form-group">
                                             <label class="text-dark" id="phone">Tel Code *</label>
                                             <input type="text" class="form-control" placeholder="+91" name="sccode"
-                                                id="ccode" value="{{$telcode}}" required />
+                                                id="sccode" value="{{$telcode}}" />
                                         </div>
                                     </div>
 
@@ -255,7 +258,7 @@
                                         <div class="form-group">
                                             <label class="text-dark" id="phone">Mobile Number *</label>
                                             <input type="text" class="form-control" placeholder="Mobile Number"
-                                                name="sphone" id="phone" required />
+                                                name="sphone" id="sphone" />
                                         </div>
                                     </div>
 
@@ -318,7 +321,7 @@
                                             <div class="cart_single_caption pl-2">
                                                 <h4 class="product_title fs-md ft-medium mb-1 lh-1">{{$c->products[0]->name}}
                                                 </h4>
-                                                <p class="mb-3 lh-1"><span class="text-dark">Color: Blue</span></p> -->
+                                                <p class="mb-3 lh-1"><span class="text-dark">Color: Blue</span></p>
                                                 <h4 class="fs-md ft-medium mb-3 lh-1">₹{{$c->price}}</h4>
                                             </div>
                                         </div>
@@ -350,6 +353,19 @@
     </div>
 </section>
 
+<script>
+    const shippingCheckbox = document.getElementById('shipping_address');
+    const shippingFields = document.querySelectorAll('#shippingAddress input');
+
+    shippingCheckbox.addEventListener('change', function () {
+        if (this.checked) {
+            document.getElementById("shipping").value = "shipping";
+            shippingFields.forEach(field => field.setAttribute('required', 'required'));
+        } else {
+            shippingFields.forEach(field => field.removeAttribute('required'));
+        }
+    });
+</script>
 <script>
     const arihant = document.querySelector('#alert');
     if ("{{session('success')}}") {
