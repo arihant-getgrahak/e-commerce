@@ -18,6 +18,7 @@ class OrderAdress extends Model
         'phone',
         'is_default',
         'type',
+        'session_id',
     ];
 
     public function user()
