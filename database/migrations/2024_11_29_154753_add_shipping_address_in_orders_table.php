@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('carts', function (Blueprint $table) {
-            $table->string('name')->default('');
+        Schema::table('orders', function (Blueprint $table) {
+            $table->foreignId('shipping_address')->nullable()->constrained('order_adresses')->onDelete('cascade');
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('carts', function (Blueprint $table) {
-            $table->dropColumn('name');
+        Schema::table('orders', function (Blueprint $table) {
+            //
         });
     }
 };

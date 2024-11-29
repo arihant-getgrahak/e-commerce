@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('carts', function (Blueprint $table) {
-            $table->string('name')->default('');
+        Schema::table('orders', function (Blueprint $table) {
+            $table->string('session_id')->nullable();
+            $table->foreignId('user_id')->nullable()->change()->constrained('users')->onDelete('cascade');
         });
     }
 
@@ -21,8 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('carts', function (Blueprint $table) {
-            $table->dropColumn('name');
-        });
+        //
     }
 };

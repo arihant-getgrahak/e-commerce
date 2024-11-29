@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('carts', function (Blueprint $table) {
-            $table->string('name')->default('');
-        });
+        Schema::drop('session_orders');
+        Schema::drop('session_carts');
+        Schema::drop('guest_orders');
+        Schema::drop('guest_addresses');
+
     }
 
     /**
@@ -21,8 +23,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('carts', function (Blueprint $table) {
-            $table->dropColumn('name');
+        Schema::table('guest_orders', function (Blueprint $table) {
+            //
         });
     }
 };
