@@ -43,6 +43,7 @@ class AdminController extends Controller
             'products.product',
             'user',
             'address',
+            'shipping',
         ])->find($id);
 
         if (! $order) {
