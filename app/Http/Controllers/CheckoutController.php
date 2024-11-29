@@ -3,14 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
-use App\Models\GuestAddress;
-use App\Models\GuestOrder;
 use App\Models\Order;
 use App\Models\OrderAdress;
 use App\Models\OrderProduct;
 use App\Models\OrderStatus;
 use App\Models\SessionCart;
-use App\Models\SessionOrder;
 use App\Models\User;
 use DB;
 use Illuminate\Http\Request;
@@ -89,13 +86,13 @@ class CheckoutController extends Controller
                         'product_id' => $sc->product_id,
                         'quantity' => $sc->quantity,
                         'price' => $sc->price,
+                        'name' => $sc->name,
                     ]);
                 }
                 SessionCart::where('session_id', $sessionIds)->delete();
             }
-            $isloggedIn = auth()->check();
 
-            if ($isloggedIn) {
+            if (auth()->check()) {
                 $cart = Cart::where('user_id', auth()->user()->id)->with('products')->get();
 
                 if (count($cart) == 0) {
@@ -105,29 +102,43 @@ class CheckoutController extends Controller
                 $price = $cart->sum('price');
 
                 DB::beginTransaction();
-                $name = $request->fname.' '.$request->lname;
-                $address = $request->address1;
-                if ($request->address2) {
-                    $address = $address.', '.$request->address2;
-                }
-
-                // create order address
-                $order = OrderAdress::create([
+                $billingAddress = OrderAdress::create([
                     'user_id' => auth()->user()->id,
-                    'name' => $name,
+                    'name' => "{$request->fname} {$request->lname}",
                     'email' => $request->email,
-                    'address' => $address,
+                    'address' => "{$request->address1}, {$request->address2}",
                     'city' => $request->city,
                     'state' => $request->state,
                     'country' => $request->country,
                     'pincode' => $request->pincode,
                     'phone' => $request->ccode + $request->phone,
+                    'is_default' => $request->is_default ?? false,
+                    'type' => 'billing',
                 ]);
 
-                // create order
+                $shippingAddress = null;
+                if ($request->shipping) {
+                    $shippingAddress = OrderAdress::create([
+                        'user_id' => auth()->user()->id,
+                        'name' => "{$request->sfname} {$request->slname}",
+                        'email' => $request->semail,
+                        'address' => "{$request->saddress1}, {$request->saddress2}",
+                        'city' => $request->scity,
+                        'state' => $request->sstate,
+                        'country' => $request->scountry,
+                        'pincode' => $request->spincode,
+                        'phone' => $request->ccode + $request->sphone,
+                        'is_default' => $request->sis_default ?? false,
+                        'type' => 'shipping',
+                    ]);
+                }
+                DB::commit();
+
+                DB::beginTransaction();
                 $order = Order::create([
                     'user_id' => auth()->user()->id,
-                    'address_id' => $order->id,
+                    'address_id' => $billingAddress->id,
+                    'shipping_address' => $shippingAddress->id ?? null,
                     'total' => $price,
                     'payment_method' => $request->payment_method,
                 ]);
@@ -137,6 +148,9 @@ class CheckoutController extends Controller
                     'status' => 'pending',
                 ]);
 
+                DB::commit();
+
+                DB::beginTransaction();
                 foreach ($cart as $c) {
                     OrderProduct::create([
                         'order_id' => $order->id,
@@ -146,76 +160,83 @@ class CheckoutController extends Controller
                         'name' => $c->name,
                     ]);
                 }
-
                 DB::commit();
-
-                $order = Order::with(['products.product', 'address'])->where('id', $order->id)->first();
 
                 Cart::where('user_id', auth()->user()->id)->delete();
 
                 return view('order-confirm')->with('orderId', $order->id);
-            } else {
-                $sessionIds = session()->getId();
-                $cart = SessionCart::where('session_id', $sessionIds)->with('products')->get();
-
-                if (! $cart) {
-                    return response()->json([
-                        'message' => 'Cart is empty',
-                        'status' => false,
-                    ], 404);
-                }
-
-                $price = $cart->sum('price');
-
-                DB::beginTransaction();
-                $name = $request->fname.' '.$request->lname;
-                $address = $request->address1;
-                if ($request->address2) {
-                    $address = $address.', '.$request->address2;
-                }
-
-                // create order address
-                $order = GuestAddress::create([
-                    'session_id' => $sessionIds,
-                    'name' => $name,
-                    'email' => $request->email,
-                    'address' => $address,
-                    'city' => $request->city,
-                    'state' => $request->state,
-                    'country' => $request->country,
-                    'pincode' => $request->pincode,
-                    'phone' => $request->phone,
-
-                ]);
-
-                // create order
-                $order = SessionOrder::create([
-                    'session_id' => $sessionIds,
-                    'address_id' => $order->id,
-                    'total' => $price,
-                    'payment_method' => $request->payment_method,
-                ]);
-
-                OrderStatus::create([
-                    'order_id' => $order->id,
-                    'status' => 'pending',
-                ]);
-
-                DB::commit();
-                foreach ($cart as $c) {
-                    GuestOrder::create([
-                        'order_id' => $order->id,
-                        'product_id' => $c->product_id,
-                        'quantity' => $c->quantity,
-                        'price' => $c->price,
-                        'name' => $c->name,
-                    ]);
-                }
-
-                SessionCart::where('session_id', $sessionIds)->delete();
-
-                return view('order-confirm')->with('orderId', $order->id);
             }
+
+            $sessionIds = session()->getId();
+            $cart = SessionCart::where('session_id', $sessionIds)->with('products')->get();
+
+            $price = $cart->sum('price');
+
+            DB::beginTransaction();
+            $billingAddress = OrderAdress::create([
+                'session_id' => $sessionIds,
+                'name' => "{$request->fname} {$request->lname}",
+                'email' => $request->email,
+                'address' => "{$request->address1}, {$request->address2}",
+                'city' => $request->city,
+                'state' => $request->state,
+                'country' => $request->country,
+                'pincode' => $request->pincode,
+                'phone' => $request->ccode + $request->phone,
+                'is_default' => $request->is_default ?? false,
+                'type' => 'billing',
+            ]);
+
+            $shippingAddress = null;
+            if ($request->shipping) {
+                $shippingAddress = OrderAdress::create([
+                    'session_id' => $sessionIds,
+                    'name' => "{$request->sfname} {$request->slname}",
+                    'email' => $request->semail,
+                    'address' => "{$request->saddress1}, {$request->saddress2}",
+                    'city' => $request->scity,
+                    'state' => $request->sstate,
+                    'country' => $request->scountry,
+                    'pincode' => $request->spincode,
+                    'phone' => $request->ccode + $request->sphone,
+                    'is_default' => $request->sis_default ?? false,
+                    'type' => 'shipping',
+                ]);
+            }
+            DB::commit();
+
+            DB::beginTransaction();
+            $order = Order::create([
+                'session_id' => $sessionIds,
+                'address_id' => $billingAddress->id,
+                'shipping_address' => $shippingAddress->id ?? null,
+                'total' => $price,
+                'payment_method' => $request->payment_method,
+            ]);
+
+            OrderStatus::create([
+                'order_id' => $order->id,
+                'status' => 'pending',
+            ]);
+
+            DB::commit();
+
+            DB::beginTransaction();
+            foreach ($cart as $c) {
+                OrderProduct::create([
+                    'order_id' => $order->id,
+                    'product_id' => $c->product_id,
+                    'quantity' => $c->quantity,
+                    'price' => $c->price,
+                    'name' => $c->name,
+                ]);
+            }
+            DB::commit();
+
+            Cart::where('session_id', $sessionIds)->delete();
+
+            return view('order-confirm')->with('orderId', $order->id);
+
         } catch (\Exception $e) {
             DB::rollBack();
 
