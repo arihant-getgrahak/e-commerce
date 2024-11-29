@@ -14,9 +14,6 @@ return new class extends Migration
         Schema::table('carts', function (Blueprint $table) {
             $table->string('name')->default('');
         });
-        Schema::table('session_carts', function (Blueprint $table) {
-            $table->string('name')->default('');
-        });
     }
 
     /**
@@ -25,9 +22,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('carts', function (Blueprint $table) {
-            $table->dropColumn('name');
-        });
-        Schema::table('session_carts', function (Blueprint $table) {
             $table->dropColumn('name');
         });
     }
