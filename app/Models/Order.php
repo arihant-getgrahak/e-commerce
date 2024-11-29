@@ -18,6 +18,7 @@ class Order extends Model
         'razorpay_order_id', //nullable for cod
         'razorpay_payment_id', //nullable for cod
         'shipping_address',
+        'session_id',
     ];
 
     protected $casts = [
