@@ -149,27 +149,28 @@
             Sortable.create(list, {
                 animation: 150,
                 onStart: function (evt) {
+                    document.body.style.cursor = 'grabbing';
                 },
-                onEnd: function (evt) {
+                onEnd: async function (evt) {
                     document.body.style.cursor = 'default';
                     const orderedIds = Array.from(evt.to.children).map(item => item.dataset.id);
-                    fetch('{{route("menu.sort")}}', {
+
+                    const res = fetch('{{route("menu.sort")}}', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                             'X-CSRF-TOKEN': '{{ csrf_token() }}'
                         },
                         body: JSON.stringify({ orderedIds })
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                console.log('Order updated successfully!');
-                            } else {
-                                console.error('Error updating order:', data.message);
-                            }
-                        })
-                        .catch(error => console.error('Error:', error));
+                    });
+
+                    const data = await res.json();
+
+                    if (data.success) {
+                        alert('Order updated successfully!');
+                    } else {
+                        alert('Error updating order:', data.message);
+                    }
                 }
             });
         });
