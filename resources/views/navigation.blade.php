@@ -9,12 +9,13 @@
         Add Link
     </button>
 </div>
+
 <div class="card">
     <div class="card-header">
         <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs">
-            @foreach ($navigation as $nav)
+            @foreach ($navigation as $index => $nav)
                 <li class="nav-item">
-                    <a href="#tabs-{{$nav->id}}" class="nav-link" data-bs-toggle="tab">
+                    <a href="#tabs-{{$nav->id}}" class="nav-link {{ $index === 0 ? 'active' : '' }}" data-bs-toggle="tab">
                         {{ $nav->name }}
                     </a>
                 </li>
@@ -24,7 +25,7 @@
     <div class="card-body">
         <div class="tab-content">
             @foreach ($navigation as $index => $nav)
-                <div class="tab-pane {{ $nav->id == 0 ? 'active show' : '' }}" id="tabs-{{$nav->id}}">
+                <div class="tab-pane {{ $index === 0 ? 'active show' : '' }}" id="tabs-{{$nav->id}}">
                     @foreach ($nav->menus as $menu)
                         <ul>
                             <li>
@@ -32,9 +33,9 @@
                                 (<a href="{{ $menu->link }}">{{ $menu->link }}</a>)
                             </li>
                             @if ($menu->children->isNotEmpty())
-                                <ul>
+                                <ul id="menu-children-{{$menu->id}}">
                                     @foreach ($menu->children as $child)
-                                        <li class="sort-name">
+                                        <li class="sort-name" data-id="{{ $child->id }}">
                                             {{ $child->name }}
                                             (<a href="{{ $child->link }}">{{ $child->link }}</a>)
                                         </li>
@@ -48,6 +49,8 @@
         </div>
     </div>
 </div>
+
+
 
 <!-- add link modal -->
 <div class="modal modal-blur fade" id="modal-link" tabindex="-1" role="dialog" aria-hidden="true">
@@ -138,6 +141,42 @@
         </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('[id^="menu-children-"]').forEach(list => {
+            Sortable.create(list, {
+                animation: 150,
+                onStart: function (evt) {
+                    document.body.style.cursor = 'grabbing';
+                },
+                onEnd: async function (evt) {
+                    document.body.style.cursor = 'default';
+                    const orderedIds = Array.from(evt.to.children).map(item => item.dataset.id);
+
+                    const res = fetch('{{route("menu.sort")}}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({ orderedIds })
+                    });
+
+                    const data = await res.json();
+
+                    if (data.success) {
+                        alert('Order updated successfully!');
+                    } else {
+                        alert('Error updating order:', data.message);
+                    }
+                }
+            });
+        });
+    });
+</script>
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {

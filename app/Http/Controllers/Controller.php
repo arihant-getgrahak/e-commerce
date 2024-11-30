@@ -11,9 +11,12 @@ abstract class Controller
     {
         $navigation = Navigation::with([
             'menus' => function ($query) {
-                $query->whereNull('parent_id')->with('children');
+                $query->whereNull('parent_id')->orderBy('orders');
             },
-        ])->get();
+            'menus.children' => function ($query) {
+                $query->orderBy('orders');
+            },
+        ])->orderBy('orders')->get();
 
         $telcode = 'IN';
 
