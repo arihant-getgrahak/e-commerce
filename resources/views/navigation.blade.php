@@ -9,12 +9,13 @@
         Add Link
     </button>
 </div>
+
 <div class="card">
     <div class="card-header">
         <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs">
-            @foreach ($navigation as $nav)
+            @foreach ($navigation as $index => $nav)
                 <li class="nav-item">
-                    <a href="#tabs-{{$nav->id}}" class="nav-link" data-bs-toggle="tab">
+                    <a href="#tabs-{{$nav->id}}" class="nav-link {{ $index === 0 ? 'active' : '' }}" data-bs-toggle="tab">
                         {{ $nav->name }}
                     </a>
                 </li>
@@ -24,7 +25,7 @@
     <div class="card-body">
         <div class="tab-content">
             @foreach ($navigation as $index => $nav)
-                <div class="tab-pane {{ $nav->id == 0 ? 'active show' : '' }}" id="tabs-{{$nav->id}}">
+                <div class="tab-pane {{ $index === 0 ? 'active show' : '' }}" id="tabs-{{$nav->id}}">
                     @foreach ($nav->menus as $menu)
                         <ul>
                             <li>
@@ -48,6 +49,7 @@
         </div>
     </div>
 </div>
+
 
 <!-- add link modal -->
 <div class="modal modal-blur fade" id="modal-link" tabindex="-1" role="dialog" aria-hidden="true">
