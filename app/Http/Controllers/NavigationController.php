@@ -18,14 +18,14 @@ class NavigationController extends Controller
             'menus.children' => function ($query) {
                 $query->orderBy('orders');
             },
-        ])->orderBy('orders')->get();
+        ])->get();
 
         return view('navigation', compact('navigation'));
     }
 
     public function getLinks($id)
     {
-        $links = NavigationMenu::where('navigation_id', $id)->whereNull('parent_id')->orderBy('orders')->get();
+        $links = NavigationMenu::where('navigation_id', $id)->whereNull('parent_id')->get();
 
         if ($links) {
             return response()->json(['links' => $links], 200);

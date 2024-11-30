@@ -16,7 +16,7 @@ abstract class Controller
             'menus.children' => function ($query) {
                 $query->orderBy('orders');
             },
-        ])->orderBy('orders')->get();
+        ])->get();
 
         $telcode = 'IN';
 
