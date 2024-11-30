@@ -176,4 +176,6 @@ Route::group(['middleware' => TrackUtmMiddleware::class], function () {
     Route::post('/update/globalCountry', [AdminController::class, 'updateGlobalCountry'])->name('update.global.country');
 
     Route::post('/admin/shiprocket/update', [AdminSettingController::class, 'changeCredentials'])->name('admin.shiprocket.update');
+
+    Route::post('/menu/sort', [NavigationController::class, 'changeOrder'])->name('menu.sort');
 });
