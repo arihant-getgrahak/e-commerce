@@ -12,6 +12,7 @@ class NavigationMenu extends Model
         'parent_id',
         'name',
         'link',
+        'orders',
     ];
 
     public function navigation()
