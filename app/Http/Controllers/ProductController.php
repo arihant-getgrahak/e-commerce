@@ -258,13 +258,31 @@ class ProductController extends Controller
 
     public function specific($id)
     {
+        $country = session('country');
+
+        $exchangeRate = getExchangeRate($country);
 
         $product = Product::where('slug', $id)->with(['gallery', 'meta', 'brand', 'category', 'attributeValues.attribute'])->get();
         if (! $product) {
             return view('specificproduct')->with('error', 'Incorrect product id');
         }
 
+        $product->transform(function ($product) use ($exchangeRate) {
+            $product->price = round($product->price * $exchangeRate['data'], 2);
+            $product->currency = $exchangeRate['currency'];
+            $product->cost_price = round($product->cost_price * $exchangeRate['data'], 2);
+
+            return $product;
+        });
+
         $random = Product::where('category_id', $product[0]->category_id)->inRandomOrder()->get(['name', 'slug', 'price', 'cost_price', 'stock', 'thumbnail']);
+        $random->transform(function ($random) use ($exchangeRate) {
+            $random->price = round($random->price * $exchangeRate['data'], 2);
+            $random->currency = $exchangeRate['currency'];
+            $random->cost_price = round($random->cost_price * $exchangeRate['data'], 2);
+
+            return $random;
+        });
         // return response()->json($random);
 
         return view('specificproduct')->with('product', $product)->with('random', $random);
