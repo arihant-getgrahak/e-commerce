@@ -54,4 +54,27 @@ if (! function_exists('getLocationInfo')) {
             ];
         }
     }
+
+    if (! function_exists('getExchangeRate')) {
+        try {
+            $res = Http::get('https://v6.exchangerate-api.com/v6/719e8ecf2efbd5dfaef4c8f5/latest/INR');
+
+            if ($res->successful()) {
+                return [
+                    'status' => true,
+                    'data' => $res,
+                ];
+            }
+
+            return [
+                'status' => false,
+                'data' => $res->json()['unsupported-code'],
+            ];
+        } catch (\Exception $e) {
+            return [
+                'status' => false,
+                'data' => $e->getMessage(),
+            ];
+        }
+    }
 }
