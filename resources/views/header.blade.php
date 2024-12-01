@@ -9,8 +9,11 @@
 
             <div class="col-xl-4 col-lg-4 col-md-5 col-sm-12 hide-ipad">
                 <div class="top_second text-center">
-                    <p class="medium text-light m-0 p-0">Get Free delivery from ₹2000 <a href="#"
-                            class="medium text-light text-underline">Shop Now</a></p>
+                    <!-- getExchangeRate($session('country')) -->
+                    <p class="medium text-light m-0 p-0">Get Free delivery from
+                        {{$navigations["data"]["currency"]}}{{$navigations["data"]["delivery"]}}
+                        <a href="#" class="medium text-light text-underline">Shop Now</a>
+                    </p>
                 </div>
             </div>
 

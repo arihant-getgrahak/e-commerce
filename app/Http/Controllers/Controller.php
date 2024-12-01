@@ -33,6 +33,14 @@ abstract class Controller
 
         $telcode = session('country', 'IN');
 
-        View::share('navigations', compact('navigation', 'telcode'));
+        $country = session('country');
+        $exchangeRate = getExchangeRate($country);
+
+        $data = [
+            'delivery' => (float) '2000' * (float) $exchangeRate['data'],
+            'currency' => $exchangeRate['currency'],
+        ];
+
+        View::share('navigations', compact('navigation', 'telcode', 'data'));
     }
 }
