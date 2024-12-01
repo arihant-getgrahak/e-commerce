@@ -476,11 +476,12 @@
                                             <div class="edlio">
                                                 <a href="#" data-toggle="modal" data-target="#quickview"
                                                     class="text-white fs-sm ft-medium quick-view-btn"
-                                                    data-name="{{ $p->name }}" data-price="{{ $p->price }}"
+                                                    data-currency="{{ $p->currency }}" data-name="{{ $p->name }}"
                                                     data-id="{{ $p->id }}" data-description="{{ $p->description }}"
                                                     data-gallery="{{ json_encode($p->gallery) }}"
                                                     data-category="{{ $p->category->name }}" data-reviews="412"
-                                                    data-old-price="{{ $p->cost_price }}" data-new-price="{{ $p->price }}">
+                                                    data-old-price="{{ $p->cost_price }}" data-new-price="{{ $p->price }}"
+                                                    data-price="{{ $p->price }}">
                                                     <i class="fas fa-eye mr-1"></i>Quick View
                                                 </a>
                                             </div>
@@ -692,6 +693,7 @@
                 const oldPrice = this.getAttribute('data-old-price');
                 const newPrice = this.getAttribute('data-new-price');
                 const id = this.getAttribute('data-id');
+                const currency = this.getAttribute('data-currency');
 
                 let quantity = 1;
                 document.querySelectorAll('#quantity').forEach(q => {
@@ -713,8 +715,8 @@
                 });
 
                 document.querySelector('#quickviewmodal .ft-bold.mb-1').innerText = productName;
-                document.querySelector('#quickviewmodal .ft-bold.theme-cl.fs-lg.mr-2').innerText = `₹${newPrice}`;
-                document.querySelector('#quickviewmodal .ft-medium.text-muted.line-through.fs-md.mr-2').innerText = `₹${oldPrice}`;
+                document.querySelector('#quickviewmodal .ft-bold.theme-cl.fs-lg.mr-2').innerText = `${currency}${newPrice}`;
+                document.querySelector('#quickviewmodal .ft-medium.text-muted.line-through.fs-md.mr-2').innerText = `${currency}${oldPrice}`;
                 document.querySelector('#quickviewmodal .prt_03.mb-3 p').innerText = productDescription;
                 document.querySelector("#category").innerText = productCategory;
 
