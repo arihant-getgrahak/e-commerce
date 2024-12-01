@@ -37,7 +37,6 @@ class ProductController extends Controller
             }
         }
 
-        // dd($data);
         $brand = Brand::all();
 
         return view('addproduct')->with('category', $data)->with('brand', $brand)->with('attribute', $attribute);
@@ -69,16 +68,22 @@ class ProductController extends Controller
             return view('productview')->with('product', []);
         }
 
-        // return response()->json([
-        //     'product' => $product,
-        // ], 200);
         return view('productview')->with('product', $product)->with('category', $data)->with('brand', $brand);
-
     }
 
     public function display()
     {
+        $country = session('country');
+
+        $exchangeRate = getExchangeRate($country);
+
         $product = Product::with(['gallery', 'meta', 'brand', 'category', 'attributeValues.attribute'])->paginate(10);
+        $product->getCollection()->transform(function ($product) use ($exchangeRate) {
+            $product->price = round($product->price * $exchangeRate['data'], 2);
+            $product->currency = $exchangeRate['currency'];
+
+            return $product;
+        });
         $categories = Category::with(['parent'])->get();
         $brand = Brand::withCount('products')->get();
 
@@ -105,7 +110,6 @@ class ProductController extends Controller
         } else {
             $recentSearches = Search::where('session_id', session()->getId())->get();
         }
-        session()->remove('recentsearch');
         session()->put('recentsearch', $recentSearches);
 
         return view('welcome')->with('product', $product)->with('categories', collect($data))->with('brand', $brand);
