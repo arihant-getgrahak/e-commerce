@@ -708,7 +708,8 @@
                             id: id,
                             quantity: quantity,
                             price: productPrice,
-                            name: productName
+                            name: productName,
+                            currency: currency
                         }
                         addToCart(data);
                     });
@@ -743,7 +744,8 @@
                     product_id: params.id,
                     quantity: params.quantity,
                     price: params.price,
-                    name: params.name
+                    name: params.name,
+                    currency: params.currency
                 }),
             })
 
