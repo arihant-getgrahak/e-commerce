@@ -273,7 +273,7 @@
                 const data = await res.json();
 
                 document.getElementById("cart-count").innerText = data.cart.length;
-                document.getElementById("subtotal").innerText = "₹" + data.price;
+                document.getElementById("subtotal").innerText = data.country + data.price;
                 const cartcontainer = document.getElementById("cart");
                 cartcontainer.innerHTML = '';
 
@@ -286,7 +286,7 @@
 									</div>
 									<div class="cart_single_caption pl-2">
 										<h4 class="product_title fs-sm ft-medium mb-0 lh-1">${product.products[0].name}</h4>
-										<h4 class="fs-md ft-medium mb-0 lh-1">₹${product.products[0].price}</h4>
+										<h4 class="fs-md ft-medium mb-0 lh-1">${product.currency_code}${product.price}</h4>
 									</div>
 								</div>
 								<div class="fls_last"><button class="close_slide gray" onclick="removeCart(${product.id})"><i class="ti-close"></i></button></div>
