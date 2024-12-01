@@ -322,7 +322,7 @@
                                                 <h4 class="product_title fs-md ft-medium mb-1 lh-1">{{$c->products[0]->name}}
                                                 </h4>
                                                 <p class="mb-3 lh-1"><span class="text-dark">Color: Blue</span></p>
-                                                <h4 class="fs-md ft-medium mb-3 lh-1">₹{{$c->price}}</h4>
+                                                <h4 class="fs-md ft-medium mb-3 lh-1">{{$c->currency_code}}{{$c->price}}</h4>
                                             </div>
                                         </div>
                                     </div>
