@@ -78,12 +78,12 @@ class CartController extends Controller
                 'quantity' => $request->quantity,
                 'price' => $request->price * $request->quantity,
                 'name' => $request->name,
+                'currency_code' => $request->currency,
             ];
 
             $cart = Cart::create($data);
 
             if (! $cart) {
-                // return back()->with('error', 'Cart not created');
                 return response()->json([
                     'message' => 'Cart not created',
                     'status' => false,
