@@ -11,7 +11,10 @@ abstract class Controller
     {
         $navigation = Navigation::with([
             'menus' => function ($query) {
-                $query->whereNull('parent_id')->with('children');
+                $query->whereNull('parent_id')->orderBy('orders');
+            },
+            'menus.children' => function ($query) {
+                $query->orderBy('orders');
             },
         ])->get();
 

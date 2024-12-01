@@ -11,10 +11,14 @@ class NavigationController extends Controller
 {
     public function index()
     {
-        $navigation = Navigation::with('menus.children')->get();
-        foreach ($navigation as $n) {
-            $n->menus = $n->menus->whereNull('parent_id');
-        }
+        $navigation = Navigation::with([
+            'menus' => function ($query) {
+                $query->whereNull('parent_id')->orderBy('orders');
+            },
+            'menus.children' => function ($query) {
+                $query->orderBy('orders');
+            },
+        ])->get();
 
         return view('navigation', compact('navigation'));
     }
@@ -69,5 +73,17 @@ class NavigationController extends Controller
         Navigation::create($data);
 
         return back()->with('success', 'Navigation created successfully');
+    }
+
+    public function changeOrder(Request $request)
+    {
+        $ids = $request->orderedIds;
+        foreach ($ids as $key => $id) {
+            $menu = NavigationMenu::find($id);
+            $menu->orders = $key;
+            $menu->save();
+        }
+
+        return response()->json(['success' => true]);
     }
 }
