@@ -81,6 +81,7 @@ class ProductController extends Controller
         $product->getCollection()->transform(function ($product) use ($exchangeRate) {
             $product->price = round($product->price * $exchangeRate['data'], 2);
             $product->currency = $exchangeRate['currency'];
+            $product->cost_price = round($product->cost_price * $exchangeRate['data'], 2);
 
             return $product;
         });
