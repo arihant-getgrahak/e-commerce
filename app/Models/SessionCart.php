@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class SessionCart extends Model
 {
-    protected $fillable = ['session_id', 'product_id', 'quantity', 'price', 'name'];
+    protected $fillable = ['session_id', 'product_id', 'quantity', 'price', 'name', 'currency_code'];
 
     public function products()
     {

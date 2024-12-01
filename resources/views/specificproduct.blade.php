@@ -53,8 +53,8 @@
                                     <span class="small">(412 Reviews)</span>
                                 </div>
                                 <div class="elis_rty"><span
-                                        class="ft-medium text-muted line-through fs-md mr-2">₹{{$product[0]->cost_price}}</span><span
-                                        class="ft-bold theme-cl fs-lg mr-2">₹{{$product[0]->price}}</span><span
+                                        class="ft-medium text-muted line-through fs-md mr-2">{{$product[0]->currency}}{{$product[0]->cost_price}}</span><span
+                                        class="ft-bold theme-cl fs-lg mr-2">{{$product[0]->currency}}{{$product[0]->price}}</span><span
                                         class="ft-regular text-light bg-success py-1 px-2 fs-sm">In Stock</span>
                                 </div>
                             </div>
@@ -355,7 +355,7 @@
                                                 <h5 class="fw-bolder fs-md mb-0 lh-1 mb-1"><a
                                                         href="shop-single-v1.html">{{$r->name}}</a></h5>
                                                 <div class="elis_rty"><span
-                                                        class="ft-bold fs-md text-dark">₹{{$r->price}}</span>
+                                                        class="ft-bold fs-md text-dark">{{$r->currency}}{{$r->price}}</span>
                                                 </div>
                                             </div>
                                         </div>

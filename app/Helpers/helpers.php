@@ -54,4 +54,44 @@ if (! function_exists('getLocationInfo')) {
             ];
         }
     }
+
+    if (! function_exists('getExchangeRate')) {
+        function getExchangeRate($country)
+        {
+
+            try {
+                $currencyCode = null;
+                $currencySymbol = null;
+                $response = Http::get("https://restcountries.com/v3.1/alpha/{$country}");
+                if ($response->ok()) {
+                    $data = $response->json();
+                    $currencies = $data[0]['currencies'];
+                    $currencyCode = array_keys($currencies)[0] ?? 'INR';
+                    $currencySymbol = array_values($currencies)[0]['symbol'] ?? '₹';
+                }
+
+                $res = Http::get('https://v6.exchangerate-api.com/v6/719e8ecf2efbd5dfaef4c8f5/latest/INR');
+
+                if ($res->successful()) {
+                    $data = $res->json();
+
+                    return [
+                        'status' => true,
+                        'data' => $data['conversion_rates'][$currencyCode],
+                        'currency' => $currencySymbol,
+                    ];
+                }
+
+                return [
+                    'status' => false,
+                    'data' => $res->json()['unsupported-code'],
+                ];
+            } catch (\Exception $e) {
+                return [
+                    'status' => false,
+                    'data' => $e->getMessage(),
+                ];
+            }
+        }
+    }
 }

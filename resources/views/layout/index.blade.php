@@ -215,7 +215,7 @@
                             </li>
 
                             <!-- settings -->
-                            <li @class(["nav-item", "dropdown", 'active' => in_array(Route::currentRouteName(), ['admin.setting.shiprocket'])])>
+                            <li @class(["nav-item", "dropdown", 'active' => in_array(Route::currentRouteName(), ['admin.setting.shiprocket', 'admin.setting.forexView'])])>
                                 <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
                                     data-bs-auto-close="outside" role="button" aria-expanded="false">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -239,10 +239,10 @@
                                             <a class="dropdown-item" href="{{route("admin.setting.shiprocket")}}">
                                                 ShipRocket
                                             </a>
-                                            {{--<a class="dropdown-item" href="{{route(" admin.state")}}">
-                                                State
+                                            <a class="dropdown-item" href="{{route("admin.setting.forexView")}}">
+                                                Forex
                                             </a>
-                                            <a class="dropdown-item" href="{{route(" admin.city")}}">
+                                            {{--<a class="dropdown-item" href="{{route(" admin.city")}}">
                                                 City
                                             </a>
                                             <a class="dropdown-item" href="{{ route('pickupaddress') }}">

@@ -87,6 +87,7 @@ class CheckoutController extends Controller
                         'quantity' => $sc->quantity,
                         'price' => $sc->price,
                         'name' => $sc->name,
+                        'currency_code' => $sc->currency_code,
                     ]);
                 }
                 SessionCart::where('session_id', $sessionIds)->delete();
@@ -100,6 +101,7 @@ class CheckoutController extends Controller
                 }
 
                 $price = $cart->sum('price');
+                $currency_code = $cart[0]->currency_code;
 
                 DB::beginTransaction();
                 $billingAddress = OrderAdress::create([
@@ -135,12 +137,14 @@ class CheckoutController extends Controller
                 DB::commit();
 
                 DB::beginTransaction();
+
                 $order = Order::create([
                     'user_id' => auth()->user()->id,
                     'address_id' => $billingAddress->id,
                     'shipping_address' => $shippingAddress->id ?? null,
                     'total' => $price,
                     'payment_method' => $request->payment_method,
+                    'currency_code' => $currency_code,
                 ]);
 
                 OrderStatus::create([
@@ -171,6 +175,7 @@ class CheckoutController extends Controller
             $cart = SessionCart::where('session_id', $sessionIds)->with('products')->get();
 
             $price = $cart->sum('price');
+            $currency_code = $cart[0]->currency_code;
 
             DB::beginTransaction();
             $billingAddress = OrderAdress::create([
@@ -212,6 +217,7 @@ class CheckoutController extends Controller
                 'shipping_address' => $shippingAddress->id ?? null,
                 'total' => $price,
                 'payment_method' => $request->payment_method,
+                'currency_code' => $currency_code,
             ]);
 
             OrderStatus::create([

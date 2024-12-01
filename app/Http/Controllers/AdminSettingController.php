@@ -17,7 +17,12 @@ class AdminSettingController extends Controller
             'channelId' => env('SHIPROCKET_CHANNEL_ID'),
         ];
 
-        return view('admin.setting', compact('data'));
+        return view('admin.setting.shiprocket', compact('data'));
+    }
+
+    public function forexView()
+    {
+        return view('admin.setting.forex');
     }
 
     public function changeCredentials(Request $request)
@@ -64,7 +69,6 @@ class AdminSettingController extends Controller
 
         File::put($envPath, $envContent);
 
-        Artisan::call('config:cache');
         Artisan::call('config:clear');
     }
 }

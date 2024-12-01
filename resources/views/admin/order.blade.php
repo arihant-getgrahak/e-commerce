@@ -60,7 +60,7 @@
                                         <tr>
                                             <td class="sort-name">{{$order->id}}</td>
                                             <td class="sort-quantity">{{$order->products->count()}}</td>
-                                            <td class="sort-city">₹{{$order->total}}</td>
+                                            <td class="sort-city">{{$order->currency_code}}{{$order->total}}</td>
                                             <td class="sort-type">{{Str::upper($order->payment_method)}}</td>
                                             <td class="sort-progress">
                                                 {{Str::ucfirst($order->status)}}

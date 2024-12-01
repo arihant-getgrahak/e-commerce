@@ -37,7 +37,6 @@ class ProductController extends Controller
             }
         }
 
-        // dd($data);
         $brand = Brand::all();
 
         return view('addproduct')->with('category', $data)->with('brand', $brand)->with('attribute', $attribute);
@@ -69,16 +68,23 @@ class ProductController extends Controller
             return view('productview')->with('product', []);
         }
 
-        // return response()->json([
-        //     'product' => $product,
-        // ], 200);
         return view('productview')->with('product', $product)->with('category', $data)->with('brand', $brand);
-
     }
 
     public function display()
     {
+        $country = session('country');
+
+        $exchangeRate = getExchangeRate($country);
+
         $product = Product::with(['gallery', 'meta', 'brand', 'category', 'attributeValues.attribute'])->paginate(10);
+        $product->getCollection()->transform(function ($product) use ($exchangeRate) {
+            $product->price = round($product->price * $exchangeRate['data'], 2);
+            $product->currency = $exchangeRate['currency'];
+            $product->cost_price = round($product->cost_price * $exchangeRate['data'], 2);
+
+            return $product;
+        });
         $categories = Category::with(['parent'])->get();
         $brand = Brand::withCount('products')->get();
 
@@ -105,7 +111,6 @@ class ProductController extends Controller
         } else {
             $recentSearches = Search::where('session_id', session()->getId())->get();
         }
-        session()->remove('recentsearch');
         session()->put('recentsearch', $recentSearches);
 
         return view('welcome')->with('product', $product)->with('categories', collect($data))->with('brand', $brand);
@@ -253,13 +258,31 @@ class ProductController extends Controller
 
     public function specific($id)
     {
+        $country = session('country');
+
+        $exchangeRate = getExchangeRate($country);
 
         $product = Product::where('slug', $id)->with(['gallery', 'meta', 'brand', 'category', 'attributeValues.attribute'])->get();
         if (! $product) {
             return view('specificproduct')->with('error', 'Incorrect product id');
         }
 
+        $product->transform(function ($product) use ($exchangeRate) {
+            $product->price = round($product->price * $exchangeRate['data'], 2);
+            $product->currency = $exchangeRate['currency'];
+            $product->cost_price = round($product->cost_price * $exchangeRate['data'], 2);
+
+            return $product;
+        });
+
         $random = Product::where('category_id', $product[0]->category_id)->inRandomOrder()->get(['name', 'slug', 'price', 'cost_price', 'stock', 'thumbnail']);
+        $random->transform(function ($random) use ($exchangeRate) {
+            $random->price = round($random->price * $exchangeRate['data'], 2);
+            $random->currency = $exchangeRate['currency'];
+            $random->cost_price = round($random->cost_price * $exchangeRate['data'], 2);
+
+            return $random;
+        });
         // return response()->json($random);
 
         return view('specificproduct')->with('product', $product)->with('random', $random);

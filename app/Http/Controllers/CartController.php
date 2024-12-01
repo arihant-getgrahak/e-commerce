@@ -47,13 +47,14 @@ class CartController extends Controller
             }
         } else {
             $cart = Cart::where('user_id', auth()->user()->id)->with('products')->get();
+            $country = Cart::where('user_id', auth()->user()->id)->with('products')->first();
             $price = 0;
             if ($cart) {
                 $price = $cart->sum('price');
             }
         }
 
-        return response()->json(['cart' => $cart, 'price' => $price]);
+        return response()->json(['cart' => $cart, 'price' => $price, 'country' => $country->currency_code]);
     }
 
     public function store(CartStoreRequest $request)
@@ -78,12 +79,12 @@ class CartController extends Controller
                 'quantity' => $request->quantity,
                 'price' => $request->price * $request->quantity,
                 'name' => $request->name,
+                'currency_code' => $request->currency,
             ];
 
             $cart = Cart::create($data);
 
             if (! $cart) {
-                // return back()->with('error', 'Cart not created');
                 return response()->json([
                     'message' => 'Cart not created',
                     'status' => false,
@@ -106,6 +107,7 @@ class CartController extends Controller
                 'quantity' => $request->quantity,
                 'price' => $request->price * $request->quantity,
                 'name' => $request->name,
+                'currency_code' => $request->currency,
             ]);
 
             return response()->json([
@@ -119,6 +121,7 @@ class CartController extends Controller
             'quantity' => $request->quantity,
             'price' => $request->price * $request->quantity,
             'name' => $request->name,
+            'currency_code' => $request->currency,
         ];
 
         $cart = SessionCart::create($data);
