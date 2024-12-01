@@ -505,7 +505,7 @@
                                                 id="product_name">{{$p->name}}</a>
                                         </h5>
                                         <div class="elis_rty"><span class="ft-bold text-dark fs-sm"
-                                                id="product_price">₹{{$p->price}}</span></div>
+                                                id="product_price">{{$p->currency}}{{$p->price}}</span></div>
                                     </div>
                                 </div>
                             </div>
