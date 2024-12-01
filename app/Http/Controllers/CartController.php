@@ -47,13 +47,14 @@ class CartController extends Controller
             }
         } else {
             $cart = Cart::where('user_id', auth()->user()->id)->with('products')->get();
+            $country = Cart::where('user_id', auth()->user()->id)->with('products')->first();
             $price = 0;
             if ($cart) {
                 $price = $cart->sum('price');
             }
         }
 
-        return response()->json(['cart' => $cart, 'price' => $price]);
+        return response()->json(['cart' => $cart, 'price' => $price, 'country' => $country->currency_code]);
     }
 
     public function store(CartStoreRequest $request)
