@@ -106,6 +106,7 @@ class CartController extends Controller
                 'quantity' => $request->quantity,
                 'price' => $request->price * $request->quantity,
                 'name' => $request->name,
+                'currency_code' => $request->currency,
             ]);
 
             return response()->json([
@@ -119,6 +120,7 @@ class CartController extends Controller
             'quantity' => $request->quantity,
             'price' => $request->price * $request->quantity,
             'name' => $request->name,
+            'currency_code' => $request->currency,
         ];
 
         $cart = SessionCart::create($data);
