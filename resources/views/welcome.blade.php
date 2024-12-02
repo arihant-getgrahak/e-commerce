@@ -678,6 +678,7 @@
 
 
 <a id="back2Top" class="top-scroll" title="Back to top" href="#"><i class="ti-arrow-up"></i></a>
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const arihant = document.querySelector('#alert');
@@ -1082,7 +1083,8 @@
                                                     data-gallery='${JSON.stringify(product.gallery)}'
                                                     data-category="${product.category.name}" data-reviews="412"
                                                     data-old-price="${product.cost_price}"
-                                                    data-new-price="${product.price}">
+                                                    data-new-price="${product.price}"
+                                                    data-currencty="${product.currency}">
                                                     <i class="fas fa-eye mr-1"></i>Quick View
                                                 </a>
                                             </div>
@@ -1103,7 +1105,7 @@
                                             <a href="{{route('product.specific', '')}}/${product.slug}}">${product.name}</a>
                                         </h5>
                                         <div class="elis_rty">
-                                            <span class="ft-bold text-dark fs-sm">₹${product.price}</span>
+                                            <span class="ft-bold text-dark fs-sm">${product.currency}${product.price}</span>
                                         </div>
                                     </div>
                                 </div>
