@@ -346,9 +346,9 @@ class ProductController extends Controller
 
         $currencySymbol = $currencyInfo['data'] ?? null;
         $currencyCode = $currencyInfo['currency_code'] ?? null;
-        $product = Product::with(['gallery', 'meta', 'brand', 'category', 'attributeValues.attribute'])->paginate(10);
 
         $exchangeRateForCurrency = $exchangeRate['data'][$currencyCode] ?? 1;
+
         $priceFilter = Product::whereBetween('price', [$request->min, $request->max])->with(['gallery', 'meta', 'brand', 'category'])->paginate(10);
 
         $priceFilter->getCollection()->transform(function ($product) use ($exchangeRateForCurrency, $currencySymbol) {
