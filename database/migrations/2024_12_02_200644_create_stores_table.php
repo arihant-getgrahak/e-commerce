@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('state');
             $table->string('country');
             $table->string('pincode');
+            $table->string('phone');
+            $table->string('gst');
             $table->float('tax_value');
             $table->enum('tax_type', ['inclusive', 'exclusive'])->default('inclusive');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
