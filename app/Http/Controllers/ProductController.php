@@ -10,6 +10,7 @@ use App\Models\Gallery;
 use App\Models\OrderAdress;
 use App\Models\Product;
 use App\Models\Search;
+use Cache;
 use DB;
 use Illuminate\Http\Request;
 use Storage;
@@ -75,16 +76,28 @@ class ProductController extends Controller
     {
         $country = session('country');
 
-        $exchangeRate = getExchangeRate($country);
+        $exchangeRate = Cache::remember('exchangeRate', now()->addHours(24), function () {
+            return getExchangeRate();
+        });
 
+        $currencyInfo = Cache::remember('currencyInfo', now()->addHours(24), function () use ($country) {
+            return getCurrencySymbol($country);
+        });
+
+        $currencySymbol = $currencyInfo['data'] ?? null;
+        $currencyCode = $currencyInfo['currency_code'] ?? null;
         $product = Product::with(['gallery', 'meta', 'brand', 'category', 'attributeValues.attribute'])->paginate(10);
-        $product->getCollection()->transform(function ($product) use ($exchangeRate) {
-            $product->price = round($product->price * $exchangeRate['data'], 2);
-            $product->currency = $exchangeRate['currency'];
-            $product->cost_price = round($product->cost_price * $exchangeRate['data'], 2);
+
+        $exchangeRateForCurrency = $exchangeRate['data'][$currencyCode] ?? 1;
+
+        $product->getCollection()->transform(function ($product) use ($exchangeRateForCurrency, $currencySymbol) {
+            $product->price = round($product->price * $exchangeRateForCurrency, 2);
+            $product->currency = $currencySymbol;
+            $product->cost_price = round($product->cost_price * $exchangeRateForCurrency, 2);
 
             return $product;
         });
+
         $categories = Category::with(['parent'])->get();
         $brand = Brand::withCount('products')->get();
 
@@ -173,10 +186,7 @@ class ProductController extends Controller
             DB::rollBack();
 
             return back()->with('error', $e->getMessage());
-            // return response()->json([
-            //     "success" => false,
-            //     "error" => $e->getMessage(),
-            // ], 500);
+
         }
     }
 
