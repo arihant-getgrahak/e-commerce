@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateStoreRequest;
 use App\Models\Store;
 use App\Models\Tax;
 use Artisan;
@@ -82,30 +83,28 @@ class AdminSettingController extends Controller
         Artisan::call('config:clear');
     }
 
-    public function taxstore(Request $request)
+    public function adminStore(CreateStoreRequest $request)
     {
         try {
-            // dd($request->all());
-            $validation = Validator::make($request->all(), [
-                'value' => 'required|string',
-                'type' => 'required|string|in:inclusive,exclusive',
-            ]);
-
-            if ($validation->fails()) {
-                return back()->withErrors($validation->errors());
-            }
-
             $data = [
                 'user_id' => auth()->user()->id,
-                'value' => $request->value,
-                'type' => $request->type,
+                'tax_value' => $request->tax_value,
+                'tax_type' => $request->tax_type,
+                'name' => $request->name,
+                'address' => $request->address,
+                'city' => $request->city,
+                'state' => $request->state,
+                'country' => $request->country,
+                'pincode' => $request->pincode,
+                'phone' => $request->phone,
+                'gst' => $request->gst,
             ];
 
             DB::beginTransaction();
-            Tax::create($data);
+            Store::create($data);
             DB::commit();
 
-            return back()->with('success', 'Tax added');
+            return back()->with('success', 'Store Added Successfully');
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }
