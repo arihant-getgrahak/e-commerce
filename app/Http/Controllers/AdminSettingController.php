@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateStoreRequest;
 use App\Models\Store;
-use App\Models\Tax;
 use Artisan;
 use DB;
 use File;
@@ -129,12 +128,23 @@ class AdminSettingController extends Controller
     public function storeUpdate(Request $request, $id)
     {
         try {
-            $data = $request->only(['value', 'type']);
+            $data = $request->only([
+                'tax_value',
+                'tax_type',
+                'name',
+                'address',
+                'city',
+                'state',
+                'country',
+                'pincode',
+                'phone',
+                'gst',
+            ]);
             DB::beginTransaction();
-            Tax::where('id', $id)->update($data);
+            Store::where('id', $id)->update($data);
             DB::commit();
 
-            return back()->with('success', 'Tax updated');
+            return back()->with('success', 'Store Updated Successfully');
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }
