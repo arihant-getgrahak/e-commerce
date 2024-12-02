@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CartStoreRequest;
 use App\Models\Cart;
 use App\Models\SessionCart;
+use App\Models\Tax;
 use DB;
 use Illuminate\Http\Request;
 
@@ -30,7 +31,17 @@ class CartController extends Controller
             }
         }
 
-        return view('shopping-cart', compact('isLoggedIn', 'cart', 'price'));
+        $tax = Tax::first();
+        $tax_value = $tax->value;
+        $finalprice = $price;
+        if ($tax->type == 'inclusive') {
+            $finalprice = $price;
+            $price = $price - ($price * $tax->value / 100);
+        } else {
+            $finalprice = $price + ($price * $tax->value / 100);
+        }
+
+        return view('shopping-cart', compact('isLoggedIn', 'cart', 'price', 'tax_value', 'finalprice'));
     }
 
     public function cartcount()
