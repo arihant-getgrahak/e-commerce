@@ -254,49 +254,54 @@ class ProductController extends Controller
         if (! $product) {
 
             return back()->with('error', 'Incorrect product id');
-            // return response()->json([
-            //     "message" => "Product not found"
-            // ], 404);
         }
         $product->delete();
 
         return back()->with('success', 'Product deleted successfully');
-        // return response()->json([
-        //     "message" => "Product deleted successfully"
-        // ], 200);
     }
 
     public function specific($id)
     {
         $country = session('country');
 
-        $exchangeRate = getExchangeRate($country);
+        $exchangeRate = Cache::remember('exchangeRate', now()->addHours(24), function () {
+            return getExchangeRate();
+        });
+
+        $currencyInfo = Cache::remember('currencyInfo', now()->addHours(24), function () use ($country) {
+            return getCurrencySymbol($country);
+        });
+
+        $currencySymbol = $currencyInfo['data'] ?? null;
+        $currencyCode = $currencyInfo['currency_code'] ?? null;
+        $product = Product::with(['gallery', 'meta', 'brand', 'category', 'attributeValues.attribute'])->paginate(10);
+
+        $exchangeRateForCurrency = $exchangeRate['data'][$currencyCode] ?? 1;
 
         $product = Product::where('slug', $id)->with(['gallery', 'meta', 'brand', 'category', 'attributeValues.attribute'])->get();
+
         if (! $product) {
             return view('specificproduct')->with('error', 'Incorrect product id');
         }
 
-        $product->transform(function ($product) use ($exchangeRate) {
-            $product->price = round($product->price * $exchangeRate['data'], 2);
-            $product->currency = $exchangeRate['currency'];
-            $product->cost_price = round($product->cost_price * $exchangeRate['data'], 2);
+        $product->transform(function ($product) use ($exchangeRateForCurrency, $currencySymbol) {
+            $product->price = round($product->price * (float) $exchangeRateForCurrency, 2);
+            $product->currency = $currencySymbol;
+            $product->cost_price = round($product->cost_price * $exchangeRateForCurrency, 2);
 
             return $product;
         });
 
         $random = Product::where('category_id', $product[0]->category_id)->inRandomOrder()->get(['name', 'slug', 'price', 'cost_price', 'stock', 'thumbnail']);
-        $random->transform(function ($random) use ($exchangeRate) {
-            $random->price = round($random->price * $exchangeRate['data'], 2);
-            $random->currency = $exchangeRate['currency'];
-            $random->cost_price = round($random->cost_price * $exchangeRate['data'], 2);
+        $random->transform(function ($random) use ($exchangeRateForCurrency, $currencySymbol) {
+            $random->price = round($random->price * (float) $exchangeRateForCurrency, 2);
+            $random->currency = $currencySymbol;
+            $random->cost_price = round($random->cost_price * $exchangeRateForCurrency, 2);
 
             return $random;
         });
-        // return response()->json($random);
 
         return view('specificproduct')->with('product', $product)->with('random', $random);
-
     }
 
     protected function uploadImage($file)
