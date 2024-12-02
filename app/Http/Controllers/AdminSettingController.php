@@ -110,20 +110,23 @@ class AdminSettingController extends Controller
         }
     }
 
-    public function taxDelete($id)
+    public function storeDelete($id)
     {
         try {
+            if (Store::where('user_id', auth()->user()->id)->count() <= 1) {
+                return back()->with('error', 'You can not delete last store');
+            }
             DB::beginTransaction();
-            Tax::where('id', $id)->delete();
+            Store::where('id', $id)->delete();
             DB::commit();
 
-            return back()->with('success', 'Tax deleted');
+            return back()->with('success', 'Store deleted Successfully');
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }
     }
 
-    public function taxUpdate(Request $request, $id)
+    public function storeUpdate(Request $request, $id)
     {
         try {
             $data = $request->only(['value', 'type']);
