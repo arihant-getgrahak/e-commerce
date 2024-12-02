@@ -21,13 +21,13 @@ class CartController extends Controller
             $session_id = session()->getId();
             $cart = SessionCart::where('session_id', $session_id)->with('products')->get();
             if ($cart) {
-                $price = $cart->sum('price');
+                $price = round($cart->sum('price'), 2);
             }
         } else {
             $cart = Cart::where('user_id', auth()->user()->id)->with('products')->get();
             $price = 0;
             if ($cart) {
-                $price = $cart->sum('price');
+                $price = round($cart->sum('price'), 2);
             }
         }
 
@@ -63,7 +63,7 @@ class CartController extends Controller
             $country = Cart::where('user_id', auth()->user()->id)->with('products')->first();
             $price = 0;
             if ($cart) {
-                $price = $cart->sum('price');
+                $price = round($cart->sum('price'), 2);
             }
         }
 
