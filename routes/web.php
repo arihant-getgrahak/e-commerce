@@ -81,6 +81,7 @@ Route::group(['middleware' => TrackUtmMiddleware::class], function () {
             Route::group(['prefix' => '/setting'], function () {
                 Route::get('/shiprocket', action: [AdminSettingController::class, 'shiprocketView'])->name('admin.setting.shiprocket');
                 Route::get('/forex', action: [AdminSettingController::class, 'forexView'])->name('admin.setting.forexView');
+                Route::get('/tax', action: [AdminSettingController::class, 'taxView'])->name('admin.setting.tax');
             });
         });
     });
