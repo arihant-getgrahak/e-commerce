@@ -20,6 +20,11 @@ class Product extends Model
         'sku',
         'weight',
         'attributes',
+        'length',
+        'width',
+        'height',
+        'tax_value',
+        'tax_type',
     ];
 
     protected function casts(): array
