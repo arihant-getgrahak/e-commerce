@@ -57,10 +57,9 @@
                                 <td class="sort-city">{{$t->value}}%</td>
                                 <td class="sort-city">{{Str::ucfirst($t->type)}}</td>
                                 <td class="sort-type">
-                                    {{--<button class="btn btn-primary btn-sm btn-update" data-bs-toggle="modal"
-                                        data-bs-target="#modal-edit-{{$t->id}}" data-id="{{ $c['id'] }}"
-                                        data-parent-id="{{ $c['parent_id'] ?? null }}"
-                                        data-name="{{ $c['name'] }}">Edit</button>--}}
+                                    <button class="btn btn-primary btn-sm btn-update" data-bs-toggle="modal"
+                                        data-bs-target="#modal-tax-update" data-id="{{ $t->id }}"
+                                        data-value="{{ $t->value }}" data-type="{{ $t->type }}">Edit</button>
                                     <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
                                         data-bs-target="#modal-delete-{{$t->id}}">Delete</button>
                                 </td>
@@ -116,6 +115,48 @@
             </div>
         </div>
     </div>
+
+    <!-- Update Modal -->
+    <div class="modal modal-blur fade" id="modal-tax-update" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Update Form</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="taxForm" class="bg-white p-6 rounded-lg shadow-lg" method="post" action="">
+                        @method('PUT')
+                        @csrf
+
+                        <!-- category -->
+                        <div class="mb-3">
+                            <label class="form-label required">Tax Value (in %)</label>
+                            <input type="text" class="form-control" id="modal-value" name="value"
+                                value="{{old('value')}}" placeholder="Enter Tax Value" required>
+                            @error('value')
+                                <span class="text-danger">{{$message}}</span>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label required">Tax Type</label>
+                            <select class="form-select" id="modal-type" name="type" required>
+                                <option value="inclusive"> Inclusive</option>
+                                <option value="exclusive"> Exclusive</option>
+                            </select>
+                            @error('type')
+                                <span class="text-danger">{{$message}}</span>
+                            @enderror
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary ms-auto">Update Tax Value</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </main>
 
 <script>
@@ -125,6 +166,27 @@
     if ("{{Session::has('error')}}") {
         alert("{{Session::get('error')}}");
     }
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const updateButtons = document.querySelectorAll('.btn-update');
+        const updateForm = document.getElementById("taxForm");
+
+        updateButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const taxId = this.getAttribute('data-id');
+                const value = this.getAttribute('data-value');
+                const type = this.getAttribute('data-type');
+
+
+                updateForm.action = "{{ route('admin.setting.tax.update', ':id') }}".replace(':id', taxId);
+
+                document.getElementById('modal-value').value = value;
+                document.getElementById('modal-type').value = type;
+            });
+        });
+    });
 
 </script>
 @endsection
