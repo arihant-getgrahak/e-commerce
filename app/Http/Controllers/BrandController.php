@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\BrandStoreRequest;
 use App\Models\Brand;
 use App\Models\Product;
+use Cache;
 use Illuminate\Http\Request;
 use Storage;
 use Validator;
@@ -85,17 +86,11 @@ class BrandController extends Controller
         $brand = Brand::find($id);
         if (! $brand) {
             return back()->with('errors', 'Brand not found');
-            // return response()->json([
-            //     'message' => 'Brand not found',
-            // ], 404);
         }
         Storage::delete($brand->image);
         $brand->delete();
 
         return back()->with('success', 'Brand deleted successfully');
-        // return response()->json([
-        //     'message' => 'Brand deleted successfully',
-        // ], 200);
     }
 
     public function filter(Request $request)
@@ -114,7 +109,24 @@ class BrandController extends Controller
             ], 400);
         }
 
+        $exchangeRate = Cache::get('exchangeRate');
+
+        $currencyInfo = Cache::get('currencyInfo');
+
+        $currencySymbol = $currencyInfo['data'] ?? null;
+        $currencyCode = $currencyInfo['currency_code'] ?? null;
+
+        $exchangeRateForCurrency = $exchangeRate['data'][$currencyCode] ?? 1;
+
         $product = Product::whereIn('brand_id', $request->brandId)->with(['gallery', 'meta', 'brand', 'category'])->paginate(10);
+
+        $product->getCollection()->transform(function ($product) use ($exchangeRateForCurrency, $currencySymbol) {
+            $product->price = round($product->price * $exchangeRateForCurrency, 2);
+            $product->currency = $currencySymbol;
+            $product->cost_price = round($product->cost_price * $exchangeRateForCurrency, 2);
+
+            return $product;
+        });
 
         return response()->json([
             'product' => $product,

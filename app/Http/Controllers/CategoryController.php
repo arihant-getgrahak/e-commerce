@@ -134,8 +134,6 @@ class CategoryController extends Controller
             ], 404);
         }
 
-        $country = session('country');
-
         $exchangeRate = Cache::get('exchangeRate');
 
         $currencyInfo = Cache::get('currencyInfo');
@@ -144,6 +142,7 @@ class CategoryController extends Controller
         $currencyCode = $currencyInfo['currency_code'] ?? null;
 
         $exchangeRateForCurrency = $exchangeRate['data'][$currencyCode] ?? 1;
+
         $product = Product::where('category_id', $id)->with(['gallery', 'meta', 'brand', 'category'])->get();
 
         $product->transform(function ($product) use ($exchangeRateForCurrency, $currencySymbol) {
