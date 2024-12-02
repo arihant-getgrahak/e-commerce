@@ -49,10 +49,12 @@ class CartController extends Controller
         $isLoggedIn = auth()->check();
         $price = 0;
         $cart = null;
+        $country = 'INR';
 
         if (! $isLoggedIn) {
             $session_id = session()->getId();
             $cart = SessionCart::where('session_id', $session_id)->with('products')->get();
+            $country = SessionCart::where('session_id', $session_id)->with('products')->first();
             if ($cart) {
                 $price = $cart->sum('price');
             }
