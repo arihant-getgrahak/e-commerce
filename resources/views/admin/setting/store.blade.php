@@ -36,8 +36,11 @@
                                 <td>{{Str::ucfirst($s->tax_type)}}</td>
                                 <td>
                                     <button class="btn btn-primary btn-sm btn-update" data-bs-toggle="modal"
-                                        data-bs-target="#modal-tax-update" data-id="{{ $s->id }}"
-                                        data-value="{{ $s->value }}" data-type="{{ $s->type }}">Edit</button>
+                                        data-bs-target="#modal-tax-update" data-id="{{ $s->id }}" data-name="{{ $s->name }}"
+                                        data-address="{{ $s->address }}" data-phone="{{ $s->phone }}"
+                                        data-gst="{{ $s->gst }}" data-city="{{ $s->city }}" data-state="{{ $s->state }}"
+                                        data-pincode="{{ $s->pincode }}" data-value="{{ $s->tax_value }}"
+                                        data-type="{{ $s->tax_type }}">Edit</button>
                                     <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
                                         data-bs-target="#modal-delete-{{$s->id}}">Delete</button>
                                 </td>
@@ -334,6 +337,14 @@
 
                 updateForm.action = "{{ route('admin.setting.store.update', ':id') }}".replace(':id', taxId);
 
+                document.getElementById('name_update').value = name;
+                document.getElementById('address_update').value = address;
+                document.getElementById('city_update').value = city;
+                document.getElementById('state_update').value = state;
+                document.getElementById('country_update').value = country;
+                document.getElementById('pincode_update').value = pincode;
+                document.getElementById('phone_update').value = phone;
+                document.getElementById('gst_update').value = gst;
                 document.getElementById('tax_value_update').value = value;
                 document.getElementById('tax_type_update').value = type;
             });
