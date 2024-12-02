@@ -36,9 +36,13 @@ abstract class Controller
         $country = session('country');
         $exchangeRate = getExchangeRate($country);
 
+        // $data = [
+        //     'delivery' => (float) '2000' * (float) $exchangeRate['data'],
+        //     'currency' => $exchangeRate['currency'] ?? "₹",
+        // ];
         $data = [
-            'delivery' => (float) '2000' * (float) $exchangeRate['data'],
-            'currency' => $exchangeRate['currency'],
+            'delivery' => 2000,
+            'currency' => '₹',
         ];
 
         View::share('navigations', compact('navigation', 'telcode', 'data'));
