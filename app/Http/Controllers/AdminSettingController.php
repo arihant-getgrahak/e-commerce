@@ -25,6 +25,11 @@ class AdminSettingController extends Controller
         return view('admin.setting.forex');
     }
 
+    public function taxView()
+    {
+        return view('admin.setting.tax');
+    }
+
     public function changeCredentials(Request $request)
     {
         $validate = Validator::make($request->all(), [
