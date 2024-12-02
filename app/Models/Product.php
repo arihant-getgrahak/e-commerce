@@ -24,7 +24,7 @@ class Product extends Model
         'width',
         'height',
         'tax_value',
-        'tax_type', ,
+        'tax_type',
     ];
 
     protected function casts(): array
