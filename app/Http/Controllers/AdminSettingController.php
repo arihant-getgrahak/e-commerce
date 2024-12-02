@@ -108,6 +108,18 @@ class AdminSettingController extends Controller
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }
+    }
 
+    public function taxDelete($id)
+    {
+        try {
+            DB::beginTransaction();
+            Tax::where('id', $id)->delete();
+            DB::commit();
+
+            return back()->with('success', 'Tax deleted');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
     }
 }
