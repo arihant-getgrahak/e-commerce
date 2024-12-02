@@ -1,41 +1,11 @@
 @extends('layout.index')
 
 @section('setting')
-<main class="space-y-6">
+<main>
     <h1>Admin Store Settings</h1>
-    @php
-        echo $store;
-    @endphp
-
-    <div>
-        <h2 class="text-3xl font-bold mb-4">Add Store</h2>
-        <form class="bg-white p-6 rounded-lg shadow-lg" action="{{ route('admin.setting.tax.create') }}" method="POST">
-            @csrf
-
-            <div class="mb-3">
-                <label class="form-label required">Tax Value (in %)</label>
-                <input type="text" class="form-control" id="value" name="value" value="{{old('value')}}"
-                    placeholder="Enter Tax Value" required>
-                @error('value')
-                    <span class="text-danger">{{$message}}</span>
-                @enderror
-            </div>
-            <div class="mb-3">
-                <label class="form-label required">Tax Type</label>
-                <select class="form-select" id="type" name="type" required>
-                    <option value="inclusive"> Inclusive</option>
-                    <option value="exclusive"> Exclusive</option>
-                </select>
-                @error('type')
-                    <span class="text-danger">{{$message}}</span>
-                @enderror
-            </div>
-
-            <button type="submit" class="btn btn-primary ms-auto">
-                Add Store
-            </button>
-        </form>
-    </div>
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-store">
+        Add Store
+    </button>
 
     {{--<div class="card">
         <div class="card-body">
@@ -116,7 +86,6 @@
         </div>
     </div>
 
-    <!-- Update Modal -->
     <div class="modal modal-blur fade" id="modal-tax-update" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -157,6 +126,110 @@
             </div>
         </div>
     </div>--}}
+
+    <!-- Add Store Modal -->
+    <div class="modal modal-blur fade" id="modal-store" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Store</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="bg-white p-6 rounded-lg shadow-lg" action="{{ route('admin.setting.store.create') }}"
+                        method="POST">
+                        @csrf
+                        <div class="mb-3">
+                            <label class="form-label required">Store Name</label>
+                            <input type="text" class="form-control" id="name" name="name" value="{{old('value')}}"
+                                placeholder="Enter Store Nameq" required>
+                            @error('name')
+                                <span class="text-danger">{{$message}}</span>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label required">Store Address</label>
+                            <input type="text" class="form-control" id="address" name="address" value="{{old('value')}}"
+                                placeholder="Enter Store Address" required>
+                            @error('address')
+                                <span class="text-danger">{{$message}}</span>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label required">Store City</label>
+                            <input type="text" class="form-control" id="city" name="city" value="{{old('value')}}"
+                                placeholder="Enter Store City" required>
+                            @error('city')
+                                <span class="text-danger">{{$message}}</span>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label required">Store State</label>
+                            <input type="text" class="form-control" id="state" name="state" value="{{old('value')}}"
+                                placeholder="Enter Store State" required>
+                            @error('state')
+                                <span class="text-danger">{{$message}}</span>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label required">Store Country</label>
+                            <input type="text" class="form-control" id="country" name="country" value="{{old('value')}}"
+                                placeholder="Enter Store Country" required>
+                            @error('country')
+                                <span class="text-danger">{{$message}}</span>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label required">Store Pincode</label>
+                            <input type="text" class="form-control" id="pincode" name="pincode" value="{{old('value')}}"
+                                placeholder="Enter Store pincode" required>
+                            @error('pincode')
+                                <span class="text-danger">{{$message}}</span>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label required">Store Phone Number</label>
+                            <input type="text" class="form-control" id="phone" name="phone" value="{{old('value')}}"
+                                placeholder="Enter Store phone number" required>
+                            @error('phone')
+                                <span class="text-danger">{{$message}}</span>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label required">Store GST</label>
+                            <input type="text" class="form-control" id="gst" name="gst" value="{{old('value')}}"
+                                placeholder="Enter Store gst number" required>
+                            @error('gst')
+                                <span class="text-danger">{{$message}}</span>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label required">Tax Value(%)</label>
+                            <input type="text" class="form-control" id="tax_value" name="tax_value"
+                                value="{{old('value')}}" placeholder="Enter Store tax value" required>
+                            @error('tax_value')
+                                <span class="text-danger">{{$message}}</span>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label required">Tax Type</label>
+                            <select class="form-select" id="tax_type" name="tax_type" required>
+                                <option value="inclusive"> Inclusive</option>
+                                <option value="exclusive"> Exclusive</option>
+                            </select>
+                            @error('tax_type')
+                                <span class="text-danger">{{$message}}</span>
+                            @enderror
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary ms-auto">Create Store</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </main>
 
 <script>
@@ -180,7 +253,7 @@
                 const type = this.getAttribute('data-type');
 
 
-                updateForm.action = "{{ route('admin.setting.tax.update', ':id') }}".replace(':id', taxId);
+                updateForm.action = "{{ route('admin.setting.store.update', ':id') }}".replace(':id', taxId);
 
                 document.getElementById('modal-value').value = value;
                 document.getElementById('modal-type').value = type;
