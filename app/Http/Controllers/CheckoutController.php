@@ -8,6 +8,7 @@ use App\Models\OrderAdress;
 use App\Models\OrderProduct;
 use App\Models\OrderStatus;
 use App\Models\SessionCart;
+use App\Models\Store;
 use App\Models\User;
 use DB;
 use Illuminate\Http\Request;
@@ -20,12 +21,15 @@ class CheckoutController extends Controller
         $price = 0;
         $cart = null;
 
+        $store = Store::first();
+        $tax_value = $store->tax_value;
         if (! $isLoggedIn) {
             $session_id = session()->getId();
             $cart = SessionCart::where('session_id', $session_id)->with('products')->get();
             if ($cart) {
                 $price = $cart->sum('price');
             }
+
         } else {
             $cart = Cart::where('user_id', auth()->user()->id)->with('products')->get();
             $price = 0;
@@ -50,7 +54,16 @@ class CheckoutController extends Controller
         $country = session('country', 'IN');
         $telcode = getTelCode($country)['code'];
 
-        return view('checkout', compact('isLoggedIn', 'cart', 'price', 'telcode'));
+        $finalprice = $price;
+        $tax_value = $store->tax_value;
+        if ($store->tax_type == 'inclusive') {
+            $finalprice = $price;
+            $price = round($price - ($price * $store->tax_value / 100), 2);
+        } else {
+            $finalprice = round($price + ($price * $store->tax_value / 100), 2);
+        }
+
+        return view('checkout', compact('isLoggedIn', 'cart', 'price', 'tax_value', 'finalprice', 'telcode'));
     }
 
     public function display()
@@ -101,6 +114,15 @@ class CheckoutController extends Controller
                 }
 
                 $price = $cart->sum('price');
+                $store = Store::first();
+                $tax_value = $store->tax_value;
+                $finalprice = $price;
+                if ($store->tax_type == 'inclusive') {
+                    $finalprice = $price;
+                    $price = round($price - ($price * $store->tax_value / 100), 2);
+                } else {
+                    $finalprice = round($price + ($price * $store->tax_value / 100), 2);
+                }
                 $currency_code = $cart[0]->currency_code;
 
                 DB::beginTransaction();
@@ -142,7 +164,7 @@ class CheckoutController extends Controller
                     'user_id' => auth()->user()->id,
                     'address_id' => $billingAddress->id,
                     'shipping_address' => $shippingAddress->id ?? null,
-                    'total' => $price,
+                    'total' => $finalprice,
                     'payment_method' => $request->payment_method,
                     'currency_code' => $currency_code,
                 ]);
@@ -175,6 +197,15 @@ class CheckoutController extends Controller
             $cart = SessionCart::where('session_id', $sessionIds)->with('products')->get();
 
             $price = $cart->sum('price');
+            $store = Store::first();
+            $tax_value = $store->tax_value;
+            $finalprice = $price;
+            if ($store->tax_type == 'inclusive') {
+                $finalprice = $price;
+                $price = round($price - ($price * $store->tax_value / 100), 2);
+            } else {
+                $finalprice = round($price + ($price * $store->tax_value / 100), 2);
+            }
             $currency_code = $cart[0]->currency_code;
 
             DB::beginTransaction();
@@ -215,7 +246,7 @@ class CheckoutController extends Controller
                 'session_id' => $sessionIds,
                 'address_id' => $billingAddress->id,
                 'shipping_address' => $shippingAddress->id ?? null,
-                'total' => $price,
+                'total' => $finalprice,
                 'payment_method' => $request->payment_method,
                 'currency_code' => $currency_code,
             ]);

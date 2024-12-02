@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateStoreRequest;
+use App\Models\Store;
 use Artisan;
+use DB;
 use File;
 use Illuminate\Http\Request;
 use Validator;
@@ -23,6 +26,13 @@ class AdminSettingController extends Controller
     public function forexView()
     {
         return view('admin.setting.forex');
+    }
+
+    public function storeView()
+    {
+        $store = Store::where('user_id', auth()->user()->id)->orderBy('created_at', 'desc')->paginate(10);
+
+        return view('admin.setting.store', compact('store'));
     }
 
     public function changeCredentials(Request $request)
@@ -70,5 +80,73 @@ class AdminSettingController extends Controller
         File::put($envPath, $envContent);
 
         Artisan::call('config:clear');
+    }
+
+    public function adminStore(CreateStoreRequest $request)
+    {
+        try {
+            $data = [
+                'user_id' => auth()->user()->id,
+                'tax_value' => $request->tax_value,
+                'tax_type' => $request->tax_type,
+                'name' => $request->name,
+                'address' => $request->address,
+                'city' => $request->city,
+                'state' => $request->state,
+                'country' => $request->country,
+                'pincode' => $request->pincode,
+                'phone' => $request->phone,
+                'gst' => $request->gst,
+            ];
+
+            DB::beginTransaction();
+            Store::create($data);
+            DB::commit();
+
+            return back()->with('success', 'Store Added Successfully');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function storeDelete($id)
+    {
+        try {
+            if (Store::where('user_id', auth()->user()->id)->count() <= 1) {
+                return back()->with('error', 'You can not delete last store');
+            }
+            DB::beginTransaction();
+            Store::where('id', $id)->delete();
+            DB::commit();
+
+            return back()->with('success', 'Store deleted Successfully');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function storeUpdate(Request $request, $id)
+    {
+        try {
+            $data = $request->only([
+                'tax_value',
+                'tax_type',
+                'name',
+                'address',
+                'city',
+                'state',
+                'country',
+                'pincode',
+                'phone',
+                'gst',
+            ]);
+            DB::beginTransaction();
+            Store::where('id', $id)->update($data);
+            DB::commit();
+
+            return back()->with('success', 'Store Updated Successfully');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
     }
 }
