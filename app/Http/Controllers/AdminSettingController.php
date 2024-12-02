@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Tax;
 use Artisan;
+use DB;
 use File;
 use Illuminate\Http\Request;
 use Validator;
@@ -27,7 +29,9 @@ class AdminSettingController extends Controller
 
     public function taxView()
     {
-        return view('admin.setting.tax');
+        $tax = Tax::where('user_id', auth()->user()->id)->get();
+
+        return view('admin.setting.tax', compact('tax'));
     }
 
     public function changeCredentials(Request $request)
@@ -75,5 +79,34 @@ class AdminSettingController extends Controller
         File::put($envPath, $envContent);
 
         Artisan::call('config:clear');
+    }
+
+    public function taxstore(Request $request)
+    {
+        try {
+            $validation = Validator::make($request->all(), [
+                'value' => 'required|float',
+                'type' => 'required|string|in:inclusive,exclusive',
+            ]);
+
+            if ($validation->fails()) {
+                return back()->withErrors($validation->errors());
+            }
+
+            $data = [
+                'user_id' => auth()->user()->id,
+                'value' => $request->value,
+                'type' => $request->type,
+            ];
+
+            DB::beginTransaction();
+            Tax::create($data);
+            DB::commit();
+
+            return back()->with('success', 'Tax added');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+
     }
 }
