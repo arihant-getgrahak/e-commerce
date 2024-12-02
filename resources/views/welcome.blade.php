@@ -191,7 +191,7 @@
 
 
                         <!-- Single Option -->
-                        <div class="single_search_boxed">
+                        {{--<div class="single_search_boxed">
                             <div class="widget-boxed-header">
                                 <h4><a href="#gender" data-toggle="collapse" class="collapsed" aria-expanded="false"
                                         role="button">Gender</a></h4>
@@ -417,7 +417,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>--}}
 
                     </div>
                 </div>
