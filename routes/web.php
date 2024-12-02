@@ -181,7 +181,7 @@ Route::group(['middleware' => TrackUtmMiddleware::class], function () {
 
     Route::post('/menu/sort', [NavigationController::class, 'changeOrder'])->name('menu.sort');
 
-    Route::post('/admin/setting/tax/add', [AdminSettingController::class, 'taxstore'])->name('admin.setting.tax.create');
-    Route::delete('/admin/setting/tax/delete/{id}', [AdminSettingController::class, 'taxDelete'])->name(name: 'admin.setting.tax.delete');
-    Route::put('/admin/setting/tax/update/{id}', [AdminSettingController::class, 'taxUpdate'])->name(name: 'admin.setting.tax.update');
+    Route::post('/admin/setting/store/add', [AdminSettingController::class, 'adminStore'])->name('admin.setting.store.create');
+    Route::delete('/admin/setting/store/delete/{id}', [AdminSettingController::class, 'storeDelete'])->name(name: 'admin.setting.store.delete');
+    Route::put('/admin/setting/store/update/{id}', [AdminSettingController::class, 'storeUpdate'])->name(name: 'admin.setting.store.update');
 });
