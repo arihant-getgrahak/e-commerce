@@ -9,7 +9,7 @@
 
     <div>
         <h2 class="text-3xl font-bold mb-4">Add Tax</h2>
-        <form class="bg-white p-6 rounded-lg shadow-lg" action="{{ route('admin.setting.tax.update') }}" method="POST">
+        <form class="bg-white p-6 rounded-lg shadow-lg" action="{{ route('admin.setting.tax.create') }}" method="POST">
             @csrf
 
             <div class="mb-3">

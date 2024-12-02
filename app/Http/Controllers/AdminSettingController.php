@@ -122,4 +122,18 @@ class AdminSettingController extends Controller
             return back()->with('error', $e->getMessage());
         }
     }
+
+    public function taxUpdate(Request $request, $id)
+    {
+        try {
+            $data = $request->only(['value', 'type']);
+            DB::beginTransaction();
+            Tax::where('id', $id)->update($data);
+            DB::commit();
+
+            return back()->with('success', 'Tax updated');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
 }
