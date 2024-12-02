@@ -56,9 +56,36 @@ if (! function_exists('getLocationInfo')) {
     }
 
     if (! function_exists('getExchangeRate')) {
-        function getExchangeRate($country)
+        function getExchangeRate()
         {
+            try {
+                $res = Http::get('https://v6.exchangerate-api.com/v6/719e8ecf2efbd5dfaef4c8f5/latest/INR');
 
+                if ($res->successful()) {
+                    $data = $res->json();
+
+                    return [
+                        'status' => true,
+                        'data' => $data['conversion_rates'],
+                    ];
+                }
+
+                return [
+                    'status' => false,
+                    'data' => $res->json()['unsupported-code'],
+                ];
+            } catch (\Exception $e) {
+                return [
+                    'status' => false,
+                    'data' => $e->getMessage(),
+                ];
+            }
+        }
+    }
+
+    if (! function_exists('getCurrencySymbol')) {
+        function getCurrencySymbol($country)
+        {
             try {
                 $currencyCode = null;
                 $currencySymbol = null;
@@ -70,21 +97,10 @@ if (! function_exists('getLocationInfo')) {
                     $currencySymbol = array_values($currencies)[0]['symbol'] ?? '₹';
                 }
 
-                $res = Http::get('https://v6.exchangerate-api.com/v6/719e8ecf2efbd5dfaef4c8f5/latest/INR');
-
-                if ($res->successful()) {
-                    $data = $res->json();
-
-                    return [
-                        'status' => true,
-                        'data' => $data['conversion_rates'][$currencyCode],
-                        'currency' => $currencySymbol,
-                    ];
-                }
-
                 return [
-                    'status' => false,
-                    'data' => $res->json()['unsupported-code'],
+                    'status' => true,
+                    'data' => $currencySymbol,
+                    'currency_code' => $currencyCode,
                 ];
             } catch (\Exception $e) {
                 return [
