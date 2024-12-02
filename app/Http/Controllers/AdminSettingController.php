@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Store;
 use App\Models\Tax;
 use Artisan;
 use DB;
@@ -27,11 +28,11 @@ class AdminSettingController extends Controller
         return view('admin.setting.forex');
     }
 
-    public function taxView()
+    public function storeView()
     {
-        $tax = Tax::where('user_id', auth()->user()->id)->orderBy('created_at', 'desc')->paginate(10);
+        $store = Store::where('user_id', auth()->user()->id)->orderBy('created_at', 'desc')->paginate(10);
 
-        return view('admin.setting.tax', compact('tax'));
+        return view('admin.setting.store', compact('store'));
     }
 
     public function changeCredentials(Request $request)
