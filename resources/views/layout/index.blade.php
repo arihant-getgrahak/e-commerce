@@ -242,6 +242,9 @@
                                             <a class="dropdown-item" href="{{route("admin.setting.forexView")}}">
                                                 Forex
                                             </a>
+                                            <a class="dropdown-item" href="{{route("admin.setting.store")}}">
+                                                Store
+                                            </a>
                                             {{--<a class="dropdown-item" href="{{route(" admin.city")}}">
                                                 City
                                             </a>

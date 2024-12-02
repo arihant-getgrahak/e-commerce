@@ -56,7 +56,7 @@ class CartController extends Controller
             $cart = SessionCart::where('session_id', $session_id)->with('products')->get();
             $country = SessionCart::where('session_id', $session_id)->with('products')->first();
             if ($cart) {
-                $price = $cart->sum('price');
+                $price = round($cart->sum('price'), 2);
             }
         } else {
             $cart = Cart::where('user_id', auth()->user()->id)->with('products')->get();
