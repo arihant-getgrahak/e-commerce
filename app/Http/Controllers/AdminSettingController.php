@@ -84,8 +84,9 @@ class AdminSettingController extends Controller
     public function taxstore(Request $request)
     {
         try {
+            // dd($request->all());
             $validation = Validator::make($request->all(), [
-                'value' => 'required|float',
+                'value' => 'required|string',
                 'type' => 'required|string|in:inclusive,exclusive',
             ]);
 
