@@ -7,7 +7,7 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="/">Home</a></li>
-                        <li class="breadcrumb-item"><a href="#">Shop</a>
+                        <li class="breadcrumb-item"><a href="javascript:void(0);">Shop</a>
                         </li>
                     </ol>
                 </nav>
@@ -26,7 +26,7 @@
                     <h1 class="ft-medium mb-3">Shop</h1>
                     <ul class="shop_categories_list m-0 p-0">
                         @foreach ($categories as $key => $category)
-                            <li><a href="#">{{$category["name"]}}</a></li>
+                            <li><a href="javascript:void(0);">{{$category["name"]}}</a></li>
                         @endforeach
 
                     </ul>
@@ -68,7 +68,7 @@
                                                         <div class="inner_widget_link">
                                                             <ul>
                                                                 @foreach ($category["child"] as $childCategory)
-                                                                    <li><a href="#"
+                                                                    <li><a href="javascript:void(0);"
                                                                             data-id="{{ $childCategory->id }}">{{ $childCategory->name }}<span>{{ $childCategory->products_count }}</span></a>
                                                                     </li>
                                                                 @endforeach
@@ -191,7 +191,7 @@
 
 
                         <!-- Single Option -->
-                        <div class="single_search_boxed">
+                        {{--<div class="single_search_boxed">
                             <div class="widget-boxed-header">
                                 <h4><a href="#gender" data-toggle="collapse" class="collapsed" aria-expanded="false"
                                         role="button">Gender</a></h4>
@@ -417,7 +417,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>--}}
 
                     </div>
                 </div>
@@ -474,7 +474,7 @@
                                             class="product-hover-overlay bg-dark d-flex align-items-center justify-content-center">
 
                                             <div class="edlio">
-                                                <a href="#" data-toggle="modal" data-target="#quickview"
+                                                <a href="javascript:void(0);" data-toggle="modal" data-target="#quickview"
                                                     class="text-white fs-sm ft-medium quick-view-btn"
                                                     data-currency="{{ $p->currency }}" data-name="{{ $p->name }}"
                                                     data-id="{{ $p->id }}" data-description="{{ $p->description }}"
@@ -678,6 +678,7 @@
 
 
 <a id="back2Top" class="top-scroll" title="Back to top" href="#"><i class="ti-arrow-up"></i></a>
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const arihant = document.querySelector('#alert');
@@ -821,11 +822,12 @@
                                         </a>
                                         <div class="product-hover-overlay bg-dark d-flex align-items-center justify-content-center">
                                             <div class="edlio">
-                                                <a href="#" data-toggle="modal" data-target="#quickview"
+                                                <a href="javascript:void(0);" data-toggle="modal" data-target="#quickview"
                                                    class="text-white fs-sm ft-medium quick-view-btn"
                                                    data-name="${product.name}" data-price="${product.price}"
                                                    data-description="${product.description}"
                                                    data-gallery='${JSON.stringify(product.gallery)}'
+                                                   data-currency="${product.currency}"
                                                    data-category="${product.category.name}" data-reviews="412"
                                                    data-old-price="${product.cost_price}"
                                                    data-new-price="${product.price}">
@@ -849,7 +851,7 @@
                                               <a href="{{ route('product.specific', '') }}/${product.slug}">${product.name}</a>
                                         </h5>
                                         <div class="elis_rty">
-                                            <span class="ft-bold text-dark fs-sm">₹${product.price}</span>
+                                            <span class="ft-bold text-dark fs-sm">${product.currency}${product.price}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -927,11 +929,12 @@
                                     </a>
                                     <div class="product-hover-overlay bg-dark d-flex align-items-center justify-content-center">
                                         <div class="edlio">
-                                            <a href="#" data-toggle="modal" data-target="#quickview"
+                                            <a href="javascript:void(0);" data-toggle="modal" data-target="#quickview"
                                                 class="text-white fs-sm ft-medium quick-view-btn"
                                                 data-name="${product.name}" data-price="${product.price}"
                                                 data-description="${product.description}"
                                                 data-gallery='${JSON.stringify(product.gallery)}'
+                                                data-id="${product.id}"data-currency="${product.currency}"
                                                 data-category="${product.category.name}" data-reviews="412"
                                                 data-old-price="${product.cost_price}"
                                                 data-new-price="${product.price}">
@@ -955,7 +958,7 @@
                                         <a href="{{route('product.specific', '')}}/${product.slug}}">${product.name}</a>
                                     </h5>
                                     <div class="elis_rty">
-                                        <span class="ft-bold text-dark fs-sm">₹${product.price}</span>
+                                        <span class="ft-bold text-dark fs-sm">${product.currency}${product.price}</span>
                                     </div>
                                 </div>
                             </div>
@@ -1075,14 +1078,15 @@
                                         </a>
                                         <div class="product-hover-overlay bg-dark d-flex align-items-center justify-content-center">
                                             <div class="edlio">
-                                                <a href="#" data-toggle="modal" data-target="#quickview"
+                                                <a href="javascript:void(0)" data-toggle="modal" data-target="#quickview"
                                                     class="text-white fs-sm ft-medium quick-view-btn"
                                                     data-name="${product.name}" data-price="${product.price}"
                                                     data-description="${product.description}"
                                                     data-gallery='${JSON.stringify(product.gallery)}'
                                                     data-category="${product.category.name}" data-reviews="412"
                                                     data-old-price="${product.cost_price}"
-                                                    data-new-price="${product.price}">
+                                                    data-new-price="${product.price}"
+                                                    data-currency="${product.currency}">
                                                     <i class="fas fa-eye mr-1"></i>Quick View
                                                 </a>
                                             </div>
@@ -1103,7 +1107,7 @@
                                             <a href="{{route('product.specific', '')}}/${product.slug}}">${product.name}</a>
                                         </h5>
                                         <div class="elis_rty">
-                                            <span class="ft-bold text-dark fs-sm">₹${product.price}</span>
+                                            <span class="ft-bold text-dark fs-sm">${product.currency}${product.price}</span>
                                         </div>
                                     </div>
                                 </div>

@@ -6,6 +6,7 @@ use App\Http\Requests\CategoryStoreRequest;
 use App\Models\Category;
 use App\Models\Order;
 use App\Models\Product;
+use Cache;
 use Illuminate\Http\Request;
 use Validator;
 
@@ -58,11 +59,6 @@ class CategoryController extends Controller
             ], 400);
         }
 
-        // return response()->json([
-        //     "message" => "Category created successfully",
-        //     "category" => $category
-        // ], 200);
-
         return back()->with('success', 'Category created successfully');
     }
 
@@ -82,10 +78,7 @@ class CategoryController extends Controller
         $category->update($data);
 
         return back()->with('success', 'Category updated successfully');
-        // return response()->json([
-        //     'message' => 'Category updated successfully',
-        //     'category' => $category,
-        // ], 200);
+
     }
 
     public function delete($id)
@@ -94,10 +87,6 @@ class CategoryController extends Controller
         if (! $category) {
             return back()->with('error', 'Incorrect category id');
         }
-
-        // $order = Order::with('products.product')->whereHas('products.product', function ($query) use ($id) {
-        //     $query->where('category_id', $id);
-        // });
 
         $hasOrders = Order::whereHas('products.product', function ($query) use ($id) {
             $query->where('category_id', $id);
@@ -144,12 +133,29 @@ class CategoryController extends Controller
                 'message' => 'Category not found',
             ], 404);
         }
+
+        $exchangeRate = Cache::get('exchangeRate');
+
+        $currencyInfo = Cache::get('currencyInfo');
+
+        $currencySymbol = $currencyInfo['data'] ?? null;
+        $currencyCode = $currencyInfo['currency_code'] ?? null;
+
+        $exchangeRateForCurrency = $exchangeRate['data'][$currencyCode] ?? 1;
+
         $product = Product::where('category_id', $id)->with(['gallery', 'meta', 'brand', 'category'])->get();
+
+        $product->transform(function ($product) use ($exchangeRateForCurrency, $currencySymbol) {
+            $product->price = round($product->price * $exchangeRateForCurrency, 2);
+            $product->currency = $currencySymbol;
+            $product->cost_price = round($product->cost_price * $exchangeRateForCurrency, 2);
+
+            return $product;
+        });
 
         return response()->json([
             'product' => $product,
         ], 200);
 
-        // return view('category', compact('product'));
     }
 }

@@ -334,7 +334,30 @@ class ProductController extends Controller
             return response()->json($validation->errors(), 422);
         }
 
+        $country = session('country');
+
+        $exchangeRate = Cache::remember('exchangeRate', now()->addHours(24), function () {
+            return getExchangeRate();
+        });
+
+        $currencyInfo = Cache::remember('currencyInfo', now()->addHours(24), function () use ($country) {
+            return getCurrencySymbol($country);
+        });
+
+        $currencySymbol = $currencyInfo['data'] ?? null;
+        $currencyCode = $currencyInfo['currency_code'] ?? null;
+
+        $exchangeRateForCurrency = $exchangeRate['data'][$currencyCode] ?? 1;
+
         $priceFilter = Product::whereBetween('price', [$request->min, $request->max])->with(['gallery', 'meta', 'brand', 'category'])->paginate(10);
+
+        $priceFilter->getCollection()->transform(function ($product) use ($exchangeRateForCurrency, $currencySymbol) {
+            $product->price = round($product->price * $exchangeRateForCurrency, 2);
+            $product->currency = $currencySymbol;
+            $product->cost_price = round($product->cost_price * $exchangeRateForCurrency, 2);
+
+            return $product;
+        });
 
         return response()->json(['product' => $priceFilter], 200);
     }
