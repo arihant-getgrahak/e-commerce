@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Navigation;
+use Cache;
 use View;
 
 abstract class Controller
@@ -34,16 +35,28 @@ abstract class Controller
         $telcode = session('country', 'IN');
 
         $country = session('country');
-        $exchangeRate = getExchangeRate($country);
 
-        // $data = [
-        //     'delivery' => (float) '2000' * (float) $exchangeRate['data'],
-        //     'currency' => $exchangeRate['currency'] ?? "₹",
-        // ];
+        $exchangeRate = Cache::remember('exchangeRate', now()->addHours(24), function () {
+            return getExchangeRate();
+        });
+
+        $currencyInfo = Cache::remember('currencyInfo', now()->addHours(24), function () use ($country) {
+            return getCurrencySymbol($country);
+        });
+
+        $currencySymbol = $currencyInfo['data'] ?? null;
+        $currencyCode = $currencyInfo['currency_code'] ?? null;
+
+        $exchangeRateForCurrency = $exchangeRate['data'][$currencyCode] ?? 1;
+
         $data = [
-            'delivery' => 2000,
-            'currency' => '₹',
+            'delivery' => (float) '2000' * (float) $exchangeRateForCurrency,
+            'currency' => $currencySymbol ?? '₹',
         ];
+        // $data = [
+        //     'delivery' => 2000,
+        //     'currency' => '₹',
+        // ];
 
         View::share('navigations', compact('navigation', 'telcode', 'data'));
     }

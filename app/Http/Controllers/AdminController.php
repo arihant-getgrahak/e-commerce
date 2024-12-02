@@ -12,6 +12,7 @@ use App\Models\PickupAddress;
 use App\Models\User;
 use Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Cache;
 use Http;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -430,6 +431,8 @@ class AdminController extends Controller
     public function updateGlobalCountry(Request $request)
     {
         session()->put('country', $request->name);
+        Cache::forget('currencyInfo');
+        Cache::forget('exchangeRate');
 
         return response()->json(['success' => true], 200);
     }
