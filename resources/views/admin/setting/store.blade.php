@@ -38,9 +38,9 @@
                                     <button class="btn btn-primary btn-sm btn-update" data-bs-toggle="modal"
                                         data-bs-target="#modal-tax-update" data-id="{{ $s->id }}" data-name="{{ $s->name }}"
                                         data-address="{{ $s->address }}" data-phone="{{ $s->phone }}"
-                                        data-gst="{{ $s->gst }}" data-city="{{ $s->city }}" data-state="{{ $s->state }}"
-                                        data-pincode="{{ $s->pincode }}" data-value="{{ $s->tax_value }}"
-                                        data-type="{{ $s->tax_type }}">Edit</button>
+                                        data-country="{{ $s->country }}" data-gst="{{ $s->gst }}" data-city="{{ $s->city }}"
+                                        data-state="{{ $s->state }}" data-pincode="{{ $s->pincode }}"
+                                        data-value="{{ $s->tax_value }}" data-type="{{ $s->tax_type }}">Edit</button>
                                     <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
                                         data-bs-target="#modal-delete-{{$s->id}}">Delete</button>
                                 </td>
