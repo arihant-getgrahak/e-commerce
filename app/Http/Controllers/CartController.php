@@ -29,12 +29,6 @@ class CartController extends Controller
                         $taxValue = $product->tax_value;
                         $taxType = $product->tax_type;
 
-                        // if ($taxType === 'exclusive') {
-                        //     $tax += ($productPrice * ($taxValue / 100));
-                        // } else {
-                        //     $tax += ($productPrice * ($taxValue / (100 + $taxValue)));
-                        // }
-
                         if ($taxType === 'exclusive') {
                             $subtotal += $productPrice;
                             $tax = $tax + ($productPrice * ($taxValue / 100));
