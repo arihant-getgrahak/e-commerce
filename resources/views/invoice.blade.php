@@ -48,13 +48,15 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-6">
-                        <p class="h3">Arihant E-Commerce Services Pvt. Ltd.</p>
+                        <p class="h3">{{$store->name}}</p>
                         <address>
-                            VidhyaDhar Nagar<br>
-                            Jaipur, Rajasthan<br>
-                            302039<br>
-                            arihantj916@gmail.com
+                            {{$store->address}}<br>
+                            {{$store->city}}, {{$store->state}}<br>
+                            {{$store->pincode}}<br>
+                            arihantj916@gmail.com <br>
+                            <a href="tel:{{$store->phone}}">{{$store->phone}}</a> <br>
                         </address>
+                        GST: {{$store->gst}}
                     </div>
                     <div class="col-6 text-end">
                         <p class="h3">{{Str::ucfirst($order->user->name)}}</p>

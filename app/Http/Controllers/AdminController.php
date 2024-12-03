@@ -9,6 +9,7 @@ use App\Models\DeliveryState;
 use App\Models\Order;
 use App\Models\OrderStatus;
 use App\Models\PickupAddress;
+use App\Models\Store;
 use App\Models\User;
 use Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -121,9 +122,11 @@ class AdminController extends Controller
             'products.product',
             'user',
             'address',
+            'shipping_address',
         ])->find($id);
+        $store = Store::first();
 
-        return view('invoice', ['order' => $order]);
+        return view('invoice', ['order' => $order, 'store' => $store]);
     }
 
     public function printNode($id, $printerId)
