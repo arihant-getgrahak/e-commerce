@@ -58,15 +58,34 @@
                         </address>
                         GST: {{$store->gst}}
                     </div>
-                    <div class="col-6 text-end">
-                        <p class="h3">{{Str::ucfirst($order->user->name)}}</p>
+
+
+                    <!-- shipping address -->
+                    @if($order->shipping_address)
+                        <div class="col-3 text-end">
+                            <p class="h3">Shipping Address</p>
+                            <address>
+                                {{Str::ucfirst($order->user->name)}}<br>
+                                {{$order->address->address}}<br>
+                                {{$order->address->city}}, {{$order->address->state}}<br>
+                                {{$order->address->pincode}}<br>
+                                {{$order->user->email}}
+                            </address>
+                        </div>
+                    @endif
+
+                    <!-- billing address -->
+                    <div @class([$order->shipping_address ? "col-3" : "col-6", "text-end"])>
+                        <p class="h3">Billing Address</p>
                         <address>
+                            {{Str::ucfirst($order->user->name)}}<br>
                             {{$order->address->address}}<br>
                             {{$order->address->city}}, {{$order->address->state}}<br>
                             {{$order->address->pincode}}<br>
                             {{$order->user->email}}
                         </address>
                     </div>
+
                     <div class="col-12 my-5">
                         <h1>Invoice #INV/{{$order->id}}</h1>
                     </div>

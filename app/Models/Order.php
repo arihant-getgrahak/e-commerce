@@ -42,7 +42,7 @@ class Order extends Model
         return $this->belongsTo(OrderAdress::class, 'address_id', 'id');
     }
 
-    public function shipping()
+    public function shipping_address()
     {
         return $this->belongsTo(OrderAdress::class, 'shipping_address', 'id');
     }
