@@ -25,14 +25,8 @@ class ShipRocketController extends Controller
     public function createOrder($data, $pickupaddress)
     {
         try {
-            // Fetch the pickup address ID
-            $pickup = PickupAddress::where('tag', $pickupaddress)->value('id');
+            $this->pickup = PickupAddress::where('tag', $pickupaddress)->value('id');
 
-            if (! $pickup) {
-                throw new \Exception('Pickup address not found.');
-            }
-
-            // Initialize totals and prepare products array
             $products = [];
             $totalLength = 0;
             $totalBreadth = 0;
