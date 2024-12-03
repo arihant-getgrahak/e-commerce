@@ -30,7 +30,6 @@ class CreateStoreRequest extends FormRequest
             'pincode' => 'required|string',
             'phone' => 'required|numeric|digits:10',
             'gst' => 'required|string',
-            'tax_value' => 'required|string',
             'tax_type' => 'required|string|in:inclusive,exclusive',
         ];
     }
@@ -46,7 +45,6 @@ class CreateStoreRequest extends FormRequest
             'pincode.required' => 'Store pincode is required',
             'phone.required' => 'Store phone is required',
             'gst.required' => 'Store gst is required',
-            'tax_value.required' => 'Store tax value is required',
             'tax_type.required' => 'Store tax type is required',
         ];
     }
