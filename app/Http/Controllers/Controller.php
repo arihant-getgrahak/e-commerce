@@ -3,13 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Models\Navigation;
+use App\Models\PickupAddress;
 use Cache;
+use DB;
+use Http;
 use View;
 
 abstract class Controller
 {
     public function __construct()
     {
+
+        $data = $this->getPickupAddress();
+
+        if ($data !== true) {
+            echo $data;
+        }
         $navigation = Navigation::with([
             'menus' => function ($query) {
                 $query->whereNull('parent_id')->orderBy('orders');
@@ -53,11 +62,47 @@ abstract class Controller
             'delivery' => (float) '2000' * (float) $exchangeRateForCurrency,
             'currency' => $currencySymbol ?? '₹',
         ];
-        // $data = [
-        //     'delivery' => 2000,
-        //     'currency' => '₹',
-        // ];
 
         View::share('navigations', compact('navigation', 'telcode', 'data'));
+    }
+
+    protected function getPickupAddress()
+    {
+        try {
+            $address = Http::withHeaders([
+                'Content-Type' => 'application/json',
+                'Authorization' => 'Bearer '.env('SHIPROCKET_TOKEN'),
+            ])->get('https://apiv2.shiprocket.in/v1/external/settings/company/pickup');
+
+            DB::beginTransaction();
+            foreach ($address->json()['data']['shipping_address'] as $key => $value) {
+                PickupAddress::updateOrCreate(
+                    [
+                        'tag' => $value['pickup_location'],
+                    ],
+                    [
+                        'user_id' => auth()->user()->id,
+                        'name' => $value['name'],
+                        'email' => $value['email'],
+                        'phone' => $value['phone'],
+                        'address' => $value['address'].' '.$value['address_2'],
+                        'city' => $value['city'],
+                        'state' => $value['state'],
+                        'pincode' => $value['pin_code'],
+                        'country' => $value['country'],
+                        'is_default' => $value['is_primary_location'],
+                    ]
+                );
+            }
+
+            DB::commit();
+
+            return true;
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return $e->getMessage();
+        }
     }
 }
