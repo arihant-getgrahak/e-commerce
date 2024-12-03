@@ -65,15 +65,14 @@
                         <div class="col-3 text-end">
                             <p class="h3">Shipping Address</p>
                             <address>
-                                {{Str::ucfirst($order->user->name)}}<br>
-                                {{$order->address->address}}<br>
-                                {{$order->address->city}}, {{$order->address->state}}<br>
-                                {{$order->address->pincode}}<br>
+                                {{Str::ucfirst($order->shipping->name)}}<br>
+                                {{$order->shipping->address}}<br>
+                                {{$order->shipping->city}}, {{$order->shipping->state}}<br>
+                                {{$order->shipping->pincode}}<br>
                                 {{$order->user->email}}
                             </address>
                         </div>
                     @endif
-
                     <!-- billing address -->
                     <div @class([$order->shipping_address ? "col-3" : "col-6", "text-end"])>
                         <p class="h3">Billing Address</p>
