@@ -19,7 +19,6 @@
                             <th><button class="table-sort">Store Address</button></th>
                             <th><button class="table-sort">Store Phone</button></th>
                             <th><button class="table-sort">Store GST</button></th>
-                            <th><button class="table-sort">Store Tax Value</button></th>
                             <th><button class="table-sort">Store Tax Type</button></th>
                             <th><button class="table-sort">Action</button></th>
                         </tr>
@@ -32,7 +31,6 @@
                                 <td>{{$s->address}}, {{$s->city}}, {{$s->state}}, {{$s->pincode}}</td>
                                 <td>{{$s->phone}}</td>
                                 <td>{{$s->gst}}</td>
-                                <td>{{$s->tax_value}}%</td>
                                 <td>{{Str::ucfirst($s->tax_type)}}</td>
                                 <td>
                                     <button class="btn btn-primary btn-sm btn-update" data-bs-toggle="modal"
