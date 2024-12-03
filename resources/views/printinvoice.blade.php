@@ -129,16 +129,16 @@
                                                                         Subtotal</th>
                                                                     <td
                                                                         style="padding-top: 12px;text-align: end; color: #1A1C21;">
-                                                                        ₹{{$order->total}}
+                                                                        {{$currencyInfo}}{{$price}}
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <th
                                                                         style="padding: 12px 0;text-align: start; color: #1A1C21;">
-                                                                        GST (12%)</th>
+                                                                        GST</th>
                                                                     <td
                                                                         style="padding: 12px 0;text-align: end; color: #1A1C21;">
-                                                                        ₹{{$order->total * 0.12}}
+                                                                        {{$currencyInfo}}{{$tax_value}}
                                                                     </td>
                                                                 </tr>
                                                             </tbody>
@@ -149,7 +149,7 @@
                                                                         Total Price</th>
                                                                     <th
                                                                         style="padding: 12px 0 30px 0;text-align: end; color: #1A1C21;border-top:1px solid #D7DAE0;">
-                                                                        ₹{{$order->total + $order->total * 0.12}}
+                                                                        {{$currencyInfo}}{{$finalprice}}
                                                                     </th>
                                                                 </tr>
                                                             </tfoot>
