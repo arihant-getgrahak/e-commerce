@@ -146,6 +146,11 @@ class ProductController extends Controller
                 'cost_price' => $request->cost_price,
                 'sku' => $request->sku,
                 'weight' => $request->weight,
+                'length' => $request->length,
+                'breath' => $request->breath,
+                'height' => $request->height,
+                'tax_value' => $request->tax_value,
+                'tax_type' => $request->tax_type,
             ];
             DB::beginTransaction();
             $product = Product::create($data);
