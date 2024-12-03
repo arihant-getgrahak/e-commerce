@@ -21,9 +21,10 @@
                     <td style="padding: 0 16px 18px 16px;">
                         <h1
                             style="color: #1A1C21;font-size: 18px;font-style: normal;font-weight: 600;line-height: normal;">
-                            Arihant E-Commerce Services Pvt. Ltd.</h1>
-                        <p>VidhyaDhar Nagar, Jaipur</p>
-                        <p>Rajasthan, 302039</p>
+                            {{$store->name}},
+                        </h1>
+                        <p>{{$store->address}}, {{$store->city}}</p>
+                        <p>{{$store->state}}, {{$store->pincode}}</p>
                         <a href="mailto:arihantj916@gmail.com" style="color: #000;">arihantj916@gmail.com</a>
                     </td>
                 </tr>
@@ -37,14 +38,30 @@
                                 <tr>
                                     <td
                                         style="vertical-align: top; width: 30%; padding-right: 20px;padding-bottom: 35px;">
-                                        <p style="font-weight: 700; color: #1A1C21;">{{$order->user->name}}</p>
-                                        <p style="color: #5E6470;">{{$order->address->address}},
+                                        <p style="font-weight: 700; color: #1A1C21;">Billing Address</p>
+                                        <p style="color: #5E6470;">
+                                            {{$order->address->name}},
+                                            {{$order->address->address}},
                                             {{$order->address->city}},
                                             {{$order->address->state}}, {{$order->address->country}} ,
                                             {{$order->address->pincode}}
                                         </p>
                                         <p style="color: #5E6470;">{{$order->user->email}}</p>
                                     </td>
+                                    @if($order->shipping)
+                                        <td
+                                            style="vertical-align: top; width: 30%; padding-right: 20px;padding-bottom: 35px;">
+                                            <p style="font-weight: 700; color: #1A1C21;">Shipping Address</p>
+                                            <p style="color: #5E6470;">
+                                                {{$order->shipping->name}},
+                                                {{$order->shipping->address}},
+                                                {{$order->shipping->city}},
+                                                {{$order->shipping->state}}, {{$order->shipping->country}} ,
+                                                {{$order->shipping->pincode}}
+                                            </p>
+                                            <p style="color: #5E6470;">{{$order->user->email}}</p>
+                                        </td>
+                                    @endif
                                 </tr>
                                 <tr>
                                     <td style="text-align: center; padding-bottom: 13px;">
