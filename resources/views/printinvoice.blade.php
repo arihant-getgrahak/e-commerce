@@ -168,11 +168,11 @@
             <tfoot>
                 <tr>
                     <td style="padding-top: 30px;">
-                        <p style="display: flex; gap: 0 13px;"><span style="color: #1A1C21;font-weight: 700;">Arihant
-                                E-Commerce
-                                Services Pvt. Ltd, VidhyaDhar Nagar, Jaipur, Rajasthan, 302039</span>
-                            <span>Registration number: 9672670732</span>
+                        <p style="display: flex; gap: 0 13px;"><span
+                                style="color: #1A1C21;font-weight: 700;">{{$store->name}}, {{$store->address}},
+                                {{$store->city}}, {{$store->state}}, {{$store->country}}, {{$store->pincode}}</span>
                         </p>
+                        <p style="color: #1A1C21;">GST: {{$store->gst}}</p>
                         <p style="color: #1A1C21;">Any questions, contact customer service at <a
                                 href="mailto:arihantj916@gmail.com" style="color: #000;">arihantj916@gmail.com</a>.</p>
                     </td>
