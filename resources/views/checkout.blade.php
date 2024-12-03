@@ -340,7 +340,7 @@
                                         class="ml-auto text-dark ft-medium">{{$c->currency_code}}{{$price}}</span>
                                 </li>
                                 <li class="list-group-item d-flex text-dark fs-sm ft-regular">
-                                    <span>Tax</span> <span class="ml-auto text-dark ft-medium">{{$tax_value}}%</span>
+                                    <span>Tax</span> <span class="ml-auto text-dark ft-medium">{{$c->currency_code}}{{$tax_value}}</span>
                                 </li>
                                 <li class="list-group-item d-flex text-dark fs-sm ft-regular">
                                     <span>Delivery</span> <span
