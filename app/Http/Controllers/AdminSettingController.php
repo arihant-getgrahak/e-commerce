@@ -87,7 +87,6 @@ class AdminSettingController extends Controller
         try {
             $data = [
                 'user_id' => auth()->user()->id,
-                'tax_value' => $request->tax_value,
                 'tax_type' => $request->tax_type,
                 'name' => $request->name,
                 'address' => $request->address,
@@ -129,7 +128,6 @@ class AdminSettingController extends Controller
     {
         try {
             $data = $request->only([
-                'tax_value',
                 'tax_type',
                 'name',
                 'address',
