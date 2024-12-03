@@ -15,7 +15,6 @@ class Store extends Model
         'pincode',
         'phone',
         'gst',
-        'tax_value',
         'tax_type',
         'user_id',
     ];
