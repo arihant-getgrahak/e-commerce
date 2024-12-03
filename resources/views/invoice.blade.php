@@ -48,23 +48,43 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-6">
-                        <p class="h3">Arihant E-Commerce Services Pvt. Ltd.</p>
+                        <p class="h3">{{$store->name}}</p>
                         <address>
-                            VidhyaDhar Nagar<br>
-                            Jaipur, Rajasthan<br>
-                            302039<br>
-                            arihantj916@gmail.com
+                            {{$store->address}}<br>
+                            {{$store->city}}, {{$store->state}}<br>
+                            {{$store->pincode}}<br>
+                            arihantj916@gmail.com <br>
+                            <a href="tel:{{$store->phone}}">{{$store->phone}}</a> <br>
                         </address>
+                        GST: {{$store->gst}}
                     </div>
-                    <div class="col-6 text-end">
-                        <p class="h3">{{Str::ucfirst($order->user->name)}}</p>
+
+
+                    <!-- shipping address -->
+                    @if($order->shipping_address)
+                        <div class="col-3 text-end">
+                            <p class="h3">Shipping Address</p>
+                            <address>
+                                {{Str::ucfirst($order->shipping->name)}}<br>
+                                {{$order->shipping->address}}<br>
+                                {{$order->shipping->city}}, {{$order->shipping->state}}<br>
+                                {{$order->shipping->pincode}}<br>
+                                {{$order->user->email}}
+                            </address>
+                        </div>
+                    @endif
+                    <!-- billing address -->
+                    <div @class([$order->shipping_address ? "col-3" : "col-6", "text-end"])>
+                        <p class="h3">Billing Address</p>
                         <address>
+                            {{Str::ucfirst($order->user->name)}}<br>
                             {{$order->address->address}}<br>
                             {{$order->address->city}}, {{$order->address->state}}<br>
                             {{$order->address->pincode}}<br>
                             {{$order->user->email}}
                         </address>
                     </div>
+
                     <div class="col-12 my-5">
                         <h1>Invoice #INV/{{$order->id}}</h1>
                     </div>
@@ -88,23 +108,23 @@
                             <td class="text-center">
                                 {{$product->quantity}}
                             </td>
-                            <td class="text-end">₹{{$product->price / $product->quantity}}</td>
-                            <td class="text-end">₹{{$product->price}}</td>
+                            <td class="text-end">{{$currencyInfo}}{{$product->price / $product->quantity}}</td>
+                            <td class="text-end">{{$currencyInfo}}{{$product->price}}</td>
                         </tr>
                     @endforeach
 
                     <!-- Summary -->
                     <tr>
                         <td colspan="4" class="strong text-end">Subtotal</td>
-                        <td class="text-end">₹{{$order->total}}</td>
+                        <td class="text-end">{{$currencyInfo}}{{$price}}</td>
                     </tr>
                     <tr>
-                        <td colspan="4" class="strong text-end">GST(12%)</td>
-                        <td class="text-end">₹{{$order->total * 0.12}}</td>
+                        <td colspan="4" class="strong text-end">GST</td>
+                        <td class="text-end">{{$currencyInfo}}{{$tax_value}}</td>
                     </tr>
                     <tr>
                         <td colspan="4" class="font-weight-bold text-uppercase text-end">Total Due</td>
-                        <td class="font-weight-bold text-end"> ₹{{$order->total + $order->total * 0.12}}
+                        <td class="font-weight-bold text-end">{{$currencyInfo}}{{$finalprice}}
                         </td>
                     </tr>
                 </table>

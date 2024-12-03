@@ -24,17 +24,18 @@ class CartController extends Controller
 
             if ($cart) {
                 foreach ($cart as $cartItem) {
+                    $productPrice = $cartItem->price;
                     foreach ($cartItem->products as $product) {
-                        $productPrice = $cartItem->price;
                         $taxValue = $product->tax_value;
                         $taxType = $product->tax_type;
 
                         if ($taxType === 'exclusive') {
-                            $subtotal += $productPrice;
-                            $tax = $tax + ($productPrice * ($taxValue / 100));
+                            $subtotal += round($productPrice, 2);
+                            $tax += round($productPrice * ($taxValue / 100), 2);
                         } else {
-                            $subtotal += $productPrice - ($taxValue / 100);
-                            $tax = $tax + ($productPrice * ($taxValue / (100 + $taxValue)));
+                            $inclusiveTaxFactor = $taxValue / (100 + $taxValue);
+                            $subtotal += round($productPrice - ($productPrice * $inclusiveTaxFactor), 2);
+                            $tax += round($productPrice * $inclusiveTaxFactor, 2);
                         }
                     }
                 }
@@ -63,7 +64,6 @@ class CartController extends Controller
                     }
                 }
             }
-
         }
 
         $total = $subtotal + $tax;
