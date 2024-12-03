@@ -77,11 +77,10 @@
                     <div @class([$order->shipping_address ? "col-3" : "col-6", "text-end"])>
                         <p class="h3">Billing Address</p>
                         <address>
-                            {{Str::ucfirst($order->user->name)}}<br>
+                            {{Str::ucfirst($order->address->name)}}<br>
                             {{$order->address->address}}<br>
                             {{$order->address->city}}, {{$order->address->state}}<br>
                             {{$order->address->pincode}}<br>
-                            {{$order->user->email}}
                         </address>
                     </div>
 
