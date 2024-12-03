@@ -24,8 +24,9 @@ class ShipRocketController extends Controller
 
     public function createOrder($data, $pickupaddress)
     {
-        $this->pickup = PickupAddress::where('tag', $pickupaddress)->first()->id;
         try {
+            $this->pickup = PickupAddress::where('tag', $pickupaddress)->value('id');
+
             $products = [];
             $totalLength = 0;
             $totalBreadth = 0;
@@ -34,7 +35,7 @@ class ShipRocketController extends Controller
 
             foreach ($data->products as $product) {
                 $products[] = [
-                    'name' => $product->product->name,
+                    'name' => $product->name,
                     'sku' => $product->product->sku,
                     'units' => $product->quantity,
                     'selling_price' => $product->price / $product->quantity,
@@ -43,21 +44,17 @@ class ShipRocketController extends Controller
                     'hsn' => 441122,
                 ];
 
-                $totalLength += (int) $product->product->length;
-                $totalBreadth += (int) $product->product->breath;
-                $totalHeight += (int) $product->product->height;
-                $totalWeight += (int) $product->product->weight;
+                $totalLength += (float) $product->product->length;
+                $totalBreadth += (float) $product->product->breath;
+                $totalHeight += (float) $product->product->height;
+                $totalWeight += (float) $product->product->weight;
             }
 
-            $api = Http::withHeaders([
-                'Content-Type' => 'application/json',
-                'Authorization' => 'Bearer '.$this->token,
-            ])->post('https://apiv2.shiprocket.in/v1/external/orders/create/adhoc', [
+            $payload = [
                 'order_id' => $data->id,
                 'order_date' => $data->created_at->format('Y-m-d H:i:s'),
                 'pickup_location' => $pickupaddress ?? 'home',
                 'channel_id' => $this->channelId,
-                'comment' => '',
                 'billing_customer_name' => $data->address->name,
                 'billing_last_name' => '',
                 'billing_address' => $data->address->address,
@@ -68,17 +65,17 @@ class ShipRocketController extends Controller
                 'billing_country' => $data->address->country,
                 'billing_email' => $data->address->email,
                 'billing_phone' => $data->address->phone,
-                'shipping_is_billing' => $data->shipping ? true : false,
-                'shipping_customer_name' => $data->shipping->name,
+                'shipping_is_billing' => $data->shipping_address ? false : true,
+                'shipping_customer_name' => $data->shipping_address->name ?? $data->address->name,
                 'shipping_last_name' => '',
-                'shipping_address' => $data->shipping->address,
+                'shipping_address' => $data->shipping_address->address ?? $data->address->address,
                 'shipping_address_2' => '',
-                'shipping_city' => $data->shipping->city,
-                'shipping_pincode' => $data->shipping->pincode,
-                'shipping_country' => $data->shipping->country,
-                'shipping_state' => $data->shipping->state,
-                'shipping_email' => $data->shipping->email,
-                'shipping_phone' => $data->shipping->phone,
+                'shipping_city' => $data->shipping_address->city ?? $data->address->city,
+                'shipping_pincode' => $data->shipping_address->pincode ?? $data->address->pincode,
+                'shipping_country' => $data->shipping_address->country ?? $data->address->country,
+                'shipping_state' => $data->shipping_address->state ?? $data->address->state,
+                'shipping_email' => $data->shipping_address->email ?? $data->address->email,
+                'shipping_phone' => $data->shipping_address->phone ?? $data->address->phone,
                 'order_items' => $products,
                 'payment_method' => $data->payment_method == 'cod' ? 'postpaid' : 'prepaid',
                 'shipping_charges' => 0,
@@ -90,10 +87,14 @@ class ShipRocketController extends Controller
                 'breadth' => $totalBreadth,
                 'height' => $totalHeight,
                 'weight' => $totalWeight,
-            ]);
+            ];
 
-            return $api;
+            $response = Http::withHeaders([
+                'Content-Type' => 'application/json',
+                'Authorization' => 'Bearer '.$this->token,
+            ])->post('https://apiv2.shiprocket.in/v1/external/orders/create/adhoc', $payload);
 
+            return $response;
         } catch (\Exception $e) {
             return $e->getMessage();
         }
