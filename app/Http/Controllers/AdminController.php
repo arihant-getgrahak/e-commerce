@@ -148,10 +148,9 @@ class AdminController extends Controller
         }
 
         $total = $subtotal + $tax;
-
-        $price = round($subtotal, 2);
-        $tax_value = round($tax, 2);
-        $finalprice = round($total, 2);
+        $price = $subtotal;
+        $tax_value = $tax;
+        $finalprice = $total;
 
         $currency = $order->first()->currency_code;
 
@@ -190,9 +189,9 @@ class AdminController extends Controller
 
         $total = $subtotal + $tax;
 
-        $price = round($subtotal, 2);
-        $tax_value = round($tax, 2);
-        $finalprice = round($total, 2);
+        $price = $subtotal;
+        $tax_value = $tax;
+        $finalprice = $total;
 
         $pdf = Pdf::loadView('printinvoice', [
             'order' => $order,
