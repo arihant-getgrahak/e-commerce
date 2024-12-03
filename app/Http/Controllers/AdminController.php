@@ -140,18 +140,21 @@ class AdminController extends Controller
 
             if ($taxType === 'exclusive') {
                 $subtotal += $productPrice;
-                $tax = $tax + ($productPrice * ($taxValue / 100));
+                $tax += $productPrice * ($taxValue / 100);
             } else {
-                $subtotal += round($productPrice - ($taxValue / 100), 2);
-                $tax = $tax + ($productPrice * ($taxValue / (100 + $taxValue)));
+                $originalPrice = $productPrice / (1 + ($taxValue / 100));
+                $taxAmount = $productPrice - $originalPrice;
+
+                $subtotal += $originalPrice;
+                $tax += $taxAmount;
             }
         }
 
         $total = $subtotal + $tax;
 
-        $price = round($subtotal);
-        $tax_value = round($tax);
-        $finalprice = round($total);
+        $price = floor($subtotal * 100) / 100;
+        $tax_value = floor($tax * 100) / 100;
+        $finalprice = $total;
 
         $currency = $order->first()->currency_code;
 
@@ -181,18 +184,21 @@ class AdminController extends Controller
 
             if ($taxType === 'exclusive') {
                 $subtotal += $productPrice;
-                $tax = $tax + ($productPrice * ($taxValue / 100));
+                $tax += $productPrice * ($taxValue / 100);
             } else {
-                $subtotal += $productPrice - ($taxValue / 100);
-                $tax = $tax + ($productPrice * ($taxValue / (100 + $taxValue)));
+                $originalPrice = $productPrice / (1 + ($taxValue / 100));
+                $taxAmount = $productPrice - $originalPrice;
+
+                $subtotal += $originalPrice;
+                $tax += $taxAmount;
             }
         }
 
         $total = $subtotal + $tax;
 
-        $price = round($subtotal);
-        $tax_value = round($tax);
-        $finalprice = round($total);
+        $price = floor($subtotal * 100) / 100;
+        $tax_value = floor($tax * 100) / 100;
+        $finalprice = $total;
 
         $pdf = Pdf::loadView('printinvoice', [
             'order' => $order,
