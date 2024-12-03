@@ -107,11 +107,11 @@
                                                         </td>
                                                         <td style="padding-block: 12px; text-align: end;">
                                                             <p style="font-weight: 700; color: #1A1C21;">
-                                                                ₹{{$product->price / $product->quantity}}</p>
+                                                                {{$currencyInfo}}{{$product->price / $product->quantity}}</p>
                                                         </td>
                                                         <td style="padding-block: 12px; text-align: end;">
                                                             <p style="font-weight: 700; color: #1A1C21;">
-                                                                ₹{{$product->price}}
+                                                                {{$currencyInfo}}{{$product->price}}
                                                             </p>
                                                         </td>
                                                     </tr>
