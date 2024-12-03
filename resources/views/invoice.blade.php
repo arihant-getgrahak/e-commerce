@@ -108,23 +108,23 @@
                             <td class="text-center">
                                 {{$product->quantity}}
                             </td>
-                            <td class="text-end">₹{{$product->price / $product->quantity}}</td>
-                            <td class="text-end">₹{{$product->price}}</td>
+                            <td class="text-end">{{$currencyInfo}}{{$product->price / $product->quantity}}</td>
+                            <td class="text-end">{{$currencyInfo}}{{$product->price}}</td>
                         </tr>
                     @endforeach
 
                     <!-- Summary -->
                     <tr>
                         <td colspan="4" class="strong text-end">Subtotal</td>
-                        <td class="text-end">₹{{$order->total}}</td>
+                        <td class="text-end">{{$currencyInfo}}{{$price}}</td>
                     </tr>
                     <tr>
-                        <td colspan="4" class="strong text-end">GST(12%)</td>
-                        <td class="text-end">₹{{$order->total * 0.12}}</td>
+                        <td colspan="4" class="strong text-end">GST</td>
+                        <td class="text-end">{{$currencyInfo}}{{$tax_value}}</td>
                     </tr>
                     <tr>
                         <td colspan="4" class="font-weight-bold text-uppercase text-end">Total Due</td>
-                        <td class="font-weight-bold text-end"> ₹{{$order->total + $order->total * 0.12}}
+                        <td class="font-weight-bold text-end">{{$currencyInfo}}{{$finalprice}}
                         </td>
                     </tr>
                 </table>
