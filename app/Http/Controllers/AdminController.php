@@ -122,7 +122,7 @@ class AdminController extends Controller
             'products.product',
             'user',
             'address',
-            'shipping_address',
+            'shipping',
         ])->find($id);
         $store = Store::first();
 
@@ -135,10 +135,12 @@ class AdminController extends Controller
             'products.product',
             'user',
             'address',
+            'shipping',
         ])->find($id);
 
         $pdf = Pdf::loadView('printinvoice', [
             'order' => $order,
+            'store' => Store::first(),
         ]);
 
         $pdfOutput = $pdf->output();
