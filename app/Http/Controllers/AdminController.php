@@ -167,9 +167,43 @@ class AdminController extends Controller
             'shipping',
         ])->find($id);
 
+        $store = Store::first();
+
+        $currencyInfo = Cache::get('currencyInfo');
+
+        $tax = 0;
+        $subtotal = 0;
+        $total = 0;
+
+        foreach ($order->products as $product) {
+            $productPrice = $product->price;
+            $taxValue = $product->product->tax_value;
+            $taxType = $product->product->tax_type;
+
+            if ($store->tax_type == 'inclusive') {
+                if ($taxType === 'exclusive') {
+                    $subtotal += $productPrice;
+                    $tax = $tax + ($productPrice * ($taxValue / 100));
+                } else {
+                    $subtotal += $productPrice - ($taxValue / 100);
+                    $tax = $tax + ($productPrice * ($taxValue / (100 + $taxValue)));
+                }
+            }
+        }
+
+        $total = $subtotal + $tax;
+
+        $price = round($subtotal, 2);
+        $tax_value = round($tax, 2);
+        $finalprice = round($total, 2);
+
         $pdf = Pdf::loadView('printinvoice', [
             'order' => $order,
-            'store' => Store::first(),
+            'store' => $store,
+            'currencyInfo' => $currencyInfo['data'],
+            'price' => $price,
+            'tax_value' => $tax_value,
+            'finalprice' => $finalprice,
         ]);
 
         $pdfOutput = $pdf->output();
