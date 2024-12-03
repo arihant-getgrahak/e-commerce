@@ -26,15 +26,47 @@ class CheckoutController extends Controller
         if (! $isLoggedIn) {
             $session_id = session()->getId();
             $cart = SessionCart::where('session_id', $session_id)->with('products')->get();
+            $subtotal = 0;
+            $tax = 0;
             if ($cart) {
-                $price = $cart->sum('price');
+                foreach ($cart as $cartItem) {
+                    foreach ($cartItem->products as $product) {
+                        $productPrice = $cartItem->price;
+                        $taxValue = $product->tax_value;
+                        $taxType = $product->tax_type;
+
+                        if ($taxType === 'exclusive') {
+                            $subtotal += $productPrice;
+                            $tax = $tax + ($productPrice * ($taxValue / 100));
+                        } else {
+                            $subtotal += $productPrice - ($taxValue / 100);
+                            $tax = $tax + ($productPrice * ($taxValue / (100 + $taxValue)));
+                        }
+                    }
+                }
             }
 
         } else {
             $cart = Cart::where('user_id', auth()->user()->id)->with('products')->get();
-            $price = 0;
+            $subtotal = 0;
+            $tax = 0;
             if ($cart) {
-                $price = $cart->sum('price');
+                foreach ($cart as $cartItem) {
+                    $productPrice = $cartItem->price;
+                    foreach ($cartItem->products as $product) {
+                        $taxValue = $product->tax_value;
+                        $taxType = $product->tax_type;
+
+                        if ($taxType === 'exclusive') {
+                            $subtotal += round($productPrice, 2);
+                            $tax += round($productPrice * ($taxValue / 100), 2);
+                        } else {
+                            $inclusiveTaxFactor = $taxValue / (100 + $taxValue);
+                            $subtotal += round($productPrice - ($productPrice * $inclusiveTaxFactor), 2);
+                            $tax += round($productPrice * $inclusiveTaxFactor, 2);
+                        }
+                    }
+                }
             }
         }
 
@@ -54,14 +86,11 @@ class CheckoutController extends Controller
         $country = session('country', 'IN');
         $telcode = getTelCode($country)['code'];
 
-        $finalprice = $price;
-        $tax_value = $store->tax_value;
-        if ($store->tax_type == 'inclusive') {
-            $finalprice = $price;
-            $price = round($price - ($price * $store->tax_value / 100), 2);
-        } else {
-            $finalprice = round($price + ($price * $store->tax_value / 100), 2);
-        }
+        $total = $subtotal + $tax;
+
+        $price = round($subtotal, 2);
+        $tax_value = round($tax, 2);
+        $finalprice = round($total, 2);
 
         return view('checkout', compact('isLoggedIn', 'cart', 'price', 'tax_value', 'finalprice', 'telcode'));
     }

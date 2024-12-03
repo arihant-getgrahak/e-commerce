@@ -106,6 +106,58 @@
     @enderror
     </div>
 
+    <!-- Length -->
+    <div class="mb-4">
+      <label for="length" class="col-form-label required">Length</label>
+      <input type="text" id="length" name="length" class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+        placeholder="Enter product length" value="{{ old('length') }}">
+      @error('length')
+      <p class="text-red-500">{{ $message }}</p>
+    @enderror
+    </div>
+
+    <!-- Breath -->
+    <div class="mb-4">
+      <label for="breath" class="col-form-label required">Breath</label>
+      <input type="text" id="breath" name="breath" class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+        placeholder="Enter product breath" value="{{ old('breath') }}">
+      @error('breath')
+      <p class="text-red-500">{{ $message }}</p>
+    @enderror
+    </div>
+
+    <!-- Height -->
+    <div class="mb-4">
+      <label for="height" class="col-form-label required">Height</label>
+      <input type="text" id="height" name="height" class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+        placeholder="Enter product height" value="{{ old('height') }}">
+      @error('height')
+      <p class="text-red-500">{{ $message }}</p>
+    @enderror
+    </div>
+
+    <!-- Tax-Value -->
+    <div class="mb-4">
+      <label for="tax_value" class="col-form-label required">Tax Value (%)</label>
+      <input type="text" id="tax_value" name="tax_value" class="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+        placeholder="Enter product tax_value" value="{{ old('tax_value') }}">
+      @error('tax_value')
+      <p class="text-red-500">{{ $message }}</p>
+    @enderror
+    </div>
+
+    <!-- Height -->
+    <div class="mb-4">
+      <label for="tax_type" class="col-form-label required">Tax Type</label>
+      <select id="tax_type" name="tax_type" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+        <option value="inclusive" {{$tax_type == 'inclusive' ? 'selected' : ''}}> Inclusive</option>
+        <option value="exclusive" {{$tax_type == 'exclusive' ? 'selected' : ''}}> Exclusive</option>
+      </select>
+      @error('tax_type')
+      <p class="text-red-500">{{ $message }}</p>
+    @enderror
+    </div>
+
 
     <!-- Category -->
     <div class="mb-4">
@@ -168,26 +220,10 @@
 <script>
   const arihant = document.querySelector('#alert');
   if ("{{session('success')}}") {
-    arihant.innerHTML = `
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-        ${{{ session('success') }}}
-                                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-												<span aria-hidden="true">&times;</span>
-											  </button>
-											</div>
-                                            `
-    window.scrollTo(0, 0);
+    alert("{{ session('success') }}")
   }
   if ("{{session('error')}}") {
-    arihant.innerHTML = `
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        ${{{ session('error') }}}
-                                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-												<span aria-hidden="true">&times;</span>
-											  </button>
-											</div>
-                                            `
-    window.scrollTo(0, 0);
+    alert("{{ session('error') }}")
   }
 </script>
 

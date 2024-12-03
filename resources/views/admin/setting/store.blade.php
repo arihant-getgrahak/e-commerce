@@ -19,7 +19,6 @@
                             <th><button class="table-sort">Store Address</button></th>
                             <th><button class="table-sort">Store Phone</button></th>
                             <th><button class="table-sort">Store GST</button></th>
-                            <th><button class="table-sort">Store Tax Value</button></th>
                             <th><button class="table-sort">Store Tax Type</button></th>
                             <th><button class="table-sort">Action</button></th>
                         </tr>
@@ -32,7 +31,6 @@
                                 <td>{{$s->address}}, {{$s->city}}, {{$s->state}}, {{$s->pincode}}</td>
                                 <td>{{$s->phone}}</td>
                                 <td>{{$s->gst}}</td>
-                                <td>{{$s->tax_value}}%</td>
                                 <td>{{Str::ucfirst($s->tax_type)}}</td>
                                 <td>
                                     <button class="btn btn-primary btn-sm btn-update" data-bs-toggle="modal"
@@ -40,7 +38,7 @@
                                         data-address="{{ $s->address }}" data-phone="{{ $s->phone }}"
                                         data-country="{{ $s->country }}" data-gst="{{ $s->gst }}" data-city="{{ $s->city }}"
                                         data-state="{{ $s->state }}" data-pincode="{{ $s->pincode }}"
-                                        data-value="{{ $s->tax_value }}" data-type="{{ $s->tax_type }}">Edit</button>
+                                        data-type="{{ $s->tax_type }}">Edit</button>
                                     <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
                                         data-bs-target="#modal-delete-{{$s->id}}">Delete</button>
                                 </td>
@@ -112,8 +110,8 @@
 
                         <div class="mb-3">
                             <label class="form-label required">Store Name</label>
-                            <input type="text" class="form-control" id="name_update" name="name"
-                                value="{{old('value')}}" placeholder="Enter Store Nameq" required>
+                            <input type="text" class="form-control" id="name_update" name="name" value="{{old('name')}}"
+                                placeholder="Enter Store Name" required>
                             @error('name')
                                 <span class="text-danger">{{$message}}</span>
                             @enderror
@@ -121,15 +119,15 @@
                         <div class="mb-3">
                             <label class="form-label required">Store Address</label>
                             <input type="text" class="form-control" id="address_update" name="address"
-                                value="{{old('value')}}" placeholder="Enter Store Address" required>
+                                value="{{old('address')}}" placeholder="Enter Store Address" required>
                             @error('address')
                                 <span class="text-danger">{{$message}}</span>
                             @enderror
                         </div>
                         <div class="mb-3">
                             <label class="form-label required">Store City</label>
-                            <input type="text" class="form-control" id="city_update" name="city"
-                                value="{{old('value')}}" placeholder="Enter Store City" required>
+                            <input type="text" class="form-control" id="city_update" name="city" value="{{old('city')}}"
+                                placeholder="Enter Store City" required>
                             @error('city')
                                 <span class="text-danger">{{$message}}</span>
                             @enderror
@@ -137,7 +135,7 @@
                         <div class="mb-3">
                             <label class="form-label required">Store State</label>
                             <input type="text" class="form-control" id="state_update" name="state"
-                                value="{{old('value')}}" placeholder="Enter Store State" required>
+                                value="{{old('state')}}" placeholder="Enter Store State" required>
                             @error('state')
                                 <span class="text-danger">{{$message}}</span>
                             @enderror
@@ -145,7 +143,7 @@
                         <div class="mb-3">
                             <label class="form-label required">Store Country</label>
                             <input type="text" class="form-control" id="country_update" name="country"
-                                value="{{old('value')}}" placeholder="Enter Store Country" required>
+                                value="{{old('country')}}" placeholder="Enter Store Country" required>
                             @error('country')
                                 <span class="text-danger">{{$message}}</span>
                             @enderror
@@ -153,7 +151,7 @@
                         <div class="mb-3">
                             <label class="form-label required">Store Pincode</label>
                             <input type="text" class="form-control" id="pincode_update" name="pincode"
-                                value="{{old('value')}}" placeholder="Enter Store pincode" required>
+                                value="{{old('pincode')}}" placeholder="Enter Store pincode" required>
                             @error('pincode')
                                 <span class="text-danger">{{$message}}</span>
                             @enderror
@@ -161,27 +159,20 @@
                         <div class="mb-3">
                             <label class="form-label required">Store Phone Number</label>
                             <input type="text" class="form-control" id="phone_update" name="phone"
-                                value="{{old('value')}}" placeholder="Enter Store phone number" required>
+                                value="{{old('phone')}}" placeholder="Enter Store phone number" required>
                             @error('phone')
                                 <span class="text-danger">{{$message}}</span>
                             @enderror
                         </div>
                         <div class="mb-3">
                             <label class="form-label required">Store GST</label>
-                            <input type="text" class="form-control" id="gst_update" name="gst" value="{{old('value')}}"
+                            <input type="text" class="form-control" id="gst_update" name="gst" value="{{old('gst')}}"
                                 placeholder="Enter Store gst number" required>
                             @error('gst')
                                 <span class="text-danger">{{$message}}</span>
                             @enderror
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label required">Tax Value(%)</label>
-                            <input type="text" class="form-control" id="tax_value_update" name="tax_value"
-                                value="{{old('value')}}" placeholder="Enter Store tax value" required>
-                            @error('tax_value')
-                                <span class="text-danger">{{$message}}</span>
-                            @enderror
-                        </div>
+
                         <div class="mb-3">
                             <label class="form-label required">Tax Type</label>
                             <select class="form-select" id="tax_type_update" name="tax_type" required>
@@ -216,15 +207,15 @@
                         @csrf
                         <div class="mb-3">
                             <label class="form-label required">Store Name</label>
-                            <input type="text" class="form-control" id="name" name="name" value="{{old('value')}}"
-                                placeholder="Enter Store Nameq" required>
+                            <input type="text" class="form-control" id="name" name="name" value="{{old('name')}}"
+                                placeholder="Enter Store Name" required>
                             @error('name')
                                 <span class="text-danger">{{$message}}</span>
                             @enderror
                         </div>
                         <div class="mb-3">
                             <label class="form-label required">Store Address</label>
-                            <input type="text" class="form-control" id="address" name="address" value="{{old('value')}}"
+                            <input type="text" class="form-control" id="address" name="address" value="{{old('address')}}"
                                 placeholder="Enter Store Address" required>
                             @error('address')
                                 <span class="text-danger">{{$message}}</span>
@@ -232,7 +223,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label required">Store City</label>
-                            <input type="text" class="form-control" id="city" name="city" value="{{old('value')}}"
+                            <input type="text" class="form-control" id="city" name="city" value="{{old(key: 'city')}}"
                                 placeholder="Enter Store City" required>
                             @error('city')
                                 <span class="text-danger">{{$message}}</span>
@@ -240,7 +231,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label required">Store State</label>
-                            <input type="text" class="form-control" id="state" name="state" value="{{old('value')}}"
+                            <input type="text" class="form-control" id="state" name="state" value="{{old('state')}}"
                                 placeholder="Enter Store State" required>
                             @error('state')
                                 <span class="text-danger">{{$message}}</span>
@@ -248,7 +239,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label required">Store Country</label>
-                            <input type="text" class="form-control" id="country" name="country" value="{{old('value')}}"
+                            <input type="text" class="form-control" id="country" name="country" value="{{old('country')}}"
                                 placeholder="Enter Store Country" required>
                             @error('country')
                                 <span class="text-danger">{{$message}}</span>
@@ -256,7 +247,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label required">Store Pincode</label>
-                            <input type="text" class="form-control" id="pincode" name="pincode" value="{{old('value')}}"
+                            <input type="text" class="form-control" id="pincode" name="pincode" value="{{old('pincode')}}"
                                 placeholder="Enter Store pincode" required>
                             @error('pincode')
                                 <span class="text-danger">{{$message}}</span>
@@ -264,7 +255,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label required">Store Phone Number</label>
-                            <input type="text" class="form-control" id="phone" name="phone" value="{{old('value')}}"
+                            <input type="text" class="form-control" id="phone" name="phone" value="{{old('phone')}}"
                                 placeholder="Enter Store phone number" required>
                             @error('phone')
                                 <span class="text-danger">{{$message}}</span>
@@ -272,20 +263,13 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label required">Store GST</label>
-                            <input type="text" class="form-control" id="gst" name="gst" value="{{old('value')}}"
+                            <input type="text" class="form-control" id="gst" name="gst" value="{{old('gst')}}"
                                 placeholder="Enter Store gst number" required>
                             @error('gst')
                                 <span class="text-danger">{{$message}}</span>
                             @enderror
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label required">Tax Value(%)</label>
-                            <input type="text" class="form-control" id="tax_value" name="tax_value"
-                                value="{{old('value')}}" placeholder="Enter Store tax value" required>
-                            @error('tax_value')
-                                <span class="text-danger">{{$message}}</span>
-                            @enderror
-                        </div>
+                      
                         <div class="mb-3">
                             <label class="form-label required">Tax Type</label>
                             <select class="form-select" id="tax_type" name="tax_type" required>
