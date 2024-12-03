@@ -16,9 +16,9 @@ abstract class Controller
 
         $data = $this->getPickupAddress();
 
-        if ($data !== true) {
-            echo $data;
-        }
+        // if ($data !== true) {
+        //     echo $data;
+        // }
         $navigation = Navigation::with([
             'menus' => function ($query) {
                 $query->whereNull('parent_id')->orderBy('orders');
