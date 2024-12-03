@@ -138,14 +138,12 @@ class AdminController extends Controller
             $taxValue = $product->product->tax_value;
             $taxType = $product->product->tax_type;
 
-            if ($store->tax_type == 'inclusive') {
-                if ($taxType === 'exclusive') {
-                    $subtotal += $productPrice;
-                    $tax = $tax + ($productPrice * ($taxValue / 100));
-                } else {
-                    $subtotal += $productPrice - ($taxValue / 100);
-                    $tax = $tax + ($productPrice * ($taxValue / (100 + $taxValue)));
-                }
+            if ($taxType === 'exclusive') {
+                $subtotal += $productPrice;
+                $tax = $tax + ($productPrice * ($taxValue / 100));
+            } else {
+                $subtotal += $productPrice - ($taxValue / 100);
+                $tax = $tax + ($productPrice * ($taxValue / (100 + $taxValue)));
             }
         }
 
@@ -155,7 +153,9 @@ class AdminController extends Controller
         $tax_value = round($tax, 2);
         $finalprice = round($total, 2);
 
-        return view('invoice', ['order' => $order, 'store' => $store, 'currencyInfo' => $currencyInfo['data'], 'price' => $price, 'tax_value' => $tax_value, 'finalprice' => $finalprice]);
+        $currency = $order->first()->currency_code;
+
+        return view('invoice', ['order' => $order, 'store' => $store, 'currencyInfo' => $currency, 'price' => $price, 'tax_value' => $tax_value, 'finalprice' => $finalprice]);
     }
 
     public function printNode($id, $printerId)
@@ -169,25 +169,22 @@ class AdminController extends Controller
 
         $store = Store::first();
 
-        $currencyInfo = Cache::get('currencyInfo');
-
         $tax = 0;
         $subtotal = 0;
         $total = 0;
+        $currency = $order->first()->currency_code;
 
         foreach ($order->products as $product) {
             $productPrice = $product->price;
             $taxValue = $product->product->tax_value;
             $taxType = $product->product->tax_type;
 
-            if ($store->tax_type == 'inclusive') {
-                if ($taxType === 'exclusive') {
-                    $subtotal += $productPrice;
-                    $tax = $tax + ($productPrice * ($taxValue / 100));
-                } else {
-                    $subtotal += $productPrice - ($taxValue / 100);
-                    $tax = $tax + ($productPrice * ($taxValue / (100 + $taxValue)));
-                }
+            if ($taxType === 'exclusive') {
+                $subtotal += $productPrice;
+                $tax = $tax + ($productPrice * ($taxValue / 100));
+            } else {
+                $subtotal += $productPrice - ($taxValue / 100);
+                $tax = $tax + ($productPrice * ($taxValue / (100 + $taxValue)));
             }
         }
 
@@ -200,7 +197,7 @@ class AdminController extends Controller
         $pdf = Pdf::loadView('printinvoice', [
             'order' => $order,
             'store' => $store,
-            'currencyInfo' => $currencyInfo['data'],
+            'currencyInfo' => $currency,
             'price' => $price,
             'tax_value' => $tax_value,
             'finalprice' => $finalprice,
