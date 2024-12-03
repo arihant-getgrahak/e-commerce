@@ -10,6 +10,7 @@ use App\Models\Gallery;
 use App\Models\OrderAdress;
 use App\Models\Product;
 use App\Models\Search;
+use App\Models\Store;
 use Cache;
 use DB;
 use Illuminate\Http\Request;
@@ -39,8 +40,9 @@ class ProductController extends Controller
         }
 
         $brand = Brand::all();
+        $tax_type = Store::first()->tax_type;
 
-        return view('addproduct')->with('category', $data)->with('brand', $brand)->with('attribute', $attribute);
+        return view('addproduct')->with('category', $data)->with('brand', $brand)->with('attribute', $attribute)->with('tax_type', $tax_type);
     }
 
     public function admindisplay()

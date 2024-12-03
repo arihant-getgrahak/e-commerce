@@ -150,8 +150,8 @@
     <div class="mb-4">
       <label for="tax_type" class="col-form-label required">Tax Type</label>
       <select id="tax_type" name="tax_type" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
-        <option value="inclusive"> Inclusive</option>
-        <option value="exclusive"> Exclusive</option>
+        <option value="inclusive" {{$tax_type == 'inclusive' ? 'selected' : ''}}> Inclusive</option>
+        <option value="exclusive" {{$tax_type == 'exclusive' ? 'selected' : ''}}> Exclusive</option>
       </select>
       @error('tax_type')
       <p class="text-red-500">{{ $message }}</p>
