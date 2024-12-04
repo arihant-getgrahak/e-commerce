@@ -29,8 +29,9 @@ class AdminSettingController extends Controller
     public function forexView()
     {
         $forex = Forex::where('user_id', auth()->user()->id)->orderBy('created_at', 'desc')->paginate(10);
+        $forex_option = Store::where('user_id', auth()->user()->id)->first()->forex_type;
 
-        return view('admin.setting.forex', compact('forex'));
+        return view('admin.setting.forex', compact('forex', 'forex_option'));
     }
 
     public function storeView()
@@ -225,6 +226,22 @@ class AdminSettingController extends Controller
 
             return back()->with('success', 'Default Currency Updated Successfully');
         } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function forexOption(Request $request)
+    {
+        try {
+            $id = $request->id;
+            $forex_option = $request->forex_option;
+
+            DB::beginTransaction();
+            Store::where('id', $id)->update(['forex_type' => $forex_option]);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+
             return back()->with('error', $e->getMessage());
         }
     }
