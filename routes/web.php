@@ -184,4 +184,6 @@ Route::group(['middleware' => TrackUtmMiddleware::class], function () {
     Route::post('/admin/setting/store/add', [AdminSettingController::class, 'adminStore'])->name('admin.setting.store.create');
     Route::delete('/admin/setting/store/delete/{id}', [AdminSettingController::class, 'storeDelete'])->name(name: 'admin.setting.store.delete');
     Route::put('/admin/setting/store/update/{id}', [AdminSettingController::class, 'storeUpdate'])->name(name: 'admin.setting.store.update');
+
+    Route::post('/admin/setting/forex/add', [AdminSettingController::class, 'forexStore'])->name('admin.setting.forex.create');
 });
