@@ -180,8 +180,8 @@ class AdminSettingController extends Controller
         try {
             $forex = Forex::where('id', $id);
 
-            if ($forex->count() <= 1) {
-                return back()->with('error', 'You can not delete last forex');
+            if ($forex->get('default')) {
+                return back()->with('error', 'You can not delete default currency');
             }
             DB::beginTransaction();
             $forex->delete();
