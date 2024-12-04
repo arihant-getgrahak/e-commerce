@@ -32,7 +32,13 @@
                                 <td>{{$f->symbol}}</td>
                                 <td>{{$f->code}}</td>
                                 <td>{{$f->exchange}}</td>
-                                <td>{{$f->status}}</td>
+                                <td>
+                                    @if ($f->status == 1)
+                                        <span class="badge bg-success text-white">Active</span>
+                                    @else
+                                        <span class="badge bg-danger text-white">Inactive</span>
+                                    @endif
+                                </td>
                                 <td>
                                     <button class="btn btn-primary btn-sm btn-update" data-bs-toggle="modal"
                                         data-bs-target="#modal-currency-update" data-id="{{ $f->id }}"
