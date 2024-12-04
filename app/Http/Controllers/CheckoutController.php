@@ -142,17 +142,28 @@ class CheckoutController extends Controller
                     return back()->with('error', 'Cart is empty');
                 }
 
-                $price = $cart->sum('price');
-                $store = Store::first();
-                $tax_value = $store->tax_value;
-                $finalprice = $price;
-                if ($store->tax_type == 'inclusive') {
-                    $finalprice = $price;
-                    $price = round($price - ($price * $store->tax_value / 100), 2);
-                } else {
-                    $finalprice = round($price + ($price * $store->tax_value / 100), 2);
+                $subtotal = 0;
+                $tax = 0;
+
+                foreach ($cart as $cartItem) {
+                    $productPrice = $cartItem->price;
+                    foreach ($cartItem->products as $product) {
+                        $taxValue = $product->tax_value;
+                        $taxType = $product->tax_type;
+
+                        if ($taxType === 'exclusive') {
+                            $subtotal += round($productPrice, 2);
+                            $tax += round($productPrice * ($taxValue / 100), 2);
+                        } else {
+                            $inclusiveTaxFactor = $taxValue / (100 + $taxValue);
+                            $subtotal += round($productPrice - ($productPrice * $inclusiveTaxFactor), 2);
+                            $tax += round($productPrice * $inclusiveTaxFactor, 2);
+                        }
+                    }
                 }
                 $currency_code = $cart[0]->currency_code;
+                $total = $subtotal + $tax;
+                $finalprice = round($total, 2);
 
                 DB::beginTransaction();
                 $billingAddress = OrderAdress::create([
@@ -225,17 +236,31 @@ class CheckoutController extends Controller
             $sessionIds = session()->getId();
             $cart = SessionCart::where('session_id', $sessionIds)->with('products')->get();
 
-            $price = $cart->sum('price');
-            $store = Store::first();
-            $tax_value = $store->tax_value;
-            $finalprice = $price;
-            if ($store->tax_type == 'inclusive') {
-                $finalprice = $price;
-                $price = round($price - ($price * $store->tax_value / 100), 2);
-            } else {
-                $finalprice = round($price + ($price * $store->tax_value / 100), 2);
+            $subtotal = 0;
+            $tax = 0;
+
+            if ($cart) {
+                foreach ($cart as $cartItem) {
+                    $productPrice = $cartItem->price;
+                    foreach ($cartItem->products as $product) {
+                        $taxValue = $product->tax_value;
+                        $taxType = $product->tax_type;
+
+                        if ($taxType === 'exclusive') {
+                            $subtotal += round($productPrice, 2);
+                            $tax += round($productPrice * ($taxValue / 100), 2);
+                        } else {
+                            $inclusiveTaxFactor = $taxValue / (100 + $taxValue);
+                            $subtotal += round($productPrice - ($productPrice * $inclusiveTaxFactor), 2);
+                            $tax += round($productPrice * $inclusiveTaxFactor, 2);
+                        }
+                    }
+                }
             }
             $currency_code = $cart[0]->currency_code;
+
+            $total = $subtotal + $tax;
+            $finalprice = round($total, 2);
 
             DB::beginTransaction();
             $billingAddress = OrderAdress::create([
