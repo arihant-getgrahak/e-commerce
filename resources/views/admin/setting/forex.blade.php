@@ -9,10 +9,11 @@
             @csrf
             <label class="form-label required">Default Currency</label>
             <select class="form-select" id="default_currency" name="default_currency" required>
-                <option value="inclusive"> Inclusive</option>
-                <option value="exclusive"> Exclusive</option>
+                @foreach ($forex as $f)
+                    <option value="{{$f->id}}">{{$f->name}}</option>
+                @endforeach
             </select>
-            @error('tax_type')
+            @error('default_currency')
                 <span class="text-danger">{{$message}}</span>
             @enderror
 
@@ -37,6 +38,7 @@
                             <th><button class="table-sort">Currency Code</button></th>
                             <th><button class="table-sort">Currency Exchange Rate (1 INR = ?)</button></th>
                             <th><button class="table-sort">Currency Status</button></th>
+                            <th><button class="table-sort">Is Currency Default</button></th>
                             <th><button class="table-sort">Action</button></th>
                         </tr>
                     </thead>
@@ -53,6 +55,13 @@
                                         <span class="badge bg-success text-white">Active</span>
                                     @else
                                         <span class="badge bg-danger text-white">Inactive</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($f->default == 1)
+                                        <span class="badge bg-success text-white">True</span>
+                                    @else
+                                        <span class="badge bg-danger text-white">False</span>
                                     @endif
                                 </td>
                                 <td>
