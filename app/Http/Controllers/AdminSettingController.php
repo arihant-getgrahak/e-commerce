@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateForexRequest;
 use App\Http\Requests\CreateStoreRequest;
+use App\Models\Forex;
 use App\Models\Store;
 use Artisan;
 use DB;
@@ -143,6 +145,28 @@ class AdminSettingController extends Controller
             DB::commit();
 
             return back()->with('success', 'Store Updated Successfully');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function forexStore(CreateForexRequest $request)
+    {
+        try {
+            $data = [
+                'user_id' => auth()->user()->id,
+                'name' => $request->name,
+                'code' => $request->code,
+                'symbol' => $request->symbol,
+                'exchange' => $request->exchange,
+                'status' => $request->status,
+            ];
+
+            DB::beginTransaction();
+            Forex::create($data);
+            DB::commit();
+
+            return back()->with('success', 'Forex Added Successfully');
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }
