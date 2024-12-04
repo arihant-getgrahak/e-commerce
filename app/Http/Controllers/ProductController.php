@@ -71,7 +71,7 @@ class ProductController extends Controller
             return view('productview')->with('product', []);
         }
 
-        return view('productview')->with('product', $product)->with('category', $data)->with('brand', $brand);
+        return view('admin.productview')->with('product', $product)->with('category', $data)->with('brand', $brand);
     }
 
     public function display()
