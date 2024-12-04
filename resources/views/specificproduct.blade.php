@@ -408,7 +408,8 @@
                 product_id: productId[0].id,
                 quantity: quantity,
                 price: productId[0].price,
-                name: productId[0].name
+                name: productId[0].name,
+                currency: productId[0].currency
             }),
         })
 

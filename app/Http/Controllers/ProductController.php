@@ -47,7 +47,7 @@ class ProductController extends Controller
 
     public function admindisplay()
     {
-        $product = Product::where('added_by', auth()->user()->id)->with(['gallery', 'meta', 'brand', 'category', 'attributeValues.attribute'])->paginate(6);
+        $product = Product::where('added_by', auth()->user()->id)->with(['gallery', 'meta', 'brand', 'category', 'attributeValues.attribute'])->orderBy('id', 'desc')->paginate(6);
         $categories = Category::with('parent')->get();
         $data = [];
         $brand = Brand::all();
@@ -71,7 +71,7 @@ class ProductController extends Controller
             return view('productview')->with('product', []);
         }
 
-        return view('productview')->with('product', $product)->with('category', $data)->with('brand', $brand);
+        return view('admin.productview')->with('product', $product)->with('category', $data)->with('brand', $brand);
     }
 
     public function display()
@@ -88,7 +88,7 @@ class ProductController extends Controller
 
         $currencySymbol = $currencyInfo['data'] ?? null;
         $currencyCode = $currencyInfo['currency_code'] ?? null;
-        $product = Product::with(['gallery', 'meta', 'brand', 'category', 'attributeValues.attribute'])->paginate(10);
+        $product = Product::with(['gallery', 'meta', 'brand', 'category', 'attributeValues.attribute'])->orderBy('id', 'desc')->paginate(10);
 
         $exchangeRateForCurrency = $exchangeRate['data'][$currencyCode] ?? 1;
 
