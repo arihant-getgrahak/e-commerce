@@ -3,6 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+
+// use Rule
 
 class UpdateForexRequest extends FormRequest
 {
@@ -22,9 +25,21 @@ class UpdateForexRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'nullable|string|unique:forexes,name',
-            'code' => 'nullable|string|unique:forexes,code',
-            'symbol' => 'nullable|string|unique:forexes,symbol',
+            'name' => [
+                'nullable',
+                'string',
+                Rule::unique('forexes', 'name')->ignore($this->id),
+            ],
+            'code' => [
+                'nullable',
+                'string',
+                Rule::unique('forexes', 'code')->ignore($this->id),
+            ],
+            'symbol' => [
+                'nullable',
+                'string',
+                Rule::unique('forexes', 'symbol')->ignore($this->id),
+            ],
             'exchange' => 'nullable|string',
             'status' => 'nullable|boolean',
         ];
