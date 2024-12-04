@@ -190,4 +190,5 @@ Route::group(['middleware' => TrackUtmMiddleware::class], function () {
     Route::delete('/admin/setting/forex/delete/{id}', [AdminSettingController::class, 'forexDelete'])->name(name: 'admin.setting.forex.delete');
 
     Route::post('/admin/setting/forex/default/currency', [AdminSettingController::class, 'defaultCurrency'])->name('admin.setting.forex.currency.default');
+    Route::post('/admin/setting/store/forex/option', [AdminSettingController::class, 'forexOption'])->name('admin.setting.forex.option');
 });
