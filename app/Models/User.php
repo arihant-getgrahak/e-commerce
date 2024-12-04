@@ -81,4 +81,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(NavigationMenu::class);
     }
+
+    public function forex()
+    {
+        return $this->hasMany(Forex::class);
+    }
 }
