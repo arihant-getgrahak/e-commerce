@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateForexRequest;
 use App\Http\Requests\CreateStoreRequest;
+use App\Http\Requests\UpdateForexRequest;
 use App\Models\Forex;
 use App\Models\Store;
 use Artisan;
@@ -177,11 +178,37 @@ class AdminSettingController extends Controller
     public function forexDelete($id)
     {
         try {
+            $forex = Forex::where('id', $id);
+
+            if ($forex->count() <= 1) {
+                return back()->with('error', 'You can not delete last forex');
+            }
             DB::beginTransaction();
-            Forex::where('id', $id)->delete();
+            $forex->delete();
             DB::commit();
 
             return back()->with('success', 'Forex deleted Successfully');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function forexUpdate(UpdateForexRequest $request, $id)
+    {
+        try {
+            $data = $request->only([
+                'name',
+                'code',
+                'symbol',
+                'exchange',
+                'status',
+            ]);
+
+            DB::beginTransaction();
+            Forex::where('id', $id)->update($data);
+            DB::commit();
+
+            return back()->with('success', 'Forex Updated Successfully');
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }
