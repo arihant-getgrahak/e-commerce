@@ -159,4 +159,14 @@
             </div>
         </div>
 </main>
+
+
+<script>
+    if ("{{Session::has('success')}}") {
+        alert("{{Session::get('success')}}");
+    }
+    if ("{{Session::has('error')}}") {
+        alert("{{Session::get('error')}}");
+    }
+</script>
 @endsection
