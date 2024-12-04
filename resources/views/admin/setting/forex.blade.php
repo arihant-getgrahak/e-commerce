@@ -105,7 +105,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form class="bg-white p-6 rounded-lg shadow-lg" action="{{ route('admin.setting.store.create') }}"
+                    <form class="bg-white p-6 rounded-lg shadow-lg" action="{{ route('admin.setting.forex.create') }}"
                         method="POST">
                         @csrf
                         <div class="mb-3">
@@ -144,12 +144,14 @@
                         <div class="mb-3">
                             <label class="form-label required">Currency Status</label>
                             <label class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="status" name="status" />
+                                <input type="hidden" name="status" value="0" />
+                                <input class="form-check-input" type="checkbox" id="status" name="status" value="1" />
                             </label>
                             @error('status')
                                 <span class="text-danger">{{$message}}</span>
                             @enderror
                         </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
