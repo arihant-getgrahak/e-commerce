@@ -4,25 +4,46 @@
 <main>
     <h1>Admin Forex Settings</h1>
 
-    <div class="mb-4">
-        <form action="{{route("admin.setting.forex.currency.default")}}" method="POST">
-            @csrf
-            <label class="form-label required">Default Currency</label>
-            <select class="form-select" id="default_currency" name="default_currency" required>
-                @foreach ($forex as $f)
-                    <option value="{{ $f->id }}" {{ $f->default ? 'selected' : '' }}>
-                        {{ $f->name }}
+    <div class="mb-4 d-flex" style="gap: 10px;">
+        <div class="col-md-6">
+            <form action="{{route("admin.setting.forex.currency.default")}}" method="POST">
+                @csrf
+                <label class="form-label required">Default Currency</label>
+                <select class="form-select" id="default_currency" name="default_currency" required>
+                    @foreach ($forex as $f)
+                        <option value="{{ $f->id }}" {{ $f->default ? 'selected' : '' }}>
+                            {{ $f->name }}
+                        </option>
+                    @endforeach
+                </select>
+
+
+                @error('default_currency')
+                    <span class="text-danger">{{$message}}</span>
+                @enderror
+
+                <button class="btn btn-primary mt-2" type="submit">Update</button>
+            </form>
+        </div>
+        <div class="col-md-6">
+            <form action="{{route("admin.setting.forex.currency.default")}}" method="POST">
+                @csrf
+                <label class="form-label required">Forex Option</label>
+                <select class="form-select" id="forex_option" name="forex_option" required>
+                    <option value="manual" {{ $forex_option === "manual" ? 'selected' : '' }}>
+                        Manual
                     </option>
-                @endforeach
-            </select>
+                    <option value="api" {{ $forex_option === "api" ? 'selected' : '' }}>
+                        API
+                    </option>
+                </select>
+                @error('forex_option')
+                    <span class="text-danger">{{$message}}</span>
+                @enderror
 
-
-            @error('default_currency')
-                <span class="text-danger">{{$message}}</span>
-            @enderror
-
-            <button class="btn btn-primary mt-2" type="submit">Update</button>
-        </form>
+                <button class="btn btn-primary mt-2" type="submit">Update</button>
+            </form>
+        </div>
     </div>
     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-currency">
         Add Currency
