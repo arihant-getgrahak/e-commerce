@@ -11,7 +11,7 @@ class CategoryStoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return auth()->check() && auth()->user()->role === 'admin';
     }
 
     /**
@@ -22,16 +22,16 @@ class CategoryStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name"=> "required",
-            "parent_id"=>"nullable|exists:categories,id",
+            'name' => 'required',
+            'parent_id' => 'nullable|exists:categories,id',
         ];
     }
 
     public function messages(): array
     {
         return [
-            "name.required" => "Category name is required",
-            "parent_id.exists"=> "Parent category does not exist",
+            'name.required' => 'Category name is required',
+            'parent_id.exists' => 'Parent category does not exist',
         ];
     }
 }

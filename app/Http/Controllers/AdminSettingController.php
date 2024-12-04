@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateForexRequest;
 use App\Http\Requests\CreateStoreRequest;
+use App\Http\Requests\UpdateForexRequest;
+use App\Models\Forex;
 use App\Models\Store;
 use Artisan;
 use DB;
@@ -25,7 +28,10 @@ class AdminSettingController extends Controller
 
     public function forexView()
     {
-        return view('admin.setting.forex');
+        $forex = Forex::where('user_id', auth()->user()->id)->orderBy('created_at', 'desc')->paginate(10);
+        $forex_option = Store::first()->forex_option;
+
+        return view('admin.setting.forex', compact('forex', 'forex_option'));
     }
 
     public function storeView()
@@ -144,6 +150,100 @@ class AdminSettingController extends Controller
 
             return back()->with('success', 'Store Updated Successfully');
         } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function forexStore(CreateForexRequest $request)
+    {
+        try {
+            $data = [
+                'user_id' => auth()->user()->id,
+                'name' => $request->name,
+                'code' => $request->code,
+                'symbol' => $request->symbol,
+                'exchange' => $request->exchange,
+                'status' => $request->status,
+            ];
+
+            DB::beginTransaction();
+            Forex::create($data);
+            DB::commit();
+
+            return back()->with('success', 'Forex Added Successfully');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function forexDelete($id)
+    {
+        try {
+            $forex = Forex::where('id', $id);
+
+            if ($forex->get('default')) {
+                return back()->with('error', 'You can not delete default currency');
+            }
+            DB::beginTransaction();
+            $forex->delete();
+            DB::commit();
+
+            return back()->with('success', 'Forex deleted Successfully');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function forexUpdate(UpdateForexRequest $request, $id)
+    {
+        try {
+            $data = $request->only([
+                'name',
+                'code',
+                'symbol',
+                'exchange',
+                'status',
+            ]);
+
+            DB::beginTransaction();
+            Forex::where('id', $id)->update($data);
+            DB::commit();
+
+            return back()->with('success', 'Forex Updated Successfully');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function defaultCurrency(Request $request)
+    {
+        try {
+            $id = $request->default_currency;
+            DB::beginTransaction();
+            Forex::where('user_id', auth()->user()->id)->update(['default' => 0]);
+            Forex::where('id', $id)->update(['default' => 1]);
+            DB::commit();
+
+            return back()->with('success', 'Default Currency Updated Successfully');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function forexOption(Request $request)
+    {
+        try {
+            $id = $request->id;
+            $forex_option = $request->forex_option;
+
+            DB::beginTransaction();
+            Store::first()->update(['forex_option' => $forex_option]);
+            DB::commit();
+
+            return back()->with('success', 'Forex Option Updated Successfully');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
             return back()->with('error', $e->getMessage());
         }
     }

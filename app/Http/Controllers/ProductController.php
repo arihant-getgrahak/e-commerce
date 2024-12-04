@@ -6,6 +6,7 @@ use App\Http\Requests\ProductAddRequest;
 use App\Models\Attributes;
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\Forex;
 use App\Models\Gallery;
 use App\Models\OrderAdress;
 use App\Models\Product;
@@ -76,29 +77,44 @@ class ProductController extends Controller
 
     public function display()
     {
+        $forex_option = Store::first()->forex_option;
+        $product = null;
         $country = session('country');
-
-        $exchangeRate = Cache::remember('exchangeRate', now()->addHours(24), function () {
-            return getExchangeRate();
-        });
 
         $currencyInfo = Cache::remember('currencyInfo', now()->addHours(24), function () use ($country) {
             return getCurrencySymbol($country);
         });
-
-        $currencySymbol = $currencyInfo['data'] ?? null;
         $currencyCode = $currencyInfo['currency_code'] ?? null;
-        $product = Product::with(['gallery', 'meta', 'brand', 'category', 'attributeValues.attribute'])->orderBy('id', 'desc')->paginate(10);
+        $currencySymbol = $currencyInfo['data'] ?? null;
 
-        $exchangeRateForCurrency = $exchangeRate['data'][$currencyCode] ?? 1;
+        if ($forex_option === 'api') {
+            $exchangeRate = Cache::remember('exchangeRate', now()->addHours(24), function () {
+                return getExchangeRate();
+            });
 
-        $product->getCollection()->transform(function ($product) use ($exchangeRateForCurrency, $currencySymbol) {
-            $product->price = round($product->price * $exchangeRateForCurrency, 2);
-            $product->currency = $currencySymbol;
-            $product->cost_price = round($product->cost_price * $exchangeRateForCurrency, 2);
+            $product = Product::with(['gallery', 'meta', 'brand', 'category', 'attributeValues.attribute'])->orderBy('id', 'desc')->paginate(10);
 
-            return $product;
-        });
+            $exchangeRateForCurrency = $exchangeRate['data'][$currencyCode] ?? 1;
+
+            $product->getCollection()->transform(function ($product) use ($exchangeRateForCurrency, $currencySymbol) {
+                $product->price = round($product->price * $exchangeRateForCurrency, 2);
+                $product->currency = $currencySymbol;
+                $product->cost_price = round($product->cost_price * $exchangeRateForCurrency, 2);
+
+                return $product;
+            });
+        } else {
+            $forex = Forex::where('code', $currencyCode)->first();
+            $product = Product::with(['gallery', 'meta', 'brand', 'category', 'attributeValues.attribute'])->orderBy('id', 'desc')->paginate(10);
+
+            $product->getCollection()->transform(function ($product) use ($forex, $currencySymbol) {
+                $product->price = round($product->price * $forex->exchange, 2);
+                $product->currency = $currencySymbol;
+                $product->cost_price = round($product->cost_price * $forex->exchange, 2);
+
+                return $product;
+            });
+        }
 
         $categories = Category::with(['parent'])->get();
         $brand = Brand::withCount('products')->get();
@@ -269,44 +285,63 @@ class ProductController extends Controller
 
     public function specific($id)
     {
+        $forex_option = Store::first()->forex_option;
+        $product = null;
+        $random = null;
         $country = session('country');
-
-        $exchangeRate = Cache::remember('exchangeRate', now()->addHours(24), function () {
-            return getExchangeRate();
-        });
 
         $currencyInfo = Cache::remember('currencyInfo', now()->addHours(24), function () use ($country) {
             return getCurrencySymbol($country);
         });
-
-        $currencySymbol = $currencyInfo['data'] ?? null;
         $currencyCode = $currencyInfo['currency_code'] ?? null;
-        $product = Product::with(['gallery', 'meta', 'brand', 'category', 'attributeValues.attribute'])->paginate(10);
+        $currencySymbol = $currencyInfo['data'] ?? null;
 
+        $exchangeRate = Cache::remember('exchangeRate', now()->addHours(24), function () {
+            return getExchangeRate();
+        });
         $exchangeRateForCurrency = $exchangeRate['data'][$currencyCode] ?? 1;
-
         $product = Product::where('slug', $id)->with(['gallery', 'meta', 'brand', 'category', 'attributeValues.attribute'])->get();
+        $random = Product::where('category_id', $product[0]->category_id)->inRandomOrder()->get(['name', 'slug', 'price', 'cost_price', 'stock', 'thumbnail']);
 
         if (! $product) {
             return view('specificproduct')->with('error', 'Incorrect product id');
         }
 
-        $product->transform(function ($product) use ($exchangeRateForCurrency, $currencySymbol) {
-            $product->price = round($product->price * (float) $exchangeRateForCurrency, 2);
-            $product->currency = $currencySymbol;
-            $product->cost_price = round($product->cost_price * $exchangeRateForCurrency, 2);
+        if ($forex_option === 'api') {
+            $product->transform(function ($product) use ($exchangeRateForCurrency, $currencySymbol) {
+                $product->price = round($product->price * (float) $exchangeRateForCurrency, 2);
+                $product->currency = $currencySymbol;
+                $product->cost_price = round($product->cost_price * $exchangeRateForCurrency, 2);
 
-            return $product;
-        });
+                return $product;
+            });
 
-        $random = Product::where('category_id', $product[0]->category_id)->inRandomOrder()->get(['name', 'slug', 'price', 'cost_price', 'stock', 'thumbnail']);
-        $random->transform(function ($random) use ($exchangeRateForCurrency, $currencySymbol) {
-            $random->price = round($random->price * (float) $exchangeRateForCurrency, 2);
-            $random->currency = $currencySymbol;
-            $random->cost_price = round($random->cost_price * $exchangeRateForCurrency, 2);
+            $random->transform(function ($random) use ($exchangeRateForCurrency, $currencySymbol) {
+                $random->price = round($random->price * (float) $exchangeRateForCurrency, 2);
+                $random->currency = $currencySymbol;
+                $random->cost_price = round($random->cost_price * $exchangeRateForCurrency, 2);
 
-            return $random;
-        });
+                return $random;
+            });
+        } else {
+            $forex = Forex::where('code', $currencyCode)->first();
+
+            $product->transform(function ($product) use ($forex, $currencySymbol) {
+                $product->price = round($product->price * $forex->exchange, 2);
+                $product->currency = $currencySymbol;
+                $product->cost_price = round($product->cost_price * $forex->exchange, 2);
+
+                return $product;
+            });
+
+            $random->transform(function ($random) use ($forex, $currencySymbol) {
+                $random->price = round($random->price * (float) $forex->exchange, 2);
+                $random->currency = $currencySymbol;
+                $random->cost_price = round($random->cost_price * $forex->exchange, 2);
+
+                return $random;
+            });
+        }
 
         return view('specificproduct')->with('product', $product)->with('random', $random);
     }

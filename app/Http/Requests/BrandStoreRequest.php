@@ -11,7 +11,7 @@ class BrandStoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return auth()->check() && auth()->user()->role === 'admin';
     }
 
     /**
@@ -23,7 +23,7 @@ class BrandStoreRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            "image" => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
     }
 

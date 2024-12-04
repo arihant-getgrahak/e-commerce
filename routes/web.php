@@ -184,4 +184,11 @@ Route::group(['middleware' => TrackUtmMiddleware::class], function () {
     Route::post('/admin/setting/store/add', [AdminSettingController::class, 'adminStore'])->name('admin.setting.store.create');
     Route::delete('/admin/setting/store/delete/{id}', [AdminSettingController::class, 'storeDelete'])->name(name: 'admin.setting.store.delete');
     Route::put('/admin/setting/store/update/{id}', [AdminSettingController::class, 'storeUpdate'])->name(name: 'admin.setting.store.update');
+
+    Route::post('/admin/setting/forex/add', [AdminSettingController::class, 'forexStore'])->name('admin.setting.forex.create');
+    Route::put('/admin/setting/forex/update/{id}', [AdminSettingController::class, 'forexUpdate'])->name(name: 'admin.setting.forex.update');
+    Route::delete('/admin/setting/forex/delete/{id}', [AdminSettingController::class, 'forexDelete'])->name(name: 'admin.setting.forex.delete');
+
+    Route::post('/admin/setting/forex/default/currency', [AdminSettingController::class, 'defaultCurrency'])->name('admin.setting.forex.currency.default');
+    Route::post('/admin/setting/store/forex/option', [AdminSettingController::class, 'forexOption'])->name('admin.setting.forex.option');
 });
