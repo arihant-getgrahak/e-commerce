@@ -158,6 +158,71 @@
                 </form>
             </div>
         </div>
+    </div>
+
+    <!-- Update Modal -->
+    <div class="modal modal-blur fade" id="modal-currency-update" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Update Form</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="bg-white p-6 rounded-lg shadow-lg" action="{{ route('admin.setting.store.create') }}"
+                        method="POST">
+                        @csrf
+                        <div class="mb-3">
+                            <label class="form-label required">Currency Name</label>
+                            <input type="text" class="form-control" id="name" name="name" value="{{old('name')}}"
+                                placeholder="Enter Currency Name" required>
+                            @error('name')
+                                <span class="text-danger">{{$message}}</span>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label required">Currency Symbol</label>
+                            <input type="text" class="form-control" id="symbol" name="symbol" value="{{old('symbol')}}"
+                                placeholder="Enter Currency Symbol" required>
+                            @error('symbol')
+                                <span class="text-danger">{{$message}}</span>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label required">Currency Code</label>
+                            <input type="text" class="form-control" id="code" name="code" value="{{old(key: 'code')}}"
+                                placeholder="Enter Currency Code" required>
+                            @error('code')
+                                <span class="text-danger">{{$message}}</span>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label required">Currency Exchange Rate (1INR = ?)</label>
+                            <input type="text" class="form-control" id="exchange" name="exchange"
+                                value="{{old('exchange')}}" placeholder="Enter Currency Exchange Rate (1INR = ?)"
+                                required>
+                            @error('exchange')
+                                <span class="text-danger">{{$message}}</span>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label required">Currency Status</label>
+                            <label class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="status" name="status" />
+                            </label>
+                            @error('status')
+                                <span class="text-danger">{{$message}}</span>
+                            @enderror
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary ms-auto">Update Currency</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </main>
 
 
