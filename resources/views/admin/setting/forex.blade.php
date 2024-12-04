@@ -26,7 +26,7 @@
             </form>
         </div>
         <div class="col-md-6">
-            <form action="{{route("admin.setting.forex.currency.default")}}" method="POST">
+            <form action="{{route("admin.setting.forex.option")}}" method="POST">
                 @csrf
                 <label class="form-label required">Forex Option</label>
                 <select class="form-select" id="forex_option" name="forex_option" required>

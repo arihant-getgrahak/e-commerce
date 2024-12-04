@@ -29,7 +29,7 @@ class AdminSettingController extends Controller
     public function forexView()
     {
         $forex = Forex::where('user_id', auth()->user()->id)->orderBy('created_at', 'desc')->paginate(10);
-        $forex_option = Store::where('user_id', auth()->user()->id)->first()->forex_type;
+        $forex_option = Store::first()->forex_option;
 
         return view('admin.setting.forex', compact('forex', 'forex_option'));
     }
@@ -237,8 +237,10 @@ class AdminSettingController extends Controller
             $forex_option = $request->forex_option;
 
             DB::beginTransaction();
-            Store::where('id', $id)->update(['forex_type' => $forex_option]);
+            Store::first()->update(['forex_option' => $forex_option]);
             DB::commit();
+
+            return back()->with('success', 'Forex Option Updated Successfully');
         } catch (\Exception $e) {
             DB::rollBack();
 
