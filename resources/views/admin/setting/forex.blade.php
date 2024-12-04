@@ -3,6 +3,22 @@
 @section('setting')
 <main>
     <h1>Admin Forex Settings</h1>
+
+    <div class="mb-4">
+        <form action="{{route("admin.setting.forex.currency.default")}}" method="POST">
+            @csrf
+            <label class="form-label required">Default Currency</label>
+            <select class="form-select" id="default_currency" name="default_currency" required>
+                <option value="inclusive"> Inclusive</option>
+                <option value="exclusive"> Exclusive</option>
+            </select>
+            @error('tax_type')
+                <span class="text-danger">{{$message}}</span>
+            @enderror
+
+            <button class="btn btn-primary mt-2" type="submit">Update</button>
+        </form>
+    </div>
     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-currency">
         Add Currency
     </button>

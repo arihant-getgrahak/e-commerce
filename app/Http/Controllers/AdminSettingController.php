@@ -214,9 +214,10 @@ class AdminSettingController extends Controller
         }
     }
 
-    public function defaultCurrency($id)
+    public function defaultCurrency(Request $request)
     {
         try {
+            $id = $request->default_currency;
             DB::beginTransaction();
             Forex::where('user_id', auth()->user()->id)->update(['default' => 0]);
             Forex::where('id', $id)->update(['default' => 1]);
