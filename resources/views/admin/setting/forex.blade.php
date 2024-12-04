@@ -35,8 +35,8 @@
                                 <td>{{$f->status}}</td>
                                 <td>
                                     <button class="btn btn-primary btn-sm btn-update" data-bs-toggle="modal"
-                                        data-bs-target="#modal-tax-update" data-id="{{ $f->id }}" data-name="{{ $f->name }}"
-                                        data-symbol="{{ $f->symbol }}" data-code="{{ $f->code }}"
+                                        data-bs-target="#modal-currency-update" data-id="{{ $f->id }}"
+                                        data-name="{{ $f->name }}" data-symbol="{{ $f->symbol }}" data-code="{{ $f->code }}"
                                         data-exchange="{{ $f->exchange }}" data-status="{{ $f->status }}">Edit</button>
                                     <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
                                         data-bs-target="#modal-delete-{{$f->id}}">Delete</button>
@@ -170,12 +170,12 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form class="bg-white p-6 rounded-lg shadow-lg" action="{{ route('admin.setting.store.create') }}"
-                        method="POST">
+                    <form id="currencyForm" class="bg-white p-6 rounded-lg shadow-lg" action="" method="POST">
                         @csrf
+                        @method('PUT')
                         <div class="mb-3">
                             <label class="form-label required">Currency Name</label>
-                            <input type="text" class="form-control" id="name" name="name" value="{{old('name')}}"
+                            <input type="text" class="form-control" id="update_name" name="name" value="{{old('name')}}"
                                 placeholder="Enter Currency Name" required>
                             @error('name')
                                 <span class="text-danger">{{$message}}</span>
@@ -183,23 +183,23 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label required">Currency Symbol</label>
-                            <input type="text" class="form-control" id="symbol" name="symbol" value="{{old('symbol')}}"
-                                placeholder="Enter Currency Symbol" required>
+                            <input type="text" class="form-control" id="update_symbol" name="symbol"
+                                value="{{old('symbol')}}" placeholder="Enter Currency Symbol" required>
                             @error('symbol')
                                 <span class="text-danger">{{$message}}</span>
                             @enderror
                         </div>
                         <div class="mb-3">
                             <label class="form-label required">Currency Code</label>
-                            <input type="text" class="form-control" id="code" name="code" value="{{old(key: 'code')}}"
-                                placeholder="Enter Currency Code" required>
+                            <input type="text" class="form-control" id="update_code" name="code"
+                                value="{{old(key: 'code')}}" placeholder="Enter Currency Code" required>
                             @error('code')
                                 <span class="text-danger">{{$message}}</span>
                             @enderror
                         </div>
                         <div class="mb-3">
                             <label class="form-label required">Currency Exchange Rate (1INR = ?)</label>
-                            <input type="text" class="form-control" id="exchange" name="exchange"
+                            <input type="text" class="form-control" id="update_exchange" name="exchange"
                                 value="{{old('exchange')}}" placeholder="Enter Currency Exchange Rate (1INR = ?)"
                                 required>
                             @error('exchange')
@@ -209,7 +209,9 @@
                         <div class="mb-3">
                             <label class="form-label required">Currency Status</label>
                             <label class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="status" name="status" />
+                                <input type="hidden" name="status" id="update_status_hidden" value="0" />
+                                <input class="form-check-input" type="checkbox" id="update_status" name="status"
+                                    value="1" />
                             </label>
                             @error('status')
                                 <span class="text-danger">{{$message}}</span>
@@ -218,7 +220,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary ms-auto">Update Currency</button>
+                    <button type="submit" class="btn btn-primary ms-auto">Update Forex Currency</button>
                 </div>
                 </form>
             </div>
@@ -234,5 +236,32 @@
     if ("{{Session::has('error')}}") {
         alert("{{Session::get('error')}}");
     }
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const updateButtons = document.querySelectorAll('.btn-update');
+        const updateForm = document.getElementById("currencyForm");
+
+        updateButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const forexId = this.getAttribute('data-id');
+                const name = this.getAttribute('data-name');
+                const code = this.getAttribute('data-code');
+                const symbol = this.getAttribute('data-symbol');
+                const exchange = this.getAttribute('data-exchange');
+                const status = this.getAttribute('data-status');
+
+                updateForm.action = "{{ route('admin.setting.forex.update', ':id') }}".replace(':id', forexId);
+
+                document.getElementById('update_name').value = name;
+                document.getElementById('update_code').value = code;
+                document.getElementById('update_symbol').value = symbol;
+                document.getElementById('update_exchange').value = exchange;
+                document.getElementById('update_status_hidden').value = status ? '1' : '0';
+                document.getElementById('update_status').checked = status;
+            });
+        });
+    });
 </script>
 @endsection
