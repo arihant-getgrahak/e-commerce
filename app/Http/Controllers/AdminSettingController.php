@@ -27,7 +27,9 @@ class AdminSettingController extends Controller
 
     public function forexView()
     {
-        return view('admin.setting.forex');
+        $forex = Forex::where('user_id', auth()->user()->id)->orderBy('created_at', 'desc')->paginate(10);
+
+        return view('admin.setting.forex', compact('forex'));
     }
 
     public function storeView()
