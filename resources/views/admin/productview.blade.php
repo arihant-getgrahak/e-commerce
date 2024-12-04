@@ -269,5 +269,5 @@
     });
 </script>
 
-(@include('layout.pagination', ['paginator' => $product]))
+@include('layout.pagination', ['paginator' => $product])
 @endsection
