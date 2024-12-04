@@ -173,4 +173,17 @@ class AdminSettingController extends Controller
             return back()->with('error', $e->getMessage());
         }
     }
+
+    public function forexDelete($id)
+    {
+        try {
+            DB::beginTransaction();
+            Forex::where('id', $id)->delete();
+            DB::commit();
+
+            return back()->with('success', 'Forex deleted Successfully');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
 }
