@@ -10,9 +10,13 @@
             <label class="form-label required">Default Currency</label>
             <select class="form-select" id="default_currency" name="default_currency" required>
                 @foreach ($forex as $f)
-                    <option value="{{$f->id}}">{{$f->name}}</option>
+                    <option value="{{ $f->id }}" {{ $f->default ? 'selected' : '' }}>
+                        {{ $f->name }}
+                    </option>
                 @endforeach
             </select>
+
+
             @error('default_currency')
                 <span class="text-danger">{{$message}}</span>
             @enderror
