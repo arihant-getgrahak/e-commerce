@@ -13,6 +13,7 @@ class Forex extends Model
         'symbol',
         'exchange',
         'status',
+        'default',
     ];
 
     public function user()
