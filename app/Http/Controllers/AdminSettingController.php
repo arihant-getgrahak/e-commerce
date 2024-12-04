@@ -213,4 +213,18 @@ class AdminSettingController extends Controller
             return back()->with('error', $e->getMessage());
         }
     }
+
+    public function defaultCurrency($id)
+    {
+        try {
+            DB::beginTransaction();
+            Forex::where('user_id', auth()->user()->id)->update(['default' => 0]);
+            Forex::where('id', $id)->update(['default' => 1]);
+            DB::commit();
+
+            return back()->with('success', 'Default Currency Updated Successfully');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
 }
