@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class BrandStoreRequest extends FormRequest
+class UpdateForexRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,19 +22,20 @@ class BrandStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'name' => 'nullable|string|unique:forexes,name',
+            'code' => 'nullable|string|unique:forexes,code',
+            'symbol' => 'nullable|string|unique:forexes,symbol',
+            'exchange' => 'nullable|string',
+            'status' => 'nullable|boolean',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'name.required' => 'Brand name is required',
-            'image.required' => 'Brand image is required',
-            'image.image' => 'Brand image must be an image',
-            'image.max' => 'Brand image size must be less than 2MB',
-            'image.mimes' => 'Brand image must be jpeg,png,jpg,gif,svg',
+            'name.unique' => 'Forex name already exists',
+            'code.unique' => 'Forex code already exists',
+            'symbol.unique' => 'Forex symbol already exists',
         ];
     }
 }
