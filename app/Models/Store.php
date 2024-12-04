@@ -17,6 +17,7 @@ class Store extends Model
         'gst',
         'tax_type',
         'user_id',
+        'forex_type',
     ];
 
     public function user()
