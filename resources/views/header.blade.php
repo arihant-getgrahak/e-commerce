@@ -73,7 +73,7 @@
                         </li>
                         <li class="current"><a href="javascript:void(0);" class="dropdown-item medium text-medium"
                                 onclick="changeLanguage(this.id)" id="en"><img
-                                    src="{{ asset('vendor/blade-flags/country-in.svg') }}" alt="en" width="16"
+                                    src="{{ asset('vendor/blade-flags/country-us.svg') }}" alt="en" width="16"
                                     height="11" /><span>English</span></a>
                         </li>
                         <li><a href="javascript:void(0);" class="dropdown-item medium text-medium"
@@ -82,19 +82,9 @@
                                     height="11" /><span>German</span></a>
                         </li>
                         <li><a href="javascript:void(0);" class="dropdown-item medium text-medium"
-                                onchangeLanguage(this.id)" id="zh"><img
+                                onclick="changeLanguage(this.id)" id="zh"><img
                                     src="{{ asset('vendor/blade-flags/country-cn.svg') }}" alt="china" width="16"
                                     height="11" /><span>Chinese</span></a>
-                        </li>
-                        <li><a href="javascript:void(0);" class="dropdown-item medium text-medium"
-                                onclick="changeLanguage(this.id)" id="en-gb"><img
-                                    src="{{ asset('vendor/blade-flags/country-uk.svg') }}" alt="uk" width="16"
-                                    height="11" /><span>English UK</span></a>
-                        </li>
-                        <li><a href="javascript:void(0);" class="dropdown-item medium text-medium"
-                                onclick="changeLanguage(this.id)" id="en-us"><img
-                                    src="{{ asset('vendor/blade-flags/country-us.svg') }}" alt="us" width="16"
-                                    height="11" /><span>English US</span></a>
                         </li>
                     </ul>
                 </div>
