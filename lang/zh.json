@@ -20,5 +20,6 @@
     "My Orders": "我的订单",
     "Profile Info": "个人资料信息",
     "Addresses": "地址",
-    "Log Out": "退出登录"
+    "Log Out": "退出登录",
+    "Get Free delivery from :amount Shop Now": "享受免费配送，满 :amount 立即购买"
 }
