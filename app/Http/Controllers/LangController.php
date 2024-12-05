@@ -28,17 +28,35 @@ class LangController extends Controller
                 'code' => $request->code,
                 'status' => $request->status,
                 'rtl' => $request->rtl,
+                'default' => $request->default,
             ];
 
             DB::beginTransaction();
             Language::create($data);
             DB::commit();
 
-            return redirect()->back()->with('success', 'Language added successfully');
+            return back()->with('success', 'Language added successfully');
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return redirect()->back()->with('error', $e->getMessage());
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function deleteLanguage($id)
+    {
+        try {
+            $lang = Language::find($id)->first();
+            if ($lang->default) {
+                return back()->with('error', 'Default language can not be deleted');
+            }
+            DB::beginTransaction();
+            $lang->delete();
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return back()->with('error', $e->getMessage());
         }
     }
 }
