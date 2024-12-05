@@ -8,7 +8,7 @@
     <div class="col-md-6">
         <form action="{{route("admin.setting.forex.language.default")}}" method="POST">
             @csrf
-            <label class="form-label required">Forex Option</label>
+            <label class="form-label required">Default Language</label>
             <select class="form-select" id="lang" name="lang" required>
                 @foreach ($languages as $language)
                     <option value="{{$language->id}}" {{ $language->default ? 'selected' : '' }}>
