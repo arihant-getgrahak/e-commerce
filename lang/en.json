@@ -9,5 +9,10 @@
     "Sign Up": "Sign Up",
     "Login with Google": "Login with Google",
     "Login with Facebook": "Login with Facebook",
-    "Your Password": "Password"
+    "Your Password": "Password",
+    "Country Code": "Country Code",
+    "Phone Number": "Phone Number",
+    "Confirm Password": "Confirm Password",
+    "Register Agreement":"By registering your details, you agree with our Terms & Conditions, and Privacy and Cookie Policy.",
+    "Already have an account?": "Already have an account?"
 }
