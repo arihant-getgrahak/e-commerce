@@ -21,5 +21,18 @@
     "Profile Info": "Profilinformationen",
     "Addresses": "Adressen",
     "Log Out": "Abmelden",
-    "Get Free delivery from :currency:amount Shop Now": "Erhalten Sie kostenlose Lieferung ab :currency:amount Jetzt einkaufen"
+    "Get Free delivery from :currency:amount Shop Now": "Erhalten Sie kostenlose Lieferung ab :currency:amount Jetzt einkaufen",
+    "Dashboard Navigation": "Dashboard Navigation",
+    "Order Number": "Bestellnummer",
+    "Status": "Status",
+    "Expected date by": "Erwartetes Datum bis",
+    "Cancel Order": "Bestellung stornieren",
+    "Total": "Gesamt",
+    "Track Order": "Bestellung verfolgen",
+    "Dashboard": "Dashboard",
+    "Orders": "Bestellungen",
+    "No orders found": "Keine Bestellungen gefunden",
+    "Wishlist is empty": "Wunschliste ist leer",
+    "Shipping Address": "Lieferadresse",
+     "Quick View": "Schnellansicht"
 }

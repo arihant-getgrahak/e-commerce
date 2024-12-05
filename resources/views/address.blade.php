@@ -27,7 +27,7 @@
                 <div class="card-wrap border rounded mb-4">
                     <div class="card-wrap-header px-3 py-2 br-bottom d-flex align-items-center justify-content-between">
                         <div class="card-header-flex">
-                            <h4 class="fs-md ft-bold mb-1">Shipping Address</h4>
+                            <h4 class="fs-md ft-bold mb-1">{{__("Shipping Address")}}</h4>
 
                         </div>
                     </div>
@@ -35,8 +35,8 @@
                         <h5 class="ft-medium mb-1">{{$addres->name}}</h5>
                         <p>{{$addres->address}}, {{$addres->city}}, {{$addres->state}},
                             {{$addres->pincode}},<br>{{$addres->country}}</p>
-                        <p class="lh-1"><span class="text-dark ft-medium">Email:</span> {{$addres->email}}</p>
-                        <p><span class="text-dark ft-medium">Call:</span> +91 {{$addres->phone}}</p>
+                        <p class="lh-1"><span class="text-dark ft-medium">{{__("Email")}}:</span> {{$addres->email}}</p>
+                        <p><span class="text-dark ft-medium">{{__("Phone Number")}}:</span> +91 {{$addres->phone}}</p>
                     </div>
                 </div>
             </div>

@@ -21,5 +21,18 @@
     "Profile Info": "Profile Info",
     "Addresses": "Addresses",
     "Log Out": "Log Out",
-    "Get Free delivery from :currency:amount Shop Now": "Get Free delivery from :currency:amount Shop Now"
+    "Get Free delivery from :currency:amount Shop Now": "Get Free delivery from :currency:amount Shop Now",
+    "Dashboard Navigation": "Dashboard Navigation",
+    "Order Number": "Order Number",
+    "Status": "Status",
+    "Expected date by": "Expected date by",
+    "Cancel Order": "Cancel Order",
+    "Total": "Total",
+    "Track Order": "Track Order",
+    "Dashboard": "Dashboard",
+    "Orders": "Orders",
+    "No orders found": "No orders found",
+    "Wishlist is empty": "Wishlist is empty",
+    "Shipping Address": "Shipping Address",
+    "Quick View": "Quick View"
 }
