@@ -101,11 +101,11 @@
                 </div>
 
                 <div class="currency-selector dropdown js-dropdown float-right mr-3">
-                    <a href="{{route('wishlist')}}" class="text-light medium">Wishlist</a>
+                    <a href="{{route('wishlist')}}" class="text-light medium">{{__("Wishlist")}}</a>
                 </div>
 
                 <div class="currency-selector dropdown js-dropdown float-right mr-3">
-                    <a href="{{route('my-orders')}}" class="text-light medium">My Account</a>
+                    <a href="{{route('my-orders')}}" class="text-light medium">{{__("My Account")}}</a>
                 </div>
 
             </div>
