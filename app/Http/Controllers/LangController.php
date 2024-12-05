@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AddLanguageRequest;
+use App\Http\Requests\UpdateForexRequest;
 use App\Models\Language;
 use DB;
 use Illuminate\Http\Request;
@@ -31,6 +32,8 @@ class LangController extends Controller
                 'default' => $request->default,
             ];
 
+            Language::where('user_id', auth()->user()->id)->update(['default' => 0]);
+
             DB::beginTransaction();
             Language::create($data);
             DB::commit();
@@ -56,6 +59,27 @@ class LangController extends Controller
             DB::commit();
 
             return back()->with('success', 'Language deleted successfully');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function languageUpdate(UpdateForexRequest $request, $id)
+    {
+        try {
+            $data = $request->only([
+                'name',
+                'code',
+                'status',
+                'rtl',
+                'default',
+            ]);
+            Language::where('user_id', auth()->user()->id)->update(['default' => 0]);
+            DB::beginTransaction();
+            Language::where('id', $id)->update($data);
+            DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
 
