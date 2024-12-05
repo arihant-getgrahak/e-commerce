@@ -1,0 +1,18 @@
+{
+    "Email": "ईमेल",
+    "Password": "पासवर्ड",
+    "Login to your account": "अपने खाते में लॉगिन करें",
+    "Login": "लॉगिन",
+    "Register": "पंजीकरण",
+    "Username": "उपयोगकर्ता नाम",
+    "Sign In": "साइन इन",
+    "Sign Up": "साइन अप",
+    "Login with Google": "गूगल के साथ लॉगिन करें",
+    "Login with Facebook": "फेसबुक के साथ लॉगिन करें",
+    "Your Password": "आपका पासवर्ड",
+    "Country Code": "देश कोड",
+    "Phone Number": "फ़ोन नंबर",
+    "Confirm Password": "पासवर्ड की पुष्टि करें",
+    "Register Agreement": "अपना विवरण पंजीकृत करके, आप हमारी शर्तों और नियमों, और गोपनीयता और कुकी नीति से सहमत हैं।",
+    "Already have an account?": "पहले से ही एक खाता है?"
+}
