@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Language;
 use App\Models\Navigation;
 use App\Models\PickupAddress;
 use Cache;
@@ -63,7 +64,9 @@ abstract class Controller
             'currency' => $currencySymbol ?? '₹',
         ];
 
-        View::share('navigations', compact('navigation', 'telcode', 'data'));
+        $lang = $this->fetchLang();
+
+        View::share('navigations', compact('navigation', 'telcode', 'data', 'lang'));
     }
 
     protected function getPickupAddress()
@@ -104,5 +107,12 @@ abstract class Controller
 
             return $e->getMessage();
         }
+    }
+
+    protected function fetchLang()
+    {
+        $lang = Language::all();
+
+        return $lang;
     }
 }

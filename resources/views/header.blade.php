@@ -66,26 +66,12 @@
                         <i class="fa fa-angle-down medium text-light"></i>
                     </a>
                     <ul class="dropdown-menu popup-content link">
-                        <li class="current"><a href="javascript:void(0);" class="dropdown-item medium text-medium"
-                                onclick="changeLanguage(this.id)" id="hi"><img
-                                    src="{{ asset('vendor/blade-flags/country-in.svg') }}" alt="en" width="16"
-                                    height="11" /><span>Hindi</span></a>
-                        </li>
-                        <li class="current"><a href="javascript:void(0);" class="dropdown-item medium text-medium"
-                                onclick="changeLanguage(this.id)" id="en"><img
-                                    src="{{ asset('vendor/blade-flags/country-us.svg') }}" alt="en" width="16"
-                                    height="11" /><span>English</span></a>
-                        </li>
-                        <li><a href="javascript:void(0);" class="dropdown-item medium text-medium"
-                                onclick="changeLanguage(this.id)" id="de"><img
-                                    src="{{ asset('vendor/blade-flags/country-de.svg') }}" alt="de" width="16"
-                                    height="11" /><span>German</span></a>
-                        </li>
-                        <li><a href="javascript:void(0);" class="dropdown-item medium text-medium"
-                                onclick="changeLanguage(this.id)" id="zh"><img
-                                    src="{{ asset('vendor/blade-flags/country-cn.svg') }}" alt="china" width="16"
-                                    height="11" /><span>Chinese</span></a>
-                        </li>
+                        @foreach ($navigations["lang"] as $lang)
+                            <li class="current"><a href="javascript:void(0);" class="dropdown-item medium text-medium"
+                                    onclick="changeLanguage(this.id)"
+                                    id="{{ $lang->code }}"><span>{{ $lang->name }}</span></a>
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
 
