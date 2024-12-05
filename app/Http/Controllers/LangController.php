@@ -43,16 +43,19 @@ class LangController extends Controller
         }
     }
 
-    public function deleteLanguage($id)
+    public function languageDelete($id)
     {
         try {
-            $lang = Language::find($id)->first();
+            $lang = Language::find($id);
+
             if ($lang->default) {
                 return back()->with('error', 'Default language can not be deleted');
             }
             DB::beginTransaction();
             $lang->delete();
             DB::commit();
+
+            return back()->with('success', 'Language deleted successfully');
         } catch (\Exception $e) {
             DB::rollBack();
 
