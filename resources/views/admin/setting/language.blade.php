@@ -3,8 +3,27 @@
 @section('setting')
 <main>
     <h1>Admin Language Settings</h1>
-    
-    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-language">
+    <!-- admin.setting.forex.lamguage.default -->
+
+    <div class="col-md-6">
+        <form action="{{route("admin.setting.forex.language.default")}}" method="POST">
+            @csrf
+            <label class="form-label required">Forex Option</label>
+            <select class="form-select" id="lang" name="lang" required>
+                @foreach ($languages as $language)
+                    <option value="{{$language->id}}" {{ $language->default ? 'selected' : '' }}>
+                        {{ $language->name }}
+                    </option>
+                @endforeach
+            </select>
+            @error('lang')
+                <span class="text-danger">{{$message}}</span>
+            @enderror
+
+            <button class="btn btn-primary mt-2" type="submit">Update</button>
+        </form>
+    </div>
+    <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#modal-language">
         Add Language
     </button>
 
