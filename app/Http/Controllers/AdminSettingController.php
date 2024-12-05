@@ -6,6 +6,7 @@ use App\Http\Requests\CreateForexRequest;
 use App\Http\Requests\CreateStoreRequest;
 use App\Http\Requests\UpdateForexRequest;
 use App\Models\Forex;
+use App\Models\Language;
 use App\Models\Store;
 use Artisan;
 use DB;
@@ -39,6 +40,13 @@ class AdminSettingController extends Controller
         $store = Store::where('user_id', auth()->user()->id)->orderBy('created_at', 'desc')->paginate(10);
 
         return view('admin.setting.store', compact('store'));
+    }
+
+    public function languageView()
+    {
+        $languages = Language::where('user_id', auth()->user()->id)->orderBy('created_at', 'desc')->paginate(10);
+
+        return view('admin.setting.language', compact('languages'));
     }
 
     public function changeCredentials(Request $request)

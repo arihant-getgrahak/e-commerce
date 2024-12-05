@@ -10,9 +10,8 @@
             <div class="col-xl-4 col-lg-4 col-md-5 col-sm-12 hide-ipad">
                 <div class="top_second text-center">
                     <!-- getExchangeRate($session('country')) -->
-                    <p class="medium text-light m-0 p-0">Get Free delivery from
-                        {{$navigations["data"]["currency"]}}{{$navigations["data"]["delivery"]}}
-                        <a href="#" class="medium text-light text-underline">Shop Now</a>
+                    <p class="medium text-light m-0 p-0">
+                        {{ __("Get Free delivery from :currency:amount Shop Now", ['currency' => $navigations['data']['currency'], 'amount' => $navigations['data']['delivery']]) }}
                     </p>
                 </div>
             </div>
@@ -63,37 +62,25 @@
                     <a class="popup-title" href="javascript:void(0)" data-toggle="dropdown" title="Language"
                         aria-label="Language dropdown">
                         <span class="hidden-xl-down medium text-light">Language:</span>
-                        <span class="iso_code medium text-light">English</span>
+                        <span class="iso_code medium text-light">{{Str::upper(App::getLocale())}}</span>
                         <i class="fa fa-angle-down medium text-light"></i>
                     </a>
                     <ul class="dropdown-menu popup-content link">
-                        <li class="current"><a href="javascript:void(0);" class="dropdown-item medium text-medium"><img
-                                    src="assets/img/1.jpg" alt="en" width="16" height="11" /><span>English</span></a>
-                        </li>
-                        <li><a href="javascript:void(0);" class="dropdown-item medium text-medium"><img
-                                    src="assets/img/2.jpg" alt="fr" width="16" height="11" /><span>Français</span></a>
-                        </li>
-                        <li><a href="javascript:void(0);" class="dropdown-item medium text-medium"><img
-                                    src="assets/img/3.jpg" alt="de" width="16" height="11" /><span>Deutsch</span></a>
-                        </li>
-                        <li><a href="javascript:void(0);" class="dropdown-item medium text-medium"><img
-                                    src="assets/img/4.jpg" alt="it" width="16" height="11" /><span>Italiano</span></a>
-                        </li>
-                        <li><a href="javascript:void(0);" class="dropdown-item medium text-medium"><img
-                                    src="assets/img/5.jpg" alt="es" width="16" height="11" /><span>Español</span></a>
-                        </li>
-                        <li><a href="javascript:void(0);" class="dropdown-item medium text-medium"><img
-                                    src="assets/img/6.jpg" alt="ar" width="16" height="11" /><span>اللغة
-                                    العربية</span></a></li>
+                        @foreach ($navigations["lang"] as $lang)
+                            <li class="current"><a href="javascript:void(0);" class="dropdown-item medium text-medium"
+                                    onclick="changeLanguage(this.id)"
+                                    id="{{ $lang->code }}"><span>{{ $lang->name }}</span></a>
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
 
                 <div class="currency-selector dropdown js-dropdown float-right mr-3">
-                    <a href="{{route('wishlist')}}" class="text-light medium">Wishlist</a>
+                    <a href="{{route('wishlist')}}" class="text-light medium">{{__("Wishlist")}}</a>
                 </div>
 
                 <div class="currency-selector dropdown js-dropdown float-right mr-3">
-                    <a href="{{route('my-orders')}}" class="text-light medium">My Account</a>
+                    <a href="{{route('my-orders')}}" class="text-light medium">{{__("My Account")}}</a>
                 </div>
 
             </div>
@@ -194,6 +181,22 @@
             data: {
                 "_token": "{{ csrf_token() }}",
                 "name": id
+            },
+            success: function (data) {
+                location.reload();
+            }
+        });
+    }
+</script>
+<script>
+    function changeLanguage(lang) {
+        // console.log(lang);
+        $.ajax({
+            url: "{{ route('lang.change') }}",
+            type: "POST",
+            data: {
+                "_token": "{{ csrf_token() }}",
+                "lang": lang
             },
             success: function (data) {
                 location.reload();

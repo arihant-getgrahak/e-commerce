@@ -31,11 +31,11 @@
         <div class="container container-tight py-4">
             <div class="card card-md">
                 <div class="card-body">
-                    <h2 class="h2 text-center mb-4">Login to your account</h2>
+                    <h2 class="h2 text-center mb-4">{{__("Login to your account")}}</h2>
                     <form action="{{ route('login.post') }}" method="post" autocomplete="off">
                         @csrf
                         <div class="mb-3">
-                            <label class="form-label">Email address</label>
+                            <label class="form-label">{{__("Email")}}</label>
                             <input type="email" class="form-control" placeholder="your@email.com" autocomplete="off"
                                 name="email" id="email" value="{{ old('email') }}">
                             @error('email')
@@ -44,13 +44,14 @@
                         </div>
                         <div class="mb-2">
                             <label class="form-label">
-                                Password
+                                {{__("Password")}}
                             </label>
                             <div class="input-group input-group-flat">
                                 <input type="password" name="password" id="password" class="form-control"
-                                    placeholder="Your password" autocomplete="off">
+                                    placeholder="{{__("Your Password")}}" autocomplete="off">
                                 <span class="input-group-text">
-                                    <a href="#" class="link-secondary" title="Show password" data-bs-toggle="tooltip">
+                                    <a href="javascript:void(0)" class="link-secondary" title="Show password"
+                                        data-bs-toggle="tooltip">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
                                             viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
                                             stroke-linecap="round" stroke-linejoin="round">
@@ -67,11 +68,13 @@
                             </div>
                         </div>
                         <div class="form-footer">
-                            <button type="submit" class="btn btn-primary w-100">Sign in</button>
+                            <button type="submit" class="btn btn-primary w-100">{{__("Sign In")}}</button>
                         </div>
                         <div class="mt-3 d-flex gap-2">
-                            <a href="{{ route('google.redirect') }}" class="btn btn-primary"> Login with Google </a>
-                            <a href="{{ route('facebook.redirect') }}" class="btn btn-primary"> Login with Facebook </a>
+                            <a href="{{ route('google.redirect') }}" class="btn btn-primary">
+                                {{__("Login with Google")}} </a>
+                            <a href="{{ route('facebook.redirect') }}" class="btn btn-primary">
+                                {{__("Login with Facebook")}} </a>
                         </div>
                     </form>
                 </div>

@@ -6,9 +6,9 @@
             <div class="colxl-12 col-lg-12 col-md-12">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/">Home</a></li>
-                        <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="{{route('wishlist')}}">Wishlist</a>
+                        <li class="breadcrumb-item"><a href="/">{{__("Home")}}</a></li>
+                        <li class="breadcrumb-item"><a href="javascript:void(0);">{{__("Dashboard")}}</a></li>
+                        <li class="breadcrumb-item"><a href="{{route('wishlist')}}">{{__("Wishlist")}}</a>
                         </li>
                     </ol>
                 </nav>
@@ -22,7 +22,7 @@
     <div class="row align-items-center">
         @if(count($wishlist) == 0)
             <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
-                <h1>Wishlist is empty</h1>
+                <h1>{{__("Wishlist is empty")}}</h1>
             </div>
         @else
             @foreach ($wishlist as $w)
@@ -43,7 +43,7 @@
                                     <div class="edlio">
                                         <a href="#" data-toggle="modal" data-target="#quickview"
                                             class="text-white fs-sm ft-medium">
-                                            <i class="fas fa-eye mr-1"></i>Quick View
+                                            <i class="fas fa-eye mr-1"></i>{{__("Quick View")}}
                                         </a>
                                     </div>
                                 </div>
