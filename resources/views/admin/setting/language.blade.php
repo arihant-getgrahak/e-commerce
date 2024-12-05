@@ -6,53 +6,53 @@
 
     {{--<div class="mb-4 d-flex" style="gap: 10px;">
         <div class="col-md-6">
-            <form action="{{route("admin.setting.forex.currency.default")}}" method="POST">
+            <form action="{{route(" admin.setting.forex.currency.default")}}" method="POST">
                 @csrf
                 <label class="form-label required">Default Currency</label>
                 <select class="form-select" id="default_currency" name="default_currency" required>
                     @foreach ($languageorex as $language)
-                        <option value="{{ $language->id }}" {{ $language->default ? 'selected' : '' }}>
-                            {{ $language->name }}
-                        </option>
+                    <option value="{{ $language->id }}" {{ $language->default ? 'selected' : '' }}>
+                        {{ $language->name }}
+                    </option>
                     @endforeach
                 </select>
 
 
                 @error('default_currency')
-                    <span class="text-danger">{{$message}}</span>
+                <span class="text-danger">{{$message}}</span>
                 @enderror
 
                 <button class="btn btn-primary mt-2" type="submit">Update</button>
             </form>
         </div>
         <div class="col-md-6">
-            <form action="{{route("admin.setting.forex.option")}}" method="POST">
+            <form action="{{route(" admin.setting.forex.option")}}" method="POST">
                 @csrf
                 <label class="form-label required">Forex Option</label>
                 <select class="form-select" id="forex_option" name="forex_option" required>
-                    <option value="manual" {{ $languageorex_option === "manual" ? 'selected' : '' }}>
+                    <option value="manual" {{ $languageorex_option==="manual" ? 'selected' : '' }}>
                         Manual
                     </option>
-                    <option value="api" {{ $languageorex_option === "api" ? 'selected' : '' }}>
+                    <option value="api" {{ $languageorex_option==="api" ? 'selected' : '' }}>
                         API
                     </option>
                 </select>
                 @error('forex_option')
-                    <span class="text-danger">{{$message}}</span>
+                <span class="text-danger">{{$message}}</span>
                 @enderror
 
                 <button class="btn btn-primary mt-2" type="submit">Update</button>
             </form>
         </div>
     </div>--}}
-    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-currency">
-        Add Currency
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-language">
+        Add Language
     </button>
 
-    <!-- All Currencies Table -->
+    <!-- All Languages Table -->
     <div class="card mt-3">
         <div class="card-body">
-            <h1>All Currencies</h1>
+            <h1>All Languages</h1>
             <div id="table-default" class="table-responsive">
                 <table class="table">
                     <thead>
@@ -147,66 +147,58 @@
         </div>
     </div>
 
-    <!-- Add Currency Modal -->
-    {{--<div class="modal modal-blur fade" id="modal-currency" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Add Language Modal -->
+    <div class="modal modal-blur fade" id="modal-language" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Add Currency</h5>
+                    <h5 class="modal-title">Add Language</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form class="bg-white p-6 rounded-lg shadow-lg" action="{{ route('admin.setting.forex.create') }}"
-                        method="POST">
+                    <form class="bg-white p-6 rounded-lg shadow-lg"
+                        action="{{ route('admin.setting.language.create') }}" method="POST">
                         @csrf
                         <div class="mb-3">
-                            <label class="form-label required">Currency Name</label>
+                            <label class="form-label required">Name</label>
                             <input type="text" class="form-control" id="name" name="name" value="{{old('name')}}"
-                                placeholder="Enter Currency Name" required>
+                                placeholder="Enter Name" required>
                             @error('name')
-                            <span class="text-danger">{{$message}}</span>
+                                <span class="text-danger">{{$message}}</span>
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <label class="form-label required">Currency Symbol</label>
-                            <input type="text" class="form-control" id="symbol" name="symbol" value="{{old('symbol')}}"
-                                placeholder="Enter Currency Symbol" required>
-                            @error('symbol')
-                            <span class="text-danger">{{$message}}</span>
-                            @enderror
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label required">Currency Code</label>
+                            <label class="form-label required">Code</label>
                             <input type="text" class="form-control" id="code" name="code" value="{{old(key: 'code')}}"
-                                placeholder="Enter Currency Code" required>
+                                placeholder="Enter Code" required>
                             @error('code')
-                            <span class="text-danger">{{$message}}</span>
+                                <span class="text-danger">{{$message}}</span>
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <label class="form-label required">Currency Exchange Rate (1INR = ?)</label>
-                            <input type="text" class="form-control" id="exchange" name="exchange"
-                                value="{{old('exchange')}}" placeholder="Enter Currency Exchange Rate (1INR = ?)"
-                                required>
-                            @error('exchange')
-                            <span class="text-danger">{{$message}}</span>
-                            @enderror
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label required">Currency Status</label>
+                            <label class="form-label required">Status</label>
                             <label class="form-check form-switch">
                                 <input type="hidden" name="status" value="0" />
                                 <input class="form-check-input" type="checkbox" id="status" name="status" value="1" />
                             </label>
                             @error('status')
-                            <span class="text-danger">{{$message}}</span>
+                                <span class="text-danger">{{$message}}</span>
                             @enderror
                         </div>
-
+                        <div class="mb-3">
+                            <label class="form-label required">RTL</label>
+                            <label class="form-check form-switch">
+                                <input type="hidden" name="rtl" value="0" />
+                                <input class="form-check-input" type="checkbox" id="rtl" name="rtl" value="1" />
+                            </label>
+                            @error('rtl')
+                                <span class="text-danger">{{$message}}</span>
+                            @enderror
+                        </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary ms-auto">Add Currency</button>
+                    <button type="submit" class="btn btn-primary ms-auto">Add Language</button>
                 </div>
                 </form>
             </div>
@@ -214,7 +206,7 @@
     </div>
 
     <!-- Update Modal -->
-    <div class="modal modal-blur fade" id="modal-currency-update" tabindex="-1" role="dialog" aria-hidden="true">
+    {{--<div class="modal modal-blur fade" id="modal-currency-update" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
