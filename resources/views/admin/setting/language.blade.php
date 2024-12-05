@@ -62,41 +62,48 @@
                             <th><button class="table-sort">Code</button></th>
                             <th><button class="table-sort">RTL Status</button></th>
                             <th><button class="table-sort">Language Status</button></th>
+                            <th><button class="table-sort">Default</button></th>
                             <th><button class="table-sort">Action</button></th>
                         </tr>
                     </thead>
                     <tbody class="table-tbody">
                         @foreach ($languages as $language)
                             <tr>
-                                <td>{{$language->id}}</td>
-                                <td>{{$language->name}}</td>
-                                <td>{{$language->code}}</td>
+                                <td>{{ $language->id }}</td>
+                                <td>{{ $language->name }}</td>
+                                <td>{{ $language->code }}</td>
                                 <td>
-                                    @if ($language->rtl == 1)
-                                        <span class="badge bg-success text-white">Active</span>
-                                    @else
-                                        <span class="badge bg-danger text-white">Inactive</span>
-                                    @endif
+                                    <span class="badge {{ $language->rtl ? 'bg-success' : 'bg-danger' }} text-white">
+                                        {{ $language->rtl ? 'Active' : 'Inactive' }}
+                                    </span>
                                 </td>
                                 <td>
-                                    @if ($language->status == 1)
-                                        <span class="badge bg-success text-white">True</span>
-                                    @else
-                                        <span class="badge bg-danger text-white">False</span>
-                                    @endif
+                                    <span class="badge {{ $language->status ? 'bg-success' : 'bg-danger' }} text-white">
+                                        {{ $language->status ? 'True' : 'False' }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="badge {{ $language->default ? 'bg-success' : 'bg-danger' }} text-white">
+                                        {{ $language->default ? 'True' : 'False' }}
+                                    </span>
                                 </td>
                                 <td>
                                     <button class="btn btn-primary btn-sm btn-update" data-bs-toggle="modal"
                                         data-bs-target="#modal-currency-update" data-id="{{ $language->id }}"
                                         data-name="{{ $language->name }}" data-code="{{ $language->code }}"
-                                        data-rtl="{{ $language->rtl }}" data-status="{{ $language->status }}">Edit</button>
+                                        data-rtl="{{ $language->rtl }}" data-status="{{ $language->status }}"
+                                        data-default="{{ $language->default }}">
+                                        Edit
+                                    </button>
                                     <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                                        data-bs-target="#modal-delete-{{$language->id}}">Delete</button>
+                                        data-bs-target="#modal-delete-{{ $language->id }}">
+                                        Delete
+                                    </button>
                                 </td>
                             </tr>
 
                             <!-- Delete Modal -->
-                            <div class="modal modal-blur fade" id="modal-delete-{{$language->id}}" tabindex="-1"
+                            <div class="modal modal-blur fade" id="modal-delete-{{ $language->id }}" tabindex="-1"
                                 role="dialog" aria-hidden="true">
                                 <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
                                     <div class="modal-content">
@@ -115,18 +122,19 @@
                                                 <path d="M12 17h.01" />
                                             </svg>
                                             <h3>Are you sure?</h3>
-                                            <div class="text-secondary">Do you really want to delete this Language?
-                                                This
+                                            <div class="text-secondary">Do you really want to delete this Language? This
                                                 action cannot be undone.</div>
                                         </div>
                                         <div class="modal-footer">
                                             <div class="w-100">
                                                 <div class="row">
-                                                    <div class="col"><a href="#" class="btn w-100"
-                                                            data-bs-dismiss="modal">Cancel</a></div>
                                                     <div class="col">
-                                                        <form id="delete-form-{{$language->id}}"
-                                                            action="{{ route('admin.setting.forex.delete', $language->id) }}"
+                                                        <a href="javascript:void(0)" class="btn w-100"
+                                                            data-bs-dismiss="modal">Cancel</a>
+                                                    </div>
+                                                    <div class="col">
+                                                        <form id="delete-form-{{ $language->id }}"
+                                                            action="{{ route('admin.setting.language.delete', $language->id) }}"
                                                             method="POST" class="w-100">
                                                             @csrf
                                                             @method('DELETE')
@@ -146,6 +154,7 @@
             </div>
         </div>
     </div>
+
 
     <!-- Add Language Modal -->
     <div class="modal modal-blur fade" id="modal-language" tabindex="-1" role="dialog" aria-hidden="true">
