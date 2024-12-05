@@ -111,7 +111,7 @@ abstract class Controller
 
     protected function fetchLang()
     {
-        $lang = Language::all();
+        $lang = Language::where('status', 1)->get();
 
         return $lang;
     }
