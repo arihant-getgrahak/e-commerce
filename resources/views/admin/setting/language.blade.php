@@ -254,18 +254,6 @@
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
-
-                        <div class="mb-3">
-                            <label class="form-label required">Is Default?</label>
-                            <label class="form-check form-switch">
-                                <input type="hidden" name="default" id="update_default_hidden" value="0">
-                                <input class="form-check-input" type="checkbox" id="update_default" name="default"
-                                    value="1">
-                            </label>
-                            @error('default')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -304,7 +292,7 @@
 
         updateButtons.forEach(button => {
             button.addEventListener('click', function () {
-                const { id: langId, name, code, rtl, default: isDefault, status } = this.dataset;
+                const { id: langId, name, code, rtl,status } = this.dataset;
 
                 updateForm.action = `{{ route('admin.setting.language.update', ':id') }}`.replace(':id', langId);
 
@@ -312,7 +300,6 @@
                 setFormField('update_code', code);
                 setFormField('update_status', status === '1', true);
                 setFormField('update_rtl', rtl === '1', true);
-                setFormField('update_default', isDefault === '1', true);
             });
         });
     });
