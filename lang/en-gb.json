@@ -21,5 +21,5 @@
     "Profile Info": "Profile Info",
     "Addresses": "Addresses",
     "Log Out": "Log Out",
-    "Get Free delivery from :amount Shop Now": "Get Free delivery from :amount Shop Now"
+    "Get Free delivery from :currency:amount Shop Now": "Get Free delivery from :currency:amount Shop Now"
 }

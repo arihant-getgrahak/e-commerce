@@ -21,5 +21,5 @@
     "Profile Info": "प्रोफ़ाइल जानकारी",
     "Addresses": "पते",
     "Log Out": "लॉग आउट",
-    "Get Free delivery from :amount Shop Now": ":amount से मुफ्त डिलीवरी प्राप्त करें अभी खरीदारी करें"
+    "Get Free delivery from :currency:amount Shop Now": ":currency:amount से मुफ्त डिलीवरी प्राप्त करें अभी खरीदारी करें"
 }
