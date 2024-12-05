@@ -7,9 +7,9 @@
             <div class="colxl-12 col-lg-12 col-md-12">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/">Home</a></li>
-                        <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="#">Orders</a>
+                    <li class="breadcrumb-item"><a href="/">{{__("Home")}}</a></li>
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">{{__("Dashboard")}}</a></li>
+                        <li class="breadcrumb-item"><a href="#">{{__("Orders")}}</a>
                         </li>
                     </ol>
                 </nav>
@@ -21,7 +21,7 @@
 @section("order-display")
 
 @if(empty($orders))
-    <h1>No orders found</h1>
+    <h1>{{__("No orders found")}}</h1>
 @else
     @foreach ($orders as $order)
         <div class="ord_list_wrap border mb-4 mfliud">
