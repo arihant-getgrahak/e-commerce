@@ -32,8 +32,9 @@ class LangController extends Controller
                 'default' => $request->default,
             ];
 
-            Language::where('user_id', auth()->user()->id)->update(['default' => 0]);
-
+            if ($data['default'] == 1) {
+                Language::where('user_id', auth()->user()->id)->update(['default' => 0]);
+            }
             DB::beginTransaction();
             Language::create($data);
             DB::commit();
@@ -76,7 +77,6 @@ class LangController extends Controller
                 'rtl',
                 'default',
             ]);
-            Language::where('user_id', auth()->user()->id)->update(['default' => 0]);
             DB::beginTransaction();
             Language::where('id', $id)->update($data);
             DB::commit();
@@ -85,6 +85,24 @@ class LangController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
 
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function defaultLanguage(Request $request)
+    {
+        try {
+            $lang = $request->lang;
+
+            DB::beginTransaction();
+
+            Language::where('user_id', auth()->user()->id)->update(['default' => 0]);
+            Language::where('id', $lang)->update(['default' => 1]);
+
+            DB::commit();
+
+            return back()->with('success', 'Default Language Updated Successfully');
+        } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }
     }
