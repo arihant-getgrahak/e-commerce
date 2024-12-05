@@ -63,28 +63,40 @@
                     <a class="popup-title" href="javascript:void(0)" data-toggle="dropdown" title="Language"
                         aria-label="Language dropdown">
                         <span class="hidden-xl-down medium text-light">Language:</span>
-                        <span class="iso_code medium text-light">English</span>
+                        <span class="iso_code medium text-light">{{Str::upper(App::getLocale())}}</span>
                         <i class="fa fa-angle-down medium text-light"></i>
                     </a>
                     <ul class="dropdown-menu popup-content link">
-                        <li class="current"><a href="javascript:void(0);" class="dropdown-item medium text-medium"><img
-                                    src="assets/img/1.jpg" alt="en" width="16" height="11" /><span>English</span></a>
+                        <li class="current"><a href="javascript:void(0);" class="dropdown-item medium text-medium"
+                                onclick="changeLanguage(this.id)" id="hi"><img
+                                    src="{{ asset('vendor/blade-flags/country-in.svg') }}" alt="en" width="16"
+                                    height="11" /><span>Hindi</span></a>
                         </li>
-                        <li><a href="javascript:void(0);" class="dropdown-item medium text-medium"><img
-                                    src="assets/img/2.jpg" alt="fr" width="16" height="11" /><span>Français</span></a>
+                        <li class="current"><a href="javascript:void(0);" class="dropdown-item medium text-medium"
+                                onclick="changeLanguage(this.id)" id="en"><img
+                                    src="{{ asset('vendor/blade-flags/country-in.svg') }}" alt="en" width="16"
+                                    height="11" /><span>English</span></a>
                         </li>
-                        <li><a href="javascript:void(0);" class="dropdown-item medium text-medium"><img
-                                    src="assets/img/3.jpg" alt="de" width="16" height="11" /><span>Deutsch</span></a>
+                        <li><a href="javascript:void(0);" class="dropdown-item medium text-medium"
+                                onclick="changeLanguage(this.id)" id="de"><img
+                                    src="{{ asset('vendor/blade-flags/country-de.svg') }}" alt="de" width="16"
+                                    height="11" /><span>German</span></a>
                         </li>
-                        <li><a href="javascript:void(0);" class="dropdown-item medium text-medium"><img
-                                    src="assets/img/4.jpg" alt="it" width="16" height="11" /><span>Italiano</span></a>
+                        <li><a href="javascript:void(0);" class="dropdown-item medium text-medium"
+                                onchangeLanguage(this.id)" id="zh"><img
+                                    src="{{ asset('vendor/blade-flags/country-cn.svg') }}" alt="china" width="16"
+                                    height="11" /><span>Chinese</span></a>
                         </li>
-                        <li><a href="javascript:void(0);" class="dropdown-item medium text-medium"><img
-                                    src="assets/img/5.jpg" alt="es" width="16" height="11" /><span>Español</span></a>
+                        <li><a href="javascript:void(0);" class="dropdown-item medium text-medium"
+                                onclick="changeLanguage(this.id)" id="en-gb"><img
+                                    src="{{ asset('vendor/blade-flags/country-uk.svg') }}" alt="uk" width="16"
+                                    height="11" /><span>English UK</span></a>
                         </li>
-                        <li><a href="javascript:void(0);" class="dropdown-item medium text-medium"><img
-                                    src="assets/img/6.jpg" alt="ar" width="16" height="11" /><span>اللغة
-                                    العربية</span></a></li>
+                        <li><a href="javascript:void(0);" class="dropdown-item medium text-medium"
+                                onclick="changeLanguage(this.id)" id="en-us"><img
+                                    src="{{ asset('vendor/blade-flags/country-us.svg') }}" alt="us" width="16"
+                                    height="11" /><span>English US</span></a>
+                        </li>
                     </ul>
                 </div>
 
@@ -194,6 +206,22 @@
             data: {
                 "_token": "{{ csrf_token() }}",
                 "name": id
+            },
+            success: function (data) {
+                location.reload();
+            }
+        });
+    }
+</script>
+<script>
+    function changeLanguage(lang) {
+        // console.log(lang);
+        $.ajax({
+            url: "{{ route('lang.change') }}",
+            type: "POST",
+            data: {
+                "_token": "{{ csrf_token() }}",
+                "lang": lang
             },
             success: function (data) {
                 location.reload();
