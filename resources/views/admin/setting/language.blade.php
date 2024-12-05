@@ -195,6 +195,16 @@
                                 <span class="text-danger">{{$message}}</span>
                             @enderror
                         </div>
+                        <div class="mb-3">
+                            <label class="form-label required">Is Default?</label>
+                            <label class="form-check form-switch">
+                                <input type="hidden" name="default" value="0" />
+                                <input class="form-check-input" type="checkbox" id="default" name="default" value="1" />
+                            </label>
+                            @error('default')
+                                <span class="text-danger">{{$message}}</span>
+                            @enderror
+                        </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>

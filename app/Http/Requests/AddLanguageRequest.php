@@ -26,6 +26,7 @@ class AddLanguageRequest extends FormRequest
             'code' => 'required|string|unique:languages,code',
             'status' => 'required|boolean',
             'rtl' => 'required|boolean',
+            'default' => 'required|boolean',
         ];
     }
 
@@ -42,6 +43,7 @@ class AddLanguageRequest extends FormRequest
             'status.boolean' => 'The status field must be a boolean.',
             'rtl.required' => 'The rtl field is required.',
             'rtl.boolean' => 'The rtl field must be a boolean.',
+            'default.required' => 'The default field is required.',
         ];
     }
 }
