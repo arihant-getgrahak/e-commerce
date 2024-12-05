@@ -13,6 +13,12 @@
     "Country Code": "Country Code",
     "Phone Number": "Phone Number",
     "Confirm Password": "Confirm Password",
-    "Register Agreement":"By registering your details, you agree with our Terms & Conditions, and Privacy and Cookie Policy.",
-    "Already have an account?": "Already have an account?"
+    "Register Agreement": "By registering your details, you agree with our Terms & Conditions, and Privacy and Cookie Policy.",
+    "Already have an account?": "Already have an account?",
+    "My Account": "My Account",
+    "Wishlist": "Wishlist",
+    "My Orders": "My Orders",
+    "Profile Info": "Profile Info",
+    "Addresses": "Addresses",
+    "Log Out": "Log Out"
 }
