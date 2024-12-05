@@ -3,48 +3,7 @@
 @section('setting')
 <main>
     <h1>Admin Language Settings</h1>
-
-    {{--<div class="mb-4 d-flex" style="gap: 10px;">
-        <div class="col-md-6">
-            <form action="{{route(" admin.setting.forex.currency.default")}}" method="POST">
-                @csrf
-                <label class="form-label required">Default Currency</label>
-                <select class="form-select" id="default_currency" name="default_currency" required>
-                    @foreach ($languageorex as $language)
-                    <option value="{{ $language->id }}" {{ $language->default ? 'selected' : '' }}>
-                        {{ $language->name }}
-                    </option>
-                    @endforeach
-                </select>
-
-
-                @error('default_currency')
-                <span class="text-danger">{{$message}}</span>
-                @enderror
-
-                <button class="btn btn-primary mt-2" type="submit">Update</button>
-            </form>
-        </div>
-        <div class="col-md-6">
-            <form action="{{route(" admin.setting.forex.option")}}" method="POST">
-                @csrf
-                <label class="form-label required">Forex Option</label>
-                <select class="form-select" id="forex_option" name="forex_option" required>
-                    <option value="manual" {{ $languageorex_option==="manual" ? 'selected' : '' }}>
-                        Manual
-                    </option>
-                    <option value="api" {{ $languageorex_option==="api" ? 'selected' : '' }}>
-                        API
-                    </option>
-                </select>
-                @error('forex_option')
-                <span class="text-danger">{{$message}}</span>
-                @enderror
-
-                <button class="btn btn-primary mt-2" type="submit">Update</button>
-            </form>
-        </div>
-    </div>--}}
+    
     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-language">
         Add Language
     </button>
@@ -327,8 +286,6 @@
         updateButtons.forEach(button => {
             button.addEventListener('click', function () {
                 const { id: langId, name, code, rtl, default: isDefault, status } = this.dataset;
-
-                console.log(`ID: ${langId}, Name: ${name}, Code: ${code}, RTL: ${rtl}, Is Default: ${isDefault}, Status: ${status}`);
 
                 updateForm.action = `{{ route('admin.setting.language.update', ':id') }}`.replace(':id', langId);
 
