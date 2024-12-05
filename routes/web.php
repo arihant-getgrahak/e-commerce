@@ -82,6 +82,7 @@ Route::group(['middleware' => LangMiddleware::class], function () {
                     Route::get('/shiprocket', action: [AdminSettingController::class, 'shiprocketView'])->name('admin.setting.shiprocket');
                     Route::get('/forex', action: [AdminSettingController::class, 'forexView'])->name('admin.setting.forexView');
                     Route::get('/store', action: [AdminSettingController::class, 'storeView'])->name('admin.setting.store');
+                    Route::get('/language', action: [AdminSettingController::class, 'languageView'])->name('admin.setting.language');
                 });
             });
         });
