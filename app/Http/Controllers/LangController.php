@@ -80,6 +80,8 @@ class LangController extends Controller
             DB::beginTransaction();
             Language::where('id', $id)->update($data);
             DB::commit();
+
+            return back()->with('success', 'Language updated successfully');
         } catch (\Exception $e) {
             DB::rollBack();
 

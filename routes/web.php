@@ -191,7 +191,7 @@ Route::group(['middleware' => LangMiddleware::class], function () {
         Route::delete('/admin/setting/forex/delete/{id}', [AdminSettingController::class, 'forexDelete'])->name(name: 'admin.setting.forex.delete');
 
         Route::post('/admin/setting/language/add', [LangController::class, 'languageStore'])->name('admin.setting.language.create');
-        Route::put('/admin/setting/language/update/{id}', [AdminSettingController::class, 'languageUpdate'])->name(name: 'admin.setting.language.update');
+        Route::put('/admin/setting/language/update/{id}', [LangController::class, 'languageUpdate'])->name(name: 'admin.setting.language.update');
         Route::delete('/admin/setting/language/delete/{id}', [LangController::class, 'languageDelete'])->name(name: 'admin.setting.language.delete');
 
         Route::post('/admin/setting/forex/default/currency', [AdminSettingController::class, 'defaultCurrency'])->name('admin.setting.forex.currency.default');
