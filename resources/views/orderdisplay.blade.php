@@ -27,11 +27,11 @@
         <div class="ord_list_wrap border mb-4 mfliud">
             <div class="ord_list_head gray d-flex align-items-center justify-content-between px-3 py-3">
                 <div class="olh_flex">
-                    <p class="m-0 p-0"><span class="text-muted">Order Number</span></p>
+                    <p class="m-0 p-0"><span class="text-muted">{{__("Order Number")}}</span></p>
                     <h6 class="mb-0 ft-medium">#{{ $order->id }}</h6>
                 </div>
                 <div class="olh_flex">
-                    <a href="{{route("order.track", $order->id)}}" class="btn btn-sm btn-dark">Track Order</a>
+                    <a href="{{route("order.track", $order->id)}}" class="btn btn-sm btn-dark">{{__("Track Order")}}</a>
                 </div>
             </div>
 
@@ -56,21 +56,21 @@
                             </div>
                         </div>
                         <div class="col-xl-3 col-lg-3 col-md-3 col-6">
-                            <p class="mb-1 p-0"><span class="text-muted">Status</span></p>
+                            <p class="mb-1 p-0"><span class="text-muted">{{__("Status")}}</span></p>
                             <div class="delv_status">
                                 <span
                                     class="ft-medium small rounded px-3 py-1 
-                                                                                {{ $order->status === 'cancelled' ? 'text-danger bg-light-danger' : '' }}
-                                                                                                {{ $order->status === 'delivered' ? 'text-success bg-light-success' : '' }}
-                                                                                                {{ $order->status === 'shipped' ? 'text-warning bg-light-warning' : '' }}
-                                                                                                {{ $order->status === 'pending' ? 'text-info bg-light-info' : '' }}">
+                                                                                                        {{ $order->status === 'cancelled' ? 'text-danger bg-light-danger' : '' }}
+                                                                                                                        {{ $order->status === 'delivered' ? 'text-success bg-light-success' : '' }}
+                                                                                                                        {{ $order->status === 'shipped' ? 'text-warning bg-light-warning' : '' }}
+                                                                                                                        {{ $order->status === 'pending' ? 'text-info bg-light-info' : '' }}">
                                     {{ Str::ucfirst($order->status) }}
                                 </span>
                             </div>
                         </div>
 
                         <div class="col-xl-4 col-lg-4 col-md-4 col-6">
-                            <p class="mb-1 p-0"><span class="text-muted">Expected date by:</span></p>
+                            <p class="mb-1 p-0"><span class="text-muted">{{__("Expected date by")}}:</span></p>
                             <h6 class="mb-0 ft-medium fs-sm">
                                 {{ \Carbon\Carbon::parse($orderProduct->created_at->addDays(14))->format('d F Y')}}
                             </h6>
@@ -85,7 +85,7 @@
 
             <div class="ord_list_footer d-flex align-items-center justify-content-between br-top px-3">
                 <div class="col-xl-3 col-lg-3 col-md-4 olf_flex text-left px-0 py-2 br-right"><a href="javascript:void(0);"
-                        class="ft-medium fs-sm"><i class="ti-close mr-2"></i>Cancel Order</a></div>
+                        class="ft-medium fs-sm"><i class="ti-close mr-2"></i>{{__("Cancel Order")}}</a></div>
                 <div class="col-xl-9 col-lg-9 col-md-8 pr-0 py-2 olf_flex d-flex align-items-center justify-content-between">
                     <div class="olf_flex_inner hide_mob">
                         <p class="m-0 p-0"><span class="text-muted medium">Paid
