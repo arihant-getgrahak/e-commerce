@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AddLanguageRequest;
-use App\Http\Requests\UpdateForexRequest;
+use App\Http\Requests\UpdateLanguageRequest;
 use App\Models\Language;
 use DB;
 use Illuminate\Http\Request;
@@ -67,7 +67,7 @@ class LangController extends Controller
         }
     }
 
-    public function languageUpdate(UpdateForexRequest $request, $id)
+    public function languageUpdate(UpdateLanguageRequest $request, $id)
     {
         try {
             $data = $request->only([
@@ -75,8 +75,8 @@ class LangController extends Controller
                 'code',
                 'status',
                 'rtl',
-                'default',
             ]);
+
             DB::beginTransaction();
             Language::where('id', $id)->update($data);
             DB::commit();

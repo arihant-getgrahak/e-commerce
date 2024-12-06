@@ -245,10 +245,10 @@
                                             <a class="dropdown-item" href="{{route("admin.setting.store")}}">
                                                 Store
                                             </a>
-                                            {{--<a class="dropdown-item" href="{{route(" admin.city")}}">
-                                                City
+                                            <a class="dropdown-item" href="{{route("admin.setting.language")}}">
+                                                Language
                                             </a>
-                                            <a class="dropdown-item" href="{{ route('pickupaddress') }}">
+                                            {{--<a class="dropdown-item" href="{{ route('pickupaddress') }}">
                                                 Pickup Address
                                             </a>--}}
                                         </div>
