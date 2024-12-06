@@ -299,6 +299,13 @@
         const updateButtons = document.querySelectorAll('.btn-update');
         const updateForm = document.getElementById("currencyForm");
 
+        const updateStatusHidden = document.getElementById('update_status_hidden')
+        const updateStatusCheckbox = document.getElementById('update_status')
+
+        updateStatusCheckbox.addEventListener('change', function () {
+            updateStatusHidden.value = this.checked ? '1' : '0';
+        })
+
         updateButtons.forEach(button => {
             button.addEventListener('click', function () {
                 const forexId = this.getAttribute('data-id');
@@ -306,7 +313,8 @@
                 const code = this.getAttribute('data-code');
                 const symbol = this.getAttribute('data-symbol');
                 const exchange = this.getAttribute('data-exchange');
-                const status = this.getAttribute('data-status');
+                const status = this.getAttribute('data-status') === "1";
+
 
                 updateForm.action = "{{ route('admin.setting.forex.update', ':id') }}".replace(':id', forexId);
 
@@ -314,8 +322,9 @@
                 document.getElementById('update_code').value = code;
                 document.getElementById('update_symbol').value = symbol;
                 document.getElementById('update_exchange').value = exchange;
-                document.getElementById('update_status_hidden').value = status ? '1' : '0';
-                document.getElementById('update_status').checked = status;
+
+                updateStatusCheckbox.checked = status;
+                updateStatusHidden.value = status ? '1' : '0';
             });
         });
     });

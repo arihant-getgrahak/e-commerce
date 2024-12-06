@@ -291,7 +291,6 @@
         const updateRtlCheckbox = document.getElementById('update_rtl');
         const updateRtlHidden = document.getElementById('update_rtl_hidden');
 
-        // Update hidden input value when checkbox is toggled
         updateStatusCheckbox.addEventListener('change', function () {
             updateStatusHidden.value = this.checked ? '1' : '0';
         });
@@ -300,7 +299,6 @@
             updateRtlHidden.value = this.checked ? '1' : '0';
         });
 
-        // Populate modal form when update button is clicked
         updateButtons.forEach(button => {
             button.addEventListener('click', function () {
                 const langId = this.getAttribute('data-id');
