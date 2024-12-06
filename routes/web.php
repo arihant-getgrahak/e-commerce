@@ -202,5 +202,6 @@ Route::group(['middleware' => LangMiddleware::class], function () {
 
         Route::get('/admin/setting/language/translation/{id}', [LangController::class, 'getLanguageFile'])->name('admin.setting.language.get');
         Route::post('/admin/setting/language/change', [LangController::class, 'updateLangField'])->name('admin.setting.language.edit');
+        Route::post('/admin/setting/language/add', [LangController::class, 'addNewTranslation'])->name('admin.setting.language.add');
     });
 });
