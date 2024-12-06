@@ -334,7 +334,7 @@
 
 <script>
     function changeLanguageKeys(id) {
-        window.location.href = "{{ route('admin.setting.language.edit', ':id') }}".replace(':id', id);
+        window.location.href = "{{ route('admin.setting.language.get', ':id') }}".replace(':id', id);
     }
 </script>
 
