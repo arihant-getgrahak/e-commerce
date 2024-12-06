@@ -199,5 +199,7 @@ Route::group(['middleware' => LangMiddleware::class], function () {
         Route::post('/admin/setting/store/forex/option', [AdminSettingController::class, 'forexOption'])->name('admin.setting.forex.option');
 
         Route::post('/lang/change', [LangController::class, 'changeLang'])->name('lang.change');
+
+        Route::get('/admin/setting/language/change/{id}', [LangController::class, 'getLanguageFile'])->name('admin.setting.language.edit');
     });
 });
