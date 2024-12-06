@@ -65,13 +65,23 @@
                                         {{ $language->default ? 'True' : 'False' }}
                                     </span>
                                 </td>
-                                <td>
-                                    <button class="btn btn-primary btn-sm btn-update" data-bs-toggle="modal"
-                                        data-bs-target="#modal-lang-update" data-id="{{ $language->id }}"
-                                        data-name="{{ $language->name }}" data-code="{{ $language->code }}"
-                                        data-rtl="{{ $language->rtl }}" data-status="{{ $language->status }}">
-                                        Edit
-                                    </button>
+                                <td class="d-flex" style="gap: 5px;">
+                                    <div class="dropdown">
+                                        <button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown">
+                                            Actions
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <button class="dropdown-item btn-update" data-bs-toggle="modal"
+                                                data-bs-target="#modal-lang-update" data-id="{{ $language->id }}"
+                                                data-name="{{ $language->name }}" data-code="{{ $language->code }}"
+                                                data-rtl="{{ $language->rtl }}" data-status="{{ $language->status }}">
+                                                Edit
+                                            </button>
+                                            <button onclick="changeLanguageKeys({{$language->id}})" class="dropdown-item">
+                                                Change Language Keys
+                                            </button>
+                                        </div>
+                                    </div>
                                     <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
                                         data-bs-target="#modal-delete-{{ $language->id }}">
                                         Delete
@@ -320,7 +330,12 @@
             });
         });
     });
+</script>
 
+<script>
+    function changeLanguageKeys(id) {
+        window.location.href = "{{ route('admin.setting.language.edit', ':id') }}".replace(':id', id);
+    }
 </script>
 
 @endsection
