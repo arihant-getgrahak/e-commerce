@@ -69,8 +69,7 @@
                                     <button class="btn btn-primary btn-sm btn-update" data-bs-toggle="modal"
                                         data-bs-target="#modal-lang-update" data-id="{{ $language->id }}"
                                         data-name="{{ $language->name }}" data-code="{{ $language->code }}"
-                                        data-rtl="{{ $language->rtl }}" data-status="{{ $language->status }}"
-                                        data-default="{{ $language->default }}">
+                                        data-rtl="{{ $language->rtl }}" data-status="{{ $language->status }}">
                                         Edit
                                     </button>
                                     <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
@@ -211,11 +210,13 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="langForm" class="bg-white p-6 rounded-lg shadow-lg" method="POST">
+                    <form id="langForm" class="p-6 rounded-lg shadow-lg" method="POST">
                         @csrf
                         @method('PUT')
+
+                        <!-- Name Field -->
                         <div class="mb-3">
-                            <label class="form-label required" for="update_name">Name</label>
+                            <label for="update_name" class="form-label required">Name</label>
                             <input type="text" class="form-control" id="update_name" name="name"
                                 value="{{ old('name') }}" placeholder="Enter Name" required>
                             @error('name')
@@ -223,8 +224,9 @@
                             @enderror
                         </div>
 
+                        <!-- Code Field -->
                         <div class="mb-3">
-                            <label class="form-label required" for="update_code">Code</label>
+                            <label for="update_code" class="form-label required">Code</label>
                             <input type="text" class="form-control" id="update_code" name="code"
                                 value="{{ old('code') }}" placeholder="Enter Code" required>
                             @error('code')
@@ -232,24 +234,26 @@
                             @enderror
                         </div>
 
+                        <!-- RTL Switch -->
                         <div class="mb-3">
                             <label class="form-label required">RTL</label>
-                            <label class="form-check form-switch">
+                            <div class="form-check form-switch">
                                 <input type="hidden" name="rtl" id="update_rtl_hidden" value="0">
-                                <input class="form-check-input" type="checkbox" id="update_rtl" name="rtl" value="1">
-                            </label>
+                                <input class="form-check-input" type="checkbox" id="update_rtl" name="rtl" value="1" />
+                            </div>
                             @error('rtl')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
 
+                        <!-- Status Switch -->
                         <div class="mb-3">
                             <label class="form-label required">Status</label>
-                            <label class="form-check form-switch">
+                            <div class="form-check form-switch">
                                 <input type="hidden" name="status" id="update_status_hidden" value="0">
                                 <input class="form-check-input" type="checkbox" id="update_status" name="status"
-                                    value="1">
-                            </label>
+                                    value="1" />
+                            </div>
                             @error('status')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -263,6 +267,7 @@
             </div>
         </div>
     </div>
+
 </main>
 
 
@@ -278,31 +283,46 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const updateButtons = document.querySelectorAll('.btn-update');
-        const updateForm = document.getElementById('langForm');
+        const updateForm = document.getElementById("langForm");
 
-        const setFormField = (fieldId, value, isCheckbox = false) => {
-            const field = document.getElementById(fieldId);
-            if (isCheckbox) {
-                field.checked = !!value;
-                document.getElementById(`${fieldId}_hidden`).value = value ? '1' : '0';
-            } else {
-                field.value = value;
-            }
-        };
+        const updateStatusCheckbox = document.getElementById('update_status');
+        const updateStatusHidden = document.getElementById('update_status_hidden');
 
+        const updateRtlCheckbox = document.getElementById('update_rtl');
+        const updateRtlHidden = document.getElementById('update_rtl_hidden');
+
+        // Update hidden input value when checkbox is toggled
+        updateStatusCheckbox.addEventListener('change', function () {
+            updateStatusHidden.value = this.checked ? '1' : '0';
+        });
+
+        updateRtlCheckbox.addEventListener('change', function () {
+            updateRtlHidden.value = this.checked ? '1' : '0';
+        });
+
+        // Populate modal form when update button is clicked
         updateButtons.forEach(button => {
             button.addEventListener('click', function () {
-                const { id: langId, name, code, rtl,status } = this.dataset;
+                const langId = this.getAttribute('data-id');
+                const name = this.getAttribute('data-name');
+                const code = this.getAttribute('data-code');
+                const status = this.getAttribute('data-status') === '1';
+                const rtl = this.getAttribute('data-rtl') === '1';
 
-                updateForm.action = `{{ route('admin.setting.language.update', ':id') }}`.replace(':id', langId);
+                updateForm.action = "{{ route('admin.setting.language.update', ':id') }}".replace(':id', langId);
 
-                setFormField('update_name', name);
-                setFormField('update_code', code);
-                setFormField('update_status', status === '1', true);
-                setFormField('update_rtl', rtl === '1', true);
+                document.getElementById('update_name').value = name;
+                document.getElementById('update_code').value = code;
+
+                updateStatusCheckbox.checked = status;
+                updateStatusHidden.value = status ? '1' : '0';
+
+                updateRtlCheckbox.checked = rtl;
+                updateRtlHidden.value = rtl ? '1' : '0';
             });
         });
     });
+
 </script>
 
 @endsection
