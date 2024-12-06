@@ -22,4 +22,5 @@ yarn-error.log
 /.zed
 
 d
-/public/vendor/blade-flags
+/public/vendor/blade-flags/
+/lang

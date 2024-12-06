@@ -18,10 +18,12 @@
     </thead>
     <tbody class="table-tbody">
         @foreach ($content as $key => $value)
-            <form action="" method="GET">
+            <form action="{{route("admin.setting.language.edit")}}" method="POST">
+                @csrf
+                <input type="hidden" name="lang_code" value="{{$lang->code}}">
                 <tr>
                     <td>
-                        <input type="text" name="key" id="key" value="{{ $key }}" disabled>
+                        <input type="text" name="key" id="key" value="{{ $key }}">
                     </td>
                     <td>
                         <input type="text" name="value" id="value" value="{{ $value }}">
@@ -36,6 +38,10 @@
 </table>
 
 <script>
+    if ("{{Session::has('success')}}") {
+        alert("{{Session::get('success')}}");
+    }
+
     if ("{{Session::has('error')}}") {
         alert("{{Session::get('error')}}");
     }
