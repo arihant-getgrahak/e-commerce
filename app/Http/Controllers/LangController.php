@@ -165,4 +165,30 @@ class LangController extends Controller
             return back()->with('error', $e->getMessage());
         }
     }
+
+    public function addNewTranslation(Request $request)
+    {
+        try {
+            $data = [
+                'lang_code' => $request->lang_code,
+                'key' => $request->key,
+                'value' => $request->value,
+            ];
+
+            $langFile = base_path('lang/'.$data['lang_code'].'.json');
+            if (! File::exists($langFile)) {
+                return response()->json(['error' => 'Language file not found.'], 404);
+            }
+
+            $content = json_decode(File::get($langFile), true);
+
+            $content[$request->key] = $request->value;
+
+            File::put($langFile, json_encode($content, JSON_PRETTY_PRINT));
+
+            return back()->with('success', 'Language Translation added successfully');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
 }
