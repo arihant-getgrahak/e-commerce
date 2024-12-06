@@ -122,4 +122,21 @@ class LangController extends Controller
             return back()->with('error', $e->getMessage());
         }
     }
+
+    public function getLanguageFile($id)
+    {
+        try {
+            $lang = Language::find($id);
+            $langFile = base_path('lang/'.$lang->code.'.json');
+            if (! File::exists($langFile)) {
+                return response()->json(['error' => 'Language file not found.'], 404);
+            }
+
+            $content = json_decode(File::get($langFile), true);
+
+            return view('admin.setting.language-edit', compact('content', 'lang'));
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
 }
