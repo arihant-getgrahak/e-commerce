@@ -23,4 +23,4 @@ yarn-error.log
 
 d
 /public/vendor/blade-flags/
-/lang
+/lang/*.json
