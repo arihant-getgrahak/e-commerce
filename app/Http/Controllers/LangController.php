@@ -6,6 +6,7 @@ use App\Http\Requests\AddLanguageRequest;
 use App\Http\Requests\UpdateLanguageRequest;
 use App\Models\Language;
 use DB;
+use File;
 use Illuminate\Http\Request;
 
 class LangController extends Controller
@@ -35,6 +36,21 @@ class LangController extends Controller
             if ($data['default'] == 1) {
                 Language::where('user_id', auth()->user()->id)->update(['default' => 0]);
             }
+
+            $defaultLang = Language::where('user_id', auth()->user()->id)->where('default', 1)->first();
+
+            $langCode = $data['code'];
+            $langFolder = base_path('lang');
+
+            $defaultLangFile = $langFolder.'/'.$defaultLang->code.'.json';
+            $newLangFile = $langFolder.'/'.$langCode.'.json';
+
+            if (File::exists($newLangFile)) {
+                return back()->with('error', 'Language file already exists.');
+            }
+
+            File::copy($defaultLangFile, $newLangFile);
+
             DB::beginTransaction();
             Language::create($data);
             DB::commit();
